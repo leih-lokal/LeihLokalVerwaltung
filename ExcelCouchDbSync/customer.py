@@ -44,3 +44,30 @@ class Customer:
 
     def __str__(self):
         return f'{self.id}: {self.firstname} {self.lastname} ({self.email}, {self.telephone_number})'
+
+    def items(self):
+        def _format_date(date):
+            if type(date) is datetime.date:
+                return date.strftime("%d.%m.%Y")
+            return ""
+
+        def _format_bool(x):
+            if type(x) is bool:
+                return x
+            return False
+
+        return {
+            '_id': str(self.id),
+            'lastname': str(self.lastname),
+            'firstname': str(self.firstname),
+            'registration_date': _format_date(self.registration_date),
+            'renewed_on': _format_date(self.renewed_on),
+            'remark': str(self.remark),
+            'subscribed_to_newsletter': _format_bool(self.subscribed_to_newsletter),
+            'email': str(self.email),
+            'street': str(self.street),
+            'house_number': str(self.house_number),
+            'postal_code': str(self.postal_code),
+            'city': str(self.city),
+            'telephone_number': str(self.telephone_number)
+        }

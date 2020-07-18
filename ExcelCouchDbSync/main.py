@@ -1,7 +1,18 @@
 import os
+
+from couchdb import CouchDb
 from store import Store
 
 if __name__ == '__main__':
-    print('Lade Datenbank...')
+    print('Loading Excel...')
     store = Store.parse_file(os.environ['EXCEL_FILE'])
+
+    print("Connecting to CouchDb")
+    database = CouchDb()
+
+    print("Uploading Data")
+    database.update("customers", store.customers.values())
+    database.update("items", store.items.values())
+    database.update("rentals", store.rentals)
+
     print('fertig')
