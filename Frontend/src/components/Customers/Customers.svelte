@@ -2,21 +2,8 @@
   import { getContext } from 'svelte';
   import Table from '../Table/Table.svelte';
   import EditCustomerPopup from './EditCustomerPopup.svelte';
-  import PouchDB from 'pouchdb-browser'
   import {saveParseDateToString} from '../../utils/utils.js'
-
-  var customerDb = new PouchDB({
-    'name': 'http://192.168.178.50:5984/customers',
-    'auth.username': 'admin',
-    'auth.password': 'password'
-    });
-
-  async function fetchCustomersFromDb() {
-    const allDocs = await customerDb.allDocs({
-      include_docs: true
-    })
-    return allDocs.rows.map(row => row.doc)
-  }
+  import Database from '../../utils/database.js'
   
   const { open } = getContext('simple-modal');
 
@@ -81,12 +68,7 @@
   // TODO: spalten aufmerksam + kommentar fehlen
 
   let rows = [];
-  fetchCustomersFromDb().then(customers => {
-    rows = customers
-    console.log(rows[0])
-  });
-
-  
+  Database.fetchAllCustomers().then(customers => rows = customers);
 </script>
 
 <Table {rows} {columns}></Table>
