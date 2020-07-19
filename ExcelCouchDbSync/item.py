@@ -27,37 +27,19 @@ class Item:
         self.rev = rev
 
     def items(self):
-        def _format_date(date):
-            if type(date) is datetime.date:
-                return str(date)
-            return ""
-
-        def _format_bool(x):
-            if type(x) is bool:
-                return x
-            if str(x).lower() == 'ja':
-                return True
-            return False
-
-        def _format_int(x):
-            try:
-                return int(x)
-            except:
-                return 0
-
         document = {
             '_id': self.get_id(),
             'item_name': str(self.item_name),
             'brand': str(self.brand),
             'itype': str(self.itype),
             'category': str(self.category),
-            'deposit': _format_int(self.deposit),
-            'parts': _format_int(self.parts),
-            'manual': _format_bool(self.manual),
+            'deposit': str(self.deposit),
+            'parts': str(self.parts),
+            'manual': str(self.manual),
             'package': str(self.package),
-            'added': _format_date(self.added),
+            'added': str(self.added),
             'properties': str(self.properties),
-            'n_rented': _format_int(self.n_rented)
+            'n_rented': str(self.n_rented)
         }
 
         if self.rev is not None:

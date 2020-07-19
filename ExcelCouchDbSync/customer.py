@@ -53,26 +53,14 @@ class Customer:
         self.rev = rev
 
     def items(self):
-        def _format_date(date):
-            if type(date) is datetime.date:
-                return str(date)
-            return ""
-
-        def _format_bool(x):
-            if type(x) is bool:
-                return x
-            if str(x).lower() == 'ja':
-                return True
-            return False
-
         document = {
             '_id': self.get_id(),
             'lastname': str(self.lastname),
             'firstname': str(self.firstname),
-            'registration_date': _format_date(self.registration_date),
-            'renewed_on': _format_date(self.renewed_on),
+            'registration_date': str(self.registration_date),
+            'renewed_on': str(self.renewed_on),
             'remark': str(self.remark),
-            'subscribed_to_newsletter': _format_bool(self.subscribed_to_newsletter),
+            'subscribed_to_newsletter': str(self.subscribed_to_newsletter),
             'email': str(self.email),
             'street': str(self.street),
             'house_number': str(self.house_number),

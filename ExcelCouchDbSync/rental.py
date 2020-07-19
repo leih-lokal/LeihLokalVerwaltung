@@ -34,32 +34,21 @@ class Rental:
         self.rev = rev
 
     def items(self):
-        def _format_date(date):
-            if type(date) is datetime.date:
-                return str(date)
-            return ""
-
-        def _format_int(x):
-            try:
-                return int(x)
-            except:
-                return 0
-
         document = {
             '_id': self.get_id(),
             'item_id': str(self.item_id),
             'item_name': str(self.item_name),
-            'rented_on': _format_date(self.rented_on),
-            'extended_on': _format_date(self.extended_on),
-            'to_return_on': _format_date(self.to_return_on),
+            'rented_on': str(self.rented_on),
+            'extended_on': str(self.extended_on),
+            'to_return_on': str(self.to_return_on),
             'passing_out_employee': str(self.passing_out_employee),
             'customer_id': str(self.customer_id),
             'name': str(self.name),
-            'deposit': _format_int(self.deposit),
-            'deposit_returned': _format_int(self.deposit_returned),
-            'returned_on': _format_date(self.returned_on),
+            'deposit': str(self.deposit),
+            'deposit_returned': str(self.deposit_returned),
+            'returned_on': str(self.returned_on),
             'receiving_employee': str(self.receiving_employee),
-            'deposit_retained': _format_int(self.deposit_retained),
+            'deposit_retained': str(self.deposit_retained),
             'deposit_retainment_reason': str(self.deposit_retainment_reason),
             'remark': str(self.remark)
         }

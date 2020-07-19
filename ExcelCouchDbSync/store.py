@@ -25,6 +25,7 @@ class Store:
         store = Store({}, [], {})
         store.customers = {row[0]: Customer(*row[:13]) for row in sheet.Kunden.array if str(row[0]).isdigit()
                            and len(row[2].strip()) > 0}
+
         store.items = {row[0]: Item(*row[:11]) for row in sheet.Gegenstände.array if str(row[0]).isdigit()
                        and len(row[1].strip()) > 0}
 

@@ -16,10 +16,11 @@ class CouchDb:
         except NotFoundError:
             return self.server.create(name)
 
-    def _get_by_id(self, documents, id):
-        return next(filter(lambda x: x is not None and x['_id'] == id, documents), None)
-
     def update(self, db_name, documents):
+
+        def get_by_id(documents, id):
+            return next(filter(lambda x: x is not None and x['_id'] == id, documents), None)
+
         db = self._get_or_create_db(db_name)
 
         # fetch currently stored revisions from db
@@ -29,7 +30,7 @@ class CouchDb:
         # set current revisions for all documents
         if last_revisions is not None:
             for document in documents:
-                last_revision = self._get_by_id(last_revisions, document.get_id())
+                last_revision = get_by_id(last_revisions, document.get_id())
                 if last_revision is not None:
                     document.set_rev(last_revision['_rev'])
 
