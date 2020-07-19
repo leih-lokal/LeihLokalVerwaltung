@@ -20,6 +20,7 @@ class Customer:
     city: str
     telephone_number: str
     rentals: List['Rental'] = field(default_factory=list, repr=False)
+    rev: str = None
 
     def last_contractual_interaction(self) -> datetime.date:
         try:
@@ -45,19 +46,27 @@ class Customer:
     def __str__(self):
         return f'{self.id}: {self.firstname} {self.lastname} ({self.email}, {self.telephone_number})'
 
+    def get_id(self):
+        return str(self.id)
+
+    def set_rev(self, rev):
+        self.rev = rev
+
     def items(self):
         def _format_date(date):
             if type(date) is datetime.date:
-                return date.strftime("%d.%m.%Y")
+                return str(date)
             return ""
 
         def _format_bool(x):
             if type(x) is bool:
                 return x
+            if str(x).lower() == 'ja':
+                return True
             return False
 
-        return {
-            '_id': str(self.id),
+        document = {
+            '_id': self.get_id(),
             'lastname': str(self.lastname),
             'firstname': str(self.firstname),
             'registration_date': _format_date(self.registration_date),
@@ -71,3 +80,8 @@ class Customer:
             'city': str(self.city),
             'telephone_number': str(self.telephone_number)
         }
+
+        if self.rev is not None:
+            document['_rev'] = self.rev
+
+        return document

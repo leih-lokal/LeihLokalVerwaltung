@@ -22,14 +22,21 @@ class Rental:
     deposit_retainment_reason: str
     remark: str
     customer: Optional[Customer] = field(repr=False)
+    rev: str = None
 
     def __repr__(self):
         return f'customer {self.customer_id} -> item {self.item_id}: {self.rented_on} -> {self.to_return_on}'
 
+    def get_id(self):
+        return str(hash(str(self.item_id) + str(self.rented_on) + str(self.customer_id)))
+
+    def set_rev(self, rev):
+        self.rev = rev
+
     def items(self):
         def _format_date(date):
             if type(date) is datetime.date:
-                return date.strftime("%d.%m.%Y")
+                return str(date)
             return ""
 
         def _format_int(x):
@@ -38,8 +45,8 @@ class Rental:
             except:
                 return 0
 
-        return {
-            '_id': str(hash(str(self.item_id) + _format_date(self.rented_on) + str(self.customer_id))),
+        document = {
+            '_id': self.get_id(),
             'item_id': str(self.item_id),
             'item_name': str(self.item_name),
             'rented_on': _format_date(self.rented_on),
@@ -56,3 +63,8 @@ class Rental:
             'deposit_retainment_reason': str(self.deposit_retainment_reason),
             'remark': str(self.remark)
         }
+
+        if self.rev is not None:
+            document['_rev'] = self.rev
+
+        return document

@@ -15,20 +15,28 @@ class Item:
     added: datetime.date
     properties: str
     n_rented:int = 0
+    rev: str = None
 
     def __repr__(self):
         return f'{self.item_id}: {self.item_name} ({self.deposit}€)'
 
+    def get_id(self):
+        return str(self.item_id)
+
+    def set_rev(self, rev):
+        self.rev = rev
 
     def items(self):
         def _format_date(date):
             if type(date) is datetime.date:
-                return date.strftime("%d.%m.%Y")
+                return str(date)
             return ""
 
         def _format_bool(x):
             if type(x) is bool:
                 return x
+            if str(x).lower() == 'ja':
+                return True
             return False
 
         def _format_int(x):
@@ -37,8 +45,8 @@ class Item:
             except:
                 return 0
 
-        return {
-            '_id': str(self.item_id),
+        document = {
+            '_id': self.get_id(),
             'item_name': str(self.item_name),
             'brand': str(self.brand),
             'itype': str(self.itype),
@@ -51,3 +59,8 @@ class Item:
             'properties': str(self.properties),
             'n_rented': _format_int(self.n_rented)
         }
+
+        if self.rev is not None:
+            document['_rev'] = self.rev
+
+        return document
