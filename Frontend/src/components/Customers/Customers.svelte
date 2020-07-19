@@ -69,7 +69,13 @@
 
   function updateRow(updatedRow){
     let currentRowIndex = rows.findIndex(row => row._id === updatedRow._id);
-    rows[currentRowIndex] = updatedRow;
+    if(currentRowIndex) {
+      // customer modified
+      rows[currentRowIndex] = updatedRow;
+    } else {
+      // new customer created
+      rows.push(updatedRow);
+    }
   }
 
   function removeRow(idToRemove){
@@ -84,6 +90,13 @@
       updateRow(change.doc);
     }
   });
+
+  $: console.log("Customers: " + rows.length)
+
+  function onRowClicked(customer){
+    console.log(customer)
+    open(EditCustomerPopup, { customer })
+  }
 </script>
 
-<Table {rows} {columns}></Table>
+<Table {rows} {columns} {onRowClicked}></Table>

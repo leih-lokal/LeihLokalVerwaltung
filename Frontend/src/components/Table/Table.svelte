@@ -6,6 +6,7 @@
 
     export let rows = [];
     export let columns = [];
+    export let onRowClicked = row => {};
     let displayRows = [];
 
     let currentPageRows = [];
@@ -31,6 +32,10 @@
         }
     }
 
+    function getRowById(id){
+        return rows.find(row => row._id == id);
+    }
+
     $: columns, rows, generateDisplayRows()
     $: filteredRows = displayRows.filter(row => Object.values(row).some(value => String(value).toLowerCase().includes(filterText.toLowerCase())));
 
@@ -49,7 +54,7 @@
         </thead>
         <tbody>
             {#each currentPageRows as row (row._id)}
-                <tr on:click={row['onclick']}>
+                <tr on:click={() => onRowClicked(getRowById(row._id))}>
                     {#each columns as col}
                         <td>{row[col.key]}</td>
                     {/each}
