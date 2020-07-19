@@ -6,19 +6,33 @@
 
     export let rows = [];
     export let columns = [];
+    let displayRows = [];
 
     let currentPageRows = [];
 
     let filterText = getContext("filterText") || "";
 
-    $: mappedRows = rows.map(row => {
-        columns
-            .filter(column => column.map)
-            .forEach(column => row[column.key] = column.map(row[column.key]));
-        return row;
-    })
+    const getColumnByKey = key => columns.find(column => column.key == key);
 
-    $: filteredRows = mappedRows.filter(row => Object.values(row).some(value => String(value).toLowerCase().includes(filterText.toLowerCase())));
+    function generateDisplayRows(){
+        if(columns.length != 0){
+            let columnMapFunctions = {};
+            columns
+                .filter(column => column.map)
+                .forEach(column => columnMapFunctions[column.key] = column.map);
+
+            displayRows = rows.map(row => {
+                let displayRow = {...row};
+                Object.keys(displayRow)
+                        .filter(key => columnMapFunctions[key])
+                        .forEach(key => displayRow[key] = columnMapFunctions[key](displayRow[key]));
+                return displayRow;
+            })
+        }
+    }
+
+    $: columns, rows, generateDisplayRows()
+    $: filteredRows = displayRows.filter(row => Object.values(row).some(value => String(value).toLowerCase().includes(filterText.toLowerCase())));
 
     onDestroy(() => setContext('filterText', filterText));
 </script>
@@ -34,7 +48,7 @@
             </tr>
         </thead>
         <tbody>
-            {#each currentPageRows as row (row.id)}
+            {#each currentPageRows as row (row._id)}
                 <tr on:click={row['onclick']}>
                     {#each columns as col}
                         <td>{row[col.key]}</td>

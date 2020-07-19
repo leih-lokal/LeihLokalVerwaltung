@@ -10,7 +10,7 @@
 <Navbar bind:page />
 <Modal>
 	{#if page === 0}
-		<Customers display="table"/>
+		<Customers />
 	{:else if page === 1}
 		<Products> </Products>
 	{:else  if page === 2}

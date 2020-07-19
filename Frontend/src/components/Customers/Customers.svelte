@@ -2,19 +2,29 @@
   import { getContext } from 'svelte';
   import Table from '../Table/Table.svelte';
   import EditCustomerPopup from './EditCustomerPopup.svelte';
+  import PouchDB from 'pouchdb-browser'
+  import {saveParseDateToString} from '../../utils/utils.js'
+
+  var customerDb = new PouchDB({
+    'name': 'http://192.168.178.50:5984/customers',
+    'auth.username': 'admin',
+    'auth.password': 'password'
+    });
+
+  async function fetchCustomersFromDb() {
+    const allDocs = await customerDb.allDocs({
+      include_docs: true
+    })
+    return allDocs.rows.map(row => row.doc)
+  }
   
   const { open } = getContext('simple-modal');
-
-  Date.prototype.addDays = function(days) {
-    var date = new Date(this.valueOf());
-    date.setDate(date.getDate() + days);
-    return date;
-  }
 
   let columns = [
     {
       'title': 'Id',
-      'key': 'id'
+      'key': '_id',
+      'map': id => parseInt(id)
     },
     {
       'title': 'Nachname',
@@ -30,11 +40,11 @@
     },
     {
       'title': 'Hausnummer',
-      'key': 'number'
+      'key': 'house_number'
     },
     {
       'title': 'Postleitzahl',
-      'key': 'zipcode'
+      'key': 'postal_code'
     },
     {
       'title': 'Stadt',
@@ -42,50 +52,41 @@
     },
     {
       'title': 'Beitritt',
-      'key': 'created',
-      'map': date => `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(2, 0)}.${date.getFullYear()}`
+      'key': 'registration_date',
+      'map': date => saveParseDateToString(date)
+    },
+    {
+      'title': 'Verlängert am',
+      'key': 'renewed_on',
+      'map': date => saveParseDateToString(date)
+    },
+    {
+      'title': 'Bemerkung',
+      'key': 'remark'
     },
     {
       'title': 'E-Mail',
-      'key': 'mail'
+      'key': 'email'
     },
     {
       'title': 'Telefonnummer',
-      'key': 'phone'
+      'key': 'telephone_number'
     },
     {
       'title': 'Newsletter',
-      'key': 'newsletter',
-      'map': value => value ? 'Ja' : 'Nein'
-    },
-    {
-      'title': 'Aufmerksam geworden',
-      'key': 'heard'
+      'key': 'subscribed_to_newsletter',
+      'map': value => String(value).toLowerCase() == 'true' ? 'Ja' : 'Nein'
     }
   ]
+  // TODO: spalten aufmerksam + kommentar fehlen
 
   let rows = [];
+  fetchCustomersFromDb().then(customers => {
+    rows = customers
+    console.log(rows[0])
+  });
 
-  for (let i = 0; i < 1000; i++) {
-    let customer = {
-      'id': i,
-      'lastname': 'Mustermann',
-      'firstname': `Max`,
-      'street': 'Musterstrasse',
-      'number': i,
-      'zipcode': '76131',
-      'city': 'Karlsruhe',
-      'created': new Date().addDays(i - 1000),
-      'mail': 'max.mustermann@gmail.com',
-      'phone': '123456',
-      'newsletter': i % 2 == 0,
-      'heard': 'Internet'
-    };
-    rows.push({
-      ...customer,
-      'onclick': () => open(EditCustomerPopup, { customer })
-    })
-  }
+  
 </script>
 
 <Table {rows} {columns}></Table>

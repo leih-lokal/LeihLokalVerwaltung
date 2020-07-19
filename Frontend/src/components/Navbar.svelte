@@ -5,7 +5,7 @@ export let page = 0;
 <nav>
   <ul>
     <li> 
-      <a  class="{page === 0 ? 'active' : ''}" href="/" on:click|preventDefault={() => (page = 0)}> Kunden Tabelle </a>
+      <a  class="{page === 0 ? 'active' : ''}" href="/" on:click|preventDefault={() => (page = 0)}> Kunden </a>
     </li>
     <li>
       <a class="{page === 1 ? 'active' : ''}" href="/" on:click|preventDefault={() => (page = 1)}> Produkte </a>
