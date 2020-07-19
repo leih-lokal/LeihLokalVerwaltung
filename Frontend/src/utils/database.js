@@ -19,6 +19,16 @@ class Database {
     return allDocs.rows.map(row => row.doc);
   }
 
+  onCustomerChange(callback){
+    this.#customerDb.changes({
+      since: 'now',
+      live: true,
+      include_docs: true
+    })
+    .on('change', callback)
+    .on('error', error => console.error(error));
+  }
+
 }
 
 export default new Database();

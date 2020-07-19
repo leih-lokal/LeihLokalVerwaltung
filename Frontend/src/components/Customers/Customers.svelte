@@ -6,7 +6,7 @@
   import Database from '../../utils/database.js'
   
   const { open } = getContext('simple-modal');
-
+  let rows = [];
   let columns = [
     {
       'title': 'Id',
@@ -67,8 +67,23 @@
   ]
   // TODO: spalten aufmerksam + kommentar fehlen
 
-  let rows = [];
+  function updateRow(updatedRow){
+    let currentRowIndex = rows.findIndex(row => row._id === updatedRow._id);
+    rows[currentRowIndex] = updatedRow;
+  }
+
+  function removeRow(idToRemove){
+    rows = rows.filter(row => row._id !== idToRemove);
+  }
+
   Database.fetchAllCustomers().then(customers => rows = customers);
+  Database.onCustomerChange(change => {
+    if (change.deleted) {
+      removeRow(change.id);
+    } else {
+      updateRow(change.doc);
+    }
+  });
 </script>
 
 <Table {rows} {columns}></Table>
