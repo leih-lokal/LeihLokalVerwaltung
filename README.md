@@ -9,7 +9,7 @@ All 3 components (Frontend, ExcelCouchDbSync and CouchDb) can easily be run in d
 
 ### Advantages of using containers for development
 
-- no need to install and run node, python or a database locally
+- no need to install and run node, python or a database manually on your host machine
 - same development environment on all devices
 
 
