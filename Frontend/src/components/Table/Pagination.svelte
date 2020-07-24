@@ -56,21 +56,21 @@
 </script>
 
 <div class="pagination">
-    <a href="#" on:click={() => setPage(Math.max(currentPage - 1, 0))}>&laquo;</a>
+    <a href="#/" on:click={() => setPage(Math.max(currentPage - 1, 0))}>&laquo;</a>
     {#each pageButtons as page}
         {#if typeof page === 'number'}
             <a 
-                href="#" 
+                href="#/" 
                 on:click={() => setPage(page)}
                 class="{page === currentPage ? 'active' : ''}"
             >
                 {page + 1}
             </a>
         {:else}
-            <a class="disabled">{page}</a>
+            <a href="#/" class="disabled">{page}</a>
         {/if}
     {/each}
-    <a href="#" on:click={() => setPage(currentPage = Math.min(currentPage + 1, pages.length - 1))}>&raquo;</a>
+    <a href="#/" on:click={() => setPage(currentPage = Math.min(currentPage + 1, pages.length - 1))}>&raquo;</a>
 </div>
 
 <style>

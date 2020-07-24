@@ -5,6 +5,7 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import copy from 'rollup-plugin-copy'
 import nodePolyfills from 'rollup-plugin-node-polyfills';
+import replace from '@rollup/plugin-replace';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -17,6 +18,15 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		replace({
+			process: JSON.stringify({
+				env: {
+					COUCHDB_USER: process.env.COUCHDB_USER,
+					COUCHDB_PASSWORD: process.env.COUCHDB_PASSWORD,
+					COUCHDB_HOST: process.env.COUCHDB_HOST,
+				}
+			}),
+		}),
 		svelte({
 			// enable run-time checks when not in production
 			dev: !production,
@@ -27,10 +37,10 @@ export default {
 			}
 		}),
 		copy({
-      targets: [
-        { src: 'src/icons', dest: 'public/build' }
-      ]
-    }),
+			targets: [
+				{ src: 'src/icons', dest: 'public/build' }
+			]
+		}),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In

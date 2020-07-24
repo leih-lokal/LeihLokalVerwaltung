@@ -5,11 +5,7 @@ class Database {
   #customerDb;
 
   constructor(){
-    this.#customerDb = new PouchDB({
-      'name': 'http://192.168.178.50:5984/customers',
-      'auth.username': 'admin',
-      'auth.password': 'password'
-    });
+    this.#customerDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_HOST}/customers`);
   }
 
   async fetchAllCustomers() {
