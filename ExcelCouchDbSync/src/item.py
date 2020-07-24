@@ -3,16 +3,16 @@ import datetime
 
 @dataclass
 class Item:
-    item_id: int
+    item_id: str
     item_name: str
     brand: str
     itype: str
     category: str
-    deposit: int
-    parts: int
-    manual: bool
+    deposit: str
+    parts: str
+    manual: str
     package: str
-    added: datetime.date
+    added: str
     properties: str
     n_rented:int = 0
     rev: str = None

@@ -6,19 +6,19 @@ from customer import Customer
 @dataclass
 class Rental:
 
-    item_id: int
+    item_id: str
     item_name: str
-    rented_on: datetime.date
-    extended_on: datetime.date
-    to_return_on: datetime.date
+    rented_on: str
+    extended_on: str
+    to_return_on: str
     passing_out_employee: str
     customer_id: int
     name: str
-    deposit: int
-    deposit_returned: int
-    returned_on: datetime.date
+    deposit: str
+    deposit_returned: str
+    returned_on: str
     receiving_employee: str
-    deposit_retained: int
+    deposit_retained: str
     deposit_retainment_reason: str
     remark: str
     customer: Optional[Customer] = field(repr=False)

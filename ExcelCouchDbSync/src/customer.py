@@ -6,17 +6,17 @@ from dataclasses import dataclass, field
 
 @dataclass
 class Customer:
-    id: int
+    id: str
     lastname: str
     firstname: str
-    registration_date: datetime.date
-    renewed_on: datetime.date
+    registration_date: str
+    renewed_on: str
     remark: str
-    subscribed_to_newsletter: bool
+    subscribed_to_newsletter: str
     email: str
     street: str
-    house_number: int
-    postal_code: int
+    house_number: str
+    postal_code: str
     city: str
     telephone_number: str
     rentals: List['Rental'] = field(default_factory=list, repr=False)
