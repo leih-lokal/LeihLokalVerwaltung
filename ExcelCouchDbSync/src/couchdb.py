@@ -5,7 +5,7 @@ import os
 class CouchDb:
 
     def __init__(self):
-        self.server = Server(href=os.environ['COUCHDB_URL'], username=os.environ['COUCHDB_USER'], password=os.environ['COUCHDB_PASSWORD'],
+        self.server = Server(href="http://" + os.environ['COUCHDB_HOST'], username=os.environ['COUCHDB_USER'], password=os.environ['COUCHDB_PASSWORD'],
                              use_session=True, ca_file=None)
         if not self.server.up():
             raise Exception("Failed to connect to CouchDB Server!")
