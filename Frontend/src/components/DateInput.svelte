@@ -30,26 +30,19 @@
 
   function inOneMonth() {
     const date = new Date();
-    date.setDate(date.getMonth() + 1);
+    date.setMonth(date.getMonth() + 1);
   }
 
-  function onTextInput(event) {
-    const date = new Date(event.target.value);
-    console.log(date);
-    if (!isNaN(date)) selected = date;
-  }
+  export let selected = saveParseDateToString(new Date());
+  let userHasChosenDate;
 
-  export let selected = new Date();
-  export let userHasChosenDate;
+  // TODO: update selected date when text input changes
+  let dateInputFromDatePicker;
 
-  let formattedSelected;
-
-  /**
   $: if (userHasChosenDate) {
-    selectedString = saveParseDateToString(selected);
     userHasChosenDate = false;
-  }**/
-  onMount(() => (formattedSelected = saveParseDateToString(selected)));
+    selected = saveParseDateToString(dateInputFromDatePicker);
+  }
 </script>
 
 <style>
@@ -76,17 +69,15 @@
 <div class="container">
   <div class="datepicker">
     <Datepicker
-      bind:selected
-      bind:formattedSelected
+      bind:selected={dateInputFromDatePicker}
       bind:dateChosen={userHasChosenDate}
       {daysOfWeek}
       {monthsOfYear}
       start={new Date(2018, 1, 1)}
-      end={inOneMonth()}
-      format={'#{d}.#{m}.#{Y}'}>
+      end={inOneMonth()}>
       <div class="button">Kalender</div>
     </Datepicker>
   </div>
-  <input type="text" on:blur={onTextInput} value={formattedSelected} />
+  <input type="text" bind:value={selected} />
 
 </div>
