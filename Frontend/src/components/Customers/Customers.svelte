@@ -64,6 +64,10 @@
       key: "subscribed_to_newsletter",
       map: (value) => (String(value).toLowerCase() == "true" ? "Ja" : "Nein"),
     },
+    {
+      title: "Aufmerksam geworden",
+      key: "heard",
+    },
   ];
   // TODO: spalten aufmerksam + kommentar fehlen
 
