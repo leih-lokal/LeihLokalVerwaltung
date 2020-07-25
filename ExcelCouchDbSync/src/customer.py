@@ -9,8 +9,8 @@ class Customer:
     id: str
     lastname: str
     firstname: str
-    registration_date: str
-    renewed_on: str
+    registration_date: datetime.date
+    renewed_on: datetime.date
     remark: str
     subscribed_to_newsletter: str
     email: str
@@ -19,23 +19,9 @@ class Customer:
     postal_code: str
     city: str
     telephone_number: str
+    heard: str
     rentals: List['Rental'] = field(default_factory=list, repr=False)
     rev: str = None
-
-    def last_contractual_interaction(self) -> datetime.date:
-        try:
-            registration = self.registration_date if self.registration_date else datetime.date.fromtimestamp(0)
-            renewed = self.renewed_on if self.renewed_on else registration
-            rented = [rental.rented_on for rental in self.rentals]
-            returned = [rental.returned_on for rental in self.rentals]
-            all_dates = rented + returned + [registration, renewed]
-            all_dates = [d if type(d) is datetime.date else d.date() for d in all_dates if not isinstance(d, str)]
-            date = max(all_dates)
-        except Exception as e:
-            traceback.print_exc()
-            print(self, e)
-            return registration
-        return date
 
     def short(self) -> str:
         return f'{self.firstname} {self.lastname} ({self.id})'
@@ -53,12 +39,17 @@ class Customer:
         self.rev = rev
 
     def items(self):
+        def date_to_string(date):
+            if isinstance(date, datetime.date):
+                return date.strftime("%d.%m.%Y")
+            return str(date)
+
         document = {
             '_id': self.get_id(),
             'lastname': str(self.lastname),
             'firstname': str(self.firstname),
-            'registration_date': str(self.registration_date),
-            'renewed_on': str(self.renewed_on),
+            'registration_date': date_to_string(self.registration_date),
+            'renewed_on': date_to_string(self.renewed_on),
             'remark': str(self.remark),
             'subscribed_to_newsletter': str(self.subscribed_to_newsletter),
             'email': str(self.email),
@@ -66,7 +57,8 @@ class Customer:
             'house_number': str(self.house_number),
             'postal_code': str(self.postal_code),
             'city': str(self.city),
-            'telephone_number': str(self.telephone_number)
+            'telephone_number': str(self.telephone_number),
+            'heard': str(self.heard)
         }
 
         if self.rev is not None:

@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
-import datetime
 from typing import Optional
-from customer import Customer
+from .customer import Customer
 
 @dataclass
 class Rental:

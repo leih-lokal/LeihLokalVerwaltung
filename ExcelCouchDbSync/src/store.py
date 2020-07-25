@@ -1,10 +1,7 @@
-import traceback
-from datetime import datetime
-from typing import List, Dict, Callable
-
-from customer import Customer
-from item import Item
-from rental import Rental
+from typing import List, Dict
+from .customer import Customer
+from .item import Item
+from .rental import Rental
 import pyexcel as pe
 
 
@@ -23,7 +20,7 @@ class Store:
     @classmethod
     def parse(cls, sheet: pe.Book) -> 'Store':
         store = Store({}, [], {})
-        store.customers = {row[0]: Customer(*row[:13]) for row in sheet.Kunden.array if str(row[0]).isdigit()
+        store.customers = {row[0]: Customer(*row[:13], row[15]) for row in sheet.Kunden.array if str(row[0]).isdigit()
                            and len(row[2].strip()) > 0}
 
         store.items = {row[0]: Item(*row[:11]) for row in sheet.Gegenstände.array if str(row[0]).isdigit()
@@ -39,42 +36,6 @@ class Store:
                     customer.rentals.append(rental)
                 store.rentals.append(rental)
         return store
-
-    def filter_customers(self, predicate: Callable[[Customer], bool]) -> List[Customer]:
-        filtered = []
-        for customer in self.customers.values():
-            try:
-                filter = predicate(customer)
-                if filter:
-                    filtered.append(customer)
-            except Exception as e:
-                traceback.print_exc()
-                print(f'Error filtering customer {customer}: {e}')
-        return filtered
-
-    def filter_rentals(self, predicate: Callable[[Customer], bool]) -> List[Rental]:
-        filtered = []
-        for rental in self.rentals:
-            try:
-                filter = predicate(rental)
-                if filter:
-                    filtered.append(rental)
-            except Exception as e:
-                traceback.print_exc()
-                print(f'Error filtering rental {rental}: {e}')
-        return filtered
-
-    def get_customers_for_deletion(self,
-                                   min_full_started_days_since_last_contractual_interaction: int = 365) -> 'Store':
-        filter = lambda c: (datetime.datetime.now().date() - c.last_contractual_interaction()).days \
-                           >= min_full_started_days_since_last_contractual_interaction
-        return self.filter_customers(filter)
-
-    def get_overdue_reminders(self) -> List[Rental]:
-        filter = lambda r: ((not 'datetime.datetime' in str(type(r.to_return_on))) and \
-                            r.to_return_on < datetime.datetime.now().date() and \
-                            not isinstance(r.returned_on, datetime.date))
-        return self.filter_rentals(filter)
 
     def __repr__(self) -> str:
         return f"{len(self.items)}, items {len(self.customers)}, customers {len(self.rentals)} rentals"
