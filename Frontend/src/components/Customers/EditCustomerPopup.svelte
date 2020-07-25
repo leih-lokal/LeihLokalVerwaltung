@@ -1,5 +1,8 @@
 <script>
   import DateInput from "../DateInput.svelte";
+  import { getContext } from "svelte";
+
+  const { close } = getContext("simple-modal");
 
   export let customer;
 </script>
@@ -129,7 +132,7 @@
         <label for="registration_date">Beitritt</label>
       </div>
       <div class="col-input">
-        <DateInput selected={new Date(customer.registration_date)} />
+        <DateInput selected={customer.registration_date} />
       </div>
     </div>
     <div class="row">
@@ -137,7 +140,7 @@
         <label for="renewed_on">Verlängert am</label>
       </div>
       <div class="col-input">
-        <input type="text" id="renewed_on" name="renewed_on" value={customer.renewed_on} />
+        <DateInput selected={customer.renewed_on} />
       </div>
     </div>
     <div class="row">
@@ -188,25 +191,9 @@
         <input type="text" id="heard" name="heard" value={customer.heard} />
       </div>
     </div>
-    <div class="row">
-      <div class="col-label">
-        <label for="heard">Aufmerksam geworden</label>
-      </div>
-      <div class="col-input">
-        <input type="text" id="heard" name="heard" value={customer.heard} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label">
-        <label for="heard">Aufmerksam geworden</label>
-      </div>
-      <div class="col-input">
-        <input type="text" id="heard" name="heard" value={customer.heard} />
-      </div>
-    </div>
   </div>
   <div class="footer">
     <button class="button-save">Speichern</button>
-    <button class="button-cancel">Abbrechen</button>
+    <button class="button-cancel" on:click={close}>Abbrechen</button>
   </div>
 </div>
