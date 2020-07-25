@@ -40,12 +40,10 @@
     {
       title: "Beitritt",
       key: "registration_date",
-      map: (date) => saveParseDateToString(date),
     },
     {
       title: "Verlängert am",
       key: "renewed_on",
-      map: (date) => saveParseDateToString(date),
     },
     {
       title: "Bemerkung",
@@ -69,13 +67,12 @@
       key: "heard",
     },
   ];
-  // TODO: spalten aufmerksam + kommentar fehlen
 
   function updateRow(updatedRow) {
     let currentRowIndex = rows.findIndex((row) => row._id === updatedRow._id);
-    if (currentRowIndex) {
+    if (currentRowIndex !== -1) {
       // customer modified
-      rows[currentRowIndex] = updatedRow;
+      rows[currentRowIndex] = { ...updatedRow };
     } else {
       // new customer created
       rows.push(updatedRow);

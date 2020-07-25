@@ -4,7 +4,7 @@ class Database {
 
   #customerDb;
 
-  constructor(){
+  constructor() {
     this.#customerDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_HOST}/customers`);
   }
 
@@ -17,14 +17,23 @@ class Database {
     return docs;
   }
 
-  onCustomerChange(callback){
+  updateCustomer(updatedCustomer) {
+    return this.#customerDb.get(updatedCustomer._id)
+      .then(doc => {
+        updatedCustomer._rev = doc._rev;
+        return this.#customerDb.put(updatedCustomer);
+      })
+      .catch(error => console.error(err));
+  }
+
+  onCustomerChange(callback) {
     this.#customerDb.changes({
       since: 'now',
       live: true,
       include_docs: true
     })
-    .on('change', callback)
-    .on('error', error => console.error(error));
+      .on('change', callback)
+      .on('error', error => console.error(error));
   }
 
 }

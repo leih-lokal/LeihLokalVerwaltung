@@ -1,6 +1,7 @@
 <script>
   import DateInput from "../DateInput.svelte";
   import { getContext } from "svelte";
+  import Database from "../../utils/database.js";
 
   const { close } = getContext("simple-modal");
 
@@ -76,7 +77,7 @@
         <label for="id">Id</label>
       </div>
       <div class="col-input">
-        <input type="text" id="id" name="id" value={customer._id} />
+        <input type="text" id="id" name="id" bind:value={customer._id} />
       </div>
     </div>
     <div class="row">
@@ -92,7 +93,7 @@
         <label for="lastname">Nachname</label>
       </div>
       <div class="col-input">
-        <input type="text" id="lastname" name="lastname" value={customer.lastname} />
+        <input type="text" id="lastname" name="lastname" bind:value={customer.lastname} />
       </div>
     </div>
     <div class="row">
@@ -100,7 +101,7 @@
         <label for="street">Strasse</label>
       </div>
       <div class="col-input">
-        <input type="text" id="street" name="street" value={customer.street} />
+        <input type="text" id="street" name="street" bind:value={customer.street} />
       </div>
     </div>
     <div class="row">
@@ -108,7 +109,11 @@
         <label for="house_number">Hausnummer</label>
       </div>
       <div class="col-input">
-        <input type="text" id="house_number" name="house_number" value={customer.house_number} />
+        <input
+          type="text"
+          id="house_number"
+          name="house_number"
+          bind:value={customer.house_number} />
       </div>
     </div>
     <div class="row">
@@ -116,7 +121,7 @@
         <label for="postal_code">Postleitzahl</label>
       </div>
       <div class="col-input">
-        <input type="text" id="postal_code" name="postal_code" value={customer.postal_code} />
+        <input type="text" id="postal_code" name="postal_code" bind:value={customer.postal_code} />
       </div>
     </div>
     <div class="row">
@@ -124,7 +129,7 @@
         <label for="city">Stadt</label>
       </div>
       <div class="col-input">
-        <input type="text" id="city" name="city" value={customer.city} />
+        <input type="text" id="city" name="city" bind:value={customer.city} />
       </div>
     </div>
     <div class="row">
@@ -132,7 +137,7 @@
         <label for="registration_date">Beitritt</label>
       </div>
       <div class="col-input">
-        <DateInput selected={customer.registration_date} />
+        <DateInput bind:selected={customer.registration_date} />
       </div>
     </div>
     <div class="row">
@@ -140,7 +145,7 @@
         <label for="renewed_on">Verlängert am</label>
       </div>
       <div class="col-input">
-        <DateInput selected={customer.renewed_on} />
+        <DateInput bind:selected={customer.renewed_on} />
       </div>
     </div>
     <div class="row">
@@ -148,7 +153,7 @@
         <label for="remark">Bemerkung</label>
       </div>
       <div class="col-input">
-        <input type="text" id="remark" name="remark" value={customer.remark} />
+        <input type="text" id="remark" name="remark" bind:value={customer.remark} />
       </div>
     </div>
     <div class="row">
@@ -156,7 +161,7 @@
         <label for="email">E-Mail</label>
       </div>
       <div class="col-input">
-        <input type="text" id="email" name="email" value={customer.email} />
+        <input type="text" id="email" name="email" bind:value={customer.email} />
       </div>
     </div>
     <div class="row">
@@ -168,7 +173,7 @@
           type="text"
           id="telephone_number"
           name="telephone_number"
-          value={customer.telephone_number} />
+          bind:value={customer.telephone_number} />
       </div>
     </div>
     <div class="row">
@@ -180,7 +185,7 @@
           type="checkbox"
           id="subscribed_to_newsletter"
           name="subscribed_to_newsletter"
-          checked={customer.subscribed_to_newsletter} />
+          bind:checked={customer.subscribed_to_newsletter} />
       </div>
     </div>
     <div class="row">
@@ -188,12 +193,18 @@
         <label for="heard">Aufmerksam geworden</label>
       </div>
       <div class="col-input">
-        <input type="text" id="heard" name="heard" value={customer.heard} />
+        <input type="text" id="heard" name="heard" bind:value={customer.heard} />
       </div>
     </div>
   </div>
   <div class="footer">
-    <button class="button-save">Speichern</button>
+    <button
+      class="button-save"
+      on:click={Database.updateCustomer(customer)
+        .then((result) => console.log(result))
+        .then(close)}>
+      Speichern
+    </button>
     <button class="button-cancel" on:click={close}>Abbrechen</button>
   </div>
 </div>
