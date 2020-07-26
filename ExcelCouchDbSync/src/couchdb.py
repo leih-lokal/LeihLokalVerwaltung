@@ -1,3 +1,5 @@
+import asyncio
+
 from cloudant.client import CouchDB
 import os
 import logging
@@ -9,13 +11,24 @@ class CouchDb:
     def __init__(self):
         self.client = CouchDB(os.environ['COUCHDB_USER'], os.environ['COUCHDB_PASSWORD'], url="http://" + os.environ['COUCHDB_HOST'], connect=True, auto_renew=True)
 
-    async def monitor_changes(self, db_name):
+    def _changes_since(self, db, since=0):
+        changes = db.changes(since=since)
+        changes_count = 0
+        for change in changes:
+            changes_count += 1
+        return changes.last_seq
+
+    async def monitor_changes(self, db_name, callback):
         self.client.create_database(db_name)
         db = self.client[db_name]
+        last_seq = 0
 
-        changes = db.infinite_changes()
-        for change in changes:
-            logger.info(change)
+        while True:
+            await asyncio.sleep(0)
+            seq = self._changes_since(db, last_seq)
+            if seq != last_seq:
+                last_seq = seq
+                callback()
 
     def excel_to_db(self, db_name, excel_rows):
         """
