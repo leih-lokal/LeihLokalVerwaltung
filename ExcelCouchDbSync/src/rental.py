@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 from dataclasses import dataclass, field
 from typing import Optional
 from .customer import Customer
@@ -33,7 +34,11 @@ class Rental:
                 return date.strftime("%d.%m.%Y")
             return str(date)
 
-        return str(hash(str(self.item_id) + date_to_string(self.rented_on) + str(self.customer_id)))
+        m = hashlib.md5()
+        m.update(str(self.item_id).encode('utf-8'))
+        m.update(date_to_string(self.rented_on).encode('utf-8'))
+        m.update(str(self.customer_id).encode('utf-8'))
+        return m.hexdigest()
 
     def set_rev(self, rev):
         self.rev = rev
