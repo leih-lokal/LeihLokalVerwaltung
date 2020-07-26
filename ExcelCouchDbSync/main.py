@@ -1,5 +1,6 @@
 import os
 import logging
+import asyncio
 
 from src.couchdb import CouchDb
 from src.store import Store
@@ -13,6 +14,7 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+
 
 if __name__ == '__main__':
     logging.info('Loading Excel...')
@@ -29,3 +31,5 @@ if __name__ == '__main__':
     database.excel_to_db("rentals", store.rentals)
 
     logging.info('done')
+
+    asyncio.run(database.monitor_changes("customers"))

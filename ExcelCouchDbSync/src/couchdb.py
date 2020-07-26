@@ -9,6 +9,14 @@ class CouchDb:
     def __init__(self):
         self.client = CouchDB(os.environ['COUCHDB_USER'], os.environ['COUCHDB_PASSWORD'], url="http://" + os.environ['COUCHDB_HOST'], connect=True, auto_renew=True)
 
+    async def monitor_changes(self, db_name):
+        self.client.create_database(db_name)
+        db = self.client[db_name]
+
+        changes = db.infinite_changes()
+        for change in changes:
+            logger.info(change)
+
     def excel_to_db(self, db_name, excel_rows):
         """
         Writes all excel_rows to the database. All documents in excel_rows that previously existed in the database are updated.
