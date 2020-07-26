@@ -1,18 +1,31 @@
 import os
+import logging
 
 from src.couchdb import CouchDb
 from src.store import Store
 
+logging.basicConfig(
+    level=os.getenv("LOG_LEVEL", "INFO"),
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("excelcouchdbsync.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
 if __name__ == '__main__':
-    print('Loading Excel...')
+    logging.info('Loading Excel...')
     store = Store.parse_file(os.environ['EXCEL_FILE'])
 
-    print("Connecting to CouchDb")
+    logging.info("Connecting to CouchDb")
     database = CouchDb()
 
-    print("Uploading Data")
-    database.update("customers", store.customers.values())
-    database.update("items", store.items.values())
-    database.update("rentals", store.rentals)
+    logging.info("Uploading customers...")
+    database.excel_to_db("customers", store.customers.values())
+    logging.info("Uploading items...")
+    database.excel_to_db("items", store.items.values())
+    logging.info("Uploading rentals...")
+    database.excel_to_db("rentals", store.rentals)
 
-    print('fertig')
+    logging.info('done')

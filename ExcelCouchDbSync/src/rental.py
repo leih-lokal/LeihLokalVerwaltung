@@ -1,3 +1,4 @@
+import datetime
 from dataclasses import dataclass, field
 from typing import Optional
 from .customer import Customer
@@ -7,15 +8,15 @@ class Rental:
 
     item_id: str
     item_name: str
-    rented_on: str
-    extended_on: str
-    to_return_on: str
+    rented_on: datetime.date
+    extended_on: datetime.date
+    to_return_on: datetime.date
     passing_out_employee: str
     customer_id: int
     name: str
     deposit: str
     deposit_returned: str
-    returned_on: str
+    returned_on: datetime.date
     receiving_employee: str
     deposit_retained: str
     deposit_retainment_reason: str
@@ -27,7 +28,12 @@ class Rental:
         return f'customer {self.customer_id} -> item {self.item_id}: {self.rented_on} -> {self.to_return_on}'
 
     def get_id(self):
-        return str(hash(str(self.item_id) + str(self.rented_on) + str(self.customer_id)))
+        def date_to_string(date):
+            if isinstance(date, datetime.date):
+                return date.strftime("%d.%m.%Y")
+            return str(date)
+
+        return str(hash(str(self.item_id) + date_to_string(self.rented_on) + str(self.customer_id)))
 
     def set_rev(self, rev):
         self.rev = rev
