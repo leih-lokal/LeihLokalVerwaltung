@@ -1,9 +1,10 @@
 <script>
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   import Table from "../Table/Table.svelte";
   import EditCustomerPopup from "./EditCustomerPopup.svelte";
   import { saveParseDateToString } from "../../utils/utils.js";
   import Database from "../../utils/database.js";
+  import { showNotification } from "../../utils/utils.js";
 
   const { open } = getContext("simple-modal");
   let rows = [];
@@ -83,14 +84,21 @@
     rows = rows.filter((row) => row._id !== idToRemove);
   }
 
-  Database.fetchAllCustomers().then((customers) => (rows = customers));
-  Database.onCustomerChange((change) => {
-    if (change.deleted) {
-      removeRow(change.id);
-    } else {
-      updateRow(change.doc);
-    }
-  });
+  Database.fetchAllCustomers()
+    .then((customers) => (rows = customers))
+    .then(() =>
+      Database.onCustomerChange((change) => {
+        if (change.deleted) {
+          removeRow(change.id);
+        } else {
+          updateRow(change.doc);
+        }
+      })
+    )
+    .catch((error) => {
+      console.error(error);
+      showNotification("Laden aus der Datenbank fehlgeschlagen!", "danger");
+    });
 
   function onRowClicked(customer) {
     open(EditCustomerPopup, { customer });

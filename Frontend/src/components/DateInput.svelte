@@ -39,6 +39,8 @@
   // TODO: update selected date when text input changes
   let dateInputFromDatePicker;
 
+  // TODO: auto complete text input, for example 7.8. -> 07.08.2020
+
   $: if (userHasChosenDate) {
     userHasChosenDate = false;
     selected = saveParseDateToString(dateInputFromDatePicker);

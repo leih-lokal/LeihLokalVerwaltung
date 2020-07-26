@@ -21,6 +21,7 @@
     "jest": "^26.1.0",
     "jest-svelte-events": "^1.0.5",
     "jest-transform-svelte": "^2.1.1",
+    "rewire": "^5.0.0",
     "rollup": "^2.3.4",
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-livereload": "^1.0.0",
@@ -29,7 +30,9 @@
     "rollup-plugin-terser": "^5.1.2",
     "sirv-cli": "^0.4.4",
     "svelte": "^3.0.0",
-    "svelte-jester": "^1.0.6"
+    "svelte-component-double": "^0.7.5",
+    "svelte-jester": "^1.0.6",
+    "svelte-notifications": "^0.9.9"
   },
   "dependencies": {
     "pouchdb-browser": "^7.2.1",

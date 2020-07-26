@@ -2,6 +2,7 @@
   import DateInput from "../DateInput.svelte";
   import { getContext } from "svelte";
   import Database from "../../utils/database.js";
+  import { showNotification } from "../../utils/utils.js";
 
   const { close } = getContext("simple-modal");
 
@@ -201,8 +202,13 @@
     <button
       class="button-save"
       on:click={Database.updateCustomer(customer)
-        .then((result) => console.log(result))
-        .then(close)}>
+        .then((result) => showNotification('Kunde gespeichert!'))
+        .then(close)
+        .catch((error) => {
+          close();
+          showNotification('Kunde konnte nicht gespeichert werden!', 'danger');
+          console.error(error);
+        })}>
       Speichern
     </button>
     <button class="button-cancel" on:click={close}>Abbrechen</button>
