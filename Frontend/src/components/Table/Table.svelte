@@ -1,27 +1,56 @@
 <script>
-  import Pagination from "./Pagination.svelte";
-  import { onDestroy } from "svelte";
-  import { setContext } from "svelte";
-  import { getContext } from "svelte";
-
+  import VirtualList from "@sveltejs/svelte-virtual-list";
   export let rows = [];
   export let columns = [];
   export let onRowClicked = (row) => {};
+
+  let searchTerm = "";
   let displayRows = [];
+  let filteredRows = [];
+  let columnMapFunctions = {};
+  let columnSortFunctions = {};
 
-  let currentPageRows = [];
+  let lastSortedByColumnKey = "";
+  let sortReverse = false;
 
-  let filterText = getContext("filterText") || "";
+  $: columns, rows, generateDisplayRows();
+  $: filteredRows = displayRows.filter((row) =>
+    Object.values(row).some((value) =>
+      String(value).toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
 
-  const getColumnByKey = (key) => columns.find((column) => column.key == key);
+  columns.forEach((column) => {
+    if (column.map) {
+      columnMapFunctions[column.key] = column.map;
+    }
+    if (column.sort) {
+      columnSortFunctions[column.key] = column.sort;
+    }
+  });
+
+  function getRowById(id) {
+    return rows.find((row) => row._id == id);
+  }
+
+  function sortByColumnKey(columnKey) {
+    if (columnKey === lastSortedByColumnKey) sortReverse = !sortReverse;
+    else sortReverse = false;
+    lastSortedByColumnKey = columnKey;
+    const mapForSort = columnSortFunctions[columnKey]
+      ? columnSortFunctions[columnKey]
+      : (value) => value;
+    filteredRows = filteredRows.sort((a, b) => {
+      a = mapForSort(a[columnKey]);
+      b = mapForSort(b[columnKey]);
+      if (a < b) return -1 * (sortReverse ? -1 : 1);
+      if (a > b) return 1 * (sortReverse ? -1 : 1);
+      return 0;
+    });
+  }
 
   function generateDisplayRows() {
     if (columns.length != 0) {
-      let columnMapFunctions = {};
-      columns
-        .filter((column) => column.map)
-        .forEach((column) => (columnMapFunctions[column.key] = column.map));
-
       displayRows = rows.map((row) => {
         let displayRow = { ...row };
         Object.keys(displayRow)
@@ -32,24 +61,13 @@
     }
   }
 
-  function getRowById(id) {
-    return rows.find((row) => row._id == id);
-  }
-
-  $: columns, rows, generateDisplayRows();
-  $: filteredRows = displayRows.filter((row) =>
-    Object.values(row).some((value) =>
-      String(value).toLowerCase().includes(filterText.toLowerCase())
-    )
-  );
-
-  onDestroy(() => setContext("filterText", filterText));
+  sortByColumnKey("_id");
 </script>
 
 <style>
   table {
     width: 100%;
-    table-layout: auto;
+    table-layout: fixed;
     position: relative;
     overflow-y: auto;
   }
@@ -65,11 +83,16 @@
     height: 40px;
   }
 
-  tbody > tr {
+  td {
+    word-wrap: break-word;
+  }
+
+  table > tr,
+  th {
     cursor: pointer;
   }
 
-  tbody > tr:hover {
+  table > tr:hover {
     background-color: #0066ff77 !important;
   }
 
@@ -81,29 +104,30 @@
     margin: 10px;
     width: calc(100% - 20px);
   }
+
+  .container {
+    height: 100%;
+  }
 </style>
 
-<container>
-  <input bind:value={filterText} placeholder="🔍 Suche..." />
+<input bind:value={searchTerm} />
+<div class="container">
   <table>
     <thead>
       <tr>
         {#each columns as col}
-          <th>{col.title}</th>
+          <th on:click={() => sortByColumnKey(col.key)}>{col.title}</th>
         {/each}
       </tr>
     </thead>
-    <tbody>
-      {#each currentPageRows as row (row._id)}
-        <tr on:click={() => onRowClicked(getRowById(row._id))}>
-          {#each columns as col}
-            <td>{row[col.key]}</td>
-          {/each}
-        </tr>
-      {/each}
-    </tbody>
   </table>
-  <Pagination
-    rows={filteredRows}
-    on:pageRowsUpdated={(event) => (currentPageRows = event.detail)} />
-</container>
+  <VirtualList items={filteredRows} let:item>
+    <table>
+      <tr on:click={() => onRowClicked(getRowById(item._id))}>
+        {#each columns as col}
+          <td>{item[col.key]}</td>
+        {/each}
+      </tr>
+    </table>
+  </VirtualList>
+</div>

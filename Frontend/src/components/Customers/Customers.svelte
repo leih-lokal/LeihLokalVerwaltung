@@ -2,9 +2,13 @@
   import { getContext, onMount } from "svelte";
   import Table from "../Table/Table.svelte";
   import EditCustomerPopup from "./EditCustomerPopup.svelte";
-  import { saveParseDateToString } from "../../utils/utils.js";
   import Database from "../../utils/database.js";
-  import { showNotification } from "../../utils/utils.js";
+  import {
+    showNotification,
+    saveParseStringToBoolean,
+    saveParseStringToTimeMillis,
+    saveParseStringToInt,
+  } from "../../utils/utils.js";
 
   const { open } = getContext("simple-modal");
   let rows = [];
@@ -12,7 +16,7 @@
     {
       title: "Id",
       key: "_id",
-      map: (id) => parseInt(id),
+      sort: (value) => saveParseStringToInt(value),
     },
     {
       title: "Nachname",
@@ -29,6 +33,7 @@
     {
       title: "Hausnummer",
       key: "house_number",
+      sort: (value) => saveParseStringToInt(value),
     },
     {
       title: "Postleitzahl",
@@ -41,10 +46,12 @@
     {
       title: "Beitritt",
       key: "registration_date",
+      sort: (value) => saveParseStringToTimeMillis(value),
     },
     {
       title: "Verlängert am",
       key: "renewed_on",
+      sort: (value) => saveParseStringToTimeMillis(value),
     },
     {
       title: "Bemerkung",
@@ -61,7 +68,7 @@
     {
       title: "Newsletter",
       key: "subscribed_to_newsletter",
-      map: (value) => (String(value).toLowerCase() == "true" ? "Ja" : "Nein"),
+      map: (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
     },
     {
       title: "Aufmerksam geworden",

@@ -35,6 +35,7 @@
     "svelte-notifications": "^0.9.9"
   },
   "dependencies": {
+    "@sveltejs/svelte-virtual-list": "^3.0.1",
     "pouchdb-browser": "^7.2.1",
     "svelte-calendar": "^1.5.0"
   }
