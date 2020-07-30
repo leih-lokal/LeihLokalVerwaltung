@@ -106,7 +106,7 @@
   }
 
   .container {
-    height: 100%;
+    height: calc(100% - 150px);
   }
 </style>
 
