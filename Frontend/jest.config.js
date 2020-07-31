@@ -1,16 +1,15 @@
 module.exports = {
   transform: {
-    "^.+\\.svelte$": "jest-transform-svelte",
-    "^.+\\.js$": "babel-jest"
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.svelte$": "svelte-jest",
   },
-  moduleFileExtensions: ["js", "svelte"],
+  moduleFileExtensions: ["js", "svelte", "json"],
   testPathIgnorePatterns: ["node_modules"],
   bail: false,
   verbose: true,
-  transformIgnorePatterns: ["node_modules"],
-  setupFilesAfterEnv: [
-    "@testing-library/jest-dom/extend-expect",
-    "jest-svelte-events/extend-expect"
-  ],
-  "testEnvironment": "jsdom"
+  transformIgnorePatterns: [],
+  setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect", "svelte-mock/extend"],
+  moduleDirectories: ["node_modules", "src", "tests"],
+  modulePaths: ["<rootDir>", "<rootDir>/src", "<rootDir>/node_modules", "<rootDir>/tests"],
+  testEnvironment: "jest-environment-jsdom",
 };
