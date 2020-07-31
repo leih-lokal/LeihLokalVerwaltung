@@ -5,7 +5,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --port 5000",
-    "test": "jest",
+    "test": "jest ./tests",
     "test:watch": "npm run test -- --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
   },
@@ -31,7 +31,9 @@
     "sirv-cli": "^0.4.4",
     "svelte": "^3.0.0",
     "svelte-component-double": "^0.7.5",
+    "svelte-jest": "^0.3.1",
     "svelte-jester": "^1.0.6",
+    "svelte-mock": "^0.2.2",
     "svelte-notifications": "^0.9.9"
   },
   "dependencies": {
