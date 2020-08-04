@@ -40,7 +40,7 @@
     const mapForSort = columnSortFunctions[columnKey]
       ? columnSortFunctions[columnKey]
       : (value) => value;
-    filteredRows = filteredRows.sort((a, b) => {
+    filteredRows.sort((a, b) => {
       a = mapForSort(a[columnKey]);
       b = mapForSort(b[columnKey]);
       if (a < b) return -1 * (sortReverse ? -1 : 1);

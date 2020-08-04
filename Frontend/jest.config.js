@@ -8,7 +8,7 @@ module.exports = {
   bail: false,
   verbose: true,
   transformIgnorePatterns: [],
-  setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect", "svelte-mock/extend"],
+  setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],
   moduleDirectories: ["node_modules", "src", "tests"],
   modulePaths: ["<rootDir>", "<rootDir>/src", "<rootDir>/node_modules", "<rootDir>/tests"],
   testEnvironment: "jest-environment-jsdom",
