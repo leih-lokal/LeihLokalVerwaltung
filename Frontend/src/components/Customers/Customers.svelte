@@ -3,13 +3,8 @@
   import Table from "../Table/Table.svelte";
   import EditCustomerPopup from "./EditCustomerPopup.svelte";
   import Database from "../../utils/database.js";
-  import columns from './Columns.js';
-  import {
-    showNotification,
-    saveParseStringToBoolean,
-    saveParseStringToTimeMillis,
-    saveParseStringToInt,
-  } from "../../utils/utils.js";
+  import columns from "./Columns.js";
+  import { showNotification } from "../../utils/utils.js";
 
   const { open } = getContext("simple-modal");
   let rows = [];

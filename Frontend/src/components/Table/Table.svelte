@@ -10,15 +10,8 @@
   let columnMapFunctions = {};
   let columnSortFunctions = {};
 
-  let lastSortedByColumnKey = "";
+  let lastSortedByColumnKey = "_id";
   let sortReverse = false;
-
-  $: columns, rows, generateDisplayRows();
-  $: filteredRows = displayRows.filter((row) =>
-    Object.values(row).some((value) =>
-      String(value).toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
 
   columns.forEach((column) => {
     if (column.map) {
@@ -29,8 +22,17 @@
     }
   });
 
+  $: columns, rows, columnMapFunctions, generateDisplayRows();
+  $: displayRows, searchTerm, generateFilteredRows();
+  $: columnSortFunctions, filteredRows, resortByLastColumnKey();
+
   function getRowById(id) {
     return rows.find((row) => row._id == id);
+  }
+
+  function resortByLastColumnKey() {
+    sortReverse = !sortReverse;
+    sortByColumnKey(lastSortedByColumnKey);
   }
 
   function sortByColumnKey(columnKey) {
@@ -40,7 +42,7 @@
     const mapForSort = columnSortFunctions[columnKey]
       ? columnSortFunctions[columnKey]
       : (value) => value;
-    filteredRows.sort((a, b) => {
+    filteredRows = filteredRows.sort((a, b) => {
       a = mapForSort(a[columnKey]);
       b = mapForSort(b[columnKey]);
       if (a < b) return -1 * (sortReverse ? -1 : 1);
@@ -61,7 +63,13 @@
     }
   }
 
-  sortByColumnKey("_id");
+  function generateFilteredRows() {
+    filteredRows = displayRows.filter((row) =>
+      Object.values(row).some((value) =>
+        String(value).toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }
 </script>
 
 <style>

@@ -1,3 +1,9 @@
+import {
+  saveParseStringToBoolean,
+  saveParseStringToTimeMillis,
+  saveParseStringToInt,
+} from "../../utils/utils.js";
+
 export default [
   {
     title: "Id",
