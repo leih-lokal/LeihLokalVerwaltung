@@ -60,7 +60,7 @@ export default [
   {
     title: "Newsletter",
     key: "subscribed_to_newsletter",
-    map: (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
+    display: (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
   },
   {
     title: "Aufmerksam geworden",
