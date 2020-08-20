@@ -86,7 +86,7 @@
         <label for="firstname">Vorname</label>
       </div>
       <div class="col-input">
-        <input type="text" id="firstname" name="firstname" value={customer.firstname} />
+        <input type="text" id="firstname" name="firstname" bind:value={customer.firstname} />
       </div>
     </div>
     <div class="row">

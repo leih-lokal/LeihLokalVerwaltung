@@ -41,6 +41,20 @@ class RowsProcessor {
         return rows.find((row) => row._id == id);
     }
 
+    updateRow(rows, updatedRow) {
+        let currentRowIndex = rows.findIndex((row) => row._id === updatedRow._id);
+        if (currentRowIndex !== -1) {
+            rows[currentRowIndex] = { ...updatedRow };
+        } else {
+            rows.push(updatedRow);
+        }
+        return rows;
+    }
+
+    removeRow(rows, idToRemove) {
+        return rows.filter((row) => row._id !== idToRemove);
+    }
+
     filterRows(rows, searchTerm) {
         let filteredRows = rows.filter((row) =>
             Object.values(row).some((value) =>

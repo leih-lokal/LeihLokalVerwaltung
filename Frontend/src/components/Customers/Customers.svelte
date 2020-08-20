@@ -1,37 +1,24 @@
 <script>
-  import { getContext, onMount } from "svelte";
+  import { getContext } from "svelte";
   import Table from "../Table/Table.svelte";
   import EditCustomerPopup from "./EditCustomerPopup.svelte";
   import CustomerDatabase from "../../database/CustomerDatabase.js";
   import columns from "./Columns.js";
+  import RowsProcessor from "../Table/RowsProcessor.js";
   import { showNotification } from "../../utils/utils.js";
 
   const { open } = getContext("simple-modal");
+  const rowsProcessor = new RowsProcessor([]);
   let rows = [];
-
-  function updateRow(updatedRow) {
-    let currentRowIndex = rows.findIndex((row) => row._id === updatedRow._id);
-    if (currentRowIndex !== -1) {
-      // customer modified
-      rows[currentRowIndex] = { ...updatedRow };
-    } else {
-      // new customer created
-      rows.push(updatedRow);
-    }
-  }
-
-  function removeRow(idToRemove) {
-    rows = rows.filter((row) => row._id !== idToRemove);
-  }
 
   CustomerDatabase.fetchAllCustomers()
     .then((customers) => (rows = customers))
     .then(() =>
       CustomerDatabase.onCustomerChange((change) => {
         if (change.deleted) {
-          removeRow(change.id);
+          rows = rowsProcessor.removeRow(rows, change.id);
         } else {
-          updateRow(change.doc);
+          rows = rowsProcessor.updateRow(rows, change.doc);
         }
       })
     )
