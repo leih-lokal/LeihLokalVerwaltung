@@ -2,7 +2,7 @@
   import Notifications from "svelte-notifications";
   import Navbar from "./Navbar.svelte";
   import Customers from "./Customers/Customers.svelte";
-  import Products from "./Products/Products.svelte";
+  import Items from "./Items/Items.svelte";
   import Modal from "./Modal.svelte";
 
   let page = 0;
@@ -29,7 +29,7 @@
     {#if page === 0}
       <Customers />
     {:else if page === 1}
-      <Products />
+      <Items />
     {:else if page === 2}Leihvorgänge{/if}
   </Modal>
 </Notifications>

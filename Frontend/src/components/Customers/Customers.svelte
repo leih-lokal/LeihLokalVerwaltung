@@ -2,7 +2,7 @@
   import { getContext, onMount } from "svelte";
   import Table from "../Table/Table.svelte";
   import EditCustomerPopup from "./EditCustomerPopup.svelte";
-  import Database from "../../utils/database.js";
+  import CustomerDatabase from "../../database/CustomerDatabase.js";
   import columns from "./Columns.js";
   import { showNotification } from "../../utils/utils.js";
 
@@ -24,10 +24,10 @@
     rows = rows.filter((row) => row._id !== idToRemove);
   }
 
-  Database.fetchAllCustomers()
+  CustomerDatabase.fetchAllCustomers()
     .then((customers) => (rows = customers))
     .then(() =>
-      Database.onCustomerChange((change) => {
+      CustomerDatabase.onCustomerChange((change) => {
         if (change.deleted) {
           removeRow(change.id);
         } else {
