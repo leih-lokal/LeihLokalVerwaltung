@@ -12,7 +12,7 @@ class Item:
     parts: str
     manual: str
     package: str
-    added: str
+    added: datetime.date
     properties: str
     n_rented:int = 0
     rev: str = None
@@ -27,6 +27,11 @@ class Item:
         self.rev = rev
 
     def items(self):
+        def date_to_timestamp(date):
+            if isinstance(date, datetime.date):
+                return datetime.datetime(date.year, date.month, date.day).timestamp()
+            return 0
+
         document = {
             '_id': self.get_id(),
             'item_name': str(self.item_name),
@@ -37,7 +42,7 @@ class Item:
             'parts': str(self.parts),
             'manual': str(self.manual),
             'package': str(self.package),
-            'added': str(self.added),
+            'added': date_to_timestamp(self.added),
             'properties': str(self.properties),
             'n_rented': str(self.n_rented)
         }

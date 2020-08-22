@@ -44,19 +44,24 @@ class Rental:
         self.rev = rev
 
     def items(self):
+        def date_to_timestamp(date):
+            if isinstance(date, datetime.date):
+                return datetime.datetime(date.year, date.month, date.day).timestamp()
+            return 0
+
         document = {
             '_id': self.get_id(),
             'item_id': str(self.item_id),
             'item_name': str(self.item_name),
-            'rented_on': str(self.rented_on),
-            'extended_on': str(self.extended_on),
-            'to_return_on': str(self.to_return_on),
+            'rented_on': date_to_timestamp(self.rented_on),
+            'extended_on': date_to_timestamp(self.extended_on),
+            'to_return_on': date_to_timestamp(self.to_return_on),
             'passing_out_employee': str(self.passing_out_employee),
             'customer_id': str(self.customer_id),
             'name': str(self.name),
             'deposit': str(self.deposit),
             'deposit_returned': str(self.deposit_returned),
-            'returned_on': str(self.returned_on),
+            'returned_on': date_to_timestamp(self.returned_on),
             'receiving_employee': str(self.receiving_employee),
             'deposit_retained': str(self.deposit_retained),
             'deposit_retainment_reason': str(self.deposit_retainment_reason),

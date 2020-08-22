@@ -1,4 +1,3 @@
-import traceback
 from typing import List
 import datetime
 from dataclasses import dataclass, field
@@ -39,17 +38,17 @@ class Customer:
         self.rev = rev
 
     def items(self):
-        def date_to_string(date):
+        def date_to_timestamp(date):
             if isinstance(date, datetime.date):
-                return date.strftime("%d.%m.%Y")
-            return str(date)
+                return datetime.datetime(date.year, date.month, date.day).timestamp()
+            return 0
 
         document = {
             '_id': self.get_id(),
             'lastname': str(self.lastname),
             'firstname': str(self.firstname),
-            'registration_date': date_to_string(self.registration_date),
-            'renewed_on': date_to_string(self.renewed_on),
+            'registration_date': date_to_timestamp(self.registration_date),
+            'renewed_on': date_to_timestamp(self.renewed_on),
             'remark': str(self.remark),
             'subscribed_to_newsletter': str(self.subscribed_to_newsletter),
             'email': str(self.email),

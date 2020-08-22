@@ -38,18 +38,5 @@ services:
       - couchdb-data:/opt/couchdb/data
       - ./couchdb:/opt/couchdb/etc/local.d
 
-  excel_couchdb_sync:
-    build:
-      context: ../ExcelCouchDbSync
-      dockerfile: Dockerfile
-    depends_on:
-      - couchdb
-    volumes:
-      - <INSERT_LOCAL_PATH>/Leihgegenständeliste.ods:/Leihgegenständeliste.ods
-    environment:
-      <<: *common-variables
-      EXCEL_FILE: /Leihgegenständeliste.ods
-      COUCHDB_HOST: couchdb:5984
-
 volumes:
   couchdb-data:
