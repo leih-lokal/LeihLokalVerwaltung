@@ -1,13 +1,17 @@
-import { saveParseDateToString, saveParseStringToTimeMillis, saveParseStringToInt, saveParseStringToBoolean } from "../src/utils/utils.js";
+import { saveParseTimestampToString, saveParseStringToTimeMillis, saveParseStringToInt, saveParseStringToBoolean } from "../src/utils/utils.js";
 
-describe("saveParseDateToString", () => {
+describe("saveParseTimestampToString", () => {
 
-    it("parses and formats a valid date string", () => {
-        expect(saveParseDateToString("02/03/2020")).toEqual("03.02.2020");
+    it("returns a date string for a valid input", () => {
+        expect(saveParseTimestampToString(new Date(2020, 4, 2).getTime())).toEqual("02.05.2020");
     });
 
-    it("returns 'unbekannt' for invalid date strings", () => {
-        expect(saveParseDateToString("wefwfge")).toEqual("unbekannt");
+    it("returns an empty string for an invalid input", () => {
+        expect(saveParseTimestampToString("wefwfge")).toEqual("");
+    });
+
+    it("returns an empty string for 0 input", () => {
+        expect(saveParseTimestampToString(0)).toEqual("");
     });
 
 });

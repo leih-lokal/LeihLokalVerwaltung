@@ -1,6 +1,6 @@
 <script>
   import Datepicker from "svelte-calendar";
-  import { saveParseDateToString } from "../utils/utils.js";
+  import { saveParseTimestampToString } from "../utils/utils.js";
   import { onMount } from "svelte";
 
   const daysOfWeek = [
@@ -33,7 +33,7 @@
     date.setMonth(date.getMonth() + 1);
   }
 
-  export let selected = saveParseDateToString(new Date());
+  export let selected = saveParseTimestampToString(new Date());
   let userHasChosenDate;
 
   // TODO: update selected date when text input changes
@@ -43,7 +43,7 @@
 
   $: if (userHasChosenDate) {
     userHasChosenDate = false;
-    selected = saveParseDateToString(dateInputFromDatePicker);
+    selected = saveParseTimestampToString(dateInputFromDatePicker);
   }
 </script>
 

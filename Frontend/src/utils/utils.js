@@ -1,9 +1,8 @@
 import { getNotificationsContext } from "svelte-notifications";
 
-function saveParseDateToString(maybeDateString) {
-  // TODO: date and month might be mixed up
-  const date = new Date(maybeDateString);
-  if (isNaN(date)) return "unbekannt";
+function saveParseTimestampToString(millis) {
+  const date = new Date(millis);
+  if (isNaN(date) || date.getTime() === 0) return "";
   else return `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(2, 0)}.${date.getFullYear()}`;
 }
 
@@ -37,4 +36,4 @@ function showNotification(text, type = 'success') {
   })
 }
 
-export { saveParseDateToString, showNotification, saveParseStringToInt, saveParseStringToTimeMillis, saveParseStringToBoolean };
+export { saveParseTimestampToString, showNotification, saveParseStringToInt, saveParseStringToTimeMillis, saveParseStringToBoolean };

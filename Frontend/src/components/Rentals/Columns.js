@@ -1,5 +1,5 @@
 import {
-  saveParseStringToTimeMillis,
+  saveParseTimestampToString,
   saveParseStringToInt,
 } from "../../utils/utils.js";
 
@@ -16,17 +16,17 @@ export default [
   {
     title: "Ausgegeben",
     key: "rented_on",
-    sort: (value) => saveParseStringToTimeMillis(value),
+    display: (value) => saveParseTimestampToString(value),
   },
   {
     title: "Verlängert",
     key: "extended_on",
-    sort: (value) => saveParseStringToTimeMillis(value),
+    display: (value) => saveParseTimestampToString(value),
   },
   {
     title: "Rückgabe",
     key: "to_return_on",
-    sort: (value) => saveParseStringToTimeMillis(value),
+    display: (value) => saveParseTimestampToString(value),
   },
   {
     title: "Mitarbeiter",
@@ -54,7 +54,7 @@ export default [
   {
     title: "Zurückgegeben",
     key: "returned_on",
-    sort: (value) => saveParseStringToTimeMillis(value),
+    display: (value) => saveParseTimestampToString(value),
   },
   {
     title: "Mitarbeiter",

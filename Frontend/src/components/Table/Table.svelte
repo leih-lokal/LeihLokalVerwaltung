@@ -44,7 +44,7 @@
 <div class="container">
   <SearchBox bind:filteredRows rows={displayRows} />
   <table>
-    <TableHeader {columns} bind:rows={filteredRows} />
+    <TableHeader {columns} bind:rows />
     {#each pageRows as item}
       <TableRow
         {columns}

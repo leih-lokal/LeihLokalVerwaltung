@@ -1,6 +1,6 @@
 import {
-  saveParseStringToTimeMillis,
   saveParseStringToInt,
+  saveParseTimestampToString
 } from "../../utils/utils.js";
 
 export default [
@@ -44,7 +44,7 @@ export default [
   {
     title: "Erfasst am",
     key: "added",
-    sort: (value) => saveParseStringToTimeMillis(value),
+    display: (value) => saveParseTimestampToString(value),
   },
   {
     title: "Anzahl Ausleihen",

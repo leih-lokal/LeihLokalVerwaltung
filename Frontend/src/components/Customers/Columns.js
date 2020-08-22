@@ -1,6 +1,6 @@
 import {
   saveParseStringToBoolean,
-  saveParseStringToTimeMillis,
+  saveParseTimestampToString,
   saveParseStringToInt,
 } from "../../utils/utils.js";
 
@@ -38,12 +38,12 @@ export default [
   {
     title: "Beitritt",
     key: "registration_date",
-    sort: (value) => saveParseStringToTimeMillis(value),
+    display: (value) => saveParseTimestampToString(value),
   },
   {
     title: "Verlängert am",
     key: "renewed_on",
-    sort: (value) => saveParseStringToTimeMillis(value),
+    display: (value) => saveParseTimestampToString(value),
   },
   {
     title: "Bemerkung",
