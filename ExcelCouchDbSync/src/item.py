@@ -29,7 +29,7 @@ class Item:
     def items(self):
         def date_to_timestamp(date):
             if isinstance(date, datetime.date):
-                return datetime.datetime(date.year, date.month, date.day).timestamp()
+                return datetime.datetime(date.year, date.month, date.day).timestamp() * 1000
             return 0
 
         document = {
