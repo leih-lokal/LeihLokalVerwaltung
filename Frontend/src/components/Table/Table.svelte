@@ -1,8 +1,8 @@
 <script>
-  import VirtualList from "@sveltejs/svelte-virtual-list";
   import TableRow from "./TableRow.svelte";
   import TableHeader from "./TableHeader.svelte";
   import SearchBox from "./SearchBox.svelte";
+  import Pagination from "./Pagination.svelte";
 
   export let rows;
   export let columns = [];
@@ -10,6 +10,7 @@
 
   let displayRows = [];
   let filteredRows = [];
+  let pageRows = [];
   const displayFunctions = {};
 
   $: columns.forEach((column) => {
@@ -29,17 +30,27 @@
 
 <style>
   .container {
-    height: calc(100% - 150px);
+    height: calc(100% - 80px);
+  }
+
+  table {
+    width: 100%;
+    table-layout: auto;
+    position: relative;
+    overflow-y: scroll;
   }
 </style>
 
-<SearchBox bind:filteredRows rows={displayRows} />
 <div class="container">
-  <TableHeader {columns} bind:rows={filteredRows} />
-  <VirtualList items={filteredRows} let:item>
-    <TableRow
-      {columns}
-      {item}
-      on:click={() => onRowClicked(rows.find((row) => row._id == item._id))} />
-  </VirtualList>
+  <SearchBox bind:filteredRows rows={displayRows} />
+  <table>
+    <TableHeader {columns} bind:rows={filteredRows} />
+    {#each pageRows as item}
+      <TableRow
+        {columns}
+        {item}
+        on:click={() => onRowClicked(rows.find((row) => row._id == item._id))} />
+    {/each}
+  </table>
+  <Pagination rows={filteredRows} bind:pageRows />
 </div>

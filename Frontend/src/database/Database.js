@@ -2,33 +2,18 @@ import PouchDB from "pouchdb-browser";
 
 class Database {
   database;
+  remoteDatabase;
   changeCallback;
+  syncHandler;
+  replicationHandler;
 
   constructor(name) {
     this.changeCallback = updatedDocs => { };
 
-    const remoteDatabase = new PouchDB(
+    this.remoteDatabase = new PouchDB(
       `http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_HOST}/${name}`
     );
     this.database = new PouchDB(name);
-
-    this.database.sync(remoteDatabase, {
-      live: true,
-      retry: true
-    }).on('error', function (err) {
-      console.error(err);
-    });
-
-    this.database
-      .changes({
-        since: "now",
-        live: true,
-        include_docs: true,
-      })
-      .on("change", async change =>
-        this.onChange(await this.fetchAllDocs())
-      )
-      .on("error", (error) => reject(error));
   }
 
   fetchAllDocs() {
@@ -44,6 +29,33 @@ class Database {
     });
   }
 
+  cancelSyncAndChangeListener() {
+    if (this.syncHandler) this.syncHandler.cancel();
+    if (this.replicationHandler) this.replicationHandler.cancel();
+  }
+
+  syncAndListenForChanges() {
+    this.cancelSyncAndChangeListener();
+
+    this.syncHandler = this.database.sync(this.remoteDatabase, {
+      live: true,
+      retry: true
+    }).on('error', function (err) {
+      console.error(err);
+    });
+
+    this.replicationHandler = this.database
+      .changes({
+        since: "now",
+        live: true,
+        include_docs: true,
+      })
+      .on("change", async change =>
+        this.changeCallback(await this.fetchAllDocs())
+      )
+      .on("error", (error) => console.error(error));
+  }
+
   onChange(callback) {
     this.onChange = callback;
   }
@@ -51,3 +63,4 @@ class Database {
 
 export const CustomerDatabase = new Database("customers");
 export const ItemDatabase = new Database("items");
+export const RentalDatabase = new Database("rentals");

@@ -33,7 +33,7 @@ describe("TableRow", () => {
             },
         });
 
-        const valueElements = container.querySelectorAll("table > tr > td");
+        const valueElements = container.querySelectorAll("tr > td");
         expect(valueElements.length).toEqual(columns.length);
         valueElements.forEach((valueElement, i) => {
             expect(valueElement).toHaveTextContent(item[columns[i].key]);

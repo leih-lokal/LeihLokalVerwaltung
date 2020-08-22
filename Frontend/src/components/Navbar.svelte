@@ -1,30 +1,18 @@
 <script>
-export let page = 0;
+  export let page = 0;
 </script>
 
-<nav>
-  <ul>
-    <li> 
-      <a  class="{page === 0 ? 'active' : ''}" href="/" on:click|preventDefault={() => (page = 0)}> Kunden </a>
-    </li>
-    <li>
-      <a class="{page === 1 ? 'active' : ''}" href="/" on:click|preventDefault={() => (page = 1)}> Produkte </a>
-    </li>
-    <li>
-       <a class="{page === 2 ? 'active' : ''}" href="/" on:click|preventDefault={() => (page = 2)}> Leihvorgänge </a>
-    </li>
-  </ul>
-</nav>
-
 <style>
-  nav{
+  nav {
+    position: sticky;
+    top: 0;
     width: 100vw;
     height: var(--navbar-height);
     z-index: 9999;
     background-color: rgb(0, 140, 186);
   }
 
-  li{
+  li {
     list-style-type: none;
     margin: 5px 2vw;
     font-size: 30px;
@@ -34,21 +22,40 @@ export let page = 0;
     color: rgb(255, 208, 0) !important;
   }
 
-  li:hover {    
+  li:hover {
     transition: 0.25s all;
     transform: scale(1.05);
   }
 
-  a{
+  a {
     color: white;
     text-decoration: none;
     padding: 0 2vw;
   }
 
-  ul{
+  ul {
     margin: 0;
     padding: 0;
     display: flex;
   }
-
 </style>
+
+<nav>
+  <ul>
+    <li>
+      <a class={page === 0 ? 'active' : ''} href="/" on:click|preventDefault={() => (page = 0)}>
+        Kunden
+      </a>
+    </li>
+    <li>
+      <a class={page === 1 ? 'active' : ''} href="/" on:click|preventDefault={() => (page = 1)}>
+        Produkte
+      </a>
+    </li>
+    <li>
+      <a class={page === 2 ? 'active' : ''} href="/" on:click|preventDefault={() => (page = 2)}>
+        Leihvorgänge
+      </a>
+    </li>
+  </ul>
+</nav>

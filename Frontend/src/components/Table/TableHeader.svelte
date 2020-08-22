@@ -29,13 +29,6 @@
 </script>
 
 <style>
-  table {
-    width: 100%;
-    table-layout: fixed;
-    position: relative;
-    overflow-y: auto;
-  }
-
   th {
     border-bottom: 2px solid #000000;
     position: sticky;
@@ -52,20 +45,18 @@
   }
 </style>
 
-<table>
-  <thead>
-    <tr>
-      {#each columns as col}
-        <th
-          on:click={() => {
-            if (lastClickedColumnKey == col.key) lastSortReverse = !lastSortReverse;
-            else lastSortReverse = false;
-            lastClickedColumnKey = col.key;
-            sortRowsByColumnKey(lastClickedColumnKey, lastSortReverse);
-          }}>
-          {col.title}
-        </th>
-      {/each}
-    </tr>
-  </thead>
-</table>
+<thead>
+  <tr>
+    {#each columns as col}
+      <th
+        on:click={() => {
+          if (lastClickedColumnKey == col.key) lastSortReverse = !lastSortReverse;
+          else lastSortReverse = false;
+          lastClickedColumnKey = col.key;
+          sortRowsByColumnKey(lastClickedColumnKey, lastSortReverse);
+        }}>
+        {col.title}
+      </th>
+    {/each}
+  </tr>
+</thead>

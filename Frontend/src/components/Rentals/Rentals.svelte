@@ -1,5 +1,5 @@
 <script>
-  import { ItemDatabase } from "../../database/Database.js";
+  import { RentalDatabase } from "../../database/Database.js";
   import { onMount, onDestroy } from "svelte";
   import columns from "./Columns.js";
   import Table from "../Table/Table.svelte";
@@ -7,17 +7,17 @@
 
   let rows = [];
 
-  ItemDatabase.fetchAllDocs()
+  RentalDatabase.fetchAllDocs()
     .then((items) => (rows = items))
     .catch((error) => {
       console.error(error);
       showNotification("Laden aus der Datenbank fehlgeschlagen!", "danger");
     });
 
-  ItemDatabase.onChange((changedItems) => (rows = changedItems));
+  RentalDatabase.onChange((changedItems) => (rows = changedItems));
 
-  onMount(() => ItemDatabase.syncAndListenForChanges());
-  onDestroy(() => ItemDatabase.cancelSyncAndChangeListener());
+  onMount(() => RentalDatabase.syncAndListenForChanges());
+  onDestroy(() => RentalDatabase.cancelSyncAndChangeListener());
 
   function onRowClicked(item) {
     console.log("click " + item);

@@ -25,7 +25,7 @@ describe("TableHeader", () => {
             },
         });
 
-        const columnHeaderElements = container.querySelectorAll("table > thead > tr > th");
+        const columnHeaderElements = container.querySelectorAll("thead > tr > th");
         expect(columnHeaderElements.length).toEqual(columns.length);
         columnHeaderElements.forEach((headerElement, i) => {
             expect(headerElement).toHaveTextContent(columns[i].title);
