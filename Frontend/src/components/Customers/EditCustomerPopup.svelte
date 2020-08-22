@@ -1,7 +1,7 @@
 <script>
   import DateInput from "../DateInput.svelte";
   import { getContext } from "svelte";
-  import CustomerDatabase from "../../database/CustomerDatabase.js";
+  import { CustomerDatabase } from "../../database/Database.js";
   import { showNotification } from "../../utils/utils.js";
 
   const { close } = getContext("simple-modal");
@@ -201,7 +201,7 @@
   <div class="footer">
     <button
       class="button-save"
-      on:click={CustomerDatabase.updateCustomer(customer)
+      on:click={CustomerDatabase.updateDoc(customer)
         .then((result) => showNotification('Kunde gespeichert!'))
         .then(close)
         .catch((error) => {

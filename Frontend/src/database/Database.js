@@ -2,11 +2,33 @@ import PouchDB from "pouchdb-browser";
 
 class Database {
   database;
+  changeCallback;
 
   constructor(name) {
-    this.database = new PouchDB(
+    this.changeCallback = updatedDocs => { };
+
+    const remoteDatabase = new PouchDB(
       `http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_HOST}/${name}`
     );
+    this.database = new PouchDB(name);
+
+    this.database.sync(remoteDatabase, {
+      live: true,
+      retry: true
+    }).on('error', function (err) {
+      console.error(err);
+    });
+
+    this.database
+      .changes({
+        since: "now",
+        live: true,
+        include_docs: true,
+      })
+      .on("change", async change =>
+        this.onChange(await this.fetchAllDocs())
+      )
+      .on("error", (error) => reject(error));
   }
 
   fetchAllDocs() {
@@ -22,18 +44,10 @@ class Database {
     });
   }
 
-  onDocChange(callback) {
-    return new Promise((resolve, reject) => {
-      this.database
-        .changes({
-          since: "now",
-          live: true,
-          include_docs: true,
-        })
-        .on("change", callback)
-        .on("error", (error) => reject(error));
-    });
+  onChange(callback) {
+    this.onChange = callback;
   }
 }
 
-export default Database;
+export const CustomerDatabase = new Database("customers");
+export const ItemDatabase = new Database("items");

@@ -1,13 +1,22 @@
 <script>
-  import RowsProcessor from "./RowsProcessor";
-
-  const rowsProcessor = new RowsProcessor([]);
-
   let searchTerm = "";
-  export let allRows = [];
+  export let rows = [];
   export let filteredRows = [];
 
-  $: filteredRows = rowsProcessor.filterRows(allRows, searchTerm);
+  function filterRows(rowsToFilter, currentSearchTerm) {
+    const formattedSearchTerm = currentSearchTerm.toLowerCase().trim();
+    if (formattedSearchTerm.length === 0) return rowsToFilter;
+
+    let searchTermParts = formattedSearchTerm.split(" ");
+    const searchPart = searchTermParts.shift();
+    let result = rowsToFilter.filter((row) =>
+      Object.values(row).some((value) => String(value).toLowerCase().includes(searchPart))
+    );
+
+    return filterRows(result, searchTermParts.join(" "));
+  }
+
+  $: filteredRows = filterRows(rows, searchTerm);
 </script>
 
 <style>

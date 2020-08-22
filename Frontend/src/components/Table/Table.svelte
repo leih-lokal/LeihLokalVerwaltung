@@ -3,24 +3,28 @@
   import TableRow from "./TableRow.svelte";
   import TableHeader from "./TableHeader.svelte";
   import SearchBox from "./SearchBox.svelte";
-  import RowsProcessor from "./RowsProcessor";
+
   export let rows;
   export let columns = [];
   export let onRowClicked = (row) => {};
 
+  let displayRows = [];
   let filteredRows = [];
-  let initialSortDone = false;
+  const displayFunctions = {};
 
-  $: rowsProcessor = new RowsProcessor(columns);
-  $: displayRows = rowsProcessor.generateDisplayRows(rows);
-  $: displayRows, initialSort();
-
-  function initialSort() {
-    if (!initialSortDone && rows.length != 0) {
-      displayRows = rowsProcessor.sortByColumnKey(displayRows, "_id");
-      initialSortDone = true;
+  $: columns.forEach((column) => {
+    if (column.display) {
+      displayFunctions[column.key] = column.display;
     }
-  }
+  });
+  $: displayRows = rows.map((row) => {
+    let displayRow = { ...row };
+    Object.keys(displayRow)
+      .filter((key) => displayFunctions[key])
+      .forEach((key) => (displayRow[key] = displayFunctions[key](displayRow[key])));
+    return displayRow;
+  });
+  $: filteredRows.forEach((row, i) => (row["index"] = i));
 </script>
 
 <style>
@@ -29,15 +33,13 @@
   }
 </style>
 
-<SearchBox bind:filteredRows allRows={displayRows} />
+<SearchBox bind:filteredRows rows={displayRows} />
 <div class="container">
-  <TableHeader
-    {columns}
-    on:columnHeaderClicked={(event) => (displayRows = rowsProcessor.sortByColumnKey(displayRows, event.detail.key, event.detail.sameColumnKeyClickCount % 2 == 0))} />
+  <TableHeader {columns} bind:rows={filteredRows} />
   <VirtualList items={filteredRows} let:item>
     <TableRow
       {columns}
       {item}
-      on:click={() => onRowClicked(rowsProcessor.getRowById(rows, item._id))} />
+      on:click={() => onRowClicked(rows.find((row) => row._id == item._id))} />
   </VirtualList>
 </div>
