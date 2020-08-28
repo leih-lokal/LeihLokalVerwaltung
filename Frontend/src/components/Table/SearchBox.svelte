@@ -26,4 +26,4 @@
   }
 </style>
 
-<input bind:value={searchTerm} />
+<input bind:value={searchTerm} placeholder="Suche" />
