@@ -14,7 +14,7 @@
   "extensions": ["dbaeumer.vscode-eslint", "svelte.svelte-vscode", "ms-python.python"],
 
   // Uncomment the next line if you want start specific services in your Docker Compose config.
-  "runServices": ["frontend", "couchdb", "excel_couchdb_sync"],
+  "runServices": ["frontend", "couchdb"],
 
   // Uncomment the line below if you want to keep your containers running after VS Code shuts down.
   // "shutdownAction": "none",
