@@ -10,6 +10,11 @@ export default [
     sort: (value) => saveParseStringToInt(value),
   },
   {
+    title: "Bild",
+    key: "image",
+    isImageUrl: true
+  },
+  {
     title: "Gegenstand",
     key: "item_name",
   },
