@@ -11,7 +11,7 @@
     .then((items) => (rows = items))
     .catch((error) => {
       console.error(error);
-      showNotification("Laden aus der Datenbank fehlgeschlagen!", "danger");
+      showNotification("Laden aus der Datenbank fehlgeschlagen!", "danger", 10);
     });
 
   ItemDatabase.onChange((changedItems) => (rows = changedItems));

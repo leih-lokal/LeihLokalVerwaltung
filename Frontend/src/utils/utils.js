@@ -24,7 +24,7 @@ function saveParseStringToBoolean(maybeBoolean) {
   return ['true', 'ja'].includes(String(maybeBoolean).toLowerCase());
 }
 
-function showNotification(text, type = 'success') {
+function showNotification(text, type = 'success', durationInSeconds = 3) {
   const notificationsContext = getNotificationsContext();
   const { addNotification } = notificationsContext;
 
@@ -32,7 +32,7 @@ function showNotification(text, type = 'success') {
     text: text,
     type: type,
     position: 'top-right',
-    removeAfter: type == 'success' ? 3000 : 10000,
+    removeAfter: durationInSeconds * 1000,
   })
 }
 

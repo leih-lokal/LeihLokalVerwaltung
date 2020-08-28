@@ -14,7 +14,7 @@
     .then((customers) => (rows = customers))
     .catch((error) => {
       console.error(error);
-      showNotification("Laden aus der Datenbank fehlgeschlagen!", "danger");
+      showNotification("Laden aus der Datenbank fehlgeschlagen!", "danger", 10);
     });
 
   CustomerDatabase.onChange((changedCustomers) => (rows = changedCustomers));
