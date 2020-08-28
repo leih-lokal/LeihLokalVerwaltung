@@ -3,6 +3,7 @@ import logging
 import asyncio
 
 from src.couchdb import CouchDb
+from src.image_url_downloader import add_image_urls_to_db_items
 from src.store import Store
 
 logging.basicConfig(
@@ -34,6 +35,8 @@ async def main():
     database.excel_to_db("items", store.items.values())
     logger.info("Uploading rentals...")
     database.excel_to_db("rentals", store.rentals)
+
+    add_image_urls_to_db_items()
 
     logging.info('done')
 

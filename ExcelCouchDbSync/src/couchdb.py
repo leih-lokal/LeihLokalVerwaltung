@@ -30,6 +30,9 @@ class CouchDb:
                 last_seq = seq
                 callback()
 
+    def db(self, db_name):
+        return self.client[db_name]
+
     def excel_to_db(self, db_name, excel_rows):
         """
         Writes all excel_rows to the database. All documents in excel_rows that previously existed in the database are updated.
