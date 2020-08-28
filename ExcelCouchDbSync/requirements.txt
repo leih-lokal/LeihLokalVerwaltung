@@ -2,3 +2,4 @@ pyexcel-ods==0.5.6
 pyexcel==0.6.2
 cloudant==2.13.0
 watchdog==0.10.3
+requests==2.24.0
