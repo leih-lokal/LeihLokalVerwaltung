@@ -3,6 +3,8 @@
   import TableHeader from "./TableHeader.svelte";
   import SearchBox from "./SearchBox.svelte";
   import Pagination from "./Pagination.svelte";
+  import { Pulse } from "svelte-loading-spinners";
+  import { fade } from "svelte/transition";
 
   export let rows;
   export let columns = [];
@@ -39,18 +41,34 @@
     position: relative;
     overflow-y: scroll;
   }
+
+  .loadingAnimation {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -60px;
+    margin-top: -60px;
+  }
 </style>
 
 <div class="container">
   <SearchBox bind:filteredRows rows={displayRows} />
-  <table>
-    <TableHeader {columns} bind:rows />
-    {#each pageRows as item}
-      <TableRow
-        {columns}
-        {item}
-        on:click={() => onRowClicked(rows.find((row) => row._id == item._id))} />
-    {/each}
-  </table>
-  <Pagination rows={filteredRows} bind:pageRows />
+  {#if !rows || rows.length === 0}
+    <div in:fade={{ duration: 4000 }} class="loadingAnimation">
+      <Pulse size="120" color="#fc03a9" unit="px" />
+    </div>
+  {:else}
+    <div in:fade class="tableWithPagination">
+      <table>
+        <TableHeader {columns} bind:rows />
+        {#each pageRows as item}
+          <TableRow
+            {columns}
+            {item}
+            on:click={() => onRowClicked(rows.find((row) => row._id == item._id))} />
+        {/each}
+      </table>
+      <Pagination rows={filteredRows} bind:pageRows />
+    </div>
+  {/if}
 </div>
