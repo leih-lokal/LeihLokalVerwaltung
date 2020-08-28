@@ -8,17 +8,28 @@
 
   // split data in pages for display
   function paginateRows(rows, pageSize) {
-    let newPages = [];
-    for (let i = 0; i < rows.length; i += pageSize) {
-      newPages.push(rows.slice(i, i + pageSize));
+    if (typeof rows === "undefined" || rows.length === 0) {
+      pages = [[]];
+      setPage(0);
+    } else {
+      let newPages = [];
+      for (let i = 0; i < rows.length; i += pageSize) {
+        newPages.push(rows.slice(i, i + pageSize));
+      }
+      pages = newPages;
+      setPage(0);
     }
-    pages = newPages;
-    setPage(0);
   }
 
   // display buttons for pages
   function calculatePageButtons() {
     const allPages = Array.from(pages.keys());
+
+    if (allPages.length === 1) {
+      pageButtons = [0];
+      return;
+    }
+
     pageButtons = [
       ...allPages.slice(Math.max(currentPage - 2, 0), Math.min(currentPage + 3, allPages.length)),
     ];
