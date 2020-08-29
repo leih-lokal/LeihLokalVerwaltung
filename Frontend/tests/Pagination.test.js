@@ -1,9 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
-
 import { render, fireEvent } from "@testing-library/svelte";
-
 import Pagination from "../src/components/Table/Pagination";
-
 
 function generateTestRows(number) {
   let rows = [];
@@ -26,6 +23,7 @@ describe("Table Pagination", () => {
     const { getByText } = render(Pagination, {
       props: {
         rows: testRows,
+        rowsPerPage: 20
       },
     });
 
@@ -58,11 +56,12 @@ describe("Table Pagination", () => {
     async ({ pages, currentPage, expectedButtons }) => {
       const WINDOW_HEIGHT = 800;
       global.innerHeight = WINDOW_HEIGHT;
-      const ROWS_PER_PAGE = Math.round((WINDOW_HEIGHT - 240) / 40);
+      const ROWS_PER_PAGE = 20;
 
       const { container, getByText } = render(Pagination, {
         props: {
           rows: generateTestRows(pages * ROWS_PER_PAGE),
+          rowsPerPage: ROWS_PER_PAGE
         },
       });
 

@@ -31,7 +31,7 @@
         <img src={item[col.key]} alt="item" />
       </td>
     {:else}
-      <td>{item[col.key] ? item[col.key] : ''}</td>
+      <td>{col.key in item ? item[col.key] : ''}</td>
     {/if}
   {/each}
 </tr>

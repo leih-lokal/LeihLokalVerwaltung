@@ -18,7 +18,6 @@ const columns = [
 
 const item = {
     _id: 0,
-    index: 0,
     firstname: "pljrtbr",
     lastname: "sdvbtrr"
 };
@@ -51,42 +50,6 @@ describe("TableRow", () => {
         listen(component, "click");
         await fireEvent.click(container.querySelector("tr"));
         expect(component).toHaveFiredEvent('click');
-    })
-
-    it("changes class name for even index", () => {
-        const evenIndexItem = {
-            _id: 0,
-            index: 0,
-            firstname: "pljrtbr",
-            lastname: "sdvbtrr"
-        }
-        const { container } = render(TableRow, {
-            props: {
-                columns: columns,
-                item: evenIndexItem
-            },
-        });
-
-        expect(container.querySelectorAll(".even").length).toEqual(1);
-        expect(container.querySelectorAll(".odd").length).toEqual(0);
-    })
-
-    it("changes class name for odd index", () => {
-        const evenIndexItem = {
-            _id: 0,
-            index: 1,
-            firstname: "pljrtbr",
-            lastname: "sdvbtrr"
-        }
-        const { container } = render(TableRow, {
-            props: {
-                columns: columns,
-                item: evenIndexItem
-            },
-        });
-
-        expect(container.querySelectorAll(".even").length).toEqual(0);
-        expect(container.querySelectorAll(".odd").length).toEqual(1);
     })
 
 });
