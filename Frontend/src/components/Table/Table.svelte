@@ -3,7 +3,7 @@
   import TableHeader from "./TableHeader.svelte";
   import SearchBox from "./SearchBox.svelte";
   import Pagination from "./Pagination.svelte";
-  import { Pulse } from "svelte-loading-spinners";
+  import LoadingAnimation from "./LoadingAnimation.svelte";
   import { fade } from "svelte/transition";
 
   export let rows;
@@ -54,22 +54,12 @@
   :global(table tr:nth-child(odd)) {
     background-color: #f2f2f2;
   }
-
-  .loadingAnimation {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -60px;
-    margin-top: -60px;
-  }
 </style>
 
 <div class="container">
   <SearchBox bind:filteredRows rows={displayRows} bind:currentPage />
   {#if !rows || rows.length === 0}
-    <div in:fade={{ duration: 4000 }} class="loadingAnimation">
-      <Pulse size="120" color="#fc03a9" unit="px" />
-    </div>
+    <LoadingAnimation />
   {:else}
     <div in:fade class="tableWithPagination">
       <table bind:clientHeight={tableHeight}>
