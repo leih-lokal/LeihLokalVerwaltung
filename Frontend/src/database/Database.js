@@ -6,14 +6,21 @@ class Database {
   changeCallback;
   syncHandler;
   replicationHandler;
+  cacheInBrowser;
 
-  constructor(name) {
-    this.changeCallback = updatedDocs => { };
+  constructor(name, cacheInBrowser = false) {
+    this.cacheInBrowser = cacheInBrowser;
+    this.changeCallback = (updatedDocs) => {};
 
     this.remoteDatabase = new PouchDB(
       `http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_HOST}/${name}`
     );
-    this.database = new PouchDB(name);
+
+    if (cacheInBrowser) {
+      this.database = new PouchDB(name);
+    } else {
+      this.database = this.remoteDatabase;
+    }
   }
 
   fetchAllDocs() {
@@ -37,12 +44,16 @@ class Database {
   syncAndListenForChanges() {
     this.cancelSyncAndChangeListener();
 
-    this.syncHandler = this.database.sync(this.remoteDatabase, {
-      live: true,
-      retry: true
-    }).on('error', function (err) {
-      console.error(err);
-    });
+    if (this.cacheInBrowser) {
+      this.syncHandler = this.database
+        .sync(this.remoteDatabase, {
+          live: true,
+          retry: true,
+        })
+        .on("error", function (err) {
+          console.error(err);
+        });
+    }
 
     this.replicationHandler = this.database
       .changes({
@@ -50,9 +61,7 @@ class Database {
         live: true,
         include_docs: true,
       })
-      .on("change", async change =>
-        this.changeCallback(await this.fetchAllDocs())
-      )
+      .on("change", async (change) => this.changeCallback(await this.fetchAllDocs()))
       .on("error", (error) => console.error(error));
   }
 
