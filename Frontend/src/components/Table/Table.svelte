@@ -10,9 +10,12 @@
   export let columns = [];
   export let onRowClicked = (row) => {};
 
+  let rowsPerPage = Math.round((window.innerHeight - 240) / 40);
+  let tableHeight;
   let displayRows = [];
   let filteredRows = [];
   let pageRows = [];
+  let currentPage = 0;
   const displayFunctions = {};
 
   $: columns.forEach((column) => {
@@ -27,7 +30,13 @@
       .forEach((key) => (displayRow[key] = displayFunctions[key](displayRow[key])));
     return displayRow;
   });
-  $: filteredRows.forEach((row, i) => (row["index"] = i));
+
+  // adjust rowsPerPage dynamically
+  $: if (tableHeight > window.innerHeight - 150) {
+    rowsPerPage = rowsPerPage - 1;
+  } else if (tableHeight < window.innerHeight - 360) {
+    rowsPerPage = rowsPerPage + 1;
+  }
 </script>
 
 <style>
@@ -42,6 +51,10 @@
     overflow-y: scroll;
   }
 
+  :global(table tr:nth-child(odd)) {
+    background-color: #f2f2f2;
+  }
+
   .loadingAnimation {
     position: absolute;
     left: 50%;
@@ -52,14 +65,14 @@
 </style>
 
 <div class="container">
-  <SearchBox bind:filteredRows rows={displayRows} />
+  <SearchBox bind:filteredRows rows={displayRows} bind:currentPage />
   {#if !rows || rows.length === 0}
     <div in:fade={{ duration: 4000 }} class="loadingAnimation">
       <Pulse size="120" color="#fc03a9" unit="px" />
     </div>
   {:else}
     <div in:fade class="tableWithPagination">
-      <table>
+      <table bind:clientHeight={tableHeight}>
         <TableHeader {columns} bind:rows />
         {#each pageRows as item}
           <TableRow
@@ -68,7 +81,7 @@
             on:click={() => onRowClicked(rows.find((row) => row._id == item._id))} />
         {/each}
       </table>
-      <Pagination rows={filteredRows} bind:pageRows />
+      <Pagination rows={filteredRows} bind:pageRows {rowsPerPage} bind:currentPage />
     </div>
   {/if}
 </div>

@@ -13,12 +13,8 @@
     height: 40px;
   }
 
-  .odd {
-    background-color: #f2f2f2;
-  }
-
   img {
-    height: 38px;
+    height: 60px;
   }
 
   img:hover {
@@ -28,7 +24,7 @@
   }
 </style>
 
-<tr on:click class={item.index % 2 === 0 ? 'even' : 'odd'}>
+<tr on:click>
   {#each columns as col}
     {#if col.isImageUrl && item[col.key]}
       <td>

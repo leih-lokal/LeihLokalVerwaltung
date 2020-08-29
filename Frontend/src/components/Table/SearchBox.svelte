@@ -2,6 +2,7 @@
   let searchTerm = "";
   export let rows = [];
   export let filteredRows = [];
+  export let currentPage = 0;
 
   function filterRows(rowsToFilter, currentSearchTerm) {
     const formattedSearchTerm = currentSearchTerm.toLowerCase().trim();
@@ -13,6 +14,7 @@
       Object.values(row).some((value) => String(value).toLowerCase().includes(searchPart))
     );
 
+    currentPage = 0;
     return filterRows(result, searchTermParts.join(" "));
   }
 

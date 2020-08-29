@@ -1,24 +1,27 @@
 <script>
-  let currentPage = 0;
   let pageButtons = [];
   let pages = [];
 
   export let rows;
   export let pageRows = [];
+  export let rowsPerPage;
+  export let currentPage = 0;
 
   // split data in pages for display
-  function paginateRows(rows, pageSize) {
+  function paginateRows(rows, rowsPerPage) {
+    // do not repaginate when on last page
+    if (pages.length > 1 && currentPage === pages.length - 1) return;
+
+    let newPages = [];
     if (typeof rows === "undefined" || rows.length === 0) {
-      pages = [[]];
-      setPage(0);
+      newPages = [[]];
     } else {
-      let newPages = [];
-      for (let i = 0; i < rows.length; i += pageSize) {
-        newPages.push(rows.slice(i, i + pageSize));
+      for (let i = 0; i < rows.length; i += rowsPerPage) {
+        newPages.push(rows.slice(i, i + rowsPerPage));
       }
-      pages = newPages;
-      setPage(0);
     }
+    pages = newPages;
+    setPage();
   }
 
   // display buttons for pages
@@ -59,7 +62,7 @@
     pageRows = pages.length > 0 ? pages[currentPage] : [];
   }
 
-  $: paginateRows(rows, Math.round((window.innerHeight - 240) / 40));
+  $: paginateRows(rows, rowsPerPage);
 </script>
 
 <style>
