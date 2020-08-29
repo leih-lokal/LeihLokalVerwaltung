@@ -59,5 +59,14 @@ export default [
   {
     title: "Eigenschaften",
     key: "properties",
+  },
+  {
+    title: "Status Webseite",
+    key: "status_on_website",
+    display: value => {
+      if (value === "deleted") return "gelöscht"
+      if (value === "instock") return "verfügbar"
+      if (value === "outofstock") return "nicht verfügbar"
+    }
   }
 ];
