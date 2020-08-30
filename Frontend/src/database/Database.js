@@ -10,7 +10,7 @@ class Database {
 
   constructor(name, cacheInBrowser = false) {
     this.cacheInBrowser = cacheInBrowser;
-    this.changeCallback = (updatedDocs) => {};
+    this.changeCallback = (updatedDocs) => { };
 
     this.remoteDatabase = new PouchDB(
       `http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_HOST}/${name}`
@@ -66,7 +66,7 @@ class Database {
   }
 
   onChange(callback) {
-    this.onChange = callback;
+    this.changeCallback = callback;
   }
 }
 

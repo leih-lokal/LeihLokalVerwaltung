@@ -8,7 +8,6 @@
     top: 0;
     width: 100vw;
     height: 50px;
-    z-index: 9999;
     background-color: rgb(0, 140, 186);
   }
 
