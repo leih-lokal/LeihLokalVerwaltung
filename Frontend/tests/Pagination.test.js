@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent } from "@testing-library/svelte";
-import Pagination from "../src/components/Table/Pagination";
+import WithPagination from "../src/components/Table/WithPagination";
 
 function generateTestRows(number) {
   let rows = [];
@@ -20,10 +20,9 @@ beforeEach(() => {
 
 describe("Table Pagination", () => {
   it("should show a button for the first page", () => {
-    const { getByText } = render(Pagination, {
+    const { getByText } = render(WithPagination, {
       props: {
-        rows: testRows,
-        rowsPerPage: 20
+        rows: testRows
       },
     });
 
@@ -55,13 +54,14 @@ describe("Table Pagination", () => {
     "should display buttons $expectedButtons for $pages pages when on page $currentPage",
     async ({ pages, currentPage, expectedButtons }) => {
       const WINDOW_HEIGHT = 800;
+      const ROW_HEIGHT = 40;
       global.innerHeight = WINDOW_HEIGHT;
-      const ROWS_PER_PAGE = 20;
+      const ROWS_PER_PAGE = Math.round((window.innerHeight - 250) / ROW_HEIGHT);
 
-      const { container, getByText } = render(Pagination, {
+      const { container, getByText } = render(WithPagination, {
         props: {
           rows: generateTestRows(pages * ROWS_PER_PAGE),
-          rowsPerPage: ROWS_PER_PAGE
+          rowHeight: ROW_HEIGHT
         },
       });
 

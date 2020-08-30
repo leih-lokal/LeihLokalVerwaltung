@@ -1,8 +1,9 @@
 <script>
-  let searchTerm = "";
   export let rows = [];
-  export let filteredRows = [];
   export let currentPage = 0;
+
+  let searchTerm = "";
+  let filteredRows = [];
 
   function filterRows(rowsToFilter, currentSearchTerm) {
     const formattedSearchTerm = currentSearchTerm.toLowerCase().trim();
@@ -23,9 +24,20 @@
 
 <style>
   input {
-    margin: 10px;
     width: calc(100% - 20px);
+    margin: 10px;
+  }
+
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0px;
   }
 </style>
 
-<input bind:value={searchTerm} placeholder="Suche" />
+<div class="container">
+  <input bind:value={searchTerm} placeholder="Suche" />
+  <slot rows={filteredRows} />
+</div>

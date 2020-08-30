@@ -1,6 +1,7 @@
 <script>
   export let columns = [];
   export let item = {};
+  export let rowHeight = 40;
 </script>
 
 <style>
@@ -8,13 +9,23 @@
     background-color: #0066ff77 !important;
   }
 
-  tr {
+  tr,
+  td {
     cursor: pointer;
-    height: 40px;
+    height: var(--rowHeight);
+    padding: 0px;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .cell {
+    overflow: hidden;
+    max-height: var(--rowHeight);
+    text-overflow: ellipsis;
   }
 
   img {
-    height: 60px;
+    height: 100%;
   }
 
   img:hover {
@@ -24,14 +35,16 @@
   }
 </style>
 
-<tr on:click>
+<tr on:click style="--rowHeight: {rowHeight}px">
   {#each columns as col}
     {#if col.isImageUrl && item[col.key]}
       <td>
         <img src={item[col.key]} alt="item" />
       </td>
     {:else}
-      <td>{col.key in item ? item[col.key] : ''}</td>
+      <td>
+        <div class="cell">{col.key in item ? item[col.key] : ''}</div>
+      </td>
     {/if}
   {/each}
 </tr>

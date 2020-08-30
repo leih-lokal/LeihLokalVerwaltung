@@ -24,4 +24,4 @@
   }
 </script>
 
-<Table {rows} {columns} {onRowClicked} />
+<Table {rows} {columns} {onRowClicked} rowHeight={60} />

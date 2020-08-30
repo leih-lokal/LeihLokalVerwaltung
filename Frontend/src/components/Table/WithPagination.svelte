@@ -1,11 +1,13 @@
 <script>
+  export let rows;
+  export let currentPage = 0;
+  export let rowHeight = 40;
+
   let pageButtons = [];
   let pages = [];
+  let pageRows = [];
 
-  export let rows;
-  export let pageRows = [];
-  export let rowsPerPage;
-  export let currentPage = 0;
+  $: rowsPerPage = Math.round((window.innerHeight - 250) / rowHeight);
 
   // split data in pages for display
   function paginateRows(rows, rowsPerPage) {
@@ -68,15 +70,10 @@
 <style>
   .pagination {
     display: flex;
-    direction: row;
-    justify-content: space-between;
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
+    flex-shrink: 0;
+    align-self: center;
+    justify-content: space-around;
     font-size: 18px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
     padding: 10px;
     width: 60%;
     background-color: white;
@@ -94,18 +91,28 @@
   .pagination a:hover:not(.active):not(.disabled) {
     background-color: #ddd;
   }
+
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 </style>
 
-<div class="pagination">
-  <a href="#/" on:click={() => setPage(currentPage - 1)}>&laquo;</a>
-  {#each pageButtons as page}
-    {#if typeof page === 'number'}
-      <a href="#/" on:click={() => setPage(page)} class={page === currentPage ? 'active' : ''}>
-        {page + 1}
-      </a>
-    {:else}
-      <a href="#/" class="disabled">{page}</a>
-    {/if}
-  {/each}
-  <a href="#/" on:click={() => setPage(currentPage + 1)}>&raquo;</a>
+<div class="container">
+  <slot rows={pageRows} />
+  <div class="pagination">
+    <a href="#/" on:click={() => setPage(currentPage - 1)}>&laquo;</a>
+    {#each pageButtons as page}
+      {#if typeof page === 'number'}
+        <a href="#/" on:click={() => setPage(page)} class={page === currentPage ? 'active' : ''}>
+          {page + 1}
+        </a>
+      {:else}
+        <a href="#/" class="disabled">{page}</a>
+      {/if}
+    {/each}
+    <a href="#/" on:click={() => setPage(currentPage + 1)}>&raquo;</a>
+  </div>
 </div>

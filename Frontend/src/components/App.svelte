@@ -19,20 +19,25 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen";
   }
 
-  :global(:root) {
-    --navbar-height: 50px;
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 </style>
 
 <Notifications>
-  <Navbar bind:page />
-  <Modal>
-    {#if page === 0}
-      <Customers />
-    {:else if page === 1}
-      <Items />
-    {:else if page === 2}
-      <Rentals />
-    {/if}
-  </Modal>
+  <div class="container">
+
+    <Navbar bind:page />
+    <Modal>
+      {#if page === 0}
+        <Customers />
+      {:else if page === 1}
+        <Items />
+      {:else if page === 2}
+        <Rentals />
+      {/if}
+    </Modal>
+  </div>
 </Notifications>
