@@ -1,7 +1,13 @@
-name: Build and Deploy
-on: [push]
+name: Test, Build and Deploy
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  
 jobs:
-  build-and-deploy:
+  test-build-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,8 +25,11 @@ jobs:
           npm install
           npm run build
       
+      - name: Test
+        working-directory: Frontend
+        run: npm test
+      
       - name: Deploy to GitHub Pages
-        if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
