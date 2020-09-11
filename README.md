@@ -1,3 +1,5 @@
+![Tests](https://github.com/leih-lokal/LeihLokalVerwaltung/workflows/Test/badge.svg)
+
 # LeihLokalVerwaltung
 Easy management of products, rentals and customers
 
