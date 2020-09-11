@@ -1,0 +1,28 @@
+name: Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache node_modules
+        working-directory: Frontend
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install
+        working-directory: Frontend
+        run: npm install
+
+      - name: Test
+        working-directory: Frontend
+        run: npm test
