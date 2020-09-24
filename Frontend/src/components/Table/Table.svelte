@@ -26,6 +26,7 @@
     table-layout: auto;
     position: relative;
     overflow-y: scroll;
+    border-spacing: 2px 0px;
   }
 
   :global(table tr:nth-child(odd)) {
