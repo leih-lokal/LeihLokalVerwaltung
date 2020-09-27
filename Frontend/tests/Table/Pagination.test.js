@@ -5,7 +5,7 @@ import PaginationTest from "./PaginationTest";
 
 const WINDOW_HEIGHT = 800;
 const ROW_HEIGHT = 40;
-const ROWS_PER_PAGE = Math.round((WINDOW_HEIGHT - 250) / ROW_HEIGHT);
+const ROWS_PER_PAGE = Math.round((WINDOW_HEIGHT - 230) / ROW_HEIGHT);
 
 var testRows;
 

@@ -7,7 +7,7 @@
   let pages = [];
   let pageRows = [];
 
-  $: rowsPerPage = Math.round((window.innerHeight - 250) / rowHeight);
+  $: rowsPerPage = Math.round((window.innerHeight - 230) / rowHeight);
 
   // split data in pages for display
   function paginateRows(rows, rowsPerPage) {
@@ -109,9 +109,7 @@
         <a href="#/" on:click={() => setPage(page)} class={page === currentPage ? 'active' : ''}>
           {page + 1}
         </a>
-      {:else}
-        <a href="#/" class="disabled">{page}</a>
-      {/if}
+      {:else}<a href="#/" class="disabled">{page}</a>{/if}
     {/each}
     <a href="#/" on:click={() => setPage(currentPage + 1)}>&raquo;</a>
   </div>
