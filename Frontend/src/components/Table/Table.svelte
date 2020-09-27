@@ -54,7 +54,7 @@
                 {columns}
                 item={row}
                 {rowHeight}
-                on:click={() => onRowClicked(rows.find((row) => row._id == row._id))} />
+                on:click={() => onRowClicked(rows.find((x) => x._id === row._id))} />
             {/each}
           </table>
         </WithPagination>
