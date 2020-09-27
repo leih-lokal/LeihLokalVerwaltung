@@ -1,10 +1,39 @@
 <script>
-  import DateInput from "../DateInput.svelte";
-  import { getContext } from "svelte";
+  import { getContext, onMount, onDestroy } from "svelte";
   import { CustomerDatabase } from "../../database/Database.js";
-  import { showNotification } from "../../utils/utils.js";
+  import {
+    showNotification,
+    saveParseTimestampToString,
+    saveParseStringToTimeMillis,
+  } from "../../utils/utils.js";
 
   const { close } = getContext("simple-modal");
+
+  function tramsformDatesToStrings() {
+    customer.registration_date = saveParseTimestampToString(customer.registration_date);
+    customer.renewed_on = saveParseTimestampToString(customer.renewed_on);
+  }
+
+  function transformStringsToMillis() {
+    customer.registration_date = saveParseStringToTimeMillis(customer.registration_date);
+    customer.renewed_on = saveParseStringToTimeMillis(customer.renewed_on);
+  }
+
+  function saveInDatabase() {
+    transformStringsToMillis();
+    CustomerDatabase.updateDoc(customer)
+      .then((result) => showNotification("Kunde gespeichert!"))
+      .then(close)
+      .catch((error) => {
+        showNotification("Kunde konnte nicht gespeichert werden!", "danger");
+        console.error(error);
+        close();
+      })
+      .finally(tramsformDatesToStrings);
+  }
+
+  onMount(tramsformDatesToStrings);
+  onDestroy(transformStringsToMillis);
 
   export let customer;
 </script>
@@ -74,41 +103,29 @@
   <h1>Kunde bearbeiten</h1>
   <div class="content">
     <div class="row">
-      <div class="col-label">
-        <label for="id">Id</label>
-      </div>
-      <div class="col-input">
-        <input type="text" id="id" name="id" bind:value={customer._id} />
-      </div>
+      <div class="col-label"><label for="id">Id</label></div>
+      <div class="col-input"><input type="text" id="id" name="id" bind:value={customer._id} /></div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="firstname">Vorname</label>
-      </div>
+      <div class="col-label"><label for="firstname">Vorname</label></div>
       <div class="col-input">
         <input type="text" id="firstname" name="firstname" bind:value={customer.firstname} />
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="lastname">Nachname</label>
-      </div>
+      <div class="col-label"><label for="lastname">Nachname</label></div>
       <div class="col-input">
         <input type="text" id="lastname" name="lastname" bind:value={customer.lastname} />
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="street">Strasse</label>
-      </div>
+      <div class="col-label"><label for="street">Strasse</label></div>
       <div class="col-input">
         <input type="text" id="street" name="street" bind:value={customer.street} />
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="house_number">Hausnummer</label>
-      </div>
+      <div class="col-label"><label for="house_number">Hausnummer</label></div>
       <div class="col-input">
         <input
           type="text"
@@ -118,57 +135,47 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="postal_code">Postleitzahl</label>
-      </div>
+      <div class="col-label"><label for="postal_code">Postleitzahl</label></div>
       <div class="col-input">
         <input type="text" id="postal_code" name="postal_code" bind:value={customer.postal_code} />
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="city">Stadt</label>
-      </div>
+      <div class="col-label"><label for="city">Stadt</label></div>
       <div class="col-input">
         <input type="text" id="city" name="city" bind:value={customer.city} />
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="registration_date">Beitritt</label>
-      </div>
+      <div class="col-label"><label for="registration_date">Beitritt</label></div>
       <div class="col-input">
-        <DateInput bind:selected={customer.registration_date} />
+        <input
+          type="text"
+          id="registration_date"
+          name="registration_date"
+          bind:value={customer.registration_date} />
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="renewed_on">Verlängert am</label>
-      </div>
+      <div class="col-label"><label for="renewed_on">Verlängert am</label></div>
       <div class="col-input">
-        <DateInput bind:selected={customer.renewed_on} />
+        <input type="text" id="renewed_on" name="renewed_on" bind:value={customer.renewed_on} />
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="remark">Bemerkung</label>
-      </div>
+      <div class="col-label"><label for="remark">Bemerkung</label></div>
       <div class="col-input">
         <input type="text" id="remark" name="remark" bind:value={customer.remark} />
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="email">E-Mail</label>
-      </div>
+      <div class="col-label"><label for="email">E-Mail</label></div>
       <div class="col-input">
         <input type="text" id="email" name="email" bind:value={customer.email} />
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="telephone_number">Telefonnummer</label>
-      </div>
+      <div class="col-label"><label for="telephone_number">Telefonnummer</label></div>
       <div class="col-input">
         <input
           type="text"
@@ -178,9 +185,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="subscribed_to_newsletter">Newsletter</label>
-      </div>
+      <div class="col-label"><label for="subscribed_to_newsletter">Newsletter</label></div>
       <div class="col-input">
         <input
           type="checkbox"
@@ -190,27 +195,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-label">
-        <label for="heard">Aufmerksam geworden</label>
-      </div>
+      <div class="col-label"><label for="heard">Aufmerksam geworden</label></div>
       <div class="col-input">
         <input type="text" id="heard" name="heard" bind:value={customer.heard} />
       </div>
     </div>
   </div>
   <div class="footer">
-    <button
-      class="button-save"
-      on:click={CustomerDatabase.updateDoc(customer)
-        .then((result) => showNotification('Kunde gespeichert!'))
-        .then(close)
-        .catch((error) => {
-          close();
-          showNotification('Kunde konnte nicht gespeichert werden!', 'danger');
-          console.error(error);
-        })}>
-      Speichern
-    </button>
+    <button class="button-save" on:click={saveInDatabase}> Speichern </button>
     <button class="button-cancel" on:click={close}>Abbrechen</button>
   </div>
 </div>
