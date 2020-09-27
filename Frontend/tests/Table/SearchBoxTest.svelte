@@ -1,5 +1,5 @@
 <script>
-  import WithSearchBox from "../src/components/Table/WithSearchBox";
+  import WithSearchBox from "../../src/components/Table/WithSearchBox";
   export let currentPage = 0;
   export let preprocessedRows = [];
 </script>

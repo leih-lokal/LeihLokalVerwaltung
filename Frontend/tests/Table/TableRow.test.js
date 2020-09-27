@@ -1,4 +1,4 @@
-import TableRow from "../src/components/Table/TableRow.svelte";
+import TableRow from "../../src/components/Table/TableRow.svelte";
 import { render, fireEvent } from "@testing-library/svelte";
 
 const columns = [

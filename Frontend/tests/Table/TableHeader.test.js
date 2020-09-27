@@ -1,5 +1,5 @@
-import TableHeader from "../src/components/Table/TableHeader.svelte";
-import { render, fireEvent } from "@testing-library/svelte";
+import TableHeader from "../../src/components/Table/TableHeader.svelte";
+import { render } from "@testing-library/svelte";
 
 const columns = [
     {
