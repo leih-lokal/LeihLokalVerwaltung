@@ -1,0 +1,12 @@
+<script>
+  import WithPagination from "../../src/components/Table/WithPagination";
+  export let currentPage = 0;
+  export let preprocessedRows = [];
+</script>
+
+<WithPagination rows={preprocessedRows} let:rows={rowsOfCurrentPage} bind:currentPage>
+  {#each rowsOfCurrentPage as row}
+    <div class="row">{JSON.stringify(row)}</div>
+  {/each}
+  <div class="currentPage">{currentPage}</div>
+</WithPagination>
