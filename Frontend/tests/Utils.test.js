@@ -19,7 +19,7 @@ describe("saveParseTimestampToString", () => {
 describe("saveParseStringToTimeMillis", () => {
 
     it("returns the time in millis for a valid date string", () => {
-        expect(saveParseStringToTimeMillis("02.04.2020")).toEqual(new Date(2020, 4, 2).getTime());
+        expect(saveParseStringToTimeMillis("02.04.2020")).toEqual(new Date(2020, 3, 2).getTime());
     });
 
     it("returns 0 for an invalid date string", () => {

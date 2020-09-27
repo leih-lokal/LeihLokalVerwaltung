@@ -9,7 +9,7 @@ function saveParseTimestampToString(millis) {
 function saveParseStringToTimeMillis(maybeDateString) {
   if (maybeDateString.match(/(\d{2})\.(\d{2})\.(\d{4})/)) {
     const dayMonthYear = maybeDateString.split(".");
-    return new Date(dayMonthYear[2], dayMonthYear[1], dayMonthYear[0]).getTime();
+    return new Date(dayMonthYear[2], dayMonthYear[1] - 1, dayMonthYear[0]).getTime();
   } else {
     return 0;
   }
@@ -25,8 +25,7 @@ function saveParseStringToBoolean(maybeBoolean) {
 }
 
 function showNotification(text, type = 'success', durationInSeconds = 3) {
-  const notificationsContext = getNotificationsContext();
-  const { addNotification } = notificationsContext;
+  const { addNotification } = getNotificationsContext();
 
   addNotification({
     text: text,
