@@ -1,19 +1,15 @@
 <script>
-  import { getContext, onMount, onDestroy } from "svelte";
+  import { getContext, onDestroy } from "svelte";
   import { CustomerDatabase } from "../../database/Database.js";
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
+  import Checkbox from "svelte-checkbox";
 
   const { close } = getContext("simple-modal");
 
-  function tramsformDatesToStrings() {
-    customer.registration_date = saveParseTimestampToString(customer.registration_date);
-    customer.renewed_on = saveParseTimestampToString(customer.renewed_on);
-  }
-
   function transformStringsToMillis() {
-    customer.registration_date = saveParseStringToTimeMillis(customer.registration_date);
-    customer.renewed_on = saveParseStringToTimeMillis(customer.renewed_on);
+    customer.registration_date = saveParseStringToTimeMillis(registration_date_string);
+    customer.renewed_on = saveParseStringToTimeMillis(renewed_on_string);
   }
 
   function saveInDatabase() {
@@ -25,14 +21,15 @@
         notifier.danger("Kunde konnte nicht gespeichert werden!", 6000);
         console.error(error);
         close();
-      })
-      .finally(tramsformDatesToStrings);
+      });
   }
 
-  onMount(tramsformDatesToStrings);
   onDestroy(transformStringsToMillis);
 
   export let customer;
+
+  let registration_date_string = saveParseTimestampToString(customer.registration_date);
+  let renewed_on_string = saveParseTimestampToString(customer.renewed_on);
 </script>
 
 <style>
@@ -61,12 +58,13 @@
 
   .content {
     display: flex;
-    flex-wrap: nowrap;
     flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
     flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
     min-height: 2em;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 
   .container {
@@ -78,7 +76,7 @@
   h1,
   .footer {
     height: 30px;
-    padding: 15px 5px;
+    padding: 20px;
     margin: 0;
   }
 
@@ -89,6 +87,7 @@
 
   .button-save {
     float: right;
+    padding: 10px;
   }
 
   .button-cancel {
@@ -101,7 +100,9 @@
   <div class="content">
     <div class="row">
       <div class="col-label"><label for="id">Id</label></div>
-      <div class="col-input"><input type="text" id="id" name="id" bind:value={customer._id} /></div>
+      <div class="col-input">
+        <input type="text" id="id" name="id" value={customer._id} disabled />
+      </div>
     </div>
     <div class="row">
       <div class="col-label"><label for="firstname">Vorname</label></div>
@@ -150,13 +151,13 @@
           type="text"
           id="registration_date"
           name="registration_date"
-          bind:value={customer.registration_date} />
+          bind:value={registration_date_string} />
       </div>
     </div>
     <div class="row">
       <div class="col-label"><label for="renewed_on">Verlängert am</label></div>
       <div class="col-input">
-        <input type="text" id="renewed_on" name="renewed_on" bind:value={customer.renewed_on} />
+        <input type="text" id="renewed_on" name="renewed_on" bind:value={renewed_on_string} />
       </div>
     </div>
     <div class="row">
@@ -184,10 +185,10 @@
     <div class="row">
       <div class="col-label"><label for="subscribed_to_newsletter">Newsletter</label></div>
       <div class="col-input">
-        <input
-          type="checkbox"
+        <Checkbox
           id="subscribed_to_newsletter"
           name="subscribed_to_newsletter"
+          size="2rem"
           bind:checked={customer.subscribed_to_newsletter} />
       </div>
     </div>

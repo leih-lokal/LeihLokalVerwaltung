@@ -23,7 +23,24 @@
   onDestroy(() => CustomerDatabase.cancelSyncAndChangeListener());
 
   function onRowClicked(customer) {
-    open(EditCustomerPopup, { customer });
+    open(
+      EditCustomerPopup,
+      { customer },
+      {
+        closeButton: false,
+        closeOnEsc: false,
+        closeOnOuterClick: false,
+        styleWindow: {
+          width: "90%",
+          "max-width": "950px",
+          height: "80%",
+          overflow: "hidden",
+        },
+        styleContent: {
+          height: "100%",
+        },
+      }
+    );
   }
 </script>
 
