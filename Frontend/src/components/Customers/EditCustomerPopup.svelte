@@ -1,11 +1,8 @@
 <script>
   import { getContext, onMount, onDestroy } from "svelte";
   import { CustomerDatabase } from "../../database/Database.js";
-  import {
-    showNotification,
-    saveParseTimestampToString,
-    saveParseStringToTimeMillis,
-  } from "../../utils/utils.js";
+  import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
+  import { notifier } from "@beyonk/svelte-notifications";
 
   const { close } = getContext("simple-modal");
 
@@ -22,10 +19,10 @@
   function saveInDatabase() {
     transformStringsToMillis();
     CustomerDatabase.updateDoc(customer)
-      .then((result) => showNotification("Kunde gespeichert!"))
+      .then((result) => notifier.success("Kunde gespeichert!"))
       .then(close)
       .catch((error) => {
-        showNotification("Kunde konnte nicht gespeichert werden!", "danger");
+        notifier.danger("Kunde konnte nicht gespeichert werden!", 6000);
         console.error(error);
         close();
       })

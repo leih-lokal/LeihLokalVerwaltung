@@ -1,5 +1,5 @@
 <script>
-  import Notifications from "svelte-notifications";
+  import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import Navbar from "./Navbar.svelte";
   import Customers from "./Customers/Customers.svelte";
   import Items from "./Items/Items.svelte";
@@ -26,17 +26,16 @@
   }
 </style>
 
-<Notifications>
-  <div class="container">
-    <Navbar bind:page />
-    <Modal>
-      {#if page === 0}
-        <Customers />
-      {:else if page === 1}
-        <Items />
-      {:else if page === 2}
-        <Rentals />
-      {/if}
-    </Modal>
-  </div>
-</Notifications>
+<NotificationDisplay />
+<div class="container">
+  <Navbar bind:page />
+  <Modal>
+    {#if page === 0}
+      <Customers />
+    {:else if page === 1}
+      <Items />
+    {:else if page === 2}
+      <Rentals />
+    {/if}
+  </Modal>
+</div>

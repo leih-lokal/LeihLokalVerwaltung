@@ -1,5 +1,3 @@
-import { getNotificationsContext } from "svelte-notifications";
-
 function saveParseTimestampToString(millis) {
   const date = new Date(millis);
   if (isNaN(date) || date.getTime() === 0) return "";
@@ -24,15 +22,4 @@ function saveParseStringToBoolean(maybeBoolean) {
   return ['true', 'ja'].includes(String(maybeBoolean).toLowerCase());
 }
 
-function showNotification(text, type = 'success', durationInSeconds = 3) {
-  const { addNotification } = getNotificationsContext();
-
-  addNotification({
-    text: text,
-    type: type,
-    position: 'top-right',
-    removeAfter: durationInSeconds * 1000,
-  })
-}
-
-export { saveParseTimestampToString, showNotification, saveParseStringToInt, saveParseStringToTimeMillis, saveParseStringToBoolean };
+export { saveParseTimestampToString, saveParseStringToInt, saveParseStringToTimeMillis, saveParseStringToBoolean };

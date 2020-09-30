@@ -5,7 +5,7 @@
   import EditCustomerPopup from "./EditCustomerPopup.svelte";
   import { CustomerDatabase } from "../../database/Database.js";
   import columns from "./Columns.js";
-  import { showNotification } from "../../utils/utils.js";
+  import { notifier } from "@beyonk/svelte-notifications";
 
   const { open } = getContext("simple-modal");
   let rows = [];
@@ -14,7 +14,7 @@
     .then((customers) => (rows = customers))
     .catch((error) => {
       console.error(error);
-      showNotification("Laden aus der Datenbank fehlgeschlagen!", "danger", 10);
+      notifier.danger("Laden aus der Datenbank fehlgeschlagen!", 10000);
     });
 
   CustomerDatabase.onChange((changedCustomers) => (rows = changedCustomers));

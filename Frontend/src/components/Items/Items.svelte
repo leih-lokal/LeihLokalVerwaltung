@@ -3,7 +3,7 @@
   import { onMount, onDestroy } from "svelte";
   import columns from "./Columns.js";
   import Table from "../Table/Table.svelte";
-  import { showNotification } from "../../utils/utils.js";
+  import { notifier } from "@beyonk/svelte-notifications";
 
   let rows = [];
 
@@ -11,7 +11,7 @@
     .then((items) => (rows = items))
     .catch((error) => {
       console.error(error);
-      showNotification("Laden aus der Datenbank fehlgeschlagen!", "danger", 10);
+      notifier.danger("Laden aus der Datenbank fehlgeschlagen!", 10000);
     });
 
   ItemDatabase.onChange((changedItems) => (rows = changedItems));
