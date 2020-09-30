@@ -4,7 +4,7 @@
   import Customers from "./Customers/Customers.svelte";
   import Items from "./Items/Items.svelte";
   import Rentals from "./Rentals/Rentals.svelte";
-  import Modal from "./Modal.svelte";
+  import Modal from "svelte-simple-modal";
 
   let page = 0;
 </script>
@@ -28,7 +28,6 @@
 
 <Notifications>
   <div class="container">
-
     <Navbar bind:page />
     <Modal>
       {#if page === 0}
