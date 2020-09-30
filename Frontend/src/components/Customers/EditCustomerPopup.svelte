@@ -4,16 +4,20 @@
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
   import Checkbox from "svelte-checkbox";
+  import Select from "svelte-select";
 
   const { close } = getContext("simple-modal");
 
-  function transformStringsToMillis() {
+  const heard_options = ["Internet", "Freunde & Bekannte", "Zeitungen / Medien"];
+
+  function convertInputsForDb() {
     customer.registration_date = saveParseStringToTimeMillis(registration_date_string);
     customer.renewed_on = saveParseStringToTimeMillis(renewed_on_string);
+    customer.heard = heard ? heard.map((item) => item.value).join(", ") : "";
   }
 
   function saveInDatabase() {
-    transformStringsToMillis();
+    convertInputsForDb();
     CustomerDatabase.updateDoc(customer)
       .then((result) => notifier.success("Kunde gespeichert!"))
       .then(close)
@@ -24,12 +28,13 @@
       });
   }
 
-  onDestroy(transformStringsToMillis);
+  onDestroy(convertInputsForDb);
 
   export let customer;
 
   let registration_date_string = saveParseTimestampToString(customer.registration_date);
   let renewed_on_string = saveParseTimestampToString(customer.renewed_on);
+  let heard = !customer.heard || customer.heard === "" ? [] : customer.heard.split(",");
 </script>
 
 <style>
@@ -195,7 +200,12 @@
     <div class="row">
       <div class="col-label"><label for="heard">Aufmerksam geworden</label></div>
       <div class="col-input">
-        <input type="text" id="heard" name="heard" bind:value={customer.heard} />
+        <Select
+          items={heard_options}
+          bind:selectedValue={heard}
+          isMulti={true}
+          isCreatable={true}
+          placeholder={'Auswählen...'} />
       </div>
     </div>
   </div>
