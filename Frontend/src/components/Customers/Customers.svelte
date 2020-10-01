@@ -1,6 +1,5 @@
 <script>
-  import { getContext } from "svelte";
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy, getContext } from "svelte";
   import Table from "../Table/Table.svelte";
   import EditCustomerPopup from "./EditCustomerPopup.svelte";
   import { CustomerDatabase } from "../../database/Database.js";

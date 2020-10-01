@@ -1,10 +1,12 @@
 <script>
   import { RentalDatabase } from "../../database/Database.js";
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy, getContext } from "svelte";
   import columns from "./Columns.js";
   import Table from "../Table/Table.svelte";
   import { notifier } from "@beyonk/svelte-notifications";
+  import EditRentalPopup from "./EditRentalPopup.svelte";
 
+  const { open } = getContext("simple-modal");
   let rows = [];
 
   RentalDatabase.fetchAllDocs()
@@ -19,8 +21,25 @@
   onMount(() => RentalDatabase.syncAndListenForChanges());
   onDestroy(() => RentalDatabase.cancelSyncAndChangeListener());
 
-  function onRowClicked(item) {
-    console.log("click " + item);
+  function onRowClicked(rental) {
+    open(
+      EditRentalPopup,
+      { rental },
+      {
+        closeButton: false,
+        closeOnEsc: false,
+        closeOnOuterClick: false,
+        styleWindow: {
+          width: "90%",
+          "max-width": "950px",
+          height: "80%",
+          overflow: "hidden",
+        },
+        styleContent: {
+          height: "100%",
+        },
+      }
+    );
   }
 </script>
 
