@@ -1,4 +1,6 @@
 import PouchDB from "pouchdb-browser";
+import PouchDBFind from 'pouchdb-find';
+PouchDB.plugin(PouchDBFind);
 
 class Database {
   database;
@@ -27,6 +29,27 @@ class Database {
     return this.database
       .allDocs({ include_docs: true })
       .then((docs) => docs.rows.map((row) => row.doc));
+  }
+
+  fetchById(id) {
+    return this.database.get(id);
+  }
+
+  fetchByAttribute(attribute, value, ignoreCase = true) {
+    const equal = (val1, val2) => {
+      if (!val1) val1 = "";
+      if (!val2) val2 = "";
+      val1 = ignoreCase ? String(val1).toLocaleLowerCase() : String(val1);
+      val2 = ignoreCase ? String(val2).toLocaleLowerCase() : String(val2);
+      return val1 === val2;
+    }
+
+    return this.fetchAllDocs()
+      .then(docs => docs.filter(doc => equal(doc[attribute], value)))
+      .then(docs => {
+        if (docs.length > 0) return docs[0]
+        throw "not found"
+      })
   }
 
   updateDoc(updatedDoc) {

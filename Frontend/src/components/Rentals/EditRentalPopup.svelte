@@ -1,6 +1,6 @@
 <script>
   import { getContext, onDestroy } from "svelte";
-  import { RentalDatabase } from "../../database/Database.js";
+  import { RentalDatabase, ItemDatabase, CustomerDatabase } from "../../database/Database.js";
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
 
@@ -104,25 +104,59 @@
     <div class="row">
       <div class="col-label"><label for="item_id">Gegenstand Nr</label></div>
       <div class="col-input">
-        <input type="text" id="item_id" name="item_id" bind:value={row.item_id} />
+        <input
+          type="text"
+          id="item_id"
+          name="item_id"
+          on:input={(event) => ItemDatabase.fetchById(event.target.value)
+              .then((item) => (row.item_name = item.item_name))
+              .catch((error) => console.debug(error))}
+          bind:value={row.item_id} />
       </div>
     </div>
     <div class="row">
       <div class="col-label"><label for="item_name">Gegenstand Name</label></div>
       <div class="col-input">
-        <input type="text" id="item_name" name="item_name" bind:value={row.item_name} />
+        <input
+          type="text"
+          id="item_name"
+          name="item_name"
+          bind:value={row.item_name}
+          on:input={(event) => ItemDatabase.fetchByAttribute('item_name', event.target.value)
+              .then((item) => {
+                row.item_id = item._id;
+                row.item_name = item.item_name;
+              })
+              .catch((error) => console.debug(error))} />
       </div>
     </div>
     <div class="row">
       <div class="col-label"><label for="customer_id">Kunde Nr</label></div>
       <div class="col-input">
-        <input type="text" id="customer_id" name="customer_id" bind:value={row.customer_id} />
+        <input
+          type="text"
+          id="customer_id"
+          name="customer_id"
+          bind:value={row.customer_id}
+          on:input={(event) => CustomerDatabase.fetchById(event.target.value)
+              .then((item) => (row.customer_name = item.lastname))
+              .catch((error) => console.debug(error))} />
       </div>
     </div>
     <div class="row">
       <div class="col-label"><label for="customer_name">Kunde Name</label></div>
       <div class="col-input">
-        <input type="text" id="customer_name" name="customer_name" bind:value={row.customer_name} />
+        <input
+          type="text"
+          id="customer_name"
+          name="customer_name"
+          bind:value={row.customer_name}
+          on:input={(event) => CustomerDatabase.fetchByAttribute('lastname', event.target.value)
+              .then((item) => {
+                row.customer_id = item._id;
+                row.customer_name = item.lastname;
+              })
+              .catch((error) => console.debug(error))} />
       </div>
     </div>
     <div class="row">
