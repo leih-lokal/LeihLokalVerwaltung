@@ -12,7 +12,7 @@
   function onRowClicked(row) {
     open(
       editPopup,
-      { row },
+      { row, database },
       {
         closeButton: false,
         closeOnEsc: false,

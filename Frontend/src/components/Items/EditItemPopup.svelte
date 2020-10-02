@@ -1,6 +1,5 @@
 <script>
   import { getContext, onDestroy } from "svelte";
-  import { ItemDatabase } from "../../database/Database.js";
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
   import Select from "svelte-select";
@@ -16,14 +15,16 @@
 
   function convertInputsForDb() {
     row.added = saveParseStringToTimeMillis(added_string);
-    row.status_on_website = status_on_website_options.find(
-      (option) => option.label === status_on_website_label?.label
-    )?.value;
+    const selectedOption = status_on_website_options.find(
+      (option) => option.label === status_on_website_label.label
+    );
+    row.status_on_website = selectedOption ? selectedOption.value : "";
   }
 
   function saveInDatabase() {
     convertInputsForDb();
-    ItemDatabase.updateDoc(row)
+    database
+      .updateDoc(row)
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
       .then(close)
       .catch((error) => {
@@ -36,11 +37,13 @@
   onDestroy(convertInputsForDb);
 
   export let row;
+  export let database;
 
   let added_string = saveParseTimestampToString(row.added);
-  let status_on_website_label = status_on_website_options.find(
+  let status_on_website = status_on_website_options.find(
     (option) => option.value === row.status_on_website
-  )?.label;
+  );
+  let status_on_website_label = status_on_website ? status_on_website.label : "";
 </script>
 
 <style>

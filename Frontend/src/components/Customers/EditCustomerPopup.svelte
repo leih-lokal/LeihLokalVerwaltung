@@ -1,6 +1,5 @@
 <script>
   import { getContext, onDestroy } from "svelte";
-  import { CustomerDatabase } from "../../database/Database.js";
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
   import Checkbox from "svelte-checkbox";
@@ -18,7 +17,8 @@
 
   function saveInDatabase() {
     convertInputsForDb();
-    CustomerDatabase.updateDoc(row)
+    database
+      .updateDoc(row)
       .then((result) => notifier.success("Kunde gespeichert!"))
       .then(close)
       .catch((error) => {
@@ -31,6 +31,7 @@
   onDestroy(convertInputsForDb);
 
   export let row;
+  export let database;
 
   let registration_date_string = saveParseTimestampToString(row.registration_date);
   let renewed_on_string = saveParseTimestampToString(row.renewed_on);

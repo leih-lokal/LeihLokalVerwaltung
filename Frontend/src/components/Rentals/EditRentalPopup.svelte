@@ -1,6 +1,6 @@
 <script>
   import { getContext, onDestroy } from "svelte";
-  import { RentalDatabase, ItemDatabase, CustomerDatabase } from "../../database/Database.js";
+  import { ItemDatabase, CustomerDatabase } from "../../database/Database.js";
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
 
@@ -15,7 +15,8 @@
 
   function saveInDatabase() {
     convertInputsForDb();
-    RentalDatabase.updateDoc(row)
+    database
+      .updateDoc(row)
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
       .then(close)
       .catch((error) => {
@@ -28,6 +29,7 @@
   onDestroy(convertInputsForDb);
 
   export let row;
+  export let database;
 
   let rented_on_string = saveParseTimestampToString(row.rented_on);
   let extended_on_string = saveParseTimestampToString(row.extended_on);
