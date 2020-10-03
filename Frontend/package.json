@@ -1,5 +1,5 @@
 {
-  "name": "svelte-app",
+  "name": "leihlokal_verwaltung",
   "version": "1.0.0",
   "scripts": {
     "build": "rollup -c",
@@ -19,10 +19,9 @@
     "@testing-library/jest-dom": "^5.11.0",
     "@testing-library/svelte": "^3.0.0",
     "@testing-library/user-event": "^12.1.6",
-    "babel-jest": "^26.1.0",
-    "jest": "^26.1.0",
+    "babel-jest": "^26.3.0",
+    "jest": "^26.4.0",
     "jest-svelte-events": "^1.0.5",
-    "jest-transform-svelte": "^2.1.1",
     "pouchdb-browser": "^7.2.1",
     "pouchdb-find": "^7.2.2",
     "rewire": "^5.0.0",
@@ -33,11 +32,10 @@
     "rollup-plugin-svelte": "^6.0.1",
     "rollup-plugin-terser": "^7.0.2",
     "sirv-cli": "^0.4.4",
-    "svelte": "^3.0.0",
+    "svelte": "^3.29.0",
     "svelte-checkbox": "^1.0.0-beta.9",
     "svelte-component-double": "^0.7.5",
     "svelte-jest": "^0.3.1",
-    "svelte-jester": "^1.1.2",
     "svelte-loading-spinners": "^0.1.1",
     "svelte-select": "^3.12.0",
     "svelte-simple-modal": "^0.6.1"
