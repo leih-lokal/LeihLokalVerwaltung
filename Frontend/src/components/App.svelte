@@ -5,6 +5,7 @@
   import Items from "./Items/Items.svelte";
   import Rentals from "./Rentals/Rentals.svelte";
   import Modal from "svelte-simple-modal";
+  import StyledModal from "./StyledModal.svelte";
 
   let page = 0;
 </script>
@@ -30,12 +31,14 @@
 <div class="container">
   <Navbar bind:page />
   <Modal>
-    {#if page === 0}
-      <Customers />
-    {:else if page === 1}
-      <Items />
-    {:else if page === 2}
-      <Rentals />
-    {/if}
+    <StyledModal>
+      {#if page === 0}
+        <Customers />
+      {:else if page === 1}
+        <Items />
+      {:else if page === 2}
+        <Rentals />
+      {/if}
+    </StyledModal>
   </Modal>
 </div>
