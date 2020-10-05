@@ -4,6 +4,7 @@
   import { notifier } from "@beyonk/svelte-notifications";
   import Checkbox from "svelte-checkbox";
   import Select from "svelte-select";
+  import DateInput from "../DateInput.svelte";
 
   const { close } = getContext("simple-modal");
 
@@ -165,17 +166,13 @@
     <div class="row">
       <div class="col-label"><label for="registration_date">Beitritt</label></div>
       <div class="col-input">
-        <input
-          type="text"
-          id="registration_date"
-          name="registration_date"
-          bind:value={registration_date_string} />
+        <DateInput bind:selectedDateString={registration_date_string} />
       </div>
     </div>
     <div class="row">
       <div class="col-label"><label for="renewed_on">Verlängert am</label></div>
       <div class="col-input">
-        <input type="text" id="renewed_on" name="renewed_on" bind:value={renewed_on_string} />
+        <DateInput bind:selectedDateString={renewed_on_string} />
       </div>
     </div>
     <div class="row">

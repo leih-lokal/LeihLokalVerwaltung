@@ -3,6 +3,7 @@
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
   import Select from "svelte-select";
+  import DateInput from "../DateInput.svelte";
 
   const { close } = getContext("simple-modal");
 
@@ -177,7 +178,7 @@
     <div class="row">
       <div class="col-label"><label for="added">Erfasst am</label></div>
       <div class="col-input">
-        <input type="text" id="added" name="added" bind:value={added_string} />
+        <DateInput bind:selectedDateString={added_string} />
       </div>
     </div>
     <div class="row">
