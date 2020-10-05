@@ -221,20 +221,22 @@
   </div>
   <div class="footer">
     <button class="button-cancel" on:click={close}>Abbrechen</button>
-    <button
-      class="button-delete"
-      on:click={() => {
-        if (confirm('Soll dieser Kunde wirklich gelöscht werden?')) {
-          database
-            .removeDoc(customer)
-            .then(() => notifier.success('Kunde gelöscht!'))
-            .then(close)
-            .catch((error) => {
-              console.error(error);
-              notifier.danger('Kunde konnte nicht gelöscht werden!', 6000);
-            });
-        }
-      }}>Kunde Löschen</button>
+    {#if !createNewCustomer}
+      <button
+        class="button-delete"
+        on:click={() => {
+          if (confirm('Soll dieser Kunde wirklich gelöscht werden?')) {
+            database
+              .removeDoc(customer)
+              .then(() => notifier.success('Kunde gelöscht!'))
+              .then(close)
+              .catch((error) => {
+                console.error(error);
+                notifier.danger('Kunde konnte nicht gelöscht werden!', 6000);
+              });
+          }
+        }}>Kunde Löschen</button>
+    {/if}
     <button class="button-save" on:click={saveInDatabase}>Speichern</button>
   </div>
 </div>

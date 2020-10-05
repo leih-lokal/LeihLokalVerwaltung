@@ -268,20 +268,22 @@
 
   <div class="footer">
     <button class="button-cancel" on:click={close}>Abbrechen</button>
-    <button
-      class="button-delete"
-      on:click={() => {
-        if (confirm('Soll dieser Leihvorgang wirklich gelöscht werden?')) {
-          database
-            .removeDoc(rental)
-            .then(() => notifier.success('Leihvorgang gelöscht!'))
-            .then(close)
-            .catch((error) => {
-              console.error(error);
-              notifier.danger('Leihvorgang konnte nicht gelöscht werden!', 6000);
-            });
-        }
-      }}>Leihvorgang Löschen</button>
+    {#if !createNewRental}
+      <button
+        class="button-delete"
+        on:click={() => {
+          if (confirm('Soll dieser Leihvorgang wirklich gelöscht werden?')) {
+            database
+              .removeDoc(rental)
+              .then(() => notifier.success('Leihvorgang gelöscht!'))
+              .then(close)
+              .catch((error) => {
+                console.error(error);
+                notifier.danger('Leihvorgang konnte nicht gelöscht werden!', 6000);
+              });
+          }
+        }}>Leihvorgang Löschen</button>
+    {/if}
     <button class="button-save" on:click={saveInDatabase}>Speichern</button>
   </div>
 </div>

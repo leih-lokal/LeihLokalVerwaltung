@@ -199,20 +199,22 @@
   </div>
   <div class="footer">
     <button class="button-cancel" on:click={close}>Abbrechen</button>
-    <button
-      class="button-delete"
-      on:click={() => {
-        if (confirm('Soll dieser Gegenstand wirklich gelöscht werden?')) {
-          database
-            .removeDoc(item)
-            .then(() => notifier.success('Gegenstand gelöscht!'))
-            .then(close)
-            .catch((error) => {
-              console.error(error);
-              notifier.danger('Gegenstand konnte nicht gelöscht werden!', 6000);
-            });
-        }
-      }}>Gegenstand Löschen</button>
+    {#if !createNewItem}
+      <button
+        class="button-delete"
+        on:click={() => {
+          if (confirm('Soll dieser Gegenstand wirklich gelöscht werden?')) {
+            database
+              .removeDoc(item)
+              .then(() => notifier.success('Gegenstand gelöscht!'))
+              .then(close)
+              .catch((error) => {
+                console.error(error);
+                notifier.danger('Gegenstand konnte nicht gelöscht werden!', 6000);
+              });
+          }
+        }}>Gegenstand Löschen</button>
+    {/if}
     <button class="button-save" on:click={saveInDatabase}>Speichern</button>
   </div>
 </div>
