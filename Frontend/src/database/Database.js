@@ -72,6 +72,10 @@ class Database {
     return this.database.put(doc);
   }
 
+  createDocWithoutId(doc) {
+    return this.database.post(doc);
+  }
+
   removeDoc(doc) {
     return this.database.remove(doc._id, doc._rev);
   }

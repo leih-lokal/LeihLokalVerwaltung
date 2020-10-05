@@ -7,6 +7,14 @@
 
   const columnSortFunctions = {};
 
+  for (let i = 0; i < columns.length; i++) {
+    if (columns[i].initialSort) {
+      lastClickedColumnKey = columns[i].key;
+      if (columns[i].initialSort === "desc") lastSortReverse = true;
+      break;
+    }
+  }
+
   function sortRowsByColumnKey(columnKey, reverse = false) {
     const mapForSort = columnSortFunctions[columnKey]
       ? columnSortFunctions[columnKey]

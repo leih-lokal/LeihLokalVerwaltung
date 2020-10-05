@@ -27,6 +27,7 @@ export default [
     title: "Rückgabe",
     key: "to_return_on",
     display: (value) => saveParseTimestampToString(value),
+    initialSort: "desc"
   },
   {
     title: "Mitarbeiter",

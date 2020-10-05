@@ -3,6 +3,7 @@
   import { ItemDatabase, CustomerDatabase } from "../../database/Database.js";
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
+  import DateInput from "../DateInput.svelte";
 
   const { close } = getContext("simple-modal");
 
@@ -16,7 +17,9 @@
   function saveInDatabase() {
     convertInputsForDb();
 
-    const savePromise = createNewRental ? database.createDoc(rental) : database.updateDoc(rental);
+    const savePromise = createNewRental
+      ? database.createDocWithoutId(rental)
+      : database.updateDoc(rental);
 
     savePromise
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
@@ -35,7 +38,6 @@
   export let createNewRental = false;
 
   if (createNewRental) {
-    database.newId().then((id) => (rental._id = id));
     rental.rented_on = new Date().getTime();
     let inOneWeek = new Date();
     inOneWeek.setDate(inOneWeek.getDate() + 7);
@@ -179,25 +181,25 @@
     <div class="row">
       <div class="col-label"><label for="rented_on">Ausgeliehen am</label></div>
       <div class="col-input">
-        <input type="text" id="rented_on" name="rented_on" bind:value={rented_on_string} />
+        <DateInput bind:selectedDateString={rented_on_string} />
       </div>
     </div>
     <div class="row">
       <div class="col-label"><label for="extended_on">Verlängert am</label></div>
       <div class="col-input">
-        <input type="text" id="extended_on" name="extended_on" bind:value={extended_on_string} />
+        <DateInput bind:selectedDateString={extended_on_string} />
       </div>
     </div>
     <div class="row">
       <div class="col-label"><label for="to_return_on">Zurückzugeben am</label></div>
       <div class="col-input">
-        <input type="text" id="to_return_on" name="to_return_on" bind:value={to_return_on_string} />
+        <DateInput bind:selectedDateString={to_return_on_string} />
       </div>
     </div>
     <div class="row">
       <div class="col-label"><label for="returned_on">Zurückgegeben am</label></div>
       <div class="col-input">
-        <input type="text" id="returned_on" name="returned_on" bind:value={returned_on_string} />
+        <DateInput bind:selectedDateString={returned_on_string} />
       </div>
     </div>
     <div class="row">
