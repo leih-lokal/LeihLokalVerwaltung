@@ -7,16 +7,18 @@
   const { close } = getContext("simple-modal");
 
   function convertInputsForDb() {
-    row.rented_on = saveParseStringToTimeMillis(rented_on_string);
-    row.extended_on = saveParseStringToTimeMillis(extended_on_string);
-    row.to_return_on = saveParseStringToTimeMillis(to_return_on_string);
-    row.returned_on = saveParseStringToTimeMillis(returned_on_string);
+    rental.rented_on = saveParseStringToTimeMillis(rented_on_string);
+    rental.extended_on = saveParseStringToTimeMillis(extended_on_string);
+    rental.to_return_on = saveParseStringToTimeMillis(to_return_on_string);
+    rental.returned_on = saveParseStringToTimeMillis(returned_on_string);
   }
 
   function saveInDatabase() {
     convertInputsForDb();
-    database
-      .updateDoc(row)
+
+    const savePromise = createNewRental ? database.createDoc(rental) : database.updateDoc(rental);
+
+    savePromise
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
       .then(close)
       .catch((error) => {
@@ -28,13 +30,22 @@
 
   onDestroy(convertInputsForDb);
 
-  export let row;
+  export let rental = {};
   export let database;
+  export let createNewRental = false;
 
-  let rented_on_string = saveParseTimestampToString(row.rented_on);
-  let extended_on_string = saveParseTimestampToString(row.extended_on);
-  let to_return_on_string = saveParseTimestampToString(row.to_return_on);
-  let returned_on_string = saveParseTimestampToString(row.returned_on);
+  if (createNewRental) {
+    database.newId().then((id) => (rental._id = id));
+    rental.rented_on = new Date().getTime();
+    let inOneWeek = new Date();
+    inOneWeek.setDate(inOneWeek.getDate() + 7);
+    rental.to_return_on = inOneWeek.getTime();
+  }
+
+  let rented_on_string = saveParseTimestampToString(rental.rented_on);
+  let extended_on_string = saveParseTimestampToString(rental.extended_on);
+  let to_return_on_string = saveParseTimestampToString(rental.to_return_on);
+  let returned_on_string = saveParseTimestampToString(rental.returned_on);
 </script>
 
 <style>
@@ -80,9 +91,14 @@
 
   h1,
   .footer {
-    height: 30px;
+    height: 40px;
     padding: 20px;
     margin: 0;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
   }
 
   .row {
@@ -90,18 +106,13 @@
     margin: 0 1rem;
   }
 
-  .button-save {
-    float: right;
-    padding: 10px;
-  }
-
-  .button-cancel {
-    float: left;
+  .button-delete {
+    color: darkred;
   }
 </style>
 
 <div class="container">
-  <h1>Leihvorgang bearbeiten</h1>
+  <h1>{createNewRental ? 'Leihvorgang erstellen' : 'Leihvorgang bearbeiten'}</h1>
   <div class="content">
     <div class="row">
       <div class="col-label"><label for="item_id">Gegenstand Nr</label></div>
@@ -111,9 +122,12 @@
           id="item_id"
           name="item_id"
           on:input={(event) => ItemDatabase.fetchById(event.target.value)
-              .then((item) => (row.item_name = item.item_name))
+              .then((item) => {
+                rental.item_name = item.item_name;
+                rental.deposit = item.deposit;
+              })
               .catch((error) => console.debug(error))}
-          bind:value={row.item_id} />
+          bind:value={rental.item_id} />
       </div>
     </div>
     <div class="row">
@@ -123,11 +137,12 @@
           type="text"
           id="item_name"
           name="item_name"
-          bind:value={row.item_name}
+          bind:value={rental.item_name}
           on:input={(event) => ItemDatabase.fetchByAttribute('item_name', event.target.value)
               .then((item) => {
-                row.item_id = item._id;
-                row.item_name = item.item_name;
+                rental.item_id = item._id;
+                rental.item_name = item.item_name;
+                rental.deposit = item.deposit;
               })
               .catch((error) => console.debug(error))} />
       </div>
@@ -139,24 +154,24 @@
           type="text"
           id="customer_id"
           name="customer_id"
-          bind:value={row.customer_id}
+          bind:value={rental.customer_id}
           on:input={(event) => CustomerDatabase.fetchById(event.target.value)
-              .then((item) => (row.customer_name = item.lastname))
+              .then((item) => (rental.name = item.lastname))
               .catch((error) => console.debug(error))} />
       </div>
     </div>
     <div class="row">
-      <div class="col-label"><label for="customer_name">Kunde Name</label></div>
+      <div class="col-label"><label for="name">Kunde Name</label></div>
       <div class="col-input">
         <input
           type="text"
-          id="customer_name"
-          name="customer_name"
-          bind:value={row.customer_name}
+          id="name"
+          name="name"
+          bind:value={rental.name}
           on:input={(event) => CustomerDatabase.fetchByAttribute('lastname', event.target.value)
               .then((item) => {
-                row.customer_id = item._id;
-                row.customer_name = item.lastname;
+                rental.customer_id = item._id;
+                rental.name = item.lastname;
               })
               .catch((error) => console.debug(error))} />
       </div>
@@ -188,7 +203,7 @@
     <div class="row">
       <div class="col-label"><label for="deposit">Pfand</label></div>
       <div class="col-input">
-        <input type="text" id="deposit" name="deposit" bind:value={row.deposit} />
+        <input type="text" id="deposit" name="deposit" bind:value={rental.deposit} />
       </div>
     </div>
     <div class="row">
@@ -198,7 +213,7 @@
           type="text"
           id="deposit_returned"
           name="deposit_returned"
-          bind:value={row.deposit_returned} />
+          bind:value={rental.deposit_returned} />
       </div>
     </div>
     <div class="row">
@@ -208,7 +223,7 @@
           type="text"
           id="deposit_retained"
           name="deposit_retained"
-          bind:value={row.deposit_retained} />
+          bind:value={rental.deposit_retained} />
       </div>
     </div>
     <div class="row">
@@ -218,7 +233,7 @@
           type="text"
           id="deposit_retainment_reason"
           name="deposit_retainment_reason"
-          bind:value={row.deposit_retainment_reason} />
+          bind:value={rental.deposit_retainment_reason} />
       </div>
     </div>
     <div class="row">
@@ -228,7 +243,7 @@
           type="text"
           id="passing_out_employee"
           name="passing_out_employee"
-          bind:value={row.passing_out_employee} />
+          bind:value={rental.passing_out_employee} />
       </div>
     </div>
     <div class="row">
@@ -238,18 +253,33 @@
           type="text"
           id="receiving_employee"
           name="receiving_employee"
-          bind:value={row.receiving_employee} />
+          bind:value={rental.receiving_employee} />
       </div>
     </div>
     <div class="row">
       <div class="col-label"><label for="remark">Bemerkung</label></div>
       <div class="col-input">
-        <input type="text" id="remark" name="remark" bind:value={row.remark} />
+        <input type="text" id="remark" name="remark" bind:value={rental.remark} />
       </div>
     </div>
   </div>
+
   <div class="footer">
-    <button class="button-save" on:click={saveInDatabase}> Speichern </button>
     <button class="button-cancel" on:click={close}>Abbrechen</button>
+    <button
+      class="button-delete"
+      on:click={() => {
+        if (confirm('Soll dieser Leihvorgang wirklich gelöscht werden?')) {
+          database
+            .removeDoc(rental)
+            .then(() => notifier.success('Leihvorgang gelöscht!'))
+            .then(close)
+            .catch((error) => {
+              console.error(error);
+              notifier.danger('Leihvorgang konnte nicht gelöscht werden!', 6000);
+            });
+        }
+      }}>Leihvorgang Löschen</button>
+    <button class="button-save" on:click={saveInDatabase}>Speichern</button>
   </div>
 </div>

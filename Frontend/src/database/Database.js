@@ -35,6 +35,15 @@ class Database {
     return this.database.get(id);
   }
 
+  newId() {
+    return this.database
+      .allDocs({ include_docs: false })
+      .then(docs => {
+        const ids = docs.rows.map(row => parseInt(row.id))
+        return String(Math.max(...ids) + 1);
+      })
+  }
+
   fetchByAttribute(attribute, value, ignoreCase = true) {
     const equal = (val1, val2) => {
       if (!val1) val1 = "";
@@ -55,8 +64,16 @@ class Database {
   updateDoc(updatedDoc) {
     return this.database.get(updatedDoc._id).then((doc) => {
       updatedDoc._rev = doc._rev;
-      return this.database.put(updatedDoc);
+      return this.createDoc(updatedDoc);
     });
+  }
+
+  createDoc(doc) {
+    return this.database.put(doc);
+  }
+
+  removeDoc(doc) {
+    return this.database.remove(doc._id, doc._rev);
   }
 
   cancelSyncAndChangeListener() {
