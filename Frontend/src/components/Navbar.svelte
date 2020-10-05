@@ -48,7 +48,7 @@
     </li>
     <li>
       <a class={page === 1 ? 'active' : ''} href="/" on:click|preventDefault={() => (page = 1)}>
-        Produkte
+        Gegenstände
       </a>
     </li>
     <li>
