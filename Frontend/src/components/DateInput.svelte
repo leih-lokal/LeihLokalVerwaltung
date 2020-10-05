@@ -1,6 +1,6 @@
 <script>
   import Datepicker from "svelte-calendar";
-  import { saveParseStringToTimeMillis } from "../utils/utils";
+  import { saveParseStringToTimeMillis, saveParseTimestampToString } from "../utils/utils";
 
   const daysOfWeek = [
     ["Sonntag", "So"],
@@ -31,8 +31,10 @@
     date.setMonth(date.getMonth() + 2);
   }
 
-  // TODO: handle 01.01.1970
   export let selectedDateString;
+
+  let isNone =
+    !selectedDateString || selectedDateString == "" || selectedDateString === "01.01.1970";
 </script>
 
 <style>
@@ -56,5 +58,12 @@
   format={'#{d}.#{m}.#{Y}'}
   start={new Date(2018, 1, 1)}
   end={inTwoMonths()}>
-  <input type="text" value={selectedDateString} disabled />
+  <input
+    type="text"
+    value={isNone ? '-' : selectedDateString}
+    disabled={!isNone}
+    on:click|once={() => {
+      selectedDateString = saveParseTimestampToString(new Date().getTime());
+      isNone = false;
+    }} />
 </Datepicker>
