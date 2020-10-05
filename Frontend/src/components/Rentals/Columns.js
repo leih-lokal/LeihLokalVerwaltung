@@ -38,7 +38,7 @@ export default [
     sort: (value) => saveParseStringToInt(value),
   },
   {
-    title: "Name",
+    title: "Kunde Name",
     key: "name",
   },
   {
