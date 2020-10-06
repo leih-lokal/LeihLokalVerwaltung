@@ -1,6 +1,5 @@
 <script>
   import EditCustomerPopup from "./EditCustomerPopup.svelte";
-  import { CustomerDatabase } from "../../database/Database.js";
   import Table from "../Table/Table.svelte";
   import columns from "./Columns.js";
   import AddNewItemButton from "../AddNewItemButton.svelte";
@@ -10,18 +9,18 @@
   const openStyledModal = getContext("openStyledModal");
 </script>
 
-<DatabaseReader database={CustomerDatabase} let:rows={loadedRows}>
+<DatabaseReader database={getContext('customerDatabase')} let:rows={loadedRows}>
   <Table
     rows={loadedRows}
     {columns}
     onRowClicked={(row) => openStyledModal(EditCustomerPopup, {
         customer: row,
-        database: CustomerDatabase,
+        database: getContext('customerDatabase'),
       })} />
 </DatabaseReader>
 
 <AddNewItemButton
   on:click={() => openStyledModal(EditCustomerPopup, {
-      database: CustomerDatabase,
+      database: getContext('customerDatabase'),
       createNewCustomer: true,
     })} />

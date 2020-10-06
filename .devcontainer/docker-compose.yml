@@ -1,8 +1,9 @@
 version: "3.4"
 
 x-common-variables: &common-variables
-  COUCHDB_USER: user
-  COUCHDB_PASSWORD: password
+  COUCHDB_USER: "user"
+  COUCHDB_PASSWORD: "password"
+  DEV: "true"
 
 services:
   frontend:
@@ -22,7 +23,7 @@ services:
       - 35729:35729
       - 5000:5000
 
-    environment: 
+    environment:
       <<: *common-variables
       COUCHDB_HOST: 127.0.0.1:5984
 

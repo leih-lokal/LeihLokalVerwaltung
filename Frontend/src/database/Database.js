@@ -9,20 +9,26 @@ class Database {
   syncHandler;
   replicationHandler;
   cacheInBrowser;
+  name;
 
   constructor(name, cacheInBrowser = false) {
     this.cacheInBrowser = cacheInBrowser;
     this.changeCallback = (updatedDocs) => { };
+    this.name = name;
+  }
 
+  connect() {
     this.remoteDatabase = new PouchDB(
-      `http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_HOST}/${name}`
+      `http://${process.env.COUCHDB_USER}:${localStorage.getItem("password")}@${process.env.COUCHDB_HOST}/${this.name}`
     );
 
-    if (cacheInBrowser) {
+    if (this.cacheInBrowser) {
       this.database = new PouchDB(name);
     } else {
       this.database = this.remoteDatabase;
     }
+
+    return this.remoteDatabase.info();
   }
 
   fetchAllDocs() {
@@ -114,6 +120,4 @@ class Database {
   }
 }
 
-export const CustomerDatabase = new Database("customers");
-export const ItemDatabase = new Database("items");
-export const RentalDatabase = new Database("rentals");
+export default Database;

@@ -6,8 +6,16 @@
   import Rentals from "./Rentals/Rentals.svelte";
   import Modal from "svelte-simple-modal";
   import StyledModal from "./StyledModal.svelte";
+  import PasswordDialog from "./PasswordDialog.svelte";
+  import DatabaseConnection from "../database/DatabaseConnection.svelte";
+  import { passwordStore } from "../database/passwordStore";
 
   let page = 0;
+  let authenticated = false;
+
+  passwordStore.subscribe((value) => {
+    if (value && value.length > 0) authenticated = true;
+  });
 </script>
 
 <style>
@@ -27,18 +35,24 @@
   }
 </style>
 
-<NotificationDisplay />
-<div class="container">
-  <Navbar bind:page />
-  <Modal>
-    <StyledModal>
-      {#if page === 0}
-        <Customers />
-      {:else if page === 1}
-        <Items />
-      {:else if page === 2}
-        <Rentals />
-      {/if}
-    </StyledModal>
-  </Modal>
-</div>
+{#if authenticated}
+  <NotificationDisplay />
+  <div class="container">
+    <Navbar bind:page />
+    <Modal>
+      <StyledModal>
+        <DatabaseConnection>
+          {#if page === 0}
+            <Customers />
+          {:else if page === 1}
+            <Items />
+          {:else if page === 2}
+            <Rentals />
+          {/if}
+        </DatabaseConnection>
+      </StyledModal>
+    </Modal>
+  </div>
+{:else}
+  <PasswordDialog />
+{/if}

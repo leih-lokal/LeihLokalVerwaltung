@@ -1,6 +1,5 @@
 <script>
   import { getContext, onDestroy } from "svelte";
-  import { ItemDatabase, CustomerDatabase } from "../../database/Database.js";
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
   import DateInput from "../DateInput.svelte";
@@ -123,7 +122,8 @@
           type="text"
           id="item_id"
           name="item_id"
-          on:input={(event) => ItemDatabase.fetchById(event.target.value)
+          on:input={(event) => getContext('itemDatabase')
+              .fetchById(event.target.value)
               .then((item) => {
                 rental.item_name = item.item_name;
                 rental.deposit = item.deposit;
@@ -140,7 +140,8 @@
           id="item_name"
           name="item_name"
           bind:value={rental.item_name}
-          on:input={(event) => ItemDatabase.fetchByAttribute('item_name', event.target.value)
+          on:input={(event) => getContext('itemDatabase')
+              .fetchByAttribute('item_name', event.target.value)
               .then((item) => {
                 rental.item_id = item._id;
                 rental.item_name = item.item_name;
@@ -157,7 +158,8 @@
           id="customer_id"
           name="customer_id"
           bind:value={rental.customer_id}
-          on:input={(event) => CustomerDatabase.fetchById(event.target.value)
+          on:input={(event) => getContext('customerDatabase')
+              .fetchById(event.target.value)
               .then((item) => (rental.name = item.lastname))
               .catch((error) => console.debug(error))} />
       </div>
@@ -170,7 +172,8 @@
           id="name"
           name="name"
           bind:value={rental.name}
-          on:input={(event) => CustomerDatabase.fetchByAttribute('lastname', event.target.value)
+          on:input={(event) => getContext('customerDatabase')
+              .fetchByAttribute('lastname', event.target.value)
               .then((item) => {
                 rental.customer_id = item._id;
                 rental.name = item.lastname;
