@@ -13,12 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        with:
-          path: Frontend/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Frontend/package-lock.json') }}
-
       - name: Install and Build 🔧
         working-directory: Frontend
         env:
