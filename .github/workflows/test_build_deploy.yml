@@ -16,8 +16,8 @@ jobs:
       - name: Install and Build 🔧
         working-directory: Frontend
         env:
-          COUCHDB_USER: "produser"
-          COUCHDB_HOST: "127.0.0.1:5984"
+          COUCHDB_USER: "user"
+          COUCHDB_HOST: "leihlokal.ddns.net:5984"
         run: |
           npm ci
           npm run build
