@@ -24,6 +24,7 @@ export default {
           COUCHDB_USER: process.env.COUCHDB_USER,
           COUCHDB_PASSWORD: process.env.COUCHDB_PASSWORD,
           COUCHDB_HOST: process.env.COUCHDB_HOST,
+          COUCHDB_SSL: process.env.COUCHDB_SSL,
           DEV: process.env.DEV
         },
       }),
