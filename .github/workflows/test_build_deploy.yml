@@ -18,6 +18,7 @@ jobs:
         env:
           COUCHDB_USER: "user"
           COUCHDB_HOST: "leihlokal.ddns.net:5984"
+          COUCHDB_SSL: "true"
         run: |
           npm ci
           npm run build

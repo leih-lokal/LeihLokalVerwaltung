@@ -19,7 +19,7 @@ class Database {
 
   connect() {
     this.remoteDatabase = new PouchDB(
-      `http://${process.env.COUCHDB_USER}:${localStorage.getItem("password")}@${process.env.COUCHDB_HOST}/${this.name}`
+      `${process.env.COUCHDB_SSL ? "https" : "http"}://${process.env.COUCHDB_USER}:${localStorage.getItem("password")}@${process.env.COUCHDB_HOST}/${this.name}`
     );
 
     if (this.cacheInBrowser) {
