@@ -7,20 +7,21 @@
   import { getContext } from "svelte";
 
   const openStyledModal = getContext("openStyledModal");
+  const customerDatabase = getContext("customerDatabase");
 </script>
 
-<DatabaseReader database={getContext('customerDatabase')} let:rows={loadedRows}>
+<DatabaseReader database={customerDatabase} let:rows={loadedRows}>
   <Table
     rows={loadedRows}
     {columns}
     onRowClicked={(row) => openStyledModal(EditCustomerPopup, {
         customer: row,
-        database: getContext('customerDatabase'),
+        database: customerDatabase,
       })} />
 </DatabaseReader>
 
 <AddNewItemButton
   on:click={() => openStyledModal(EditCustomerPopup, {
-      database: getContext('customerDatabase'),
+      database: customerDatabase,
       createNewCustomer: true,
     })} />
