@@ -19,7 +19,7 @@
     "@testing-library/jest-dom": "^5.11.0",
     "@testing-library/svelte": "^3.0.0",
     "@testing-library/user-event": "^12.1.6",
-    "babel-jest": "^26.3.0",
+    "babel-jest": "^26.5.2",
     "jest": "^26.4.0",
     "jest-svelte-events": "^1.0.5",
     "pouchdb-browser": "^7.2.1",
