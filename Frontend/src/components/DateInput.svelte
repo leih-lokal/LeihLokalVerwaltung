@@ -61,9 +61,10 @@
   <input
     type="text"
     value={isNone ? '-' : selectedDateString}
-    disabled={!isNone}
     on:click|once={() => {
-      selectedDateString = saveParseTimestampToString(new Date().getTime());
-      isNone = false;
+      if(isNone){
+        selectedDateString = saveParseTimestampToString(new Date().getTime());
+        isNone = false;
+      }
     }} />
 </Datepicker>
