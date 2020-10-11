@@ -1,5 +1,5 @@
 <script>
-  import TableHeader from "../../src/components/Table/TableHeader";
+  import TableHeader from "../../src/components/Table/TableHeader.svelte";
   export let rows = [];
   export let columns;
 </script>

@@ -1,5 +1,5 @@
 <script>
-  import WithPagination from "../../src/components/Table/WithPagination";
+  import WithPagination from "../../src/components/Table/WithPagination.svelte";
   export let currentPage = 0;
   export let preprocessedRows = [];
 </script>

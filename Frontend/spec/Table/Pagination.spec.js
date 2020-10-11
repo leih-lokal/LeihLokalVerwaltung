@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent } from "@testing-library/svelte";
-import WithPagination from "../../src/components/Table/WithPagination";
-import PaginationTest from "./PaginationTest";
+import WithPagination from "../../src/components/Table/WithPagination.svelte";
+import PaginationTest from "./PaginationTest.svelte";
 
 const WINDOW_HEIGHT = 800;
 const ROW_HEIGHT = 40;
@@ -25,11 +25,10 @@ beforeEach(() => {
 });
 
 describe("Table Pagination", () => {
-
   it("should show a button for the first page", () => {
     const { getByText } = render(WithPagination, {
       props: {
-        rows: testRows
+        rows: testRows,
       },
     });
 
@@ -60,11 +59,10 @@ describe("Table Pagination", () => {
   `(
     "should display buttons $expectedButtons for $pages pages when on page $currentPage",
     async ({ pages, currentPage, expectedButtons }) => {
-
       const { container, getByText } = render(WithPagination, {
         props: {
           rows: generateTestRows(pages * ROWS_PER_PAGE),
-          rowHeight: ROW_HEIGHT
+          rowHeight: ROW_HEIGHT,
         },
       });
 
@@ -87,7 +85,7 @@ describe("Table Pagination", () => {
 
     const { container, getByText } = render(PaginationTest, {
       props: {
-        preprocessedRows: generateTestRows(NUMBER_OF_TEST_PAGES * ROWS_PER_PAGE)
+        preprocessedRows: generateTestRows(NUMBER_OF_TEST_PAGES * ROWS_PER_PAGE),
       },
     });
 
@@ -105,7 +103,7 @@ describe("Table Pagination", () => {
       expect(container.querySelector(".currentPage")).toHaveTextContent(i);
       expect(rows.length).toEqual(expectedRowsPerPage[i].length);
       expect(rows.map((row) => row.textContent)).toMatchObject(expectedRowsPerPage[i]);
-      await fireEvent.click(getByText("»"))
+      await fireEvent.click(getByText("»"));
     }
   });
 
@@ -114,7 +112,7 @@ describe("Table Pagination", () => {
 
     const { container, getByText } = render(PaginationTest, {
       props: {
-        preprocessedRows: generateTestRows(NUMBER_OF_TEST_PAGES * ROWS_PER_PAGE)
+        preprocessedRows: generateTestRows(NUMBER_OF_TEST_PAGES * ROWS_PER_PAGE),
       },
     });
 
@@ -130,7 +128,7 @@ describe("Table Pagination", () => {
 
     const { container, getByText } = render(PaginationTest, {
       props: {
-        preprocessedRows: generateTestRows(NUMBER_OF_TEST_PAGES * ROWS_PER_PAGE)
+        preprocessedRows: generateTestRows(NUMBER_OF_TEST_PAGES * ROWS_PER_PAGE),
       },
     });
 
@@ -156,5 +154,4 @@ describe("Table Pagination", () => {
       expect(container.querySelector(".currentPage")).toHaveTextContent(i - 1);
     }
   });
-
 });

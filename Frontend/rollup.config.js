@@ -25,7 +25,7 @@ export default {
           COUCHDB_PASSWORD: process.env.COUCHDB_PASSWORD,
           COUCHDB_HOST: process.env.COUCHDB_HOST,
           COUCHDB_SSL: process.env.COUCHDB_SSL,
-          DEV: process.env.DEV
+          DEV: process.env.DEV,
         },
       }),
     }),
@@ -45,7 +45,7 @@ export default {
     // https://github.com/rollup/plugins/tree/master/packages/commonjs
     resolve({
       browser: true,
-      dedupe: ['svelte', 'svelte/transition', 'svelte/internal']
+      dedupe: ["svelte", "svelte/transition", "svelte/internal"],
     }),
     commonjs(),
     nodePolyfills(),
