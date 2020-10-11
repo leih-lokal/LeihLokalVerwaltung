@@ -260,4 +260,86 @@ describe(TableHeader.name, () => {
 
     expectSortedByColumnKey(rowsIn(container), "lastname");
   });
+
+  it("shows a sort indicator on current sort column header", async () => {
+    const { container, getByText } = render(TableHeaderTest, {
+      props: {
+        columns: columns,
+        rows: rows,
+      },
+    });
+
+    const expectToIndicateSort = (colNumber, order) => {
+      if (order === "none") {
+        container
+          .querySelectorAll(`th:nth-of-type(${colNumber}) > span`)
+          .forEach((icon) => expect(icon.classList).not.toContain("visible"));
+      } else {
+        const asc = order === "asc";
+        expect(
+          container.querySelector(
+            `th:nth-of-type(${colNumber}) > .sort-indicator-${asc ? "down" : "up"}`
+          ).classList
+        ).toContain("visible");
+        expect(
+          container.querySelector(
+            `th:nth-of-type(${colNumber}) > .sort-indicator-${asc ? "up" : "down"}`
+          ).classList
+        ).not.toContain("visible");
+      }
+    };
+
+    expectToIndicateSort(1, "asc");
+    expectToIndicateSort(2, "none");
+    expectToIndicateSort(3, "none");
+
+    await fireEvent.click(getByText("Id"));
+
+    expectToIndicateSort(1, "desc");
+    expectToIndicateSort(2, "none");
+    expectToIndicateSort(3, "none");
+
+    await fireEvent.click(getByText("Nachname"));
+
+    expectToIndicateSort(1, "none");
+    expectToIndicateSort(2, "asc");
+    expectToIndicateSort(3, "none");
+
+    await fireEvent.click(getByText("Nachname"));
+
+    expectToIndicateSort(1, "none");
+    expectToIndicateSort(2, "desc");
+    expectToIndicateSort(3, "none");
+
+    await fireEvent.click(getByText("Nachname"));
+
+    expectToIndicateSort(1, "none");
+    expectToIndicateSort(2, "asc");
+    expectToIndicateSort(3, "none");
+  });
+
+  it("shows a sort indicator on mouseOver", async () => {
+    const { container } = render(TableHeaderTest, {
+      props: {
+        columns: columns,
+        rows: rows,
+      },
+    });
+
+    expect(container.querySelector("th:nth-of-type(2) > .sort-indicator").classList).not.toContain(
+      "visible"
+    );
+
+    await fireEvent.mouseOver(container.querySelector("th:nth-of-type(2)"));
+
+    expect(container.querySelector("th:nth-of-type(2) > .sort-indicator").classList).toContain(
+      "visible"
+    );
+
+    await fireEvent.mouseOut(container.querySelector("th:nth-of-type(2)"));
+
+    expect(container.querySelector("th:nth-of-type(2) > .sort-indicator").classList).not.toContain(
+      "visible"
+    );
+  });
 });

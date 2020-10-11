@@ -1,4 +1,9 @@
 <script>
+  import Icon from 'fa-svelte'
+  import { faSort } from '@fortawesome/free-solid-svg-icons/faSort'
+  import { faSortDown } from '@fortawesome/free-solid-svg-icons/faSortDown'
+  import { faSortUp } from '@fortawesome/free-solid-svg-icons/faSortUp'
+
   export let rows = [];
   export let columns = [];
 
@@ -28,6 +33,7 @@
     });
   }
 
+  let showSortIndicator = {};
   $: columns.forEach((column) => {
     if (column.sort) {
       columnSortFunctions[column.key] = column.sort;
@@ -51,12 +57,23 @@
   th {
     cursor: pointer;
   }
+
+  span {
+    display: none;
+  }
+
+  .visible { display: inline;}
 </style>
 
 <thead>
   <tr>
     {#each columns as col}
       <th
+        on:mouseout={() => showSortIndicator = {}}
+        on:mouseover={() => {
+          showSortIndicator = {};
+          showSortIndicator[col.key] = true;
+        }}
         on:click={() => {
           if (lastClickedColumnKey == col.key) lastSortReverse = !lastSortReverse;
           else lastSortReverse = false;
@@ -64,6 +81,9 @@
           sortRowsByColumnKey(lastClickedColumnKey, lastSortReverse);
         }}>
         {col.title}
+        <span class="sort-indicator" class:visible={showSortIndicator[col.key] && lastClickedColumnKey !== col.key}><Icon icon={faSort}/></span>
+        <span class="sort-indicator-up" class:visible={lastClickedColumnKey === col.key && lastSortReverse}><Icon icon={faSortUp}/></span>
+        <span class="sort-indicator-down" class:visible={lastClickedColumnKey === col.key && !lastSortReverse}><Icon icon={faSortDown}/></span>
       </th>
     {/each}
   </tr>
