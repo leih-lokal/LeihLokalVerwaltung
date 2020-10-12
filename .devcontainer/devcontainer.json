@@ -11,7 +11,12 @@
   },
 
   // Add the IDs of extensions you want installed when the container is created.
-  "extensions": ["dbaeumer.vscode-eslint", "svelte.svelte-vscode", "ms-python.python"],
+  "extensions": [
+	"dbaeumer.vscode-eslint",
+	"svelte.svelte-vscode",
+	"ms-python.python",
+	"esbenp.prettier-vscode"
+],
 
   // Uncomment the next line if you want start specific services in your Docker Compose config.
   "runServices": ["frontend", "couchdb"],
