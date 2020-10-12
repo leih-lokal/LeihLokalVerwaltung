@@ -35,6 +35,8 @@
   export let rental = {};
   export let database;
   export let createNewRental = false;
+  export let customerDatabase;
+  export let itemDatabase;
 
   if (createNewRental) {
     rental.rented_on = new Date().getTime();
@@ -122,7 +124,7 @@
           type="text"
           id="item_id"
           name="item_id"
-          on:input={(event) => getContext('itemDatabase')
+          on:input={(event) => itemDatabase
               .fetchById(event.target.value)
               .then((item) => {
                 rental.item_name = item.item_name;
@@ -140,7 +142,7 @@
           id="item_name"
           name="item_name"
           bind:value={rental.item_name}
-          on:input={(event) => getContext('itemDatabase')
+          on:input={(event) => itemDatabase
               .fetchByAttribute('item_name', event.target.value)
               .then((item) => {
                 rental.item_id = item._id;
@@ -158,7 +160,7 @@
           id="customer_id"
           name="customer_id"
           bind:value={rental.customer_id}
-          on:input={(event) => getContext('customerDatabase')
+          on:input={(event) => customerDatabase
               .fetchById(event.target.value)
               .then((item) => (rental.name = item.lastname))
               .catch((error) => console.debug(error))} />
@@ -172,7 +174,7 @@
           id="name"
           name="name"
           bind:value={rental.name}
-          on:input={(event) => getContext('customerDatabase')
+          on:input={(event) => customerDatabase
               .fetchByAttribute('lastname', event.target.value)
               .then((item) => {
                 rental.customer_id = item._id;

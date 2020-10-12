@@ -8,6 +8,8 @@
 
   const openStyledModal = getContext("openStyledModal");
   const rentalDatabase = getContext("rentalDatabase");
+  const itemDatabase = getContext("itemDatabase");
+  const customerDatabase = getContext("customerDatabase");
 </script>
 
 <DatabaseReader database={rentalDatabase} let:rows={loadedRows}>
@@ -23,5 +25,7 @@
 <AddNewItemButton
   on:click={() => openStyledModal(EditRentalPopup, {
       database: rentalDatabase,
+      customerDatabase: customerDatabase,
+      itemDatabase: itemDatabase,
       createNewRental: true,
     })} />
