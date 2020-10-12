@@ -40,7 +40,11 @@
     {columns}
     let:rows={preprocessedRows}
     let:columns>
-    <WithSearchBox rows={preprocessedRows} let:rows={preprocessedFilteredRows} bind:currentPage>
+    <WithSearchBox
+      {columns}
+      rows={preprocessedRows}
+      let:rows={preprocessedFilteredRows}
+      bind:currentPage>
       <div in:fade>
         <WithPagination
           rows={preprocessedFilteredRows}

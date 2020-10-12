@@ -1,6 +1,7 @@
 <script>
   export let rows = [];
   export let currentPage = 0;
+  export let columns;
 
   let searchTerm = "";
   let filteredRows = [];
@@ -11,8 +12,12 @@
 
     let searchTermParts = formattedSearchTerm.split(" ");
     const searchPart = searchTermParts.shift();
+
     let result = rowsToFilter.filter((row) =>
-      Object.values(row).some((value) => String(value).toLowerCase().includes(searchPart))
+      Object.keys(row)
+        .filter((key) => columns.map((column) => column.key).includes(key))
+        .map((key) => String(row[key]).toLowerCase())
+        .some((value) => value.includes(searchPart))
     );
 
     currentPage = 0;

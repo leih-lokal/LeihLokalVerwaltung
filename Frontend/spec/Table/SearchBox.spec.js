@@ -21,11 +21,24 @@ const rows = [
   },
 ];
 
+const columns = [
+  {
+    key: "column1",
+  },
+  {
+    key: "column2",
+  },
+  {
+    key: "column3",
+  },
+];
+
 describe("Table Searchbox", () => {
   it("should not filter rows on initial render", () => {
     const { container } = render(SearchBoxTest, {
       props: {
         preprocessedRows: rows,
+        columns: columns,
       },
     });
 
@@ -37,6 +50,7 @@ describe("Table Searchbox", () => {
     const { container, getByRole } = render(SearchBoxTest, {
       props: {
         preprocessedRows: rows,
+        columns: columns,
       },
     });
 
@@ -50,6 +64,7 @@ describe("Table Searchbox", () => {
     const { container, getByRole } = render(SearchBoxTest, {
       props: {
         preprocessedRows: rows,
+        columns: columns,
       },
     });
 
@@ -64,6 +79,7 @@ describe("Table Searchbox", () => {
     const { container, getByRole } = render(SearchBoxTest, {
       props: {
         preprocessedRows: rows,
+        columns: columns,
       },
     });
 
@@ -81,6 +97,7 @@ describe("Table Searchbox", () => {
     const { container, getByRole } = render(SearchBoxTest, {
       props: {
         preprocessedRows: rows,
+        columns: columns,
       },
     });
 
@@ -98,6 +115,7 @@ describe("Table Searchbox", () => {
     const { container, getByRole } = render(SearchBoxTest, {
       props: {
         preprocessedRows: rows,
+        columns: columns,
       },
     });
 
@@ -116,6 +134,7 @@ describe("Table Searchbox", () => {
     const { container, getByRole } = render(SearchBoxTest, {
       props: {
         preprocessedRows: rows,
+        columns: columns,
       },
     });
 
@@ -134,6 +153,7 @@ describe("Table Searchbox", () => {
       props: {
         preprocessedRows: rows,
         currentPage: 1,
+        columns: columns,
       },
     });
 
