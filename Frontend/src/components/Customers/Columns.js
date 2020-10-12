@@ -32,6 +32,7 @@ export default [
   {
     title: "Postleitzahl",
     key: "postal_code",
+    search: "exclude",
   },
   {
     title: "Stadt",
