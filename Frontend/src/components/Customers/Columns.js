@@ -9,6 +9,7 @@ export default [
     title: "Id",
     key: "_id",
     sort: (value) => saveParseStringToInt(value),
+    search: "from_beginning",
   },
   {
     title: "Nachname",
@@ -26,6 +27,7 @@ export default [
     title: "Hausnummer",
     key: "house_number",
     sort: (value) => saveParseStringToInt(value),
+    search: "exclude",
   },
   {
     title: "Postleitzahl",
