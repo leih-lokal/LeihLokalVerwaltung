@@ -34,6 +34,8 @@
           const value = String(row[key]).toLowerCase();
           const column = columns.filter((column) => column.key === key)[0];
           if (column.search && column.search === "from_beginning") {
+            if (!scoreMapping[row._id]) scoreMapping[row._id] = 0;
+            scoreMapping[row._id] += 1;
             return value.startsWith(searchPart);
           } else {
             return value.includes(searchPart);
@@ -44,9 +46,10 @@
       if (valuesContainingSearchPart.length === 0) {
         return false;
       } else {
-        let score = 0;
-        valuesContainingSearchPart.forEach((value) => (score += similarity(searchPart, value)));
-        scoreMapping[row._id] = score;
+        if (!scoreMapping[row._id]) scoreMapping[row._id] = 0;
+        valuesContainingSearchPart.forEach(
+          (value) => (scoreMapping[row._id] += similarity(searchPart, value))
+        );
         return true;
       }
     });
