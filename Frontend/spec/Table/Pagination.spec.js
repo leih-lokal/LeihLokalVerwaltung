@@ -7,32 +7,32 @@ const WINDOW_HEIGHT = 800;
 const ROW_HEIGHT = 40;
 const ROWS_PER_PAGE = Math.round((WINDOW_HEIGHT - 230) / ROW_HEIGHT);
 
-var testRows;
+const generateTestRows = (n) => [...Array(n).keys()].map((i) => ({ id: i }));
 
-function generateTestRows(number) {
-  let rows = [];
-  for (let i = 0; i < number; i++) {
-    rows.push({
-      id: i,
-    });
-  }
-  return rows;
-}
-
-beforeEach(() => {
+beforeAll(() => {
   global.innerHeight = WINDOW_HEIGHT;
-  testRows = generateTestRows(1000);
 });
 
 describe("Table Pagination", () => {
-  it("should show a button for the first page", () => {
-    const { getByText } = render(WithPagination, {
+  const renderPagination = (component, numPages) => {
+    const { container, getByText } = render(component, {
       props: {
-        rows: testRows,
+        rows: generateTestRows(numPages * ROWS_PER_PAGE),
+        rowHeight: ROW_HEIGHT,
       },
     });
+    return {
+      button: (text) => getByText(text),
+      buttons: () => Array.from(container.querySelectorAll("a")),
+      clickButton: async (text) => await fireEvent.click(getByText(text)),
+      rows: () => Array.from(container.querySelectorAll(".row")),
+      currentPageIndicator: () => container.querySelector(".currentPage"),
+    };
+  };
 
-    expect(getByText("1")).toBeInTheDocument();
+  it("should show a button for the first page", () => {
+    const { button } = renderPagination(WithPagination, 10);
+    expect(button("1")).toBeInTheDocument();
   });
 
   test.each`
@@ -59,18 +59,13 @@ describe("Table Pagination", () => {
   `(
     "should display buttons $expectedButtons for $pages pages when on page $currentPage",
     async ({ pages, currentPage, expectedButtons }) => {
-      const { container, getByText } = render(WithPagination, {
-        props: {
-          rows: generateTestRows(pages * ROWS_PER_PAGE),
-          rowHeight: ROW_HEIGHT,
-        },
-      });
+      const { buttons, clickButton } = renderPagination(WithPagination, pages);
 
       for (let i = 1; i < currentPage; i++) {
-        await fireEvent.click(getByText("»"));
+        await clickButton("»");
       }
 
-      let elements = Array.from(container.querySelectorAll("a"));
+      let elements = buttons();
 
       // remove << and >> buttons
       elements.shift();
@@ -83,11 +78,10 @@ describe("Table Pagination", () => {
   it("should emit rows of current page", async () => {
     const NUMBER_OF_TEST_PAGES = 50;
 
-    const { container, getByText } = render(PaginationTest, {
-      props: {
-        preprocessedRows: generateTestRows(NUMBER_OF_TEST_PAGES * ROWS_PER_PAGE),
-      },
-    });
+    const { rows, clickButton, currentPageIndicator } = renderPagination(
+      PaginationTest,
+      NUMBER_OF_TEST_PAGES
+    );
 
     let expectedRowsPerPage = [];
     for (let i = 0; i < NUMBER_OF_TEST_PAGES * ROWS_PER_PAGE; i += ROWS_PER_PAGE) {
@@ -99,59 +93,54 @@ describe("Table Pagination", () => {
     }
 
     for (let i = 0; i < NUMBER_OF_TEST_PAGES; i++) {
-      let rows = Array.from(container.querySelectorAll(".row"));
-      expect(container.querySelector(".currentPage")).toHaveTextContent(i);
-      expect(rows.length).toEqual(expectedRowsPerPage[i].length);
-      expect(rows.map((row) => row.textContent)).toMatchObject(expectedRowsPerPage[i]);
-      await fireEvent.click(getByText("»"));
+      expect(currentPageIndicator()).toHaveTextContent(i);
+      expect(rows().length).toEqual(expectedRowsPerPage[i].length);
+      expect(rows().map((row) => row.textContent)).toMatchObject(expectedRowsPerPage[i]);
+      await clickButton("»");
     }
   });
 
   it("should disable left or right button when on first or last page", async () => {
     const NUMBER_OF_TEST_PAGES = 50;
 
-    const { container, getByText } = render(PaginationTest, {
-      props: {
-        preprocessedRows: generateTestRows(NUMBER_OF_TEST_PAGES * ROWS_PER_PAGE),
-      },
-    });
+    const { clickButton, currentPageIndicator } = renderPagination(
+      PaginationTest,
+      NUMBER_OF_TEST_PAGES
+    );
 
-    for (let i = 0; i < NUMBER_OF_TEST_PAGES + 10; i++) await fireEvent.click(getByText("«"));
-    expect(container.querySelector(".currentPage")).toHaveTextContent(0);
+    for (let i = 0; i < NUMBER_OF_TEST_PAGES + 10; i++) await clickButton("«");
+    expect(currentPageIndicator()).toHaveTextContent(0);
 
-    for (let i = 0; i < NUMBER_OF_TEST_PAGES + 10; i++) await fireEvent.click(getByText("»"));
-    expect(container.querySelector(".currentPage")).toHaveTextContent(NUMBER_OF_TEST_PAGES - 1);
+    for (let i = 0; i < NUMBER_OF_TEST_PAGES + 10; i++) await clickButton("»");
+    expect(currentPageIndicator()).toHaveTextContent(NUMBER_OF_TEST_PAGES - 1);
   });
 
   it("should change the current page on button click", async () => {
     const NUMBER_OF_TEST_PAGES = 50;
 
-    const { container, getByText } = render(PaginationTest, {
-      props: {
-        preprocessedRows: generateTestRows(NUMBER_OF_TEST_PAGES * ROWS_PER_PAGE),
-      },
-    });
+    const { clickButton, currentPageIndicator } = renderPagination(
+      PaginationTest,
+      NUMBER_OF_TEST_PAGES
+    );
 
     // click button for last page
-    await fireEvent.click(getByText(NUMBER_OF_TEST_PAGES + ""));
-    expect(container.querySelector(".currentPage")).toHaveTextContent(NUMBER_OF_TEST_PAGES - 1);
+    await clickButton(NUMBER_OF_TEST_PAGES + "");
+    expect(currentPageIndicator()).toHaveTextContent(NUMBER_OF_TEST_PAGES - 1);
 
     // click button for first page
-    await fireEvent.click(getByText("1"));
-    expect(container.querySelector(".currentPage")).toHaveTextContent(0);
+    await clickButton("1");
+    expect(currentPageIndicator()).toHaveTextContent(0);
 
     // click button for every page
-    await fireEvent.click(getByText("1"));
     for (let i = 1; i <= NUMBER_OF_TEST_PAGES; i++) {
-      await fireEvent.click(getByText(i + ""));
-      expect(container.querySelector(".currentPage")).toHaveTextContent(i - 1);
+      await clickButton(i + "");
+      expect(currentPageIndicator()).toHaveTextContent(i - 1);
     }
 
     // click button for every second page
-    await fireEvent.click(getByText("1"));
     for (let i = 1; i <= NUMBER_OF_TEST_PAGES; i += 2) {
-      await fireEvent.click(getByText(i + ""));
-      expect(container.querySelector(".currentPage")).toHaveTextContent(i - 1);
+      await clickButton(i + "");
+      expect(currentPageIndicator()).toHaveTextContent(i - 1);
     }
   });
 });

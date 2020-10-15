@@ -1,10 +1,11 @@
 <script>
   import WithPagination from "../../src/components/Table/WithPagination.svelte";
   export let currentPage = 0;
-  export let preprocessedRows = [];
+  export let rows = [];
+  export let rowHeight = 40;
 </script>
 
-<WithPagination rows={preprocessedRows} let:rows={rowsOfCurrentPage} bind:currentPage>
+<WithPagination {rowHeight} {rows} let:rows={rowsOfCurrentPage} bind:currentPage>
   {#each rowsOfCurrentPage as row}
     <div class="row">{JSON.stringify(row)}</div>
   {/each}

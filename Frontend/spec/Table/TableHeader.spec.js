@@ -152,194 +152,148 @@ function expectSortedByColumnKey(
 describe(TableHeader.name, () => {
   const rowsIn = (container) => Array.from(container.querySelectorAll(".row"));
 
-  it("renders all column headers", () => {
-    const { container } = render(TableHeader, {
+  const renderWithColumns = (columns) => {
+    const { container, getByText } = render(TableHeaderTest, {
       props: {
         columns: columns,
+        rows: rows,
       },
     });
 
-    const columnHeaderElements = container.querySelectorAll("thead > tr > th");
-    expect(columnHeaderElements.length).toEqual(columns.length);
-    columnHeaderElements.forEach((headerElement, i) => {
+    return {
+      tableRows: () => rowsIn(container),
+      clickOnColumnHeader: async (title) => await fireEvent.click(getByText(title)),
+      mouseOverColumnHeader: async (title) => await fireEvent.mouseOver(getByText(title)),
+      mouseOutColumnHeader: async (title) => await fireEvent.mouseOut(getByText(title)),
+      columnHeaders: () => container.querySelectorAll("thead > tr > th"),
+    };
+  };
+
+  it("renders all column headers", () => {
+    const { columnHeaders } = renderWithColumns(columns);
+
+    expect(columnHeaders().length).toEqual(columns.length);
+    columnHeaders().forEach((headerElement, i) => {
       expect(headerElement.textContent).toContain(columns[i].title);
     });
   });
 
   it("sorts all rows by id on initial render", () => {
-    const { container } = render(TableHeaderTest, {
-      props: {
-        columns: columns,
-        rows: rows,
-      },
-    });
-
-    expectSortedByColumnKey(rowsIn(container), "_id");
+    const { tableRows } = renderWithColumns(columns);
+    expectSortedByColumnKey(tableRows(), "_id");
   });
 
   it("sorts all rows by column on click", async () => {
-    const { container, getByText } = render(TableHeaderTest, {
-      props: {
-        columns: columns,
-        rows: rows,
-      },
-    });
+    const { tableRows, clickOnColumnHeader } = renderWithColumns(columns);
 
-    await fireEvent.click(getByText("Nachname"));
-    expectSortedByColumnKey(rowsIn(container), "lastname");
+    await clickOnColumnHeader("Nachname");
+    expectSortedByColumnKey(tableRows(), "lastname");
 
-    await fireEvent.click(getByText("Vorname"));
-    expectSortedByColumnKey(rowsIn(container), "firstname");
+    await clickOnColumnHeader("Vorname");
+    expectSortedByColumnKey(tableRows(), "firstname");
 
-    await fireEvent.click(getByText("Id"));
-    expectSortedByColumnKey(rowsIn(container), "_id");
+    await clickOnColumnHeader("Id");
+    expectSortedByColumnKey(tableRows(), "_id");
   });
 
-  it("inverts order of rows on click", async () => {
-    const { container, getByText } = render(TableHeaderTest, {
-      props: {
-        columns: columns,
-        rows: rows,
-      },
-    });
+  it("inverts sort order on second click", async () => {
+    const { tableRows, clickOnColumnHeader } = renderWithColumns(columns);
 
     for (let i = 0; i < 10; i++) {
-      expectSortedByColumnKey(rowsIn(container), "_id", i % 2 !== 0);
-      await fireEvent.click(getByText("Id"));
+      expectSortedByColumnKey(tableRows(), "_id", i % 2 !== 0);
+      await clickOnColumnHeader("Id");
     }
 
-    await fireEvent.click(getByText("Vorname"));
     for (let i = 0; i < 10; i++) {
-      expectSortedByColumnKey(rowsIn(container), "firstname", i % 2 !== 0);
-      await fireEvent.click(getByText("Vorname"));
+      await clickOnColumnHeader("Vorname");
+      expectSortedByColumnKey(tableRows(), "firstname", i % 2 !== 0);
     }
 
-    await fireEvent.click(getByText("Nachname"));
     for (let i = 0; i < 10; i++) {
-      expectSortedByColumnKey(rowsIn(container), "lastname", i % 2 !== 0);
-      await fireEvent.click(getByText("Nachname"));
+      await clickOnColumnHeader("Nachname");
+      expectSortedByColumnKey(tableRows(), "lastname", i % 2 !== 0);
     }
 
-    await fireEvent.click(getByText("Id"));
-    await fireEvent.click(getByText("Id"));
-    await fireEvent.click(getByText("Nachname"));
-    expectSortedByColumnKey(rowsIn(container), "lastname");
-    await fireEvent.click(getByText("Id"));
-    expectSortedByColumnKey(rowsIn(container), "_id");
+    await clickOnColumnHeader("Id");
+    await clickOnColumnHeader("Id");
+    await clickOnColumnHeader("Nachname");
+    expectSortedByColumnKey(tableRows(), "lastname");
+    await clickOnColumnHeader("Id");
+    expectSortedByColumnKey(tableRows(), "_id");
   });
 
   it("applies sort function defined in columns", () => {
-    const { container } = render(TableHeaderTest, {
-      props: {
-        columns: columnsWithSortFunction,
-        rows: rows,
-      },
-    });
-
-    expectSortedByColumnKey(rowsIn(container), "_id", false, parseInt);
+    const { tableRows } = renderWithColumns(columnsWithSortFunction);
+    expectSortedByColumnKey(tableRows(), "_id", false, parseInt);
   });
 
   it("initially sorts descending as defined in columns", () => {
-    const { container } = render(TableHeaderTest, {
-      props: {
-        columns: columnsWithInitialSortLastnameDesc,
-        rows: rows,
-      },
-    });
-
-    expectSortedByColumnKey(rowsIn(container), "lastname", true);
+    const { tableRows } = renderWithColumns(columnsWithInitialSortLastnameDesc);
+    expectSortedByColumnKey(tableRows(), "lastname", true);
   });
 
   it("initially sorts ascending as defined in columns", () => {
-    const { container } = render(TableHeaderTest, {
-      props: {
-        columns: columnsWithInitialSortLastnameAsc,
-        rows: rows,
-      },
-    });
-
-    expectSortedByColumnKey(rowsIn(container), "lastname");
+    const { tableRows } = renderWithColumns(columnsWithInitialSortLastnameAsc);
+    expectSortedByColumnKey(tableRows(), "lastname");
   });
 
-  it("shows a sort indicator on current sort column header", async () => {
-    const { container, getByText } = render(TableHeaderTest, {
-      props: {
-        columns: columns,
-        rows: rows,
-      },
-    });
+  describe("sort indicators", () => {
+    const expectToIndicateSort = (colHeaders, expectedIndicationDirections) => {
+      const sortIndicator = (colHeader) => colHeader.querySelector(".sort-indicator");
+      const sortIndicatorUp = (colHeader) => colHeader.querySelector(".sort-indicator-up");
+      const sortIndicatorDown = (colHeader) => colHeader.querySelector(".sort-indicator-down");
 
-    const expectToIndicateSort = (colNumber, order) => {
-      if (order === "none") {
-        container
-          .querySelectorAll(`th:nth-of-type(${colNumber}) > span`)
-          .forEach((icon) => expect(icon.classList).not.toContain("visible"));
-      } else {
-        const asc = order === "asc";
-        expect(
-          container.querySelector(
-            `th:nth-of-type(${colNumber}) > .sort-indicator-${asc ? "down" : "up"}`
-          ).classList
-        ).toContain("visible");
-        expect(
-          container.querySelector(
-            `th:nth-of-type(${colNumber}) > .sort-indicator-${asc ? "up" : "down"}`
-          ).classList
-        ).not.toContain("visible");
-      }
+      expectedIndicationDirections.forEach((expectedIndicationDirection, i) => {
+        if (expectedIndicationDirection === "none") {
+          expect(sortIndicator(colHeaders[i]).classList).not.toContain("visible");
+          expect(sortIndicatorUp(colHeaders[i]).classList).not.toContain("visible");
+          expect(sortIndicatorDown(colHeaders[i]).classList).not.toContain("visible");
+        } else if (expectedIndicationDirection === "asc") {
+          expect(sortIndicator(colHeaders[i]).classList).not.toContain("visible");
+          expect(sortIndicatorUp(colHeaders[i]).classList).not.toContain("visible");
+          expect(sortIndicatorDown(colHeaders[i]).classList).toContain("visible");
+        } else if (expectedIndicationDirection === "desc") {
+          expect(sortIndicator(colHeaders[i]).classList).not.toContain("visible");
+          expect(sortIndicatorUp(colHeaders[i]).classList).toContain("visible");
+          expect(sortIndicatorDown(colHeaders[i]).classList).not.toContain("visible");
+        } else if (expectedIndicationDirection === "both") {
+          expect(sortIndicator(colHeaders[i]).classList).toContain("visible");
+          expect(sortIndicatorUp(colHeaders[i]).classList).not.toContain("visible");
+          expect(sortIndicatorDown(colHeaders[i]).classList).not.toContain("visible");
+        }
+      });
     };
 
-    expectToIndicateSort(1, "asc");
-    expectToIndicateSort(2, "none");
-    expectToIndicateSort(3, "none");
+    it("shows a sort indicator on current sort column header", async () => {
+      const { columnHeaders, clickOnColumnHeader } = renderWithColumns(columns);
 
-    await fireEvent.click(getByText("Id"));
+      expectToIndicateSort(columnHeaders(), ["asc", "none", "none"]);
 
-    expectToIndicateSort(1, "desc");
-    expectToIndicateSort(2, "none");
-    expectToIndicateSort(3, "none");
+      await clickOnColumnHeader("Id");
+      expectToIndicateSort(columnHeaders(), ["desc", "none", "none"]);
 
-    await fireEvent.click(getByText("Nachname"));
+      await clickOnColumnHeader("Nachname");
+      expectToIndicateSort(columnHeaders(), ["none", "asc", "none"]);
 
-    expectToIndicateSort(1, "none");
-    expectToIndicateSort(2, "asc");
-    expectToIndicateSort(3, "none");
+      await clickOnColumnHeader("Nachname");
+      expectToIndicateSort(columnHeaders(), ["none", "desc", "none"]);
 
-    await fireEvent.click(getByText("Nachname"));
-
-    expectToIndicateSort(1, "none");
-    expectToIndicateSort(2, "desc");
-    expectToIndicateSort(3, "none");
-
-    await fireEvent.click(getByText("Nachname"));
-
-    expectToIndicateSort(1, "none");
-    expectToIndicateSort(2, "asc");
-    expectToIndicateSort(3, "none");
-  });
-
-  it("shows a sort indicator on mouseOver", async () => {
-    const { container } = render(TableHeaderTest, {
-      props: {
-        columns: columns,
-        rows: rows,
-      },
+      await clickOnColumnHeader("Nachname");
+      expectToIndicateSort(columnHeaders(), ["none", "asc", "none"]);
     });
 
-    expect(container.querySelector("th:nth-of-type(2) > .sort-indicator").classList).not.toContain(
-      "visible"
-    );
+    it("shows a sort indicator on mouseOver", async () => {
+      const { columnHeaders, mouseOverColumnHeader, mouseOutColumnHeader } = renderWithColumns(
+        columns
+      );
 
-    await fireEvent.mouseOver(container.querySelector("th:nth-of-type(2)"));
+      expectToIndicateSort(columnHeaders(), ["asc", "none", "none"]);
 
-    expect(container.querySelector("th:nth-of-type(2) > .sort-indicator").classList).toContain(
-      "visible"
-    );
+      await mouseOverColumnHeader("Nachname");
+      expectToIndicateSort(columnHeaders(), ["asc", "both", "none"]);
 
-    await fireEvent.mouseOut(container.querySelector("th:nth-of-type(2)"));
-
-    expect(container.querySelector("th:nth-of-type(2) > .sort-indicator").classList).not.toContain(
-      "visible"
-    );
+      await mouseOutColumnHeader("Nachname");
+      expectToIndicateSort(columnHeaders(), ["asc", "none", "none"]);
+    });
   });
 });

@@ -16,38 +16,42 @@ const columns = [
   },
 ];
 
-const item = {
+const row = {
   _id: 0,
   firstname: "pljrtbr",
   lastname: "sdvbtrr",
 };
 
 describe("TableRow", () => {
-  it("displays a value for each column", () => {
-    const { container } = render(TableRow, {
+  const renderTableRow = () => {
+    const { container, component } = render(TableRow, {
       props: {
         columns: columns,
-        item: item,
+        item: row,
       },
     });
 
-    const valueElements = container.querySelectorAll("tr > td");
-    expect(valueElements.length).toEqual(columns.length);
-    valueElements.forEach((valueElement, i) => {
-      expect(valueElement).toHaveTextContent(item[columns[i].key]);
+    return {
+      cells: container.querySelectorAll("tr > td"),
+      clickOnRow: async () => await fireEvent.click(container.querySelector("tr")),
+      component: component,
+    };
+  };
+
+  it("displays a value for each column", () => {
+    const { cells } = renderTableRow();
+
+    expect(cells.length).toEqual(columns.length);
+    cells.forEach((cell, i) => {
+      expect(cell).toHaveTextContent(row[columns[i].key]);
     });
   });
 
   it("fires click event", async () => {
-    const { component, container } = render(TableRow, {
-      props: {
-        columns: columns,
-        item: item,
-      },
-    });
+    const { component, clickOnRow } = renderTableRow();
 
     listen(component, "click");
-    await fireEvent.click(container.querySelector("tr"));
+    await clickOnRow();
     expect(component).toHaveFiredEvent("click");
   });
 });
