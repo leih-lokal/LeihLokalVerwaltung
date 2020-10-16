@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-env": "^7.12.1",
     "@beyonk/svelte-notifications": "^3.1.0",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@rollup/plugin-babel": "^5.2.1",
