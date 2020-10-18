@@ -8,7 +8,7 @@
 
   const { close } = getContext("simple-modal");
 
-  const heard_options = ["Internet", "Freunde & Bekannte", "Zeitungen / Medien"];
+  const heard_options = ["Internet", "Freunde & Bekannte", "Zeitung / Medien"];
 
   function convertInputsForDb() {
     customer.registration_date = saveParseStringToTimeMillis(registration_date_string);

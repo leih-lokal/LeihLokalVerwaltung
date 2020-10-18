@@ -196,7 +196,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-label"><label for="to_return_on">Zurückzugeben am</label></div>
+      <div class="col-label"><label for="to_return_on">Zurückerwartet am</label></div>
       <div class="col-input">
         <DateInput bind:selectedDateString={to_return_on_string} />
       </div>
