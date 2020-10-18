@@ -1,8 +1,8 @@
 <script>
-  import Icon from 'fa-svelte'
-  import { faSort } from '@fortawesome/free-solid-svg-icons/faSort'
-  import { faSortDown } from '@fortawesome/free-solid-svg-icons/faSortDown'
-  import { faSortUp } from '@fortawesome/free-solid-svg-icons/faSortUp'
+  import Icon from "fa-svelte/src/Icon.svelte";
+  import { faSort } from "@fortawesome/free-solid-svg-icons/faSort";
+  import { faSortDown } from "@fortawesome/free-solid-svg-icons/faSortDown";
+  import { faSortUp } from "@fortawesome/free-solid-svg-icons/faSortUp";
 
   export let rows = [];
   export let columns = [];
@@ -62,14 +62,16 @@
     display: none;
   }
 
-  .visible { display: inline;}
+  .visible {
+    display: inline;
+  }
 </style>
 
 <thead>
   <tr>
     {#each columns as col}
       <th
-        on:mouseout={() => showSortIndicator = {}}
+        on:mouseout={() => (showSortIndicator = {})}
         on:mouseover={() => {
           showSortIndicator = {};
           showSortIndicator[col.key] = true;
@@ -81,9 +83,18 @@
           sortRowsByColumnKey(lastClickedColumnKey, lastSortReverse);
         }}>
         {col.title}
-        <span class="sort-indicator" class:visible={showSortIndicator[col.key] && lastClickedColumnKey !== col.key}><Icon icon={faSort}/></span>
-        <span class="sort-indicator-up" class:visible={lastClickedColumnKey === col.key && lastSortReverse}><Icon icon={faSortUp}/></span>
-        <span class="sort-indicator-down" class:visible={lastClickedColumnKey === col.key && !lastSortReverse}><Icon icon={faSortDown}/></span>
+        <span
+          class="sort-indicator"
+          class:visible={showSortIndicator[col.key] && lastClickedColumnKey !== col.key}><Icon
+            icon={faSort} /></span>
+        <span
+          class="sort-indicator-up"
+          class:visible={lastClickedColumnKey === col.key && lastSortReverse}><Icon
+            icon={faSortUp} /></span>
+        <span
+          class="sort-indicator-down"
+          class:visible={lastClickedColumnKey === col.key && !lastSortReverse}><Icon
+            icon={faSortDown} /></span>
       </th>
     {/each}
   </tr>

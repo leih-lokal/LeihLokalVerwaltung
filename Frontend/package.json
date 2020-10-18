@@ -5,7 +5,8 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --port 5000",
-    "test": "rollup -c rollup.test.config.js && jest",
+    "test": "jest",
+    "test:watch": "npm run test -- --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
   },
   "devDependencies": {
@@ -21,6 +22,7 @@
     "@testing-library/jest-dom": "^5.11.0",
     "@testing-library/svelte": "^3.0.0",
     "@testing-library/user-event": "^12.1.7",
+    "babel-jest": "^26.5.2",
     "babel-plugin-rewire-exports": "^2.2.0",
     "fa-svelte": "^3.1.0",
     "jest": "^26.5.3",
@@ -39,7 +41,7 @@
     "svelte-calendar": "^1.5.0",
     "svelte-checkbox": "^1.0.0-beta.9",
     "svelte-component-double": "^0.7.5",
-    "svelte-jest": "^0.3.1",
+    "svelte-jester": "^1.1.5",
     "svelte-loading-spinners": "^0.1.1",
     "svelte-select": "^3.12.0",
     "svelte-simple-modal": "^0.6.1"
