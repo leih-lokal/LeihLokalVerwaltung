@@ -1,15 +1,16 @@
 <script>
   import TableRow from "./TableRow.svelte";
   import TableHeader from "./TableHeader.svelte";
-  import WithSearchBox from "./WithSearchBox.svelte";
-  import WithDataPreprocessor from "./WithDataPreprocessor.svelte";
+  import WithSearchFilterBar from "./WithSearchFilterBar.svelte";
   import WithPagination from "./WithPagination.svelte";
+  import LoadingAnimation from "./LoadingAnimation.svelte";
   import { fade } from "svelte/transition";
 
   export let onRowClicked = (row) => {};
   export let rows = [];
   export let columns = [];
   export let rowHeight = 40;
+  export let filters = {};
 
   let currentPage = 0;
 
@@ -35,19 +36,13 @@
 </style>
 
 <div class="container">
-  <WithDataPreprocessor
-    rows={sortedUnprocessedRows}
-    {columns}
-    let:rows={preprocessedRows}
-    let:columns>
-    <WithSearchBox
-      {columns}
-      rows={preprocessedRows}
-      let:rows={preprocessedFilteredRows}
-      bind:currentPage>
+  {#if rows.length === 0}
+    <LoadingAnimation />
+  {:else}
+    <WithSearchFilterBar {columns} {rows} {filters} let:rows={filteredRows} bind:currentPage>
       <div in:fade>
         <WithPagination
-          rows={preprocessedFilteredRows}
+          rows={filteredRows}
           let:rows={rowsOfCurrentPage}
           bind:currentPage
           {rowHeight}>
@@ -63,6 +58,6 @@
           </table>
         </WithPagination>
       </div>
-    </WithSearchBox>
-  </WithDataPreprocessor>
+    </WithSearchFilterBar>
+  {/if}
 </div>

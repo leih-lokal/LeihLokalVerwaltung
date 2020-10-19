@@ -1,11 +1,11 @@
 <script>
-  import WithSearchBox from "../../src/components/Table/WithSearchBox.svelte";
+  import WithSearchFilterBar from "../../src/components/Table/WithSearchFilterBar.svelte";
   export let currentPage = 0;
   export let preprocessedRows = [];
   export let columns;
 </script>
 
-<WithSearchBox
+<WithSearchFilterBar
   {columns}
   rows={preprocessedRows}
   let:rows={preprocessedFilteredRows}
@@ -14,4 +14,4 @@
     <div class="row">{JSON.stringify(row)}</div>
   {/each}
   <div class="currentPage">{currentPage}</div>
-</WithSearchBox>
+</WithSearchFilterBar>
