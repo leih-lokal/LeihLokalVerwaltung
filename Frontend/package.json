@@ -10,7 +10,7 @@
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.4",
+    "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.10.4",
     "@beyonk/svelte-notifications": "^3.1.0",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
