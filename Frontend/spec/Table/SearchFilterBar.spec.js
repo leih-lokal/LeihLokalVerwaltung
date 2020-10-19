@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
-import SearchBoxTest from "./SearchBoxTest.svelte";
+import SearchFilterBarTest from "./SearchFilterBarTest.svelte";
 
 const rows = [
   {
@@ -52,7 +52,7 @@ const columns = [
 
 describe("Table Searchbox", () => {
   const renderSearchBox = async (currentPage = 0, searchText) => {
-    const { container, getByRole } = render(SearchBoxTest, {
+    const { container } = render(SearchFilterBarTest, {
       props: {
         preprocessedRows: rows,
         columns: columns,
@@ -60,7 +60,7 @@ describe("Table Searchbox", () => {
       },
     });
 
-    const input = getByRole("textbox");
+    const input = container.querySelector(".searchInput");
 
     const searchFor = async (text) => {
       await userEvent.type(input, "{selectall}{del}");

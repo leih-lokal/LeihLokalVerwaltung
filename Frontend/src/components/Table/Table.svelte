@@ -1,8 +1,7 @@
 <script>
   import TableRow from "./TableRow.svelte";
   import TableHeader from "./TableHeader.svelte";
-  import WithSearchBox from "./WithSearchBox.svelte";
-  import WithDataPreprocessor from "./WithDataPreprocessor.svelte";
+  import WithSearchFilterBar from "./WithSearchFilterBar.svelte";
   import WithPagination from "./WithPagination.svelte";
   import { fade } from "svelte/transition";
 
@@ -10,6 +9,7 @@
   export let rows = [];
   export let columns = [];
   export let rowHeight = 40;
+  export let filters = {};
 
   let currentPage = 0;
 
@@ -35,34 +35,20 @@
 </style>
 
 <div class="container">
-  <WithDataPreprocessor
-    rows={sortedUnprocessedRows}
-    {columns}
-    let:rows={preprocessedRows}
-    let:columns>
-    <WithSearchBox
-      {columns}
-      rows={preprocessedRows}
-      let:rows={preprocessedFilteredRows}
-      bind:currentPage>
-      <div in:fade>
-        <WithPagination
-          rows={preprocessedFilteredRows}
-          let:rows={rowsOfCurrentPage}
-          bind:currentPage
-          {rowHeight}>
-          <table>
-            <TableHeader {columns} bind:rows={sortedUnprocessedRows} />
-            {#each rowsOfCurrentPage as row}
-              <TableRow
-                {columns}
-                item={row}
-                {rowHeight}
-                on:click={() => onRowClicked(rows.find((x) => x._id === row._id))} />
-            {/each}
-          </table>
-        </WithPagination>
-      </div>
-    </WithSearchBox>
-  </WithDataPreprocessor>
+  <WithSearchFilterBar {columns} {rows} {filters} let:rows={filteredRows} bind:currentPage>
+    <div in:fade>
+      <WithPagination rows={filteredRows} let:rows={rowsOfCurrentPage} bind:currentPage {rowHeight}>
+        <table>
+          <TableHeader {columns} bind:rows={sortedUnprocessedRows} />
+          {#each rowsOfCurrentPage as row}
+            <TableRow
+              {columns}
+              item={row}
+              {rowHeight}
+              on:click={() => onRowClicked(rows.find((x) => x._id === row._id))} />
+          {/each}
+        </table>
+      </WithPagination>
+    </div>
+  </WithSearchFilterBar>
 </div>

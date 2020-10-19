@@ -2,6 +2,15 @@
   export let columns = [];
   export let item = {};
   export let rowHeight = 40;
+
+  const displayValue = (colKey, item) => {
+    if (!colKey in item) {
+      return "";
+    } else {
+      const displayFunction = columns.find((col) => col.key === colKey)["display"];
+      return displayFunction ? displayFunction(item[colKey]) : item[colKey];
+    }
+  };
 </script>
 
 <style>
@@ -37,14 +46,12 @@
 
 <tr on:click style="--rowHeight: {rowHeight}px">
   {#each columns as col}
-    {#if col.isImageUrl && item[col.key]}
-      <td>
-        <img src={item[col.key]} alt="item" />
-      </td>
-    {:else}
-      <td>
-        <div class="cell">{col.key in item ? item[col.key] : ''}</div>
-      </td>
-    {/if}
+    <td>
+      {#if col.isImageUrl}
+        {#if item[col.key]}<img src={item[col.key]} alt="item" />{/if}
+      {:else}
+        <div class="cell">{displayValue(col.key, item)}</div>
+      {/if}
+    </td>
   {/each}
 </tr>

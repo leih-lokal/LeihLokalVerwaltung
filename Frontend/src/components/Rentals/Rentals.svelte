@@ -2,6 +2,7 @@
   import EditRentalPopup from "./EditRentalPopup.svelte";
   import Table from "../Table/Table.svelte";
   import columns from "./Columns.js";
+  import filters from "./Filters.js";
   import AddNewItemButton from "../AddNewItemButton.svelte";
   import DatabaseReader from "../../database/DatabaseReader.svelte";
   import { getContext } from "svelte";
@@ -16,6 +17,7 @@
   <Table
     rows={loadedRows}
     {columns}
+    {filters}
     onRowClicked={(row) => openStyledModal(EditRentalPopup, {
         rental: row,
         database: rentalDatabase,

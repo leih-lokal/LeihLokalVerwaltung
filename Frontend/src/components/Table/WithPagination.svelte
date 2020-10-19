@@ -7,7 +7,7 @@
   let pages = [];
   let pageRows = [];
 
-  $: rowsPerPage = Math.round((window.innerHeight - 230) / rowHeight);
+  $: rowsPerPage = Math.round((window.innerHeight - 240) / rowHeight);
 
   // split data in pages for display
   function paginateRows(rows, rowsPerPage) {

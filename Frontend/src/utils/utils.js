@@ -1,7 +1,11 @@
 function saveParseTimestampToString(millis) {
   const date = new Date(millis);
   if (isNaN(date) || date.getTime() === 0) return "";
-  else return `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(2, 0)}.${date.getFullYear()}`;
+  else
+    return `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(
+      2,
+      0
+    )}.${date.getFullYear()}`;
 }
 
 function saveParseStringToTimeMillis(maybeDateString) {
@@ -19,7 +23,12 @@ function saveParseStringToInt(maybeInt) {
 }
 
 function saveParseStringToBoolean(maybeBoolean) {
-  return ['true', 'ja'].includes(String(maybeBoolean).toLowerCase());
+  return ["true", "ja"].includes(String(maybeBoolean).toLowerCase());
 }
 
-export { saveParseTimestampToString, saveParseStringToInt, saveParseStringToTimeMillis, saveParseStringToBoolean };
+export {
+  saveParseTimestampToString,
+  saveParseStringToInt,
+  saveParseStringToTimeMillis,
+  saveParseStringToBoolean,
+};
