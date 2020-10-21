@@ -45,7 +45,6 @@
 
   if (createNew) {
     $items.then((items) => (doc._id = Math.max(...items.map((items) => parseInt(items._id))) + 1));
-    $itemDb.newId().then((id) => (doc._id = id));
     doc.added = new Date().getTime();
   }
 
