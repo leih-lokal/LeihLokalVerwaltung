@@ -3,7 +3,7 @@
   import EditCustomerPopup from "./EditCustomerPopup.svelte";
   import columns from "./Columns.js";
   import filters from "./Filters.js";
-  import { customers } from "../../database/stores";
+  import { customers } from "../../../utils/stores";
 </script>
 
 <DatabaseTableEditor {columns} {filters} rowStore={customers} popupComponent={EditCustomerPopup} />

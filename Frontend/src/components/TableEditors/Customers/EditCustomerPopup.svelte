@@ -1,11 +1,11 @@
 <script>
   import { getContext, onDestroy } from "svelte";
-  import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
+  import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
   import Checkbox from "svelte-checkbox";
   import Select from "svelte-select";
-  import DateInput from "../DateInput.svelte";
-  import { customerDb } from "../../database/stores";
+  import DateInput from "../../Input/DateInput.svelte";
+  import { customerDb } from "../../../utils/stores";
 
   const { close } = getContext("simple-modal");
 

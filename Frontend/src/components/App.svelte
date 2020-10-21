@@ -1,14 +1,14 @@
 <script>
   import { NotificationDisplay } from "@beyonk/svelte-notifications";
-  import Navbar from "./Navbar.svelte";
-  import Customers from "./Customers/Customers.svelte";
-  import Items from "./Items/Items.svelte";
-  import Rentals from "./Rentals/Rentals.svelte";
+  import Navbar from "./Layout/Navbar.svelte";
+  import Customers from "./TableEditors/Customers/Customers.svelte";
+  import Items from "./TableEditors/Items/Items.svelte";
+  import Rentals from "./TableEditors/Rentals/Rentals.svelte";
   import Modal from "svelte-simple-modal";
-  import StyledModal from "./StyledModal.svelte";
-  import PasswordDialog from "./PasswordDialog.svelte";
-  import DatabaseConnection from "../database/DatabaseConnection.svelte";
-  import { passwordStore } from "../database/stores";
+  import StyledModal from "./Layout/StyledModal.svelte";
+  import PasswordDialog from "./Input/PasswordDialog.svelte";
+  import DatabaseConnection from "./database/DatabaseConnection.svelte";
+  import { passwordStore } from "../utils/stores";
 
   let page = 0;
   let authenticated = false;

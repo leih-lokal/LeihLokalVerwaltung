@@ -1,7 +1,7 @@
 <script>
-  import AddNewItemButton from "./AddNewItemButton.svelte";
-  import Table from "./Table/Table.svelte";
-  import LoadingAnimation from "./Table/LoadingAnimation.svelte";
+  import AddNewItemButton from "../Input/AddNewItemButton.svelte";
+  import Table from "../Table/Table.svelte";
+  import LoadingAnimation from "../Table/LoadingAnimation.svelte";
   import { getContext } from "svelte";
 
   export let columns;

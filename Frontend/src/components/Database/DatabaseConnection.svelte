@@ -9,7 +9,7 @@
     itemDb as itemDbStore,
     customerDb as customerDbStore,
     rentalDb as rentalDbStore,
-  } from "./stores";
+  } from "../../utils/stores";
 
   const databases = [new Database("customers"), new Database("items"), new Database("rentals")];
   const dbStores = [customerDbStore, itemDbStore, rentalDbStore];

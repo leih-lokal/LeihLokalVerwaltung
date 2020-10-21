@@ -1,4 +1,4 @@
-import { saveParseTimestampToString, saveParseStringToInt } from "../../utils/utils.js";
+import { saveParseTimestampToString, saveParseStringToInt } from "../../../utils/utils.js";
 
 export default [
   {

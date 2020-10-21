@@ -1,9 +1,9 @@
 <script>
   import { getContext, onDestroy } from "svelte";
-  import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../utils/utils.js";
+  import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
-  import DateInput from "../DateInput.svelte";
-  import { rentalDb, customerDb, itemDb } from "../../database/stores";
+  import DateInput from "../../Input/DateInput.svelte";
+  import { rentalDb, customerDb, itemDb } from "../../../utils/stores";
 
   const { close } = getContext("simple-modal");
 

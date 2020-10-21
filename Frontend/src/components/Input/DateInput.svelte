@@ -1,6 +1,6 @@
 <script>
   import Datepicker from "svelte-calendar";
-  import { saveParseStringToTimeMillis, saveParseTimestampToString } from "../utils/utils";
+  import { saveParseStringToTimeMillis, saveParseTimestampToString } from "../../utils/utils";
 
   const daysOfWeek = [
     ["Sonntag", "So"],
@@ -62,7 +62,7 @@
     type="text"
     value={isNone ? '-' : selectedDateString}
     on:click|once={() => {
-      if(isNone){
+      if (isNone) {
         selectedDateString = saveParseTimestampToString(new Date().getTime());
         isNone = false;
       }

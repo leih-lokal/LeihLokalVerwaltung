@@ -1,5 +1,5 @@
 <script>
-  import { passwordStore } from "../database/stores";
+  import { passwordStore } from "../../utils/stores";
 
   let value = localStorage.getItem("password");
 
