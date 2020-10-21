@@ -2,7 +2,7 @@ import {
   saveParseStringToBoolean,
   saveParseTimestampToString,
   saveParseStringToInt,
-} from "../../utils/utils.js";
+} from "../../../utils/utils.js";
 
 export default [
   {

@@ -1,0 +1,9 @@
+<script>
+  import DatabaseTableEditor from "../DatabaseTableEditor.svelte";
+  import EditItemPopup from "./EditItemPopup.svelte";
+  import columns from "./Columns.js";
+  import filters from "./Filters.js";
+  import { items } from "../../../utils/stores";
+</script>
+
+<DatabaseTableEditor {columns} {filters} rowStore={items} popupComponent={EditItemPopup} />
