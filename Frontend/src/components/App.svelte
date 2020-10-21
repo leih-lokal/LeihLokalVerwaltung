@@ -7,7 +7,7 @@
   import Modal from "svelte-simple-modal";
   import StyledModal from "./Layout/StyledModal.svelte";
   import PasswordDialog from "./Input/PasswordDialog.svelte";
-  import DatabaseConnection from "./database/DatabaseConnection.svelte";
+  import DatabaseConnection from "./Database/DatabaseConnection.svelte";
   import { passwordStore } from "../utils/stores";
 
   let page = 0;
