@@ -1,11 +1,9 @@
 const CURRENT_DATE = new Date();
 const CURRENT_TIME_MILLIS = CURRENT_DATE.getTime();
 
-const millisSince = (date) => {
-  return CURRENT_DATE - new Date(date);
-};
-
-const isSameDay = (d1, d2) => {
+const isSameDay = (m1, m2) => {
+  const d1 = new Date(m1);
+  const d2 = new Date(m2);
   return (
     d1.getFullYear() === d2.getFullYear() &&
     d1.getMonth() === d2.getMonth() &&
@@ -13,17 +11,19 @@ const isSameDay = (d1, d2) => {
   );
 };
 
+const isToday = (millis) => isSameDay(millis, CURRENT_TIME_MILLIS);
+const isBeforeDay = (millis, dayMillis) => !isSameDay(millis, dayMillis) && millis < dayMillis;
+const isBeforeToday = (millis) => isBeforeDay(millis, CURRENT_TIME_MILLIS);
+
 export default {
   filters: {
     "nicht abgeschlossen": (rental) => !rental.returned_on || rental.returned_on === 0,
-    abgeschlossen: (rental) => rental.returned_on && millisSince(rental.returned_on) > 0,
-    "Rückgabe heute": (rental) =>
-      rental.to_return_on && isSameDay(new Date(rental.to_return_on), CURRENT_DATE),
+    abgeschlossen: (rental) => rental.returned_on && rental.returned_on !== 0,
+    "Rückgabe heute": (rental) => rental.to_return_on && isToday(rental.to_return_on),
     verspätet: (rental) =>
       rental.to_return_on &&
-      ((!rental.returned_on && rental.to_return_on < CURRENT_TIME_MILLIS) ||
-        (rental.returned_on &&
-          new Date(rental.to_return_on).getTime() < new Date(rental.returned_on).getTime())),
+      ((!rental.returned_on && isBeforeToday(rental.to_return_on)) ||
+        (rental.returned_on && isBeforeDay(rental.to_return_on, rental.returned_on))),
   },
   activeByDefault: ["nicht abgeschlossen"],
 };

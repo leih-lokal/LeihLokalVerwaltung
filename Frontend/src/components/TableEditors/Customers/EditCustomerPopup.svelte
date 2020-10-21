@@ -5,7 +5,7 @@
   import Checkbox from "svelte-checkbox";
   import Select from "svelte-select";
   import DateInput from "../../Input/DateInput.svelte";
-  import { customerDb } from "../../../utils/stores";
+  import { customerDb, customers } from "../../../utils/stores";
 
   const { close } = getContext("simple-modal");
 
@@ -38,7 +38,10 @@
   export let createNew = false;
 
   if (createNew) {
-    $customerDb.newId().then((id) => (doc._id = id));
+    $customers.then(
+      (customers) =>
+        (doc._id = Math.max(...customers.map((customer) => parseInt(customer._id))) + 1)
+    );
     doc.registration_date = new Date().getTime();
   }
 

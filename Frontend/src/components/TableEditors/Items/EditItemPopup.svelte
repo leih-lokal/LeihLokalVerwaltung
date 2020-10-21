@@ -4,7 +4,7 @@
   import { notifier } from "@beyonk/svelte-notifications";
   import Select from "svelte-select";
   import DateInput from "../../Input/DateInput.svelte";
-  import { itemDb } from "../../../utils/stores";
+  import { itemDb, items } from "../../../utils/stores";
 
   const { close } = getContext("simple-modal");
 
@@ -44,6 +44,7 @@
   export let createNew = false;
 
   if (createNew) {
+    $items.then((items) => (doc._id = Math.max(...items.map((items) => parseInt(items._id))) + 1));
     $itemDb.newId().then((id) => (doc._id = id));
     doc.added = new Date().getTime();
   }

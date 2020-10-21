@@ -1,5 +1,5 @@
 import PouchDB from "pouchdb-browser";
-import PouchDBFind from 'pouchdb-find';
+import PouchDBFind from "pouchdb-find";
 PouchDB.plugin(PouchDBFind);
 
 class Database {
@@ -13,13 +13,15 @@ class Database {
 
   constructor(name, cacheInBrowser = false) {
     this.cacheInBrowser = cacheInBrowser;
-    this.changeCallback = (updatedDocs) => { };
+    this.changeCallback = (updatedDocs) => {};
     this.name = name;
   }
 
   connect() {
     this.remoteDatabase = new PouchDB(
-      `${process.env.COUCHDB_SSL ? "https" : "http"}://${process.env.COUCHDB_USER}:${localStorage.getItem("password")}@${process.env.COUCHDB_HOST}/${this.name}`
+      `${process.env.COUCHDB_SSL ? "https" : "http"}://${
+        process.env.COUCHDB_USER
+      }:${localStorage.getItem("password")}@${process.env.COUCHDB_HOST}/${this.name}`
     );
 
     if (this.cacheInBrowser) {
@@ -39,32 +41,6 @@ class Database {
 
   fetchById(id) {
     return this.database.get(id);
-  }
-
-  newId() {
-    return this.database
-      .allDocs({ include_docs: false })
-      .then(docs => {
-        const ids = docs.rows.map(row => parseInt(row.id))
-        return String(Math.max(...ids) + 1);
-      })
-  }
-
-  fetchByAttribute(attribute, value, ignoreCase = true) {
-    const equal = (val1, val2) => {
-      if (!val1) val1 = "";
-      if (!val2) val2 = "";
-      val1 = ignoreCase ? String(val1).toLocaleLowerCase() : String(val1);
-      val2 = ignoreCase ? String(val2).toLocaleLowerCase() : String(val2);
-      return val1 === val2;
-    }
-
-    return this.fetchAllDocs()
-      .then(docs => docs.filter(doc => equal(doc[attribute], value)))
-      .then(docs => {
-        if (docs.length > 0) return docs[0]
-        throw "not found"
-      })
   }
 
   updateDoc(updatedDoc) {

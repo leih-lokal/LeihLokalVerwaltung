@@ -3,7 +3,7 @@
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
   import DateInput from "../../Input/DateInput.svelte";
-  import { rentalDb, customerDb, itemDb } from "../../../utils/stores";
+  import { rentalDb, items, customers } from "../../../utils/stores";
 
   const { close } = getContext("simple-modal");
 
@@ -28,6 +28,14 @@
         close();
       });
   }
+
+  const findById = (docsPromise, id) =>
+    docsPromise.then((docs) => docs.find((doc) => doc._id === id));
+
+  const findByAttribute = (docsPromise, attrKey, attrVal) =>
+    docsPromise.then((docs) =>
+      docs.find((doc) => String(doc[attrKey]).toLowerCase() === String(attrVal).toLowerCase())
+    );
 
   onDestroy(convertInputsForDb);
 
@@ -120,14 +128,13 @@
           type="text"
           id="item_id"
           name="item_id"
-          on:input={(event) => $itemDb
-              .fetchById(event.target.value)
+          bind:value={doc.item_id}
+          on:input={(event) => findById($items, event.target.value)
               .then((item) => {
                 doc.item_name = item.item_name;
                 doc.deposit = item.deposit;
               })
-              .catch((error) => console.debug(error))}
-          bind:value={doc.item_id} />
+              .catch((error) => console.debug(error))} />
       </div>
     </div>
     <div class="row">
@@ -138,8 +145,7 @@
           id="item_name"
           name="item_name"
           bind:value={doc.item_name}
-          on:input={(event) => $itemDb
-              .fetchByAttribute('item_name', event.target.value)
+          on:input={(event) => findByAttribute($items, 'item_name', event.target.value)
               .then((item) => {
                 doc.item_id = item._id;
                 doc.item_name = item.item_name;
@@ -156,9 +162,8 @@
           id="customer_id"
           name="customer_id"
           bind:value={doc.customer_id}
-          on:input={(event) => $customerDb
-              .fetchById(event.target.value)
-              .then((item) => (doc.name = item.lastname))
+          on:input={(event) => findById($customers, event.target.value)
+              .then((customer) => (doc.name = customer.lastname))
               .catch((error) => console.debug(error))} />
       </div>
     </div>
@@ -170,11 +175,10 @@
           id="name"
           name="name"
           bind:value={doc.name}
-          on:input={(event) => $customerDb
-              .fetchByAttribute('lastname', event.target.value)
-              .then((item) => {
-                doc.customer_id = item._id;
-                doc.name = item.lastname;
+          on:input={(event) => findByAttribute($customers, 'lastname', event.target.value)
+              .then((customer) => {
+                doc.customer_id = customer._id;
+                doc.name = customer.lastname;
               })
               .catch((error) => console.debug(error))} />
       </div>

@@ -1,6 +1,6 @@
 export default {
   filters: {
-    "nicht gelöscht": (item) => item.status_on_website && item.status_on_website !== "deleted",
+    "nicht gelöscht": (item) => !item.status_on_website || item.status_on_website !== "deleted",
     gelöscht: (item) => item.status_on_website && item.status_on_website === "deleted",
     verfügbar: (item) => item.status_on_website && item.status_on_website === "instock",
     ausgeliehen: (item) => item.status_on_website && item.status_on_website === "outofstock",
