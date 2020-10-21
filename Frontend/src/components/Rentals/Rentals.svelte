@@ -1,33 +1,9 @@
 <script>
+  import DatabaseTableEditor from "../DatabaseTableEditor.svelte";
   import EditRentalPopup from "./EditRentalPopup.svelte";
-  import Table from "../Table/Table.svelte";
   import columns from "./Columns.js";
   import filters from "./Filters.js";
-  import AddNewItemButton from "../AddNewItemButton.svelte";
-  import DatabaseReader from "../../database/DatabaseReader.svelte";
-  import { getContext } from "svelte";
-
-  const openStyledModal = getContext("openStyledModal");
-  const rentalDatabase = getContext("rentalDatabase");
-  const itemDatabase = getContext("itemDatabase");
-  const customerDatabase = getContext("customerDatabase");
+  import { rentals } from "../../database/stores";
 </script>
 
-<DatabaseReader database={rentalDatabase} let:rows={loadedRows}>
-  <Table
-    rows={loadedRows}
-    {columns}
-    {filters}
-    onRowClicked={(row) => openStyledModal(EditRentalPopup, {
-        rental: row,
-        database: rentalDatabase,
-      })} />
-</DatabaseReader>
-
-<AddNewItemButton
-  on:click={() => openStyledModal(EditRentalPopup, {
-      database: rentalDatabase,
-      customerDatabase: customerDatabase,
-      itemDatabase: itemDatabase,
-      createNewRental: true,
-    })} />
+<DatabaseTableEditor {columns} {filters} rowStore={rentals} popupComponent={EditRentalPopup} />

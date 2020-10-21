@@ -1,36 +1,55 @@
 <script>
   import Database from "./Database";
-  import { onDestroy, setContext } from "svelte";
-  import { passwordStore } from "./passwordStore";
+  import { onDestroy } from "svelte";
+  import {
+    passwordStore,
+    customers,
+    items,
+    rentals,
+    itemDb as itemDbStore,
+    customerDb as customerDbStore,
+    rentalDb as rentalDbStore,
+  } from "./stores";
 
-  const CustomerDatabase = new Database("customers");
-  const ItemDatabase = new Database("items");
-  const RentalDatabase = new Database("rentals");
+  const databases = [new Database("customers"), new Database("items"), new Database("rentals")];
+  const dbStores = [customerDbStore, itemDbStore, rentalDbStore];
+  const dbItemStores = [customers, items, rentals];
 
-  setContext("customerDatabase", CustomerDatabase);
-  setContext("itemDatabase", ItemDatabase);
-  setContext("rentalDatabase", RentalDatabase);
+  dbStores.forEach((store, i) => store.set(databases[i]));
 
   const unsubscribe = passwordStore.subscribe((value) => {
     if (value && value.length > 0) {
-      Promise.all([
-        CustomerDatabase.connect(),
-        ItemDatabase.connect(),
-        RentalDatabase.connect(),
-      ]).catch(function (error) {
-        console.debug(error);
-        if (error.status === 401) {
-          alert("Falsches Passwort!");
-        } else {
-          alert("Es kann keine Verbindung zur Datenbank hergestellt werden!");
-        }
-        localStorage.removeItem("password");
-        location.reload();
-      });
+      Promise.all(databases.map((db) => db.connect()))
+        .then(() =>
+          Promise.all(
+            databases.map((db, i) =>
+              db.fetchAllDocs().then((docs) => dbItemStores[i].set(Promise.resolve(docs)))
+            )
+          )
+        )
+        .then(() => {
+          databases.forEach((db, i) =>
+            db.onChange((docs) => dbItemStores[i].set(Promise.resolve(docs)))
+          );
+          databases.forEach((db) => db.syncAndListenForChanges());
+        })
+        .catch(function (error) {
+          console.debug(error);
+          if (error.status === 401) {
+            alert("Falsches Passwort!");
+          } else {
+            alert("Es kann keine Verbindung zur Datenbank hergestellt werden!");
+          }
+          localStorage.removeItem("password");
+          location.reload();
+        });
     }
   });
 
-  onDestroy(unsubscribe);
+  onDestroy(() => {
+    unsubscribe();
+    customerDatabase.cancelSyncAndChangeListener();
+    itemDatabase.cancelSyncAndChangeListener();
+    rentalDatabase.cancelSyncAndChangeListener();
+  });
 </script>
-
-<slot />
