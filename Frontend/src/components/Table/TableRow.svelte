@@ -35,6 +35,7 @@
 
   img {
     height: 100%;
+    display: block;
   }
 
   img:hover {
