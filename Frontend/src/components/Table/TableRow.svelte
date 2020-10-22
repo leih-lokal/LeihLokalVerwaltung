@@ -3,12 +3,11 @@
   export let item = {};
   export let rowHeight = 40;
 
-  const displayValue = (colKey, item) => {
-    if (!colKey in item) {
+  const displayValue = (col, item) => {
+    if (!col.key in item) {
       return "";
     } else {
-      const displayFunction = columns.find((col) => col.key === colKey)["display"];
-      return displayFunction ? displayFunction(item[colKey]) : item[colKey];
+      return col.display ? col.display(item[col.key]) : item[col.key];
     }
   };
 </script>
@@ -49,9 +48,11 @@
   {#each columns as col}
     <td>
       {#if col.isImageUrl}
-        {#if item[col.key]}<img src={item[col.key]} alt="item" />{/if}
+        {#if item[col.key] && displayValue(col, item) !== ''}
+          <img src={displayValue(col, item)} alt="item" />
+        {/if}
       {:else}
-        <div class="cell">{displayValue(col.key, item)}</div>
+        <div class="cell">{displayValue(col, item)}</div>
       {/if}
     </td>
   {/each}

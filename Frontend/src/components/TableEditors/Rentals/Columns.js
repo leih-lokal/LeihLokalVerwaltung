@@ -2,6 +2,12 @@ import { saveParseTimestampToString, saveParseStringToInt } from "../../../utils
 
 export default [
   {
+    title: "Bild",
+    key: "item_id",
+    search: "exclude",
+    isImageUrl: true,
+  },
+  {
     title: "Gegenstand Nr",
     key: "item_id",
     sort: (value) => saveParseStringToInt(value),
