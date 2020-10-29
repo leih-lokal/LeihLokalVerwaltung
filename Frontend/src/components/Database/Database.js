@@ -1,5 +1,6 @@
 import PouchDB from "pouchdb-browser";
 import PouchDBFind from "pouchdb-find";
+import { hashString } from "../../utils/utils";
 PouchDB.plugin(PouchDBFind);
 
 class Database {
@@ -10,11 +11,13 @@ class Database {
   replicationHandler;
   cacheInBrowser;
   name;
+  columns;
 
-  constructor(name, cacheInBrowser = false) {
+  constructor(name, columns, cacheInBrowser = false) {
     this.cacheInBrowser = cacheInBrowser;
     this.changeCallback = (updatedDocs) => {};
     this.name = name;
+    this.columns = columns;
   }
 
   connect() {
@@ -30,13 +33,20 @@ class Database {
       this.database = this.remoteDatabase;
     }
 
+    //create indices for searching
+    Promise.all(
+      this.columnsToSearch().map((col) =>
+        this.database.createIndex({
+          index: { fields: [col.key] },
+        })
+      )
+    );
+
     return this.remoteDatabase.info();
   }
 
-  fetchAllDocs() {
-    return this.database
-      .allDocs({ include_docs: true })
-      .then((docs) => docs.rows.map((row) => row.doc));
+  columnsToSearch() {
+    return this.columns.filter((column) => !column.search || column.search !== "exclude");
   }
 
   fetchById(id) {
@@ -60,6 +70,155 @@ class Database {
 
   removeDoc(doc) {
     return this.database.remove(doc._id, doc._rev);
+  }
+
+  async nextUnusedId() {
+    const result = await this.database.allDocs({
+      include_docs: false,
+      limit: 999999,
+    });
+    return (
+      Math.max(
+        ...result.rows
+          .map((row) => row.id)
+          .filter((id) => !isNaN(id))
+          .map((id) => parseInt(id))
+      ) + 1
+    );
+  }
+
+  async createDesignDoc(id, mapFun) {
+    var ddoc = {
+      _id: "_design/" + id,
+      views: {
+        index: {
+          map: mapFun,
+        },
+      },
+    };
+    try {
+      await this.database.put(ddoc);
+    } catch (err) {
+      if (err.name !== "conflict") {
+        throw err;
+      }
+      // ignore if doc already exists
+    }
+  }
+
+  async query(options) {
+    let resultingIds = await this.sortedIdsMatchingAllFilters(
+      options.filterFunctions,
+      options.sortBy,
+      options.sortReverse
+    );
+    if (options.searchTerm && options.searchTerm.length > 0) {
+      const idsMatchingSearchTerm = await this.idsMatchingSearchTerm(options.searchTerm);
+      resultingIds = resultingIds.filter((id) => idsMatchingSearchTerm.includes(id));
+    }
+    return {
+      rows: await this.paginatedDocsByIds(resultingIds, options.rowsPerPage, options.currentPage),
+      count: resultingIds.length,
+    };
+  }
+
+  async idsMatchingSearchTerm(searchTerm) {
+    const formattedSearchTerm = searchTerm.toLowerCase();
+    const searchTermWords = formattedSearchTerm
+      .split(" ")
+      .map((searchTerm) => searchTerm.trim())
+      .filter((searchTerm) => searchTerm !== "");
+    const ids = await Promise.all(
+      searchTermWords.map((word) => this.idsMatchingAnySelector(this.selectorsForSearchTerm(word)))
+    );
+    return ids.reduce((a, b) => a.filter((c) => b.includes(c)));
+  }
+
+  async idsMatchingAnySelector(selectors) {
+    const result = await this.database.find({
+      fields: ["_id"],
+      limit: 999999,
+      selector: {
+        $or: selectors,
+      },
+    });
+    return result.docs.map((doc) => doc._id);
+  }
+
+  async fetchDocsByIdStartingWith(startsWith, fields) {
+    const result = await this.database.find({
+      limit: 10,
+      fields: fields,
+      selector: {
+        _id: {
+          $regex: "(?i)^(0+)?" + startsWith,
+        },
+      },
+    });
+    console.log(result.docs);
+    return result.docs;
+  }
+
+  async fetchDocByAttribute(key, valueContains) {
+    const result = await this.database.find({
+      limit: 1,
+      selector: {
+        [key]: {
+          $regex: "(?i)" + valueContains,
+        },
+      },
+    });
+    if (result.docs.length > 0) {
+      return result.docs[0];
+    }
+  }
+
+  async sortedIdsMatchingAllFilters(filterFunctions, sortBy, sortReverse) {
+    const ddocId = hashString(filterFunctions.toString() + sortBy + sortReverse);
+    await this.createDesignDoc(
+      ddocId,
+      `function (doc) {
+        if ([${filterFunctions.toString()}].every(filterFuncion => filterFuncion(doc))) {
+          const transformBeforeSort = ${
+            this.columns.find((col) => col.key === sortBy)?.sort?.toString() ?? "value => value"
+          };
+          emit(transformBeforeSort(doc.${sortBy}));
+        }
+      }`
+    );
+
+    try {
+      const result = await this.database.query(ddocId + "/index", {
+        include_docs: false,
+        descending: sortReverse,
+        limit: 999999,
+      });
+      return result.rows.map((row) => row.id);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async paginatedDocsByIds(ids, rowsPerPage, currentPage) {
+    try {
+      const result = await this.database.allDocs({
+        skip: rowsPerPage * currentPage,
+        limit: rowsPerPage,
+        include_docs: true,
+        keys: ids,
+      });
+      return result.rows.map((row) => row.doc);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  selectorsForSearchTerm(searchTerm) {
+    return this.columnsToSearch().map((column) => ({
+      [column.key]: {
+        $regex: "(?i)" + (column?.search === "from_beginning" ? "^(0+)?" : "") + searchTerm,
+      },
+    }));
   }
 
   cancelSyncAndChangeListener() {

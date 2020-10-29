@@ -1,34 +1,14 @@
 <script>
-  export let rows;
-  export let currentPage = 0;
-  export let rowHeight = 40;
+  export let numberOfPages;
+  export let currentPage;
 
   let pageButtons = [];
-  let pages = [];
-  let pageRows = [];
 
-  $: rowsPerPage = Math.round((window.innerHeight - 240) / rowHeight);
-
-  // split data in pages for display
-  function paginateRows(rows, rowsPerPage) {
-    // do not repaginate when on last page
-    if (pages.length > 1 && currentPage === pages.length - 1) return;
-
-    let newPages = [];
-    if (typeof rows === "undefined" || rows.length === 0) {
-      newPages = [[]];
-    } else {
-      for (let i = 0; i < rows.length; i += rowsPerPage) {
-        newPages.push(rows.slice(i, i + rowsPerPage));
-      }
+  function calculatePageButtons(numberOfPages) {
+    let allPages = [];
+    for (let i = 0; i < numberOfPages; i++) {
+      allPages.push(i);
     }
-    pages = newPages;
-    setPage();
-  }
-
-  // display buttons for pages
-  function calculatePageButtons() {
-    const allPages = Array.from(pages.keys());
 
     if (allPages.length === 1) {
       pageButtons = [0];
@@ -58,16 +38,21 @@
 
   function setPage(page = currentPage) {
     page = Math.max(page, 0);
-    page = Math.min(page, pages.length - 1);
+    page = Math.min(page, numberOfPages - 1);
     currentPage = page;
-    calculatePageButtons();
-    pageRows = pages.length > 0 ? pages[currentPage] : [];
+    calculatePageButtons(numberOfPages);
   }
 
-  $: paginateRows(rows, rowsPerPage);
+  $: calculatePageButtons(numberOfPages);
 </script>
 
 <style>
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
   .pagination {
     display: flex;
     flex-shrink: 0;
@@ -91,17 +76,9 @@
   .pagination a:hover:not(.active):not(.disabled) {
     background-color: #ddd;
   }
-
-  .container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
 </style>
 
 <div class="container">
-  <slot rows={pageRows} />
   <div class="pagination">
     <a href="#/" on:click={() => setPage(currentPage - 1)}>&laquo;</a>
     {#each pageButtons as page}

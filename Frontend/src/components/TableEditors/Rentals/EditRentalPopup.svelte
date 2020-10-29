@@ -2,8 +2,9 @@
   import { getContext, onDestroy } from "svelte";
   import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../../utils/utils.js";
   import { notifier } from "@beyonk/svelte-notifications";
+  import AutoComplete from "simple-svelte-autocomplete";
   import DateInput from "../../Input/DateInput.svelte";
-  import { rentalDb, items, customers } from "../../../utils/stores";
+  import { rentalDb, itemDb, customerDb } from "../../../utils/stores";
 
   const { close } = getContext("simple-modal");
 
@@ -129,10 +130,15 @@
           id="item_id"
           name="item_id"
           bind:value={doc.item_id}
-          on:input={(event) => findById($items, event.target.value)
+          on:input={(event) => $itemDb
+              .fetchDocsByIdStartingWith(parseInt(event.target.value) + '')
               .then((item) => {
-                doc.item_name = item.item_name;
-                doc.deposit = item.deposit;
+                if (item) {
+                  console.log(item);
+                  doc.item_id = item._id;
+                  doc.item_name = item.item_name;
+                  doc.deposit = item.deposit;
+                }
               })
               .catch((error) => console.debug(error))} />
       </div>
@@ -145,11 +151,14 @@
           id="item_name"
           name="item_name"
           bind:value={doc.item_name}
-          on:input={(event) => findByAttribute($items, 'item_name', event.target.value)
+          on:input={(event) => $itemDb
+              .fetchDocByAttribute('item_name', event.target.value)
               .then((item) => {
-                doc.item_id = item._id;
-                doc.item_name = item.item_name;
-                doc.deposit = item.deposit;
+                if (item) {
+                  doc.item_id = item._id;
+                  doc.item_name = item.item_name;
+                  doc.deposit = item.deposit;
+                }
               })
               .catch((error) => console.debug(error))} />
       </div>
@@ -157,14 +166,17 @@
     <div class="row">
       <div class="col-label"><label for="customer_id">Kunde Nr</label></div>
       <div class="col-input">
-        <input
-          type="text"
-          id="customer_id"
-          name="customer_id"
-          bind:value={doc.customer_id}
-          on:input={(event) => findById($customers, event.target.value)
-              .then((customer) => (doc.name = customer.lastname))
-              .catch((error) => console.debug(error))} />
+        <AutoComplete
+          searchFunction={(searchTerm) => $customerDb.fetchDocsByIdStartingWith(searchTerm, [
+              '_id',
+              'lastname',
+            ])}
+          labelFunction={(customer) => customer._id + ' - ' + customer.lastname}
+          keywordsFieldName="_id"
+          valueFieldName="_id"
+          noResultsText="nichts gefunden"
+          hideArrow={true}
+          bind:value={doc.customer_id} />
       </div>
     </div>
     <div class="row">
@@ -175,7 +187,8 @@
           id="name"
           name="name"
           bind:value={doc.name}
-          on:input={(event) => findByAttribute($customers, 'lastname', event.target.value)
+          on:input={(event) => $customerDb
+              .fetchDocByAttribute('lastname', event.target.value)
               .then((customer) => {
                 doc.customer_id = customer._id;
                 doc.name = customer.lastname;

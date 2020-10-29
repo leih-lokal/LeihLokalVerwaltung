@@ -26,9 +26,22 @@ function saveParseStringToBoolean(maybeBoolean) {
   return ["true", "ja"].includes(String(maybeBoolean).toLowerCase());
 }
 
+function hashString(text) {
+  var hash = 0,
+    i,
+    chr;
+  for (i = 0; i < text.length; i++) {
+    chr = text.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return new String(hash);
+}
+
 export {
   saveParseTimestampToString,
   saveParseStringToInt,
   saveParseStringToTimeMillis,
   saveParseStringToBoolean,
+  hashString,
 };

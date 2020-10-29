@@ -1,11 +1,11 @@
-import { saveParseStringToInt, saveParseTimestampToString } from "../../../utils/utils.js";
+import { saveParseTimestampToString } from "../../../utils/utils.js";
 
 export default [
   {
     title: "Id",
     key: "_id",
-    sort: (value) => saveParseStringToInt(value),
     search: "from_beginning",
+    sort: (value) => parseInt(value),
   },
   {
     title: "Bild",
@@ -28,6 +28,7 @@ export default [
   {
     title: "Kategorie",
     key: "category",
+    search: "exclude",
   },
   {
     title: "Pfand",
@@ -47,25 +48,23 @@ export default [
   {
     title: "Verpackung",
     key: "package",
+    search: "exclude",
   },
   {
     title: "Erfasst am",
     key: "added",
     display: (value) => saveParseTimestampToString(value),
-  },
-  {
-    title: "Anzahl Ausleihen",
-    key: "n_rented",
     search: "exclude",
-    sort: (value) => saveParseStringToInt(value),
   },
   {
     title: "Eigenschaften",
     key: "properties",
+    search: "exclude",
   },
   {
     title: "Status Webseite",
     key: "status_on_website",
+    search: "exclude",
     display: (value) => {
       if (value === "deleted") return "gelöscht";
       if (value === "instock") return "verfügbar";
