@@ -145,32 +145,13 @@ class Database {
     return result.docs.map((doc) => doc._id);
   }
 
-  async fetchDocsByIdStartingWith(startsWith, fields) {
+  async fetchDocsBySelector(selector, fields) {
     const result = await this.database.find({
       limit: 10,
       fields: fields,
-      selector: {
-        _id: {
-          $regex: "(?i)^(0+)?" + startsWith,
-        },
-      },
+      selector: selector,
     });
-    console.log(result.docs);
     return result.docs;
-  }
-
-  async fetchDocByAttribute(key, valueContains) {
-    const result = await this.database.find({
-      limit: 1,
-      selector: {
-        [key]: {
-          $regex: "(?i)" + valueContains,
-        },
-      },
-    });
-    if (result.docs.length > 0) {
-      return result.docs[0];
-    }
   }
 
   async sortedIdsMatchingAllFilters(filterFunctions, sortBy, sortReverse) {

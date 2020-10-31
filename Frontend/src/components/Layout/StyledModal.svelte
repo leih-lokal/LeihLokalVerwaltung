@@ -13,8 +13,8 @@
         closeOnOuterClick: false,
         styleWindow: {
           width: "90%",
-          "max-width": "950px",
-          height: "80%",
+          "max-width": "95%",
+          height: "90%",
           overflow: "hidden",
         },
         styleContent: {
