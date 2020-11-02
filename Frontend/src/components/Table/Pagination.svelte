@@ -5,34 +5,30 @@
   let pageButtons = [];
 
   function calculatePageButtons(numberOfPages) {
-    let allPages = [];
-    for (let i = 0; i < numberOfPages; i++) {
-      allPages.push(i);
-    }
-
-    if (allPages.length === 1) {
+    if (numberOfPages === 0) {
       pageButtons = [0];
-      return;
-    }
-
-    pageButtons = [
-      ...allPages.slice(Math.max(currentPage - 2, 0), Math.min(currentPage + 3, allPages.length)),
-    ];
-
-    if (!pageButtons.includes(0) && !pageButtons.includes(1)) {
-      if (pageButtons.includes(2)) pageButtons.unshift(1);
-      else pageButtons.unshift("...");
-      pageButtons.unshift(0);
-    } else if (!pageButtons.includes(0)) {
-      pageButtons.unshift(0);
-    }
-
-    if (!pageButtons.includes(allPages.length - 2) && !pageButtons.includes(allPages.length - 1)) {
-      if (pageButtons.includes(allPages.length - 3)) pageButtons.push(allPages.length - 2);
-      else pageButtons.push("...");
-      pageButtons.push(allPages.length - 1);
-    } else if (!pageButtons.includes(allPages.length - 1)) {
-      pageButtons.push(allPages.length - 1);
+    } else {
+      pageButtons = [
+        currentPage - 2,
+        currentPage - 1,
+        currentPage,
+        currentPage + 1,
+        currentPage + 2,
+      ];
+      if (pageButtons[0] >= 3) {
+        pageButtons = [0, "...", ...pageButtons];
+      } else {
+        while (pageButtons[0] > 0) pageButtons.unshift(pageButtons[0] - 1);
+      }
+      if (numberOfPages - 1 - pageButtons[pageButtons.length - 1] >= 3) {
+        pageButtons = [...pageButtons, "...", numberOfPages - 1];
+      } else {
+        while (pageButtons[pageButtons.length - 1] < numberOfPages - 1)
+          pageButtons.push(pageButtons[pageButtons.length - 1] + 1);
+      }
+      pageButtons = pageButtons.filter(
+        (button) => button === "..." || (button >= 0 && button < numberOfPages)
+      );
     }
   }
 
@@ -43,7 +39,7 @@
     calculatePageButtons(numberOfPages);
   }
 
-  $: calculatePageButtons(numberOfPages);
+  $: numberOfPages, setPage(currentPage);
 </script>
 
 <style>
@@ -81,12 +77,15 @@
 <div class="container">
   <div class="pagination">
     <a href="#/" on:click={() => setPage(currentPage - 1)}>&laquo;</a>
-    {#each pageButtons as page}
-      {#if typeof page === 'number'}
-        <a href="#/" on:click={() => setPage(page)} class={page === currentPage ? 'active' : ''}>
-          {page + 1}
+    {#each pageButtons as pageButton}
+      {#if typeof pageButton === 'number'}
+        <a
+          href="#/"
+          on:click={() => setPage(pageButton)}
+          class={pageButton === currentPage ? 'active' : ''}>
+          {pageButton + 1}
         </a>
-      {:else}<a href="#/" class="disabled">{page}</a>{/if}
+      {:else}<a href="#/" class="disabled">{pageButton}</a>{/if}
     {/each}
     <a href="#/" on:click={() => setPage(currentPage + 1)}>&raquo;</a>
   </div>

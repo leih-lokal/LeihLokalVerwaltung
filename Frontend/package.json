@@ -42,6 +42,7 @@
     "svelte-calendar": "^1.5.0",
     "svelte-checkbox": "^1.0.0-beta.9",
     "svelte-component-double": "^0.7.5",
+    "svelte-htm": "^1.1.1",
     "svelte-jester": "^1.1.5",
     "svelte-loading-spinners": "^0.1.1",
     "svelte-select": "^3.12.0",
