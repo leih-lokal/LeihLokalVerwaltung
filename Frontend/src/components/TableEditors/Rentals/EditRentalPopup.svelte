@@ -1,6 +1,5 @@
 <script>
-  import { getContext, onDestroy } from "svelte";
-  import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../../utils/utils.js";
+  import { getContext } from "svelte";
   import { notifier } from "@beyonk/svelte-notifications";
   import AutoComplete from "simple-svelte-autocomplete";
   import DateInput from "../../Input/DateInput.svelte";
@@ -10,19 +9,11 @@
 
   const { close } = getContext("simple-modal");
 
-  function convertInputsForDb() {
-    doc.rented_on = saveParseStringToTimeMillis(rented_on_string);
-    doc.extended_on = saveParseStringToTimeMillis(extended_on_string);
-    doc.to_return_on = saveParseStringToTimeMillis(to_return_on_string);
-    doc.returned_on = saveParseStringToTimeMillis(returned_on_string);
-  }
-
   function saveInDatabase() {
-    convertInputsForDb();
-
-    const savePromise = createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc);
-
-    savePromise
+    $itemDb
+      .fetchById(doc.item_id)
+      .then((item) => (doc.image = item.image))
+      .then(() => (createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc)))
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
       .then(close)
       .catch((error) => {
@@ -31,8 +22,6 @@
         close();
       });
   }
-
-  onDestroy(convertInputsForDb);
 
   export let doc = {};
   export let createNew = false;
@@ -43,11 +32,6 @@
     inOneWeek.setDate(inOneWeek.getDate() + 7);
     doc.to_return_on = inOneWeek.getTime();
   }
-
-  let rented_on_string = saveParseTimestampToString(doc.rented_on);
-  let extended_on_string = saveParseTimestampToString(doc.extended_on);
-  let to_return_on_string = saveParseTimestampToString(doc.to_return_on);
-  let returned_on_string = saveParseTimestampToString(doc.returned_on);
 
   const idStartsWithSelector = (searchValue) =>
     new SelectorBuilder().withField("_id").startsWithIgnoreCase(searchValue).build();
@@ -213,25 +197,25 @@
       <row>
         <div class="col-label"><label for="rented_on">Ausgeliehen</label></div>
         <div class="col-input">
-          <DateInput bind:selectedDateString={rented_on_string} />
+          <DateInput bind:timeMillis={doc.rented_on} />
         </div>
       </row>
       <row>
         <div class="col-label"><label for="extended_on">Verlängert</label></div>
         <div class="col-input">
-          <DateInput bind:selectedDateString={extended_on_string} />
+          <DateInput bind:timeMillis={doc.extended_on} />
         </div>
       </row>
       <row>
         <div class="col-label"><label for="to_return_on">Zurückerwartet</label></div>
         <div class="col-input">
-          <DateInput bind:selectedDateString={to_return_on_string} />
+          <DateInput bind:timeMillis={doc.to_return_on} />
         </div>
       </row>
       <row>
         <div class="col-label"><label for="returned_on">Zurückgegeben</label></div>
         <div class="col-input">
-          <DateInput bind:selectedDateString={returned_on_string} />
+          <DateInput bind:timeMillis={doc.returned_on} />
         </div>
       </row>
     </InputGroup>

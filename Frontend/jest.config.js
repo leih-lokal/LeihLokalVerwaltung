@@ -1,5 +1,5 @@
 module.exports = {
-  collectCoverage: true,
+  collectCoverage: false,
   bail: false,
   verbose: true,
   setupFilesAfterEnv: [
@@ -10,6 +10,6 @@ module.exports = {
     "^.+\\.js$": "babel-jest",
     "^.+\\.svelte$": "svelte-jester",
   },
-  transformIgnorePatterns: ["node_modules/(?!(fa-svelte|svelte-select)/)"],
+  transformIgnorePatterns: ["node_modules/(?!(fa-svelte|svelte-select|svelte-calendar)/)"],
   moduleFileExtensions: ["js", "svelte"],
 };

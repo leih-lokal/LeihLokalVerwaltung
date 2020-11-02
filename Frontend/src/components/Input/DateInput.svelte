@@ -1,5 +1,5 @@
 <script>
-  import Datepicker from "svelte-calendar";
+  import Datepicker from "svelte-calendar/src/Components/Datepicker.svelte";
   import { saveParseStringToTimeMillis, saveParseTimestampToString } from "../../utils/utils";
 
   const daysOfWeek = [
@@ -29,12 +29,13 @@
   function inTwoMonths() {
     const date = new Date();
     date.setMonth(date.getMonth() + 2);
+    return date;
   }
 
-  export let selectedDateString;
+  export let timeMillis;
 
-  let isNone =
-    !selectedDateString || selectedDateString == "" || selectedDateString === "01.01.1970";
+  let isNone = !timeMillis || timeMillis === 0;
+  let selected = isNone ? new Date() : new Date(timeMillis);
 </script>
 
 <style>
@@ -51,8 +52,7 @@
 </style>
 
 <Datepicker
-  selected={new Date(saveParseStringToTimeMillis(selectedDateString))}
-  bind:formattedSelected={selectedDateString}
+  bind:selected
   {daysOfWeek}
   {monthsOfYear}
   format={'#{d}.#{m}.#{Y}'}
@@ -60,10 +60,10 @@
   end={inTwoMonths()}>
   <input
     type="text"
-    value={isNone ? '-' : selectedDateString}
-    on:click|once={() => {
+    value={isNone ? '-' : saveParseTimestampToString(timeMillis)}
+    on:click={() => {
       if (isNone) {
-        selectedDateString = saveParseTimestampToString(new Date().getTime());
+        timeMillis = new Date().getTime();
         isNone = false;
       }
     }} />
