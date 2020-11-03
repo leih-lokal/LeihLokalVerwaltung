@@ -102,7 +102,7 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     flex: 1;
     min-height: 2em;
