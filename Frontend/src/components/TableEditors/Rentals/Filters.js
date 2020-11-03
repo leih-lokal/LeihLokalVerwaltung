@@ -3,6 +3,7 @@ export default {
     "nicht abgeschlossen": (rental) => !rental.returned_on || rental.returned_on === 0,
     abgeschlossen: (rental) => rental.returned_on && rental.returned_on !== 0,
     "Rückgabe heute": (rental) => {
+      const CURRENT_DATE = new Date();
       const CURRENT_TIME_MILLIS = CURRENT_DATE.getTime();
       const isSameDay = (m1, m2) => {
         const d1 = new Date(m1);
