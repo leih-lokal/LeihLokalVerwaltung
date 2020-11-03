@@ -33,8 +33,8 @@
   }
 
   function setPage(page = currentPage) {
-    page = Math.max(page, 0);
     page = Math.min(page, numberOfPages - 1);
+    page = Math.max(page, 0);
     currentPage = page;
     calculatePageButtons(numberOfPages);
   }
