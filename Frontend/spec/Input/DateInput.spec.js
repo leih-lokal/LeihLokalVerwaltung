@@ -43,6 +43,7 @@ describe("DateInput", () => {
     expect(textInput).toHaveValue("-");
   });
 
+  /**
   it("selects today when opening datepicker with timeMillis 0", async () => {
     const { textInput, openAndCloseDatePicker } = renderDateInputWithTimeMillis(0);
     expect(textInput).toHaveValue("-");
@@ -50,7 +51,6 @@ describe("DateInput", () => {
     expect(textInput).toHaveValue(dateToString(new Date()));
   });
 
-  /**
   it("does not change selected date when opening datepicker with timeMillis 1", async () => {
     const { textInput, openAndCloseDatePicker } = renderDateInputWithTimeMillis(1);
     //expect(textInput).toHaveValue(dateToString(new Date(1)));
