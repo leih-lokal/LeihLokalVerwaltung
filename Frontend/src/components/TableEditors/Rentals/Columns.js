@@ -30,7 +30,7 @@ export default [
     display: (value) => saveParseTimestampToString(value),
   },
   {
-    title: "Rückgabe",
+    title: "Zurückerwartet",
     key: "to_return_on",
     search: "exclude",
     display: (value) => saveParseTimestampToString(value),
