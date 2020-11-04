@@ -133,7 +133,7 @@
 <div class="container">
   <h1>{createNew ? 'Leihvorgang erstellen' : 'Leihvorgang bearbeiten'}</h1>
   <div class="content">
-    <InputGroup title="Gegenstand">
+    <InputGroup>
       <row>
         <h3>Gegenstand</h3>
       </row>
