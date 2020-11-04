@@ -1,14 +1,12 @@
-import {
-  saveParseStringToBoolean,
-  saveParseTimestampToString,
-  saveParseStringToInt,
-} from "../../../utils/utils.js";
+import { saveParseStringToBoolean, saveParseTimestampToString } from "../../../utils/utils.js";
 
 export default [
   {
     title: "Id",
     key: "_id",
-    sort: (value) => saveParseStringToInt(value),
+    sort: function (value) {
+      return parseInt(value);
+    },
     search: "from_beginning",
   },
   {
@@ -22,11 +20,14 @@ export default [
   {
     title: "Strasse",
     key: "street",
+    search: "exclude",
   },
   {
     title: "Hausnummer",
     key: "house_number",
-    sort: (value) => saveParseStringToInt(value),
+    sort: function (value) {
+      return parseInt(value);
+    },
     search: "exclude",
   },
   {
@@ -37,36 +38,44 @@ export default [
   {
     title: "Stadt",
     key: "city",
+    search: "exclude",
   },
   {
     title: "Beitritt",
     key: "registration_date",
     display: (value) => saveParseTimestampToString(value),
+    search: "exclude",
   },
   {
     title: "Verlängert am",
     key: "renewed_on",
     display: (value) => saveParseTimestampToString(value),
+    search: "exclude",
   },
   {
     title: "Bemerkung",
     key: "remark",
+    search: "exclude",
   },
   {
     title: "E-Mail",
     key: "email",
+    search: "exclude",
   },
   {
     title: "Telefonnummer",
     key: "telephone_number",
+    search: "exclude",
   },
   {
     title: "Newsletter",
     key: "subscribed_to_newsletter",
     display: (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
+    search: "exclude",
   },
   {
     title: "Aufmerksam geworden",
     key: "heard",
+    search: "exclude",
   },
 ];

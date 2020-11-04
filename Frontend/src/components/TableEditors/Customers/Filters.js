@@ -1,22 +1,33 @@
-import { saveParseStringToBoolean } from "../../../utils/utils.js";
-
-const YEAR_IN_MILLIS = 1000 * 60 * 60 * 24 * 365;
-
-const millisSince = (date) => {
-  return new Date() - new Date(date);
-};
-
 export default {
   filters: {
-    "Newsletter: Ja": (customer) => saveParseStringToBoolean(customer.subscribed_to_newsletter),
-    "Beitritt vor > 1 Jahr": (customer) =>
-      customer.registration_date && millisSince(customer.registration_date) > YEAR_IN_MILLIS,
-    "Beitritt vor < 1 Jahr": (customer) =>
-      customer.registration_date && millisSince(customer.registration_date) < YEAR_IN_MILLIS,
-    "Verlängert vor > 1 Jahr": (customer) =>
-      customer.renewed_on && millisSince(customer.renewed_on) > YEAR_IN_MILLIS,
-    "Verlängert vor < 1 Jahr": (customer) =>
-      customer.renewed_on && millisSince(customer.renewed_on) < YEAR_IN_MILLIS,
+    "Newsletter: Ja": function (customer) {
+      var subscribedToNewsletter = String(customer.subscribed_to_newsletter).toLowerCase();
+      return subscribedToNewsletter === "true" || subscribedToNewsletter === "ja";
+    },
+    "Beitritt vor > 1 Jahr": function (customer) {
+      return (
+        customer.registration_date &&
+        new Date() - new Date(customer.registration_date) > 1000 * 60 * 60 * 24 * 365
+      );
+    },
+    "Beitritt vor < 1 Jahr": function (customer) {
+      return (
+        customer.registration_date &&
+        new Date() - new Date(customer.registration_date) < 1000 * 60 * 60 * 24 * 365
+      );
+    },
+    "Verlängert vor > 1 Jahr": function (customer) {
+      return (
+        customer.renewed_on &&
+        new Date() - new Date(customer.renewed_on) > 1000 * 60 * 60 * 24 * 365
+      );
+    },
+    "Verlängert vor < 1 Jahr": function (customer) {
+      return (
+        customer.renewed_on &&
+        new Date() - new Date(customer.renewed_on) < 1000 * 60 * 60 * 24 * 365
+      );
+    },
   },
   activeByDefault: [],
 };

@@ -1,20 +1,44 @@
 <script>
-  import TableRow from "./TableRow.svelte";
-  import TableHeader from "./TableHeader.svelte";
-  import WithSearchFilterBar from "./WithSearchFilterBar.svelte";
-  import WithPagination from "./WithPagination.svelte";
+  import Row from "./Row.svelte";
+  import Header from "./Header.svelte";
+  import SearchFilterBar from "./SearchFilterBar.svelte";
+  import Pagination from "./Pagination.svelte";
   import LoadingAnimation from "./LoadingAnimation.svelte";
   import { fade } from "svelte/transition";
 
   export let onRowClicked = (row) => {};
-  export let rows = [];
+  export let database;
   export let columns = [];
   export let rowHeight = 40;
   export let filters = {};
+  export const refresh = () => {
+    rows = database.query({
+      filterFunctions: activeFilters.map((filterName) => filters.filters[filterName]),
+      columns: columns,
+      searchTerm: searchTerm,
+      currentPage: currentPage,
+      rowsPerPage: rowsPerPage,
+      sortBy: sortBy,
+      sortReverse: sortReverse,
+    });
+  };
 
+  let sortBy = "_id";
+  let sortReverse = false;
   let currentPage = 0;
+  let rows = new Promise(() => {});
+  let rowsPerPage = Math.round((window.innerHeight - 240) / rowHeight);
+  let activeFilters = filters.activeByDefault;
+  let searchTerm = "";
 
-  $: sortedUnprocessedRows = rows;
+  function calculateNumberOfPages(rowCount, rowsPerPage) {
+    const rowsOnLastPage = rowCount % rowsPerPage;
+    let numberOfPages = (rowCount - rowsOnLastPage) / rowsPerPage;
+    if (rowsOnLastPage > 0) numberOfPages += 1;
+    return numberOfPages;
+  }
+
+  $: currentPage, searchTerm, activeFilters, sortBy, sortReverse, refresh();
 </script>
 
 <style>
@@ -37,28 +61,29 @@
 </style>
 
 <div class="container">
-  {#if rows.length === 0}
+  <SearchFilterBar
+    {filters}
+    onFilterOrSearchTermChange={(updatedActiveFilters, updatedSearchTerm) => {
+      activeFilters = updatedActiveFilters;
+      searchTerm = updatedSearchTerm;
+    }} />
+  {#await rows}
     <LoadingAnimation />
-  {:else}
-    <WithSearchFilterBar {columns} {rows} {filters} let:rows={filteredRows} bind:currentPage>
-      <div in:fade>
-        <WithPagination
-          rows={filteredRows}
-          let:rows={rowsOfCurrentPage}
-          bind:currentPage
-          {rowHeight}>
-          <table>
-            <TableHeader {columns} bind:rows={sortedUnprocessedRows} />
-            {#each rowsOfCurrentPage as row}
-              <TableRow
-                {columns}
-                item={row}
-                {rowHeight}
-                on:click={() => onRowClicked(rows.find((x) => x._id === row._id))} />
-            {/each}
-          </table>
-        </WithPagination>
-      </div>
-    </WithSearchFilterBar>
-  {/if}
+  {:then data}
+    <div in:fade>
+      <table>
+        <Header {columns} bind:sortBy bind:sortReverse />
+        {#each data.rows as row}
+          <Row
+            {columns}
+            item={row}
+            {rowHeight}
+            on:click={() => onRowClicked(data.rows.find((x) => x._id === row._id))} />
+        {/each}
+      </table>
+      <Pagination
+        numberOfPages={calculateNumberOfPages(data.count, rowsPerPage)}
+        bind:currentPage />
+    </div>
+  {/await}
 </div>

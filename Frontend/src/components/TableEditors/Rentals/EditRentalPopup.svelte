@@ -1,25 +1,19 @@
 <script>
-  import { getContext, onDestroy } from "svelte";
-  import { saveParseTimestampToString, saveParseStringToTimeMillis } from "../../../utils/utils.js";
+  import { getContext } from "svelte";
   import { notifier } from "@beyonk/svelte-notifications";
+  import AutoComplete from "simple-svelte-autocomplete";
   import DateInput from "../../Input/DateInput.svelte";
-  import { rentalDb, items, customers } from "../../../utils/stores";
+  import InputGroup from "../../Input/InputGroup.svelte";
+  import { rentalDb, itemDb, customerDb } from "../../../utils/stores";
+  import SelectorBuilder from "../../Database/SelectorBuilder";
 
   const { close } = getContext("simple-modal");
 
-  function convertInputsForDb() {
-    doc.rented_on = saveParseStringToTimeMillis(rented_on_string);
-    doc.extended_on = saveParseStringToTimeMillis(extended_on_string);
-    doc.to_return_on = saveParseStringToTimeMillis(to_return_on_string);
-    doc.returned_on = saveParseStringToTimeMillis(returned_on_string);
-  }
-
   function saveInDatabase() {
-    convertInputsForDb();
-
-    const savePromise = createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc);
-
-    savePromise
+    $itemDb
+      .fetchById(doc.item_id)
+      .then((item) => (doc.image = item.image))
+      .then(() => (createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc)))
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
       .then(close)
       .catch((error) => {
@@ -28,16 +22,6 @@
         close();
       });
   }
-
-  const findById = (docsPromise, id) =>
-    docsPromise.then((docs) => docs.find((doc) => doc._id === id));
-
-  const findByAttribute = (docsPromise, attrKey, attrVal) =>
-    docsPromise.then((docs) =>
-      docs.find((doc) => String(doc[attrKey]).toLowerCase() === String(attrVal).toLowerCase())
-    );
-
-  onDestroy(convertInputsForDb);
 
   export let doc = {};
   export let createNew = false;
@@ -49,34 +33,69 @@
     doc.to_return_on = inOneWeek.getTime();
   }
 
-  let rented_on_string = saveParseTimestampToString(doc.rented_on);
-  let extended_on_string = saveParseTimestampToString(doc.extended_on);
-  let to_return_on_string = saveParseTimestampToString(doc.to_return_on);
-  let returned_on_string = saveParseTimestampToString(doc.returned_on);
+  const idStartsWithSelector = (searchValue) =>
+    new SelectorBuilder().withField("_id").startsWithIgnoreCase(searchValue).build();
+
+  const idStartsWithAndNotDeletedSelector = (searchValue) =>
+    new SelectorBuilder()
+      .withField("_id")
+      .startsWithIgnoreCase(searchValue)
+      .withField("status_on_website")
+      .isNotEqualTo("deleted")
+      .build();
+
+  const attributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
+    new SelectorBuilder().withField(field).startsWithIgnoreCase(searchValue).build();
+
+  const attributeStartsWithIgnoreCaseAndNotDeletedSelector = (field, searchValue) =>
+    new SelectorBuilder()
+      .withField(field)
+      .startsWithIgnoreCase(searchValue)
+      .withField("status_on_website")
+      .isNotEqualTo("deleted")
+      .build();
 </script>
 
 <style>
-  input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
+  input[type="text"],
+  .col-input > .autocomplete {
+    width: 100% !important;
+    padding: 0.5rem !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    resize: vertical !important;
+    height: 2.5rem !important;
+  }
+
+  row {
+    padding: 0.6rem;
+    display: inline-block;
+  }
+
+  h1 {
+    height: 2rem;
+    padding: 0.7rem 0.7rem 0.9rem 0.7rem;
+    margin: 0;
+  }
+
+  h3 {
+    margin: 0;
+    padding: 0;
   }
 
   label {
-    padding: 12px 12px 12px 0;
+    padding: 0.5rem 0.5rem 0.5rem 0;
     display: inline-block;
   }
 
   .col-label {
     float: left;
-    width: 35%;
+    width: 40%;
   }
 
   .col-input {
     float: left;
-    width: 65%;
+    width: 60%;
   }
 
   .content {
@@ -84,10 +103,9 @@
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: flex-start;
     flex: 1;
     min-height: 2em;
-    padding-top: 20px;
-    padding-bottom: 20px;
   }
 
   .container {
@@ -96,21 +114,15 @@
     flex-direction: column;
   }
 
-  h1,
   .footer {
-    height: 40px;
-    padding: 20px;
+    height: 2rem;
+    padding: 0.5rem;
     margin: 0;
   }
 
   .footer {
     display: flex;
     justify-content: space-between;
-  }
-
-  .row {
-    width: 400px;
-    margin: 0 1rem;
   }
 
   .button-delete {
@@ -121,154 +133,223 @@
 <div class="container">
   <h1>{createNew ? 'Leihvorgang erstellen' : 'Leihvorgang bearbeiten'}</h1>
   <div class="content">
-    <div class="row">
-      <div class="col-label"><label for="item_id">Gegenstand Nr</label></div>
-      <div class="col-input">
-        <input
-          type="text"
-          id="item_id"
-          name="item_id"
-          bind:value={doc.item_id}
-          on:input={(event) => findById($items, event.target.value)
-              .then((item) => {
-                doc.item_name = item.item_name;
-                doc.deposit = item.deposit;
-              })
-              .catch((error) => console.debug(error))} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="item_name">Gegenstand Name</label></div>
-      <div class="col-input">
-        <input
-          type="text"
-          id="item_name"
-          name="item_name"
-          bind:value={doc.item_name}
-          on:input={(event) => findByAttribute($items, 'item_name', event.target.value)
-              .then((item) => {
-                doc.item_id = item._id;
-                doc.item_name = item.item_name;
-                doc.deposit = item.deposit;
-              })
-              .catch((error) => console.debug(error))} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="customer_id">Kunde Nr</label></div>
-      <div class="col-input">
-        <input
-          type="text"
-          id="customer_id"
-          name="customer_id"
-          bind:value={doc.customer_id}
-          on:input={(event) => findById($customers, event.target.value)
-              .then((customer) => (doc.name = customer.lastname))
-              .catch((error) => console.debug(error))} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="name">Kunde Name</label></div>
-      <div class="col-input">
-        <input
-          type="text"
-          id="name"
-          name="name"
-          bind:value={doc.name}
-          on:input={(event) => findByAttribute($customers, 'lastname', event.target.value)
-              .then((customer) => {
-                doc.customer_id = customer._id;
-                doc.name = customer.lastname;
-              })
-              .catch((error) => console.debug(error))} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="rented_on">Ausgeliehen am</label></div>
-      <div class="col-input">
-        <DateInput bind:selectedDateString={rented_on_string} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="extended_on">Verlängert am</label></div>
-      <div class="col-input">
-        <DateInput bind:selectedDateString={extended_on_string} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="to_return_on">Zurückerwartet am</label></div>
-      <div class="col-input">
-        <DateInput bind:selectedDateString={to_return_on_string} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="returned_on">Zurückgegeben am</label></div>
-      <div class="col-input">
-        <DateInput bind:selectedDateString={returned_on_string} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="deposit">Pfand</label></div>
-      <div class="col-input">
-        <input type="text" id="deposit" name="deposit" bind:value={doc.deposit} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="deposit_returned">Pfand zurück</label></div>
-      <div class="col-input">
-        <input
-          type="text"
-          id="deposit_returned"
-          name="deposit_returned"
-          bind:value={doc.deposit_returned} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="deposit_retained">Pfand einbehalten</label></div>
-      <div class="col-input">
-        <input
-          type="text"
-          id="deposit_retained"
-          name="deposit_retained"
-          bind:value={doc.deposit_retained} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="deposit_retainment_reason">Grund</label></div>
-      <div class="col-input">
-        <input
-          type="text"
-          id="deposit_retainment_reason"
-          name="deposit_retainment_reason"
-          bind:value={doc.deposit_retainment_reason} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="passing_out_employee">Mitarbeiter Ausgabe</label></div>
-      <div class="col-input">
-        <input
-          type="text"
-          id="passing_out_employee"
-          name="passing_out_employee"
-          bind:value={doc.passing_out_employee} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="receiving_employee">Mitarbeiter Rücknahme</label></div>
-      <div class="col-input">
-        <input
-          type="text"
-          id="receiving_employee"
-          name="receiving_employee"
-          bind:value={doc.receiving_employee} />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-label"><label for="remark">Bemerkung</label></div>
-      <div class="col-input">
-        <input type="text" id="remark" name="remark" bind:value={doc.remark} />
-      </div>
-    </div>
+    <InputGroup>
+      <row>
+        <h3>Gegenstand</h3>
+      </row>
+      <row>
+        <div class="col-label"><label for="item_id">Nr</label></div>
+        <div class="col-input">
+          <AutoComplete
+            searchFunction={(searchTerm) => $itemDb.fetchDocsBySelector(
+                idStartsWithAndNotDeletedSelector(searchTerm),
+                ['_id', 'item_name', 'deposit']
+              )}
+            beforeChange={(prevSelectedValue, newSelectedValue) => {
+              doc.item_id = newSelectedValue._id;
+              doc.item_name = newSelectedValue.item_name;
+              doc.deposit = newSelectedValue.deposit;
+              return true;
+            }}
+            labelFunction={(item) => {
+              if (item && item.name && item.name !== '') {
+                return item._id + ' - ' + item.name;
+              } else if (item) {
+                return item._id;
+              } else {
+                return '';
+              }
+            }}
+            keywordsFieldName="_id"
+            noResultsText="Kein Gegenstand mit dieser Id"
+            hideArrow={true}
+            selectedItem={{ _id: doc.item_id ?? '' }} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="item_name">Name</label></div>
+        <div class="col-input">
+          <AutoComplete
+            searchFunction={(searchTerm) => $itemDb.fetchDocsBySelector(
+                attributeStartsWithIgnoreCaseAndNotDeletedSelector('item_name', searchTerm),
+                ['_id', 'item_name', 'deposit']
+              )}
+            beforeChange={(prevSelectedValue, newSelectedValue) => {
+              doc.item_name = newSelectedValue.item_name;
+              doc.item_id = newSelectedValue._id;
+              doc.deposit = newSelectedValue.deposit;
+              return true;
+            }}
+            inputId="input_item_name"
+            keywordsFieldName="item_name"
+            labelFieldName="item_name"
+            noResultsText="Kein Gegenstand mit diesem Name"
+            hideArrow={true}
+            selectedItem={{ _id: doc.item_id ?? '', item_name: doc.item_name ?? '' }} />
+        </div>
+      </row>
+    </InputGroup>
+
+    <InputGroup>
+      <row>
+        <h3>Zeitraum</h3>
+      </row>
+      <row>
+        <div class="col-label"><label for="rented_on">Ausgeliehen</label></div>
+        <div class="col-input">
+          <DateInput bind:timeMillis={doc.rented_on} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="extended_on">Verlängert</label></div>
+        <div class="col-input">
+          <DateInput bind:timeMillis={doc.extended_on} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="to_return_on">Zurückerwartet</label></div>
+        <div class="col-input">
+          <DateInput bind:timeMillis={doc.to_return_on} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="returned_on">Zurückgegeben</label></div>
+        <div class="col-input">
+          <DateInput bind:timeMillis={doc.returned_on} />
+        </div>
+      </row>
+    </InputGroup>
+
+    <InputGroup>
+      <row>
+        <h3>Kunde</h3>
+      </row>
+      <row>
+        <div class="col-label"><label for="customer_id">Nr</label></div>
+        <div class="col-input">
+          <AutoComplete
+            searchFunction={(searchTerm) => $customerDb.fetchDocsBySelector(
+                idStartsWithSelector(searchTerm),
+                ['_id', 'lastname']
+              )}
+            autocomplete="autocomplete-input"
+            beforeChange={(prevSelectedValue, newSelectedValue) => {
+              doc.name = newSelectedValue.lastname;
+              doc.customer_id = newSelectedValue._id;
+              return true;
+            }}
+            inputId="input_customer_id"
+            labelFunction={(customer) => {
+              if (customer && customer.lastname && customer.lastname !== '') {
+                return customer._id + ' - ' + customer.lastname;
+              } else if (customer) {
+                return customer._id;
+              } else {
+                return '';
+              }
+            }}
+            keywordsFieldName="_id"
+            noResultsText="Kein Kunde mit dieser Id"
+            hideArrow={true}
+            selectedItem={{ _id: doc.customer_id ?? '' }} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="name">Name</label></div>
+        <div class="col-input">
+          <AutoComplete
+            searchFunction={(searchTerm) => $customerDb.fetchDocsBySelector(
+                attributeStartsWithIgnoreCaseSelector('lastname', searchTerm),
+                ['_id', 'lastname']
+              )}
+            beforeChange={(prevSelectedValue, newSelectedValue) => {
+              doc.name = newSelectedValue.lastname;
+              doc.customer_id = newSelectedValue._id;
+              return true;
+            }}
+            inputId="input_lastname"
+            keywordsFieldName="lastname"
+            labelFieldName="lastname"
+            noResultsText="Kein Kunde mit diesem Name"
+            hideArrow={true}
+            selectedItem={{ _id: doc.customer_id ?? '', lastname: doc.name ?? '' }} />
+        </div>
+      </row>
+    </InputGroup>
+
+    <InputGroup>
+      <row>
+        <h3>Pfand</h3>
+      </row>
+      <row>
+        <div class="col-label"><label for="deposit">Pfand</label></div>
+        <div class="col-input">
+          <input type="text" id="deposit" name="deposit" bind:value={doc.deposit} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="deposit_returned">Pfand zurück</label></div>
+        <div class="col-input">
+          <input
+            type="text"
+            id="deposit_returned"
+            name="deposit_returned"
+            bind:value={doc.deposit_returned} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="deposit_retained">einbehalten</label></div>
+        <div class="col-input">
+          <input
+            type="text"
+            id="deposit_retained"
+            name="deposit_retained"
+            bind:value={doc.deposit_retained} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="deposit_retainment_reason">Grund</label></div>
+        <div class="col-input">
+          <input
+            type="text"
+            id="deposit_retainment_reason"
+            name="deposit_retainment_reason"
+            bind:value={doc.deposit_retainment_reason} />
+        </div>
+      </row>
+    </InputGroup>
+
+    <InputGroup>
+      <row>
+        <h3>Mitarbeiter</h3>
+      </row>
+      <row>
+        <div class="col-label"><label for="passing_out_employee">Ausgabe</label></div>
+        <div class="col-input">
+          <input
+            type="text"
+            id="passing_out_employee"
+            name="passing_out_employee"
+            bind:value={doc.passing_out_employee} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="receiving_employee">Rücknahme</label></div>
+        <div class="col-input">
+          <input
+            type="text"
+            id="receiving_employee"
+            name="receiving_employee"
+            bind:value={doc.receiving_employee} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="remark">Bemerkung</label></div>
+        <div class="col-input">
+          <input type="text" id="remark" name="remark" bind:value={doc.remark} />
+        </div>
+      </row>
+    </InputGroup>
   </div>
 
   <div class="footer">

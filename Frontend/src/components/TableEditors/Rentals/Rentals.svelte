@@ -3,16 +3,7 @@
   import EditRentalPopup from "./EditRentalPopup.svelte";
   import columns from "./Columns.js";
   import filters from "./Filters.js";
-  import { rentals, items } from "../../../utils/stores";
-
-  $items.then(
-    (items) =>
-      (columns[0].display = (itemId) => {
-        const item = items.find((item) => item._id == itemId);
-        if (item && item.image) return item.image;
-        else return "";
-      })
-  );
+  import { rentalDb } from "../../../utils/stores";
 </script>
 
-<DatabaseTableEditor {columns} {filters} rowStore={rentals} popupComponent={EditRentalPopup} />
+<DatabaseTableEditor {columns} {filters} database={$rentalDb} popupComponent={EditRentalPopup} />

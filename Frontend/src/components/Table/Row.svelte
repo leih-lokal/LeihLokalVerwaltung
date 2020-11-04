@@ -4,7 +4,7 @@
   export let rowHeight = 40;
 
   const displayValue = (col, item) => {
-    if (!col.key in item) {
+    if (!(col.key in item)) {
       return "";
     } else {
       return col.display ? col.display(item[col.key]) : item[col.key];

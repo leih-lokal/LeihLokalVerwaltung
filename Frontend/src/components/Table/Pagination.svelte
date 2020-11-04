@@ -1,0 +1,92 @@
+<script>
+  export let numberOfPages;
+  export let currentPage;
+
+  let pageButtons = [];
+
+  function calculatePageButtons(numberOfPages) {
+    if (numberOfPages === 0) {
+      pageButtons = [0];
+    } else {
+      pageButtons = [
+        currentPage - 2,
+        currentPage - 1,
+        currentPage,
+        currentPage + 1,
+        currentPage + 2,
+      ];
+      if (pageButtons[0] >= 3) {
+        pageButtons = [0, "...", ...pageButtons];
+      } else {
+        while (pageButtons[0] > 0) pageButtons.unshift(pageButtons[0] - 1);
+      }
+      if (numberOfPages - 1 - pageButtons[pageButtons.length - 1] >= 3) {
+        pageButtons = [...pageButtons, "...", numberOfPages - 1];
+      } else {
+        while (pageButtons[pageButtons.length - 1] < numberOfPages - 1)
+          pageButtons.push(pageButtons[pageButtons.length - 1] + 1);
+      }
+      pageButtons = pageButtons.filter(
+        (button) => button === "..." || (button >= 0 && button < numberOfPages)
+      );
+    }
+  }
+
+  function setPage(page = currentPage) {
+    page = Math.min(page, numberOfPages - 1);
+    page = Math.max(page, 0);
+    currentPage = page;
+    calculatePageButtons(numberOfPages);
+  }
+
+  $: numberOfPages, setPage(currentPage);
+</script>
+
+<style>
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .pagination {
+    display: flex;
+    flex-shrink: 0;
+    align-self: center;
+    justify-content: space-around;
+    font-size: 18px;
+    padding: 10px;
+    width: 60%;
+    background-color: white;
+  }
+  .pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+  }
+  .pagination a.active {
+    background-color: #0066ff77;
+    color: white;
+  }
+  .pagination a:hover:not(.active):not(.disabled) {
+    background-color: #ddd;
+  }
+</style>
+
+<div class="container">
+  <div class="pagination">
+    <a href="#/" on:click={() => setPage(currentPage - 1)}>&laquo;</a>
+    {#each pageButtons as pageButton}
+      {#if typeof pageButton === 'number'}
+        <a
+          href="#/"
+          on:click={() => setPage(pageButton)}
+          class={pageButton === currentPage ? 'active' : ''}>
+          {pageButton + 1}
+        </a>
+      {:else}<a href="#/" class="disabled">{pageButton}</a>{/if}
+    {/each}
+    <a href="#/" on:click={() => setPage(currentPage + 1)}>&raquo;</a>
+  </div>
+</div>
