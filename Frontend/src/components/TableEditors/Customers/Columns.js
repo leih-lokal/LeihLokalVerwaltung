@@ -4,7 +4,9 @@ export default [
   {
     title: "Id",
     key: "_id",
-    sort: (value) => parseInt(value),
+    sort: function (value) {
+      return parseInt(value);
+    },
     search: "from_beginning",
   },
   {
@@ -23,7 +25,9 @@ export default [
   {
     title: "Hausnummer",
     key: "house_number",
-    sort: (value) => parseInt(value),
+    sort: function (value) {
+      return parseInt(value);
+    },
     search: "exclude",
   },
   {

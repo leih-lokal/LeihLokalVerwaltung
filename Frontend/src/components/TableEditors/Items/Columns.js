@@ -5,7 +5,9 @@ export default [
     title: "Id",
     key: "_id",
     search: "from_beginning",
-    sort: (value) => parseInt(value),
+    sort: function (value) {
+      return parseInt(value);
+    },
   },
   {
     title: "Bild",

@@ -166,11 +166,22 @@ class Database {
     await this.createDesignDoc(
       ddocId,
       `function (doc) {
-        if ([${filterFunctions.toString()}].every(filterFuncion => filterFuncion(doc))) {
-          var transformBeforeSort = ${
-            this.columns.find((col) => col.key === sortBy)?.sort?.toString() ?? "value => value"
-          };
-          emit(transformBeforeSort(doc.${sortBy}));
+        var filterFunctions = [${filterFunctions.toString()}];
+        function passesAllFilterFunctions(d) {
+          for(var i = 0; i < filterFunctions.length; i++){
+            if(!filterFunctions[i](d)) return false;
+          }
+          return true;
+        }
+        if (passesAllFilterFunctions(doc)) {
+          var transformBeforeSort = ${this.columns
+            .find((col) => col.key === sortBy)
+            ?.sort?.toString()};
+          if(typeof transformBeforeSort === 'undefined'){
+            emit(doc.${sortBy});
+          }else{
+            emit(transformBeforeSort(doc.${sortBy}));
+          }
         }
       }`
     );
