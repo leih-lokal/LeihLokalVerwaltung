@@ -12,12 +12,14 @@ class Database {
   cacheInBrowser;
   name;
   columns;
+  existingDesignDocIds;
 
   constructor(name, columns, cacheInBrowser = false) {
     this.cacheInBrowser = cacheInBrowser;
     this.changeCallback = (updatedDocs) => {};
     this.name = name;
     this.columns = columns;
+    this.existingDesignDocIds = new Set();
   }
 
   connect() {
@@ -88,21 +90,26 @@ class Database {
   }
 
   async createDesignDoc(id, mapFun) {
-    var ddoc = {
-      _id: "_design/" + id,
-      views: {
-        index: {
-          map: mapFun,
+    if (!this.existingDesignDocIds.has(id)) {
+      var ddoc = {
+        _id: "_design/" + id,
+        views: {
+          index: {
+            map: mapFun,
+          },
         },
-      },
-    };
-    try {
-      await this.database.put(ddoc);
-    } catch (err) {
-      if (err.name !== "conflict") {
-        throw err;
+      };
+      try {
+        await this.database.put(ddoc);
+        this.existingDesignDocIds.add(id);
+      } catch (err) {
+        if (err.name !== "conflict") {
+          throw err;
+        } else {
+          this.existingDesignDocIds.add(id);
+        }
+        // ignore if doc already exists
       }
-      // ignore if doc already exists
     }
   }
 
@@ -155,7 +162,7 @@ class Database {
   }
 
   async sortedIdsMatchingAllFilters(filterFunctions, sortBy, sortReverse) {
-    const ddocId = hashString(filterFunctions.toString() + sortBy + sortReverse);
+    const ddocId = String(hashString(filterFunctions.toString() + sortBy + sortReverse));
     await this.createDesignDoc(
       ddocId,
       `function (doc) {
