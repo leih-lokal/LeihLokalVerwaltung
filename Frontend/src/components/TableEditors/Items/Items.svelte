@@ -6,4 +6,9 @@
   import { itemDb } from "../../../utils/stores";
 </script>
 
-<DatabaseTableEditor {columns} {filters} database={$itemDb} popupComponent={EditItemPopup} />
+<DatabaseTableEditor
+  {columns}
+  {filters}
+  database={$itemDb}
+  popupComponent={EditItemPopup}
+  addNewItemButton={false} />

@@ -7,6 +7,7 @@
   export let filters;
   export let database;
   export let popupComponent;
+  export let addNewItemButton = true;
 
   let table;
 
@@ -21,4 +22,6 @@
   {filters}
   onRowClicked={(doc) => openStyledModal(popupComponent, { doc: doc }, onModalClose)} />
 
-<AddNewItemButton on:click={openStyledModal(popupComponent, { createNew: true }, onModalClose)} />
+{#if addNewItemButton}
+  <AddNewItemButton on:click={openStyledModal(popupComponent, { createNew: true }, onModalClose)} />
+{/if}
