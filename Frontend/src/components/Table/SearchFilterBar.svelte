@@ -18,6 +18,14 @@
     }
     onFilterOrSearchTermChange(activeFilters, searchTerm);
   }
+
+  let timer;
+  const debounce = (functionAfterDebounce) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      functionAfterDebounce();
+    }, 750);
+  };
 </script>
 
 <style>
@@ -52,7 +60,9 @@
     <input
       class="searchInput"
       bind:value={searchTerm}
-      on:input={(event) => onFilterOrSearchTermChange(activeFilters, event.target.value)}
+      on:input={(event) => debounce(() =>
+          onFilterOrSearchTermChange(activeFilters, event.target.value)
+        )}
       placeholder="Suche" />
     <Select
       items={Object.keys(filters.filters)}

@@ -3,6 +3,10 @@ import { render } from "@testing-library/svelte";
 import SearchFilterBar from "../../src/components/Table/SearchFilterBar.svelte";
 import userEvent from "@testing-library/user-event";
 
+function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
 describe("SearchFilterBar", () => {
   const renderSearchFilterBar = (callback) => {
     const { container } = render(SearchFilterBar, {
@@ -15,13 +19,13 @@ describe("SearchFilterBar", () => {
     };
   };
 
-  it("calls callback on search input", async () => {
+  it("calls callback on search input after debounce ", async () => {
     const mockCallback = jest.fn((filters, searchTerm) => {});
     const { searchInput } = renderSearchFilterBar(mockCallback);
     await userEvent.type(searchInput, "abc");
-    expect(mockCallback.mock.calls.length).toBe(3);
-    expect(mockCallback.mock.calls[0][1]).toBe("a");
-    expect(mockCallback.mock.calls[1][1]).toBe("ab");
-    expect(mockCallback.mock.calls[2][1]).toBe("abc");
+    expect(mockCallback.mock.calls.length).toBe(0);
+    await sleep(800);
+    expect(mockCallback.mock.calls.length).toBe(1);
+    expect(mockCallback.mock.calls[0][1]).toBe("abc");
   });
 });
