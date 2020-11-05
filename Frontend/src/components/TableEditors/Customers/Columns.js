@@ -5,7 +5,7 @@ export default [
     title: "Id",
     key: "_id",
     sort: function (value) {
-      return parseInt(value);
+      return parseInt(value, 10);
     },
     search: "from_beginning",
   },
@@ -26,7 +26,7 @@ export default [
     title: "Hausnummer",
     key: "house_number",
     sort: function (value) {
-      return parseInt(value);
+      return parseInt(value, 10);
     },
     search: "exclude",
   },

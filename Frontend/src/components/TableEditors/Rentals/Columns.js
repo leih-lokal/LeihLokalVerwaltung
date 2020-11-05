@@ -11,7 +11,7 @@ export default [
     title: "Gegenstand Nr",
     key: "item_id",
     sort: function (value) {
-      return parseInt(value);
+      return parseInt(value, 10);
     },
     search: "from_beginning",
   },
@@ -47,7 +47,7 @@ export default [
     title: "Kunde Nr",
     key: "customer_id",
     sort: function (value) {
-      return parseInt(value);
+      return parseInt(value, 10);
     },
     search: "from_beginning",
   },
@@ -59,7 +59,7 @@ export default [
     title: "Pfand",
     key: "deposit",
     sort: function (value) {
-      return parseInt(value);
+      return parseInt(value, 10);
     },
     search: "exclude",
   },
@@ -67,7 +67,7 @@ export default [
     title: "Pfand zurück",
     key: "deposit_returned",
     sort: function (value) {
-      return parseInt(value);
+      return parseInt(value, 10);
     },
     search: "exclude",
   },
@@ -86,7 +86,7 @@ export default [
     title: "Pfand einbehalten",
     key: "deposit_retained",
     sort: function (value) {
-      return parseInt(value);
+      return parseInt(value, 10);
     },
     search: "exclude",
   },

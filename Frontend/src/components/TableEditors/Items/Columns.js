@@ -6,7 +6,7 @@ export default [
     key: "_id",
     search: "from_beginning",
     sort: function (value) {
-      return parseInt(value);
+      return parseInt(value, 10);
     },
   },
   {
