@@ -23,8 +23,12 @@
     });
   };
 
-  let sortBy = "_id";
-  let sortReverse = false;
+  let sortBy = columns.some((col) => "initialSort" in col)
+    ? columns.find((col) => "initialSort" in col).key
+    : "_id";
+  let sortReverse = columns.some((col) => "initialSort" in col)
+    ? columns.find((col) => "initialSort" in col).initialSort === "desc"
+    : false;
   let currentPage = 0;
   let rows = new Promise(() => {});
   let rowsPerPage = Math.round((window.innerHeight - 240) / rowHeight);

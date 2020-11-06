@@ -36,7 +36,7 @@ export default [
     key: "to_return_on",
     search: "exclude",
     display: (value) => saveParseTimestampToString(value),
-    initialSort: "desc",
+    initialSort: "asc",
   },
   {
     title: "Mitarbeiter",

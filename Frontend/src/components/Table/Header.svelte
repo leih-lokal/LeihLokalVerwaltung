@@ -5,7 +5,7 @@
   import { faSortUp } from "@fortawesome/free-solid-svg-icons/faSortUp";
 
   export let columns = [];
-  export let sortBy = "_id";
+  export let sortBy;
   export let sortReverse = false;
 
   let showSortIndicator = {};
