@@ -8,6 +8,7 @@
   export let database;
   export let popupComponent;
   export let addNewItemButton = true;
+  export let rowBackgroundColorFunction;
 
   let table;
 
@@ -20,6 +21,7 @@
   {database}
   {columns}
   {filters}
+  {rowBackgroundColorFunction}
   onRowClicked={(doc) => openStyledModal(popupComponent, { doc: doc }, onModalClose)} />
 
 {#if addNewItemButton}

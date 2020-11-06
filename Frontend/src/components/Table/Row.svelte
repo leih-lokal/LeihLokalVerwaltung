@@ -2,6 +2,7 @@
   export let columns = [];
   export let item = {};
   export let rowHeight = 40;
+  export let rowBackgroundColorFunction;
 
   const displayValue = (col, item) => {
     if (!(col.key in item)) {
@@ -14,7 +15,7 @@
 
 <style>
   tr:hover {
-    background-color: #0066ff77 !important;
+    background-color: #ff9ef2 !important;
   }
 
   tr,
@@ -44,7 +45,9 @@
   }
 </style>
 
-<tr on:click style="--rowHeight: {rowHeight}px">
+<tr
+  on:click
+  style={`--rowHeight: ${rowHeight}px; ${rowBackgroundColorFunction ? 'background-color: ' + rowBackgroundColorFunction(item) : ''}`}>
   {#each columns as col}
     <td>
       {#if col.isImageUrl}

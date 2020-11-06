@@ -11,6 +11,7 @@
   export let columns = [];
   export let rowHeight = 40;
   export let filters = {};
+  export let rowBackgroundColorFunction;
   export const refresh = () => {
     rows = database.query({
       filterFunctions: activeFilters.map((filterName) => filters.filters[filterName]),
@@ -79,6 +80,7 @@
         <Header {columns} bind:sortBy bind:sortReverse />
         {#each data.rows as row}
           <Row
+            {rowBackgroundColorFunction}
             {columns}
             item={row}
             {rowHeight}
