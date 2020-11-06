@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 class CouchDb:
 
     def __init__(self):
-        self.client = CouchDB(os.environ['COUCHDB_USER'], os.environ['COUCHDB_PASSWORD'], url="http://" + os.environ['COUCHDB_HOST'], connect=True, auto_renew=True)
+        self.client = CouchDB(os.environ['COUCHDB_USER'], os.environ['COUCHDB_PASSWORD'], url=os.environ['COUCHDB_HOST'], connect=True, auto_renew=True)
 
     def db(self, db_name):
         return self.client[db_name]

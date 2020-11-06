@@ -3,6 +3,7 @@ from dateutil import parser
 
 def parse_int(value):
     try:
+        value = str(value).lower().replace(" eur", "")
         return int(value)
     except (ValueError, TypeError):
         return 0

@@ -2,7 +2,7 @@ from utils import *
 
 ITEM_COLUMNS = {
     "_id": {
-        "excel_to_db_transform": str,
+        "excel_to_db_transform": parse_4_digit_id,
         "excel_title": "Nr",
         "excel_column_index": 0
     },
