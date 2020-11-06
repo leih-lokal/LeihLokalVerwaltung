@@ -4,3 +4,4 @@ cloudant==2.14.0
 watchdog==0.10.3
 requests==2.24.0
 python-dateutil==2.8.1
+pytz==2020.4

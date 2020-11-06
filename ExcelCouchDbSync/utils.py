@@ -1,4 +1,5 @@
 import datetime
+import pytz as pytz
 from dateutil import parser
 
 def parse_int(value):
@@ -11,9 +12,9 @@ def parse_int(value):
 def parse_date(value):
     try:
         if isinstance(value, datetime.datetime):
-            return value.timestamp() * 1000
+            return value.replace(tzinfo=pytz.timezone("UTC")).timestamp() * 1000
         else:
-            return parser.parse(str(value)).timestamp() * 1000
+            return parser.parse(str(value)).replace(tzinfo=pytz.timezone("UTC")).timestamp() * 1000
     except ValueError:
         return 0
 
