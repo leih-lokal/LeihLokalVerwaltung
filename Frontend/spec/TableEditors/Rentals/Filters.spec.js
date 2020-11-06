@@ -55,7 +55,7 @@ describe("Filter Rentals", () => {
   const applyFilter = (name) => rentals.filter(filters.filters[name]).map((rental) => rental._id);
 
   it("nicht abgeschlossen", () =>
-    expect(applyFilter("nicht abgeschlossen")).toEqual(["1", "2", "3", "9", "10"]));
+    expect(applyFilter("nicht abgeschlossen")).toEqual(["1", "2", "3", "7", "9", "10"]));
 
   it("abgeschlossen", () =>
     expect(applyFilter("abgeschlossen")).toEqual(["4", "5", "6", "7", "8"]));
