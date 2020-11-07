@@ -1,6 +1,6 @@
 export default {
   filters: {
-    "nicht abgeschlossen": function (rental) {
+    aktuell: function (rental) {
       function millisAtStartOfDay(millis) {
         var msPerDay = 86400 * 1000;
         return millis - (millis % msPerDay);
@@ -48,5 +48,5 @@ export default {
       );
     },
   },
-  activeByDefault: ["nicht abgeschlossen"],
+  activeByDefault: ["aktuell"],
 };

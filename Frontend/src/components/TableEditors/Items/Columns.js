@@ -5,8 +5,8 @@ export default [
     title: "Id",
     key: "_id",
     search: "from_beginning",
-    sort: function (value) {
-      return parseInt(value, 10);
+    sort: function (doc) {
+      return parseInt(doc._id, 10);
     },
   },
   {

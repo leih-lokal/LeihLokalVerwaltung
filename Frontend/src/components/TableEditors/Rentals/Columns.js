@@ -10,8 +10,8 @@ export default [
   {
     title: "Gegenstand Nr",
     key: "item_id",
-    sort: function (value) {
-      return parseInt(value, 10);
+    sort: function (doc) {
+      return parseInt(doc.item_id, 10);
     },
     search: "from_beginning",
   },
@@ -36,6 +36,14 @@ export default [
     key: "to_return_on",
     search: "exclude",
     display: (value) => saveParseTimestampToString(value),
+    sort: function (doc) {
+      if (doc.returned_on && doc.returned_on !== 0) {
+        // display returned rentals before not returned rentals
+        return [0, doc.to_return_on];
+      } else {
+        return [1, doc.to_return_on];
+      }
+    },
     initialSort: "asc",
   },
   {
@@ -46,8 +54,8 @@ export default [
   {
     title: "Kunde Nr",
     key: "customer_id",
-    sort: function (value) {
-      return parseInt(value, 10);
+    sort: function (doc) {
+      return parseInt(doc.customer_id, 10);
     },
     search: "from_beginning",
   },
@@ -66,8 +74,8 @@ export default [
   {
     title: "Pfand zurück",
     key: "deposit_returned",
-    sort: function (value) {
-      return parseInt(value, 10);
+    sort: function (doc) {
+      return parseInt(doc.deposit_returned, 10);
     },
     search: "exclude",
   },
@@ -85,8 +93,8 @@ export default [
   {
     title: "Pfand einbehalten",
     key: "deposit_retained",
-    sort: function (value) {
-      return parseInt(value, 10);
+    sort: function (doc) {
+      return parseInt(doc.deposit_retained, 10);
     },
     search: "exclude",
   },

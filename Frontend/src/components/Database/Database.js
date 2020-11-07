@@ -180,7 +180,7 @@ class Database {
           if(typeof transformBeforeSort === 'undefined'){
             emit(doc.${sortBy});
           }else{
-            emit(transformBeforeSort(doc.${sortBy}));
+            emit(transformBeforeSort(doc));
           }
         }
       }`
