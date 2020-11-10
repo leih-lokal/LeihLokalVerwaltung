@@ -13,6 +13,7 @@ export default [
     sort: function (doc) {
       return parseInt(doc.item_id, 10);
     },
+    numeric: true,
     search: "from_beginning",
   },
   {
@@ -54,6 +55,7 @@ export default [
   {
     title: "Kunde Nr",
     key: "customer_id",
+    numeric: true,
     sort: function (doc) {
       return parseInt(doc.customer_id, 10);
     },

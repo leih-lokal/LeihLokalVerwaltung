@@ -1,34 +1,84 @@
 export default {
   filters: {
-    "nicht gelöscht": function (item) {
-      return !item.status_on_website || item.status_on_website !== "deleted";
+    "nicht gelöscht": {
+      required_fields: ["status_on_website"],
+      selectors: {
+        status_on_website: {
+          $ne: "deleted",
+        },
+      },
     },
-    gelöscht: function (item) {
-      return item.status_on_website && item.status_on_website === "deleted";
+    gelöscht: {
+      required_fields: ["status_on_website"],
+      selectors: {
+        status_on_website: {
+          $eq: "deleted",
+        },
+      },
     },
-    verfügbar: function (item) {
-      return item.status_on_website && item.status_on_website === "instock";
+    verfügbar: {
+      required_fields: ["status_on_website"],
+      selectors: {
+        status_on_website: {
+          $eq: "instock",
+        },
+      },
     },
-    ausgeliehen: function (item) {
-      return item.status_on_website && item.status_on_website === "outofstock";
+    ausgeliehen: {
+      required_fields: ["status_on_website"],
+      selectors: {
+        status_on_website: {
+          $eq: "outofstock",
+        },
+      },
     },
-    "Kategorie Küche": function (item) {
-      return item.category && item.category === "Küche";
+    "Kategorie Küche": {
+      required_fields: ["category"],
+      selectors: {
+        category: {
+          $eq: "Küche",
+        },
+      },
     },
-    "Kategorie Haushalt": function (item) {
-      return item.category && item.category === "Haushalt";
+    "Kategorie Haushalt": {
+      required_fields: ["category"],
+      selectors: {
+        category: {
+          $eq: "Haushalt",
+        },
+      },
     },
-    "Kategorie Garten": function (item) {
-      return item.category && item.category === "Garten";
+    "Kategorie Garten": {
+      required_fields: ["category"],
+      selectors: {
+        category: {
+          $eq: "Garten",
+        },
+      },
     },
-    "Kategorie Heimwerker": function (item) {
-      return item.category && item.category === "Heimwerker";
+    "Kategorie Heimwerker": {
+      required_fields: ["category"],
+      selectors: {
+        category: {
+          $eq: "Heimwerker",
+        },
+      },
     },
-    "Kategorie Kinder": function (item) {
-      return item.category && item.category === "Kinder";
+    "Kategorie Kinder": {
+      required_fields: ["category"],
+      selectors: {
+        category: {
+          $eq: "Kinder",
+        },
+      },
     },
-    "Kategorie Freizeit": function (item) {
-      return item.category && item.category === "Freizeit";
+    "Kategorie Freizeit": {
+      required_fields: ["category"],
+      selectors: {
+        category: {
+          $eq: "Freizeit",
+        },
+      },
     },
   },
   activeByDefault: ["nicht gelöscht"],

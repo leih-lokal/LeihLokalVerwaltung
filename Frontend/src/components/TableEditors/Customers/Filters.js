@@ -1,32 +1,54 @@
+const ONE_YEAR_AGO_MILLIS = new Date().getUTCMilliseconds() - 1000 * 60 * 60 * 24 * 365;
+
 export default {
   filters: {
-    "Newsletter: Ja": function (customer) {
-      var subscribedToNewsletter = String(customer.subscribed_to_newsletter).toLowerCase();
-      return subscribedToNewsletter === "true" || subscribedToNewsletter === "ja";
+    "Newsletter: Ja": {
+      required_fields: ["subscribed_to_newsletter"],
+      selectors: {
+        subscribed_to_newsletter: {
+          $eq: true,
+        },
+      },
     },
-    "Beitritt vor > 1 Jahr": function (customer) {
-      return (
-        customer.registration_date &&
-        new Date() - new Date(customer.registration_date) > 1000 * 60 * 60 * 24 * 365
-      );
+    "Newsletter: Nein": {
+      required_fields: ["subscribed_to_newsletter"],
+      selectors: {
+        subscribed_to_newsletter: {
+          $eq: false,
+        },
+      },
     },
-    "Beitritt vor < 1 Jahr": function (customer) {
-      return (
-        customer.registration_date &&
-        new Date() - new Date(customer.registration_date) < 1000 * 60 * 60 * 24 * 365
-      );
+    "Beitritt vor > 1 Jahr": {
+      required_fields: ["registration_date"],
+      selectors: {
+        registration_date: {
+          $lt: ONE_YEAR_AGO_MILLIS,
+        },
+      },
     },
-    "Verlängert vor > 1 Jahr": function (customer) {
-      return (
-        customer.renewed_on &&
-        new Date() - new Date(customer.renewed_on) > 1000 * 60 * 60 * 24 * 365
-      );
+    "Beitritt vor < 1 Jahr": {
+      required_fields: ["registration_date"],
+      selectors: {
+        registration_date: {
+          $gt: ONE_YEAR_AGO_MILLIS,
+        },
+      },
     },
-    "Verlängert vor < 1 Jahr": function (customer) {
-      return (
-        customer.renewed_on &&
-        new Date() - new Date(customer.renewed_on) < 1000 * 60 * 60 * 24 * 365
-      );
+    "Verlängert vor > 1 Jahr": {
+      required_fields: ["renewed_on"],
+      selectors: {
+        renewed_on: {
+          $lt: ONE_YEAR_AGO_MILLIS,
+        },
+      },
+    },
+    "Verlängert vor < 1 Jahr": {
+      required_fields: ["renewed_on"],
+      selectors: {
+        renewed_on: {
+          $gt: ONE_YEAR_AGO_MILLIS,
+        },
+      },
     },
   },
   activeByDefault: [],

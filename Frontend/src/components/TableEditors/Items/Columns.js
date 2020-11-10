@@ -4,6 +4,7 @@ export default [
   {
     title: "Id",
     key: "_id",
+    numeric: true,
     search: "from_beginning",
     sort: function (doc) {
       return parseInt(doc._id, 10);

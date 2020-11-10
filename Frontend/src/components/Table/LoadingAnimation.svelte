@@ -13,6 +13,6 @@
   }
 </style>
 
-<div in:fade={{ duration: 4000 }}>
+<div in:fade={{ duration: 800 }}>
   <Pulse size="120" color="#fc03a9" unit="px" />
 </div>

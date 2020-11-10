@@ -14,7 +14,7 @@
   export let rowBackgroundColorFunction;
   export const refresh = () => {
     rows = database.query({
-      filterFunctions: activeFilters.map((filterName) => filters.filters[filterName]),
+      filters: activeFilters.map((filterName) => filters.filters[filterName]),
       columns: columns,
       searchTerm: searchTerm,
       currentPage: currentPage,
