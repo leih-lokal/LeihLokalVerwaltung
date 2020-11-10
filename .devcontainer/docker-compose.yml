@@ -26,12 +26,14 @@ services:
     environment:
       <<: *common-variables
       COUCHDB_HOST: 127.0.0.1:5984
+      WC_BASE_URL: https://www.buergerstiftung-karlsruhe.de/wp-json/wc/v3/
+      WC_CONSUMER_KEY: ck_aa7371147bb506a4c71d6bc7b3c2bb90027fc37d
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
   couchdb:
-    image: couchdb:3.1.0
+    image: couchdb:3.1.1
     restart: unless-stopped
     ports:
       - 5984:5984
