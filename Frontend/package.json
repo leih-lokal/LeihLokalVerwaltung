@@ -41,7 +41,7 @@
     "sirv-cli": "^1.0.8",
     "svelte": "^3.29.4",
     "svelte-calendar": "^1.5.0",
-    "svelte-checkbox": "^1.0.0-beta.9",
+    "svelte-checkbox": "^1.0.1",
     "svelte-component-double": "^0.7.5",
     "svelte-htm": "^1.1.1",
     "svelte-jester": "^1.1.5",
