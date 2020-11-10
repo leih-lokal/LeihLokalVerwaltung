@@ -5,17 +5,14 @@ PouchDB.plugin(PouchDBFind);
 
 class Database {
   database;
-  remoteDatabase;
   changeCallback;
   syncHandler;
   replicationHandler;
-  cacheInBrowser;
   name;
   columns;
   existingDesignDocIds;
 
-  constructor(name, columns, cacheInBrowser = false) {
-    this.cacheInBrowser = cacheInBrowser;
+  constructor(name, columns) {
     this.changeCallback = (updatedDocs) => {};
     this.name = name;
     this.columns = columns;
@@ -23,32 +20,28 @@ class Database {
   }
 
   connect() {
-    this.remoteDatabase = new PouchDB(
+    this.database = new PouchDB(
       `${process.env.COUCHDB_SSL ? "https" : "http"}://${
         process.env.COUCHDB_USER
       }:${localStorage.getItem("password")}@${process.env.COUCHDB_HOST}/${this.name}`
     );
 
-    if (this.cacheInBrowser) {
-      this.database = new PouchDB(name);
-    } else {
-      this.database = this.remoteDatabase;
-    }
-
     //create indices for searching
     Promise.all(
-      this.columnsToSearch().map((col) =>
+      [...this.columnsToSearch(true), ...this.columnsToSearch(false)].map((col) =>
         this.database.createIndex({
           index: { fields: [col.key] },
         })
       )
     );
 
-    return this.remoteDatabase.info();
+    return this.database.info();
   }
 
-  columnsToSearch() {
-    return this.columns.filter((column) => !column.search || column.search !== "exclude");
+  columnsToSearch(numeric = false) {
+    return this.columns
+      .filter((column) => (!numeric && !column.numeric) || (numeric && column.numeric))
+      .filter((column) => !column.search || column.search !== "exclude");
   }
 
   fetchById(id) {
@@ -114,66 +107,35 @@ class Database {
   }
 
   async query(options) {
-    let resultingIds = await this.sortedIdsMatchingAllFilters(
-      options.filterFunctions,
-      options.sortBy,
-      options.sortReverse
-    );
-    if (options.searchTerm && options.searchTerm.length > 0) {
-      const idsMatchingSearchTerm = await this.idsMatchingSearchTerm(options.searchTerm);
-      resultingIds = resultingIds.filter((id) => idsMatchingSearchTerm.includes(id));
+    const { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm } = options;
+    const requiredFields = filters.flatMap((filter) => filter.required_fields);
+    const ddocId = hashString(sortBy);
+    let selectors = filters.flatMap((filter) => filter.selectors);
+    if (searchTerm && searchTerm.length > 0) {
+      selectors = [...selectors, this.selectorsForSearchTerm(searchTerm)];
     }
-    return {
-      rows: await this.paginatedDocsByIds(resultingIds, options.rowsPerPage, options.currentPage),
-      count: resultingIds.length,
-    };
-  }
 
-  async idsMatchingSearchTerm(searchTerm) {
-    const formattedSearchTerm = searchTerm.toLowerCase();
-    const searchTermWords = formattedSearchTerm
-      .split(" ")
-      .map((searchTerm) => searchTerm.trim())
-      .filter((searchTerm) => searchTerm !== "");
-    const ids = await Promise.all(
-      searchTermWords.map((word) => this.idsMatchingAnySelector(this.selectorsForSearchTerm(word)))
-    );
-    return ids.reduce((a, b) => a.filter((c) => b.includes(c)));
-  }
+    let fetchFilteredIdsPromise = Promise.resolve([]);
+    if (selectors.length > 0) {
+      fetchFilteredIdsPromise = this.createIndexForFields(requiredFields)
+        .then(() =>
+          this.database.find({
+            fields: ["_id"],
+            limit: 999999,
+            selector: {
+              $and: selectors,
+            },
+          })
+        )
+        .then((result) => result.docs.map((doc) => doc._id));
+    }
 
-  async idsMatchingAnySelector(selectors) {
-    const result = await this.database.find({
-      fields: ["_id"],
-      limit: 999999,
-      selector: {
-        $or: selectors,
-      },
-    });
-    return result.docs.map((doc) => doc._id);
-  }
+    const [idsMatchingAllFilters, sortedIds] = await Promise.all([
+      fetchFilteredIdsPromise,
 
-  async fetchDocsBySelector(selector, fields) {
-    const result = await this.database.find({
-      limit: 10,
-      fields: fields,
-      selector: selector,
-    });
-    return result.docs;
-  }
-
-  async sortedIdsMatchingAllFilters(filterFunctions, sortBy, sortReverse) {
-    const ddocId = String(hashString(filterFunctions.toString() + sortBy + sortReverse));
-    await this.createDesignDoc(
-      ddocId,
-      `function (doc) {
-        var filterFunctions = [${filterFunctions.toString()}];
-        function passesAllFilterFunctions(d) {
-          for(var i = 0; i < filterFunctions.length; i++){
-            if(!filterFunctions[i](d)) return false;
-          }
-          return true;
-        }
-        if (passesAllFilterFunctions(doc)) {
+      this.createDesignDoc(
+        ddocId,
+        `function (doc) {
           var transformBeforeSort = ${this.columns
             .find((col) => col.key === sortBy)
             ?.sort?.toString()};
@@ -182,42 +144,67 @@ class Database {
           }else{
             emit(transformBeforeSort(doc));
           }
-        }
-      }`
-    );
+        }`
+      )
+        .then(() =>
+          this.database.query(ddocId + "/index", {
+            include_docs: false,
+            descending: sortReverse,
+            limit: 999999,
+          })
+        )
+        .then((result) => result.rows.map((row) => row.id)),
+    ]);
 
-    try {
-      const result = await this.database.query(ddocId + "/index", {
-        include_docs: false,
-        descending: sortReverse,
-        limit: 999999,
-      });
-      return result.rows.map((row) => row.id);
-    } catch (err) {
-      console.log(err);
+    let sortedFilteredIds = sortedIds;
+    if (selectors.length > 0) {
+      sortedFilteredIds = sortedIds.filter((id) => idsMatchingAllFilters.includes(id));
     }
-  }
 
-  async paginatedDocsByIds(ids, rowsPerPage, currentPage) {
-    try {
-      const result = await this.database.allDocs({
-        skip: rowsPerPage * currentPage,
-        limit: rowsPerPage,
-        include_docs: true,
-        keys: ids,
-      });
-      return result.rows.map((row) => row.doc);
-    } catch (err) {
-      console.log(err);
-    }
+    const result = await this.database.allDocs({
+      skip: rowsPerPage * currentPage,
+      limit: rowsPerPage,
+      include_docs: true,
+      keys: sortedFilteredIds,
+    });
+
+    return {
+      rows: result.rows.map((row) => row.doc),
+      count: sortedFilteredIds.length,
+    };
   }
 
   selectorsForSearchTerm(searchTerm) {
-    return this.columnsToSearch().map((column) => ({
+    const formattedSearchTerm = searchTerm.toLowerCase();
+    const searchTermWords = formattedSearchTerm
+      .split(" ")
+      .map((searchTerm) => searchTerm.trim())
+      .filter((searchTerm) => searchTerm !== "");
+
+    return {
+      $and: searchTermWords.map((searchTermWord) => ({
+        $or: this.selectorsForSearchWord(searchTermWord),
+      })),
+    };
+  }
+
+  selectorsForSearchWord(searchWord) {
+    return this.columnsToSearch(!isNaN(searchWord)).map((column) => ({
       [column.key]: {
-        $regex: "(?i)" + (column?.search === "from_beginning" ? "^(0+)?" : "") + searchTerm,
+        $regex: "(?i)" + (column?.search === "from_beginning" ? "^(0+)?" : "") + searchWord,
       },
     }));
+  }
+
+  async createIndexForFields(fields) {
+    const name = hashString(fields.join(","));
+    if (!this.existingDesignDocIds.has(name)) {
+      await this.database.createIndex({
+        index: { fields: fields },
+        ddoc: name,
+      });
+      this.existingDesignDocIds.add(name);
+    }
   }
 
   cancelSyncAndChangeListener() {
@@ -227,17 +214,6 @@ class Database {
 
   syncAndListenForChanges() {
     this.cancelSyncAndChangeListener();
-
-    if (this.cacheInBrowser) {
-      this.syncHandler = this.database
-        .sync(this.remoteDatabase, {
-          live: true,
-          retry: true,
-        })
-        .on("error", function (err) {
-          console.error(err);
-        });
-    }
 
     this.replicationHandler = this.database
       .changes({
