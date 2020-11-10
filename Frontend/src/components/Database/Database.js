@@ -1,6 +1,7 @@
 import PouchDB from "pouchdb-browser";
 import PouchDBFind from "pouchdb-find";
 import { hashString } from "../../utils/utils";
+import Cache from "lru-cache";
 PouchDB.plugin(PouchDBFind);
 
 class Database {
@@ -11,12 +12,14 @@ class Database {
   name;
   columns;
   existingDesignDocIds;
+  cache;
 
   constructor(name, columns) {
     this.changeCallback = (updatedDocs) => {};
     this.name = name;
     this.columns = columns;
     this.existingDesignDocIds = new Set();
+    this.cache = new Cache(50);
   }
 
   connect() {
@@ -34,6 +37,15 @@ class Database {
         })
       )
     );
+
+    this.replicationHandler = this.database
+      .changes({
+        since: "now",
+        live: true,
+        include_docs: true,
+      })
+      .on("change", async (change) => this.cache.reset())
+      .on("error", (error) => console.error(error));
 
     return this.database.info();
   }
@@ -106,6 +118,25 @@ class Database {
     }
   }
 
+  async idsMatchingAllSelectors(selectors) {
+    const cacheKey = hashString(JSON.stringify(selectors));
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
+    } else {
+      const result = await this.database
+        .find({
+          fields: ["_id"],
+          limit: 999999,
+          selector: {
+            $and: selectors,
+          },
+        })
+        .then((result) => result.docs.map((doc) => doc._id));
+      this.cache.set(cacheKey, result);
+      return result;
+    }
+  }
+
   async query(options) {
     const { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm } = options;
     const requiredFields = filters.flatMap((filter) => filter.required_fields);
@@ -117,17 +148,9 @@ class Database {
 
     let fetchFilteredIdsPromise = Promise.resolve([]);
     if (selectors.length > 0) {
-      fetchFilteredIdsPromise = this.createIndexForFields(requiredFields)
-        .then(() =>
-          this.database.find({
-            fields: ["_id"],
-            limit: 999999,
-            selector: {
-              $and: selectors,
-            },
-          })
-        )
-        .then((result) => result.docs.map((doc) => doc._id));
+      fetchFilteredIdsPromise = this.createIndexForFields(requiredFields).then(() =>
+        this.idsMatchingAllSelectors(selectors)
+      );
     }
 
     const [idsMatchingAllFilters, sortedIds] = await Promise.all([
@@ -205,28 +228,6 @@ class Database {
       });
       this.existingDesignDocIds.add(name);
     }
-  }
-
-  cancelSyncAndChangeListener() {
-    if (this.syncHandler) this.syncHandler.cancel();
-    if (this.replicationHandler) this.replicationHandler.cancel();
-  }
-
-  syncAndListenForChanges() {
-    this.cancelSyncAndChangeListener();
-
-    this.replicationHandler = this.database
-      .changes({
-        since: "now",
-        live: true,
-        include_docs: true,
-      })
-      .on("change", async (change) => this.changeCallback(await this.fetchAllDocs()))
-      .on("error", (error) => console.error(error));
-  }
-
-  onChange(callback) {
-    this.changeCallback = callback;
   }
 }
 
