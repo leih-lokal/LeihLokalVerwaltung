@@ -4,6 +4,7 @@
   import columns from "./Columns.js";
   import filters from "./Filters.js";
   import { itemDb } from "../../../utils/stores";
+  import { notifier } from "@beyonk/svelte-notifications";
   import WoocommerceClient from "../../Database/WoocommerceClient";
 
   const woocommerceClient = new WoocommerceClient();
