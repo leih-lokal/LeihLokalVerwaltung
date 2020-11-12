@@ -39,7 +39,7 @@
   const idStartsWithAndNotDeletedSelector = (searchValue) =>
     new SelectorBuilder()
       .withField("_id")
-      .startsWithIgnoreCase(searchValue)
+      .startsWithIgnoreCaseAndLeadingZeros(searchValue)
       .withField("status_on_website")
       .isNotEqualTo("deleted")
       .build();

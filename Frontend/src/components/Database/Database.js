@@ -197,6 +197,15 @@ class Database {
     };
   }
 
+  async fetchDocsBySelector(selector, fields) {
+    const result = await this.database.find({
+      limit: 10,
+      fields: fields,
+      selector: selector,
+    });
+    return result.docs;
+  }
+
   selectorsForSearchTerm(searchTerm) {
     const formattedSearchTerm = searchTerm.toLowerCase();
     const searchTermWords = formattedSearchTerm
