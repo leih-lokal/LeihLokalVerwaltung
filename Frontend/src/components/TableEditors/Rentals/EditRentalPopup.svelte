@@ -6,20 +6,39 @@
   import InputGroup from "../../Input/InputGroup.svelte";
   import { rentalDb, itemDb, customerDb } from "../../../utils/stores";
   import SelectorBuilder from "../../Database/SelectorBuilder";
+  import WoocommerceClient from "../../Database/WoocommerceClient";
+
+  const woocommerceClient = new WoocommerceClient();
 
   const { close } = getContext("simple-modal");
 
-  function saveInDatabase() {
-    $itemDb
-      .fetchById(doc.item_id)
-      .then((item) => (doc.image = item.image))
-      .then(() => (createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc)))
+  async function saveInDatabase() {
+    if (doc.item_id) {
+      const item = await $itemDb.fetchById(doc.item_id);
+      doc.image = item.image;
+
+      if (createNew) {
+        woocommerceClient
+          .updateItemStatus(item.wc_id, "outofstock")
+          .then(() => {
+            notifier.success(`'${item.item_name}' wurde auf der Webseite als verliehen markiert.`);
+          })
+          .catch((error) => {
+            notifier.warning(
+              `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
+              6000
+            );
+            console.error(error);
+          });
+      }
+    }
+
+    (createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc))
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
       .then(close)
       .catch((error) => {
         notifier.danger("Leihvorgang konnte nicht gespeichert werden!", 6000);
         console.error(error);
-        close();
       });
   }
 
@@ -57,8 +76,7 @@
 </script>
 
 <style>
-  input[type="text"],
-  .col-input > .autocomplete {
+  input[type="text"] {
     width: 100% !important;
     padding: 0.5rem !important;
     border: 1px solid #ccc !important;
