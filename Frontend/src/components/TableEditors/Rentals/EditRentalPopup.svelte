@@ -17,7 +17,20 @@
       const item = await $itemDb.fetchById(doc.item_id);
       doc.image = item.image;
 
-      if (createNew) {
+      if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
+        woocommerceClient
+          .updateItemStatus(item.wc_id, "instock")
+          .then(() => {
+            notifier.success(`'${item.item_name}' wurde auf der Webseite als verfügbar markiert.`);
+          })
+          .catch((error) => {
+            notifier.warning(
+              `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
+              6000
+            );
+            console.error(error);
+          });
+      } else if (createNew) {
         woocommerceClient
           .updateItemStatus(item.wc_id, "outofstock")
           .then(() => {
