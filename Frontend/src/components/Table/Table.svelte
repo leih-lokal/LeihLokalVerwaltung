@@ -94,6 +94,13 @@
               item={processedRow}
               {rowHeight}
               on:click={() => onRowClicked(processedRow)} />
+          {:catch error}
+            <Row
+              {rowBackgroundColorFunction}
+              {columns}
+              item={row}
+              {rowHeight}
+              on:click={() => onRowClicked(row)} />
           {/await}
         {/each}
       </table>
