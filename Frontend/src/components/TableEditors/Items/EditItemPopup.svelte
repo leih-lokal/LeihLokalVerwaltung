@@ -5,6 +5,9 @@
   import DateInput from "../../Input/DateInput.svelte";
   import { itemDb } from "../../../utils/stores";
   import InputGroup from "../../Input/InputGroup.svelte";
+  import WoocommerceClient from "../../Database/WoocommerceClient";
+
+  const woocommerceClient = new WoocommerceClient();
 
   const { close } = getContext("simple-modal");
 
@@ -29,8 +32,12 @@
       .catch((error) => {
         notifier.danger("Leihvorgang konnte nicht gespeichert werden!", 6000);
         console.error(error);
-        close();
       });
+
+    woocommerceClient.updateItemStatus(doc.wc_id, doc.status_on_website).catch((error) => {
+      notifier.warning("Status auf der Webseite konnte nicht aktualisiert werden!", 6000);
+      console.error(error);
+    });
   }
 
   export let doc = {};
