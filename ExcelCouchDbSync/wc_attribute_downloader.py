@@ -22,7 +22,9 @@ def extract_additional_attributes(items):
         if not "sku" in item: continue
         item_id = parse_4_digit_id(item["sku"])
         wc_additional_attributes[item_id] = {
-            "status": item["stock_status"]
+            "status_on_website": item["stock_status"],
+            "wc_url": item["permalink"],
+            "wc_id": item["id"]
         }
         if(len(item["images"]) != 0):
             images[item_id] = item["images"][0]["src"]
@@ -37,14 +39,12 @@ def add_wc_attributes_to_db_items(couchdb):
     print("loading attributes from woocommerce...")
     additional_attributes, images = extract_additional_attributes(all_items_from_woocommerce())
 
-    print("adding image urls to items...")
+    print("adding woocommerce attributes to items...")
     count_updated = 0
     for item in couchdb.db("items"):
         if item["_id"] in additional_attributes:
-            item["image"] = additional_attributes[item["_id"]]["image"]
-            item["status_on_website"] = additional_attributes[item["_id"]]["status"]
-            item["category"] = additional_attributes[item["_id"]]["category"]
-            item["deposit"] = additional_attributes[item["_id"]]["deposit"]
+            for key, value in additional_attributes[item["_id"]].items():
+                item[key] = value
         else:
             item["status_on_website"] = "deleted"
 
