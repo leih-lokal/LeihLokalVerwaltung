@@ -7,6 +7,7 @@
   import { fade } from "svelte/transition";
 
   export let onRowClicked = (row) => {};
+  export let processRowAfterLoad;
   export let database;
   export let columns = [];
   export let rowHeight = 40;
@@ -79,12 +80,21 @@
       <table>
         <Header {columns} bind:sortBy bind:sortReverse />
         {#each data.rows as row}
-          <Row
-            {rowBackgroundColorFunction}
-            {columns}
-            item={row}
-            {rowHeight}
-            on:click={() => onRowClicked(data.rows.find((x) => x._id === row._id))} />
+          {#await processRowAfterLoad(row)}
+            <Row
+              {rowBackgroundColorFunction}
+              {columns}
+              item={row}
+              {rowHeight}
+              on:click={() => onRowClicked(row)} />
+          {:then processedRow}
+            <Row
+              {rowBackgroundColorFunction}
+              {columns}
+              item={processedRow}
+              {rowHeight}
+              on:click={() => onRowClicked(processedRow)} />
+          {/await}
         {/each}
       </table>
       <Pagination

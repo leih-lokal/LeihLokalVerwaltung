@@ -15,6 +15,11 @@
   ];
   const status_on_website_option_labels = status_on_website_options.map((option) => option.label);
 
+  let status_on_website;
+  const setStatusOnWebsiteByValue = (value) => {
+    status_on_website = status_on_website_options.find((option) => option.value === value);
+  };
+
   function saveInDatabase() {
     const savePromise = createNew ? $itemDb.createDoc(doc) : $itemDb.updateDoc(doc);
 
@@ -36,9 +41,7 @@
     doc.added = new Date().getTime();
   }
 
-  let status_on_website = status_on_website_options.find(
-    (option) => option.value === doc.status_on_website
-  );
+  setStatusOnWebsiteByValue(doc.status_on_website);
   $: status_on_website_label = status_on_website ? status_on_website.label : "";
   $: status_on_website_label,
     (doc.status_on_website =

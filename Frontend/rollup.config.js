@@ -25,6 +25,8 @@ export default {
           COUCHDB_PASSWORD: process.env.COUCHDB_PASSWORD,
           COUCHDB_HOST: process.env.COUCHDB_HOST,
           COUCHDB_SSL: process.env.COUCHDB_SSL,
+          WC_CONSUMER_KEY: process.env.WC_CONSUMER_KEY,
+          WC_CONSUMER_SECRET: process.env.WC_CONSUMER_SECRET,
           DEV: process.env.DEV,
         },
       }),
@@ -46,6 +48,7 @@ export default {
     resolve({
       browser: true,
       dedupe: ["svelte", "svelte/transition", "svelte/internal"],
+      preferBuiltins: true,
     }),
     commonjs(),
     nodePolyfills(),
