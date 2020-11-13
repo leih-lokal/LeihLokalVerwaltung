@@ -12,8 +12,8 @@
         closeOnEsc: false,
         closeOnOuterClick: false,
         styleWindow: {
-          width: "90%",
-          "max-width": "95%",
+          width: "57em",
+          "max-width": "90%",
           height: "90%",
           overflow: "hidden",
         },

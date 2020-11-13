@@ -107,6 +107,7 @@
     height: 2rem;
     padding: 0.7rem 0.7rem 0.9rem 0.7rem;
     margin: 0;
+    flex-shrink: 0;
   }
 
   h3 {
@@ -131,11 +132,13 @@
 
   .content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
     flex: 1;
+    flex-grow: 1;
+    overflow: auto;
     min-height: 2em;
   }
 
@@ -143,15 +146,14 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    flex-wrap: nowrap;
   }
 
   .footer {
     height: 2rem;
     padding: 0.5rem;
     margin: 0;
-  }
-
-  .footer {
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
   }
