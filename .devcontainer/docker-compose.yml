@@ -3,7 +3,7 @@ version: "3.4"
 x-common-variables: &common-variables
   COUCHDB_USER: "user"
   COUCHDB_PASSWORD: "password"
-  DEV: "true"
+  DATABASE: "./Database"
 
 services:
   frontend:

@@ -1,7 +1,7 @@
 <script>
-  import Database from "./Database";
+  import Database from "ENV_DATABASE";
   import { onDestroy } from "svelte";
-  import { passwordStore, itemDb, customerDb, rentalDb } from "../../utils/stores";
+  import { itemDb, customerDb, rentalDb } from "../../utils/stores";
   import customerColumns from "../TableEditors/Customers/Columns";
   import itemColumns from "../TableEditors/Items/Columns";
   import rentalColumns from "../TableEditors/Rentals/Columns";
@@ -13,22 +13,16 @@
   ];
   const dbStores = [customerDb, itemDb, rentalDb];
 
-  dbStores.forEach((store, i) => store.set(databases[i]));
+  Promise.all(databases.map((db) => db.connect())).catch(function (error) {
+      console.debug(error);
+      if (error.status === 401) {
+        alert("Falsches Passwort!");
+      } else {
+        alert("Es kann keine Verbindung zur Datenbank hergestellt werden!");
+      }
+    });
 
-  const unsubscribe = passwordStore.subscribe((value) => {
-    if (value && value.length > 0) {
-      Promise.all(databases.map((db) => db.connect())).catch(function (error) {
-        console.debug(error);
-        if (error.status === 401) {
-          alert("Falsches Passwort!");
-        } else {
-          alert("Es kann keine Verbindung zur Datenbank hergestellt werden!");
-        }
-        localStorage.removeItem("password");
-        location.reload();
-      });
-    }
-  });
+  dbStores.forEach((store, i) => store.set(databases[i]));
 
   onDestroy(() => {
     unsubscribe();

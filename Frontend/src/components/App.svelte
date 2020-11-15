@@ -6,16 +6,9 @@
   import Rentals from "./TableEditors/Rentals/Rentals.svelte";
   import Modal from "svelte-simple-modal";
   import StyledModal from "./Layout/StyledModal.svelte";
-  import PasswordDialog from "./Input/PasswordDialog.svelte";
   import DatabaseConnection from "./Database/DatabaseConnection.svelte";
-  import { passwordStore } from "../utils/stores";
 
   let page = 0;
-  let authenticated = false;
-
-  passwordStore.subscribe((value) => {
-    if (value && value.length > 0) authenticated = true;
-  });
 
   function onMobile() {
     let check = false;
@@ -70,7 +63,7 @@
     <span>Die Anwendung benötigt einen größeren Bildschirm.</span>
     <span>Dieses Gerät ist zu klein.</span>
   </div>
-{:else if authenticated}
+{:else}
   <NotificationDisplay />
   <div class="container">
     <DatabaseConnection />
@@ -87,6 +80,4 @@
       </StyledModal>
     </Modal>
   </div>
-{:else}
-  <PasswordDialog />
 {/if}

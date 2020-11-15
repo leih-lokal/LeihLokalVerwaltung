@@ -19,17 +19,13 @@ export default {
   },
   plugins: [
     replace({
-      process: JSON.stringify({
-        env: {
-          COUCHDB_USER: process.env.COUCHDB_USER,
-          COUCHDB_PASSWORD: process.env.COUCHDB_PASSWORD,
-          COUCHDB_HOST: process.env.COUCHDB_HOST,
-          COUCHDB_SSL: process.env.COUCHDB_SSL,
-          WC_CONSUMER_KEY: process.env.WC_CONSUMER_KEY,
-          WC_CONSUMER_SECRET: process.env.WC_CONSUMER_SECRET,
-          DEV: process.env.DEV,
-        },
-      }),
+      ENV_COUCHDB_USER: process.env.COUCHDB_USER,
+      ENV_COUCHDB_PASSWORD: process.env.COUCHDB_PASSWORD,
+      ENV_COUCHDB_HOST: process.env.COUCHDB_HOST,
+      ENV_WC_BASE_URL: process.env.WC_BASE_URL,
+      ENV_WC_CONSUMER_KEY: process.env.WC_CONSUMER_KEY,
+      ENV_WC_CONSUMER_SECRET: process.env.WC_CONSUMER_SECRET,
+      ENV_DATABASE: process.env.DATABASE,
     }),
     svelte({
       css: (css) => {

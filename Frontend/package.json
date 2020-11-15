@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "dev": "export $(cat .env-dev | xargs) && rollup -c -w",
     "start": "sirv public --port 5000",
     "test": "jest",
     "test:watch": "npm run test -- --watch",
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
+    "cy:run": "export $(cat .env-test | xargs) && npm run-script build && cypress run",
+    "cy:open": "export $(cat .env-test | xargs) && npm run-script build && cypress open"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
@@ -24,6 +26,9 @@
     "@testing-library/user-event": "^12.2.0",
     "babel-jest": "^26.6.3",
     "babel-plugin-rewire-exports": "^2.2.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-register": "^6.26.0",
+    "cypress": "^5.6.0",
     "fa-svelte": "^3.1.0",
     "jest": "^26.6.3",
     "jest-svelte-events": "^1.0.5",

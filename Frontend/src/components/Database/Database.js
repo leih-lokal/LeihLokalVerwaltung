@@ -24,9 +24,7 @@ class Database {
 
   connect() {
     this.database = new PouchDB(
-      `${process.env.COUCHDB_SSL ? "https" : "http"}://${
-        process.env.COUCHDB_USER
-      }:${localStorage.getItem("password")}@${process.env.COUCHDB_HOST}/${this.name}`
+      `http://ENV_COUCHDB_USER:ENV_COUCHDB_PASSWORD@ENV_COUCHDB_HOST/${this.name}`
     );
 
     //create indices for searching

@@ -1,8 +1,8 @@
 class WoocommerceClient {
   constructor() {
-    this.baseUrl = "https://www.buergerstiftung-karlsruhe.de/wp-json/wc/v3";
-    this.consumerKey = process.env.WC_CONSUMER_KEY;
-    this.consumerSecret = process.env.WC_CONSUMER_SECRET;
+    this.baseUrl = "ENV_WC_BASE_URL";
+    this.consumerKey = "ENV_WC_CONSUMER_KEY";
+    this.consumerSecret = "ENV_WC_CONSUMER_SECRET";
   }
 
   _productUrl(productId) {
