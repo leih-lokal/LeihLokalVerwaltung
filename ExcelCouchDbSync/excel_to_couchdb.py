@@ -13,19 +13,17 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
 )
 
-RENTAL_COLUMNS = {k: v["excel_to_db_transform"] for k, v in RENTAL_COLUMNS.items()}
-ITEM_COLUMNS = {k: v["excel_to_db_transform"] for k, v in ITEM_COLUMNS.items()}
-CUSTOMER_COLUMNS = {k: v["excel_to_db_transform"] for k, v in CUSTOMER_COLUMNS.items()}
-
-
 def parseExcelSheet(sheet, columns):
     parsed_rows = []
     for row in sheet.array[1:]:
         if len(str(row[0]).strip()) == 0 or len(str(row[1]).strip()) + len(str(row[2]).strip()) == 0:
             continue
         parsed_row = {}
-        for i, column in enumerate(columns.keys()):
-            parsed_row[column] = columns[column](row[i])
+        for column_key in columns.keys():
+            column = columns[column_key]
+            excel_cell_value = row[column["excel_column_index"]]
+            parsed_cell_value = column["excel_to_db_transform"](excel_cell_value)
+            parsed_row[column_key] = parsed_cell_value
         parsed_rows.append(parsed_row)
     return parsed_rows
 
