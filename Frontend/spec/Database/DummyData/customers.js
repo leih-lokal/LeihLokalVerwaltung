@@ -53,7 +53,7 @@ export default [
     firstname: "Gibson",
     registration_date: 1546038000000,
     renewed_on: 1577577600000,
-    remark: "",
+    remark: "Bemerkung 123",
     subscribed_to_newsletter: false,
     email: "mcraigw@yahoo.com",
     street: "Werthmannstraße",
