@@ -9,6 +9,15 @@ class DummyDatabase extends Database {
       await this.database.bulkDocs(customers);
     }
   }
+
+  // https://github.com/pouchdb/pouchdb/issues/6274
+  selectorsForSearchWord(searchWord) {
+    return this.columnsToSearch(!isNaN(searchWord)).map((column) => ({
+      [column.key]: {
+        $regex: new RegExp((column?.search === "from_beginning" ? "^(0+)?" : "") + searchWord, "i"),
+      },
+    }));
+  }
 }
 
 export default DummyDatabase;
