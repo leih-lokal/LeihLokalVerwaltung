@@ -28,7 +28,7 @@
   export let createNew = false;
 
   if (createNew) {
-    $customerDb.nextUnusedId().then((id) => (doc._id = id));
+    $customerDb.nextUnusedId().then((id) => (doc._id = String(id)));
     doc.registration_date = new Date().getTime();
   }
 
