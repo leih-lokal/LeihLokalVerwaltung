@@ -1,4 +1,4 @@
-const ONE_YEAR_AGO_MILLIS = new Date().getUTCMilliseconds() - 1000 * 60 * 60 * 24 * 365;
+const ONE_YEAR_AGO_MILLIS = new Date().getTime() - 1000 * 60 * 60 * 24 * 365;
 
 export default {
   filters: {
