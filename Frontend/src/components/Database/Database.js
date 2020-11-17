@@ -138,7 +138,7 @@ class Database {
   async query(options) {
     const { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm } = options;
     const requiredFields = filters.flatMap((filter) => filter.required_fields);
-    const ddocId = hashString(sortBy);
+    const ddocId = "query-" + hashString(sortBy);
     let selectors = filters.flatMap((filter) => filter.selectors);
     if (searchTerm && searchTerm.length > 0) {
       selectors = [...selectors, this.selectorsForSearchTerm(searchTerm)];
