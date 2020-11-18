@@ -6,7 +6,7 @@
   import InputGroup from "../../Input/InputGroup.svelte";
   import { rentalDb, itemDb, customerDb } from "../../../utils/stores";
   import SelectorBuilder from "../../Database/SelectorBuilder";
-  import WoocommerceClient from "../../Database/WoocommerceClient";
+  import WoocommerceClient from "ENV_WC_CLIENT";
 
   const woocommerceClient = new WoocommerceClient();
 

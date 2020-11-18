@@ -5,7 +5,7 @@
   import DateInput from "../../Input/DateInput.svelte";
   import { itemDb } from "../../../utils/stores";
   import InputGroup from "../../Input/InputGroup.svelte";
-  import WoocommerceClient from "../../Database/WoocommerceClient";
+  import WoocommerceClient from "ENV_WC_CLIENT";
 
   const woocommerceClient = new WoocommerceClient();
 
@@ -34,7 +34,9 @@
         console.error(error);
       });
 
-    woocommerceClient.updateItemStatus(doc.wc_id, doc.status_on_website).catch((error) => {
+    woocommerceClient.updateItemStatus(doc.wc_id, doc.status_on_website)
+    .then(() => notifier.success("Status auf der Webseite aktualisiert!", 3000))
+    .catch((error) => {
       notifier.warning("Status auf der Webseite konnte nicht aktualisiert werden!", 6000);
       console.error(error);
     });

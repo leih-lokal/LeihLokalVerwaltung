@@ -4,7 +4,7 @@
   import columns from "./Columns.js";
   import filters from "./Filters.js";
   import { itemDb } from "../../../utils/stores";
-  import WoocommerceClient from "../../Database/WoocommerceClient";
+  import WoocommerceClient from "ENV_WC_CLIENT";
 
   const woocommerceClient = new WoocommerceClient();
 
