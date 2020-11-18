@@ -1,14 +1,9 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/customers";
 import columns from "../../src/components/TableEditors/Customers/Columns";
+import { dateToString } from "./utils";
 
 let customers;
-
-const dateToString = (date) =>
-  `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(
-    2,
-    0
-  )}.${date.getFullYear()}`;
 
 const expectedDisplayValue = (customer, customerKey) => {
   let expectedValue = customer[customerKey];
@@ -26,7 +21,7 @@ const expectedDisplayValue = (customer, customerKey) => {
   return expectedValue;
 };
 
-const expectedDisplayedTableDataSortedBy = (key) => {
+const expectedDisplayedTableDataSortedBy = (key, customers) => {
   let transformBeforeSort = (value) => value;
   if (key === "_id" || key === "registration_date") transformBeforeSort = parseInt;
   return customers.sort(function (a, b) {
@@ -37,19 +32,9 @@ const expectedDisplayedTableDataSortedBy = (key) => {
 };
 
 const expectDisplaysAllCustomersSortedBy = (sortKey, reverse = false) => {
-  let expectedDisplayedTableDataSortedById = expectedDisplayedTableDataSortedBy(
-    sortKey,
-    reverse,
-    customers
-  );
+  let expectedDisplayedTableDataSortedById = expectedDisplayedTableDataSortedBy(sortKey, customers);
   if (reverse) expectedDisplayedTableDataSortedById.reverse();
-  cy.get("table > tr").each((row, rowIndex) => {
-    row.find("td > div").each((colIndex, cell) => {
-      expect(cell).to.contain(
-        expectedDisplayValue(expectedDisplayedTableDataSortedById[rowIndex], columns[colIndex].key)
-      );
-    });
-  });
+  expectDisplaysCustomers(expectedDisplayedTableDataSortedById);
 };
 
 const expectDisplaysOnlyCustomersWithIds = (ids) => {
