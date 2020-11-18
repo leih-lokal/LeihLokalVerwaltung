@@ -19,7 +19,10 @@ class LocalDatabase extends Database {
   selectorsForSearchWord(searchWord) {
     return this.columnsToSearch(!isNaN(searchWord)).map((column) => ({
       [column.key]: {
-        $regex: new RegExp((column?.search === "from_beginning" ? "^(0+)?" : "") + searchWord, "i"),
+        $regex: new RegExp(
+          (column?.search === "from_beginning" ? "^(0+?)?" : "") + searchWord,
+          "i"
+        ),
       },
     }));
   }

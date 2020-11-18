@@ -221,7 +221,7 @@ class Database {
   selectorsForSearchWord(searchWord) {
     return this.columnsToSearch(!isNaN(searchWord)).map((column) => ({
       [column.key]: {
-        $regex: "(?i)" + (column?.search === "from_beginning" ? "^(0+)?" : "") + searchWord,
+        $regex: "(?i)" + (column?.search === "from_beginning" ? "^(0+?)?" : "") + searchWord,
       },
     }));
   }
