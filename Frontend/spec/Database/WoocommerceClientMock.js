@@ -4,7 +4,7 @@ class WoocommerceClientMock {
   async fetchItem(wcItemId) {
     await new Promise((r) => setTimeout(r, 1500));
     const item = items.find((item) => item.wc_id == wcItemId);
-    if (item) {
+    if (wcItemId && item) {
       return {
         stock_status: item.status_on_website,
         attributes: [

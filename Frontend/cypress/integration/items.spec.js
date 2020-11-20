@@ -7,7 +7,6 @@ let items;
 let itemsNotDeleted;
 
 const expectedDisplayValue = (item, itemKey) => {
-  console.log(item);
   let expectedValue = item[itemKey];
   let colKey = columns.find((col) => col.key === itemKey).key;
   if (["added"].includes(colKey)) {
@@ -307,6 +306,47 @@ context("items", () => {
           .filter((item) => item._id !== itemsNotDeleted[3]._id)
           .map((item) => item._id)
       );
+    });
+
+    it("Creates item", () => {
+      const newItem = {
+        _id: String(items.length + 1),
+        item_name: "name",
+        brand: "brand",
+        itype: "itype",
+        category: "category",
+        deposit: 15,
+        parts: "parts",
+        manual: "manual",
+        package: "package",
+        added: new Date().getTime(),
+        properties: "properties",
+        status_on_website: "instock",
+      };
+
+      cy.contains("+").click();
+
+      cy.get("#item_id").should("have.value", items.length + 1);
+      cy.get(".group row:nth-child(4) .datepicker input").should(
+        "have.value",
+        dateToString(new Date())
+      );
+
+      cy.get("#item_name").type(newItem.item_name);
+      cy.get("#brand").type(newItem.brand);
+      cy.get("#itype").type(newItem.itype);
+      cy.get("#category").type(newItem.category);
+      cy.get("#deposit").type(newItem.deposit);
+      cy.get("#properties").type(newItem.properties);
+      cy.get("#parts").type(newItem.parts);
+      cy.get("#manual").type(newItem.manual);
+      cy.get("#package").type(newItem.package);
+      cy.get(".col-input > .selectContainer").click().contains("verfügbar").click();
+
+      cy.contains("Speichern").click().get(".multiSelectItem_clear").click({ force: true });
+
+      items.push(newItem);
+      expectDisplaysItems(items);
     });
   });
 });
