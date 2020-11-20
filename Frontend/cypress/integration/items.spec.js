@@ -265,11 +265,8 @@ context("items", () => {
       else return dateToString(new Date(millis));
     };
 
-    beforeEach(() => {
-      cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
-    });
-
     it("Displays correct data in Edit Popup", () => {
+      cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
       cy.get("#item_id").should("have.value", itemsNotDeleted[3]._id);
       cy.get("#item_name").should("have.value", itemsNotDeleted[3].item_name);
       cy.get("#brand").should("have.value", itemsNotDeleted[3].brand);
@@ -293,6 +290,7 @@ context("items", () => {
     });
 
     it("Saves changes", () => {
+      cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
       cy.get("#item_name").clear().type("NewName");
       cy.contains("Speichern").click();
       itemsNotDeleted[3].item_name = "NewName";
@@ -300,6 +298,7 @@ context("items", () => {
     });
 
     it("Deletes item", () => {
+      cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
       cy.contains("Gegenstand Löschen").click();
       expectDisplaysOnlyItemsWithIds(
         itemsNotDeleted
