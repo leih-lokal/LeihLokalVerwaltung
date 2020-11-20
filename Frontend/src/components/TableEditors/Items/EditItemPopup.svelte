@@ -46,7 +46,7 @@
   export let createNew = false;
 
   if (createNew) {
-    $itemDb.nextUnusedId().then((id) => (doc._id = id));
+    $itemDb.nextUnusedId().then((id) => (doc._id = String(id)));
     doc.added = new Date().getTime();
   }
 

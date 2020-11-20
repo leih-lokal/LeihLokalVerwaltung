@@ -24,5 +24,4 @@
   {filters}
   {processRowAfterLoad}
   database={$itemDb}
-  popupComponent={EditItemPopup}
-  addNewItemButton={false} />
+  popupComponent={EditItemPopup} />
