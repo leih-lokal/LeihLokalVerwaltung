@@ -20,4 +20,5 @@ jobs:
       - name: Integration Test
         uses: cypress-io/github-action@v2
         with:
+          project: ./Frontend
           browser: chrome
