@@ -5,5 +5,11 @@
   "background_color": "#f6f5f5",
   "display": "standalone",
   "start_url": "index.html",
+  "icons": [
+    {
+      "src": "leihlokal.png",
+      "type": "image/png"
+    }
+  ],
   "splash_pages": null
 }
