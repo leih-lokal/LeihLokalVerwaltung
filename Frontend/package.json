@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rollup -c",
+    "build:demo": "export $(cat .env-test | xargs) && rollup -c",
     "dev": "export $(cat .env-dev | xargs) && rollup -c -w",
     "demo": "export $(cat .env-test | xargs) && rollup -c -w",
     "start": "sirv public --port 5000",
