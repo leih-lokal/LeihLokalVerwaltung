@@ -1,4 +1,4 @@
-import items from "./DummyData/items";
+import items from "../../../spec/Database/DummyData/items";
 
 class WoocommerceClientMock {
   async fetchItem(wcItemId) {

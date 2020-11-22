@@ -69,18 +69,14 @@ export default {
             },
           },
           {
-            $and: [
-              {
-                returned_on: {
-                  $eq: 0,
-                },
-              },
-              {
-                to_return_on: {
-                  $lt: START_OF_TODAY,
-                },
-              },
-            ],
+            returned_on: {
+              $eq: 0,
+            },
+          },
+          {
+            to_return_on: {
+              $lt: START_OF_TODAY,
+            },
           },
         ],
       },
