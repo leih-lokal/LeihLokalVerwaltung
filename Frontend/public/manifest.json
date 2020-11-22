@@ -8,7 +8,9 @@
   "icons": [
     {
       "src": "leihlokal.png",
-      "type": "image/png"
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
     }
   ],
   "splash_pages": null
