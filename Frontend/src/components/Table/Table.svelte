@@ -6,7 +6,7 @@
   import LoadingAnimation from "./LoadingAnimation.svelte";
   import { fade } from "svelte/transition";
 
-  export let onRowClicked = (row) => {};
+  export let onRowClicked = row => {};
   export let processRowAfterLoad;
   export let database;
   export let columns = [];
@@ -15,25 +15,26 @@
   export let rowBackgroundColorFunction;
   export const refresh = () => {
     rows = database.query({
-      filters: activeFilters.map((filterName) => filters.filters[filterName]),
+      filters: activeFilters.map(filterName => filters.filters[filterName]),
       columns: columns,
       searchTerm: searchTerm,
       currentPage: currentPage,
       rowsPerPage: rowsPerPage,
       sortBy: sortBy,
-      sortReverse: sortReverse,
+      sortReverse: sortReverse
     });
   };
 
-  let sortBy = columns.some((col) => "initialSort" in col)
-    ? columns.find((col) => "initialSort" in col).key
+  let innerHeight = window.innerHeight;
+  let sortBy = columns.some(col => "initialSort" in col)
+    ? columns.find(col => "initialSort" in col).key
     : "_id";
-  let sortReverse = columns.some((col) => "initialSort" in col)
-    ? columns.find((col) => "initialSort" in col).initialSort === "desc"
+  let sortReverse = columns.some(col => "initialSort" in col)
+    ? columns.find(col => "initialSort" in col).initialSort === "desc"
     : false;
   let currentPage = 0;
   let rows = new Promise(() => {});
-  let rowsPerPage = Math.round((window.innerHeight - 240) / rowHeight);
+  $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
   let activeFilters = filters.activeByDefault;
   let searchTerm = "";
 
@@ -44,7 +45,13 @@
     return numberOfPages;
   }
 
-  $: currentPage, searchTerm, activeFilters, sortBy, sortReverse, refresh();
+  $: currentPage,
+    searchTerm,
+    activeFilters,
+    sortBy,
+    sortReverse,
+    rowsPerPage,
+    refresh();
 </script>
 
 <style>
@@ -66,6 +73,7 @@
   }
 </style>
 
+<svelte:window bind:innerHeight />
 <div class="container">
   <SearchFilterBar
     {filters}
