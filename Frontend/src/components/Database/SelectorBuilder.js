@@ -4,6 +4,10 @@ class SelectorBuilder {
     this.currentFieldName = "";
   }
 
+  regexIgnoreCase(content) {
+    return "(?i)" + content;
+  }
+
   withField(fieldName) {
     this.currentFieldName = fieldName;
     return this;
@@ -11,21 +15,21 @@ class SelectorBuilder {
 
   containsIgnoreCase(value) {
     this.selector[this.currentFieldName] = {
-      $regex: "(?i)" + value,
+      $regex: this.regexIgnoreCase(value),
     };
     return this;
   }
 
   startsWithIgnoreCase(value) {
     this.selector[this.currentFieldName] = {
-      $regex: "(?i)^" + value,
+      $regex: this.regexIgnoreCase("^" + value),
     };
     return this;
   }
 
   startsWithIgnoreCaseAndLeadingZeros(value) {
     this.selector[this.currentFieldName] = {
-      $regex: "(?i)^(0+)?" + value,
+      $regex: this.regexIgnoreCase("^(0+)?" + value),
     };
     return this;
   }

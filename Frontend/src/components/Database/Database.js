@@ -2,6 +2,7 @@ import PouchDB from "pouchdb-browser";
 import PouchDBFind from "pouchdb-find";
 import { hashString } from "../../utils/utils";
 import Cache from "lru-cache";
+import SelectorBuilder from "./SelectorBuilder";
 PouchDB.plugin(PouchDBFind);
 
 class Database {
@@ -46,6 +47,10 @@ class Database {
       .on("error", (error) => console.error(error));
 
     return this.database.info();
+  }
+
+  selectorBuilder() {
+    return new SelectorBuilder();
   }
 
   columnsToSearch(numeric = false) {

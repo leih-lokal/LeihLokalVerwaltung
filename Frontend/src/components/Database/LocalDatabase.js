@@ -1,12 +1,14 @@
-import Database from "../../src/components/Database/Database";
+import Database from "./Database";
 import PouchDB from "pouchdb-browser";
-import customers from "./DummyData/customers";
-import items from "./DummyData/items";
+import customers from "../../../spec/Database/DummyData/customers";
+import items from "../../../spec/Database/DummyData/items";
+import rentals from "../../../spec/Database/DummyData/rentals";
+import LocalSelectorBuilder from "./LocalSelectorBuilder";
 
 const TEST_DATA = {
   customers: customers,
   items: items,
-  rentals: [],
+  rentals: rentals(),
 };
 
 class LocalDatabase extends Database {
@@ -25,6 +27,10 @@ class LocalDatabase extends Database {
         ),
       },
     }));
+  }
+
+  selectorBuilder() {
+    return new LocalSelectorBuilder();
   }
 }
 
