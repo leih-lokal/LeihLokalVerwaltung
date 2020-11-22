@@ -173,8 +173,11 @@
         <div class="col-label"><label for="item_id">Nr</label></div>
         <div class="col-input">
           <AutoComplete
+            textCleanFunction={text => {
+              doc.item_id = text;
+              return text;
+            }}
             searchFunction={(searchTerm) => {
-              doc.item_id = searchTerm;
               return $itemDb.fetchDocsBySelector(
                   idStartsWithAndNotDeletedSelector(searchTerm),
                   ['_id', 'item_name', 'deposit']
@@ -205,8 +208,11 @@
         <div class="col-label"><label for="item_name">Name</label></div>
         <div class="col-input">
           <AutoComplete
+            textCleanFunction={text => {
+              doc.item_name = text;
+              return text;
+            }}
             searchFunction={(searchTerm) => {
-              doc.item_name = searchTerm;
               return $itemDb.fetchDocsBySelector(
                 attributeStartsWithIgnoreCaseAndNotDeletedSelector('item_name', searchTerm),
                 ['_id', 'item_name', 'deposit']
@@ -265,8 +271,11 @@
         <div class="col-label"><label for="customer_id">Nr</label></div>
         <div class="col-input">
           <AutoComplete
+            textCleanFunction={text => {
+              doc.customer_id = text;
+              return text;
+            }}
             searchFunction={(searchTerm) => {
-              doc.customer_id = searchTerm;
               return $customerDb.fetchDocsBySelector(
                 idStartsWithSelector(searchTerm),
                 ['_id', 'lastname']
@@ -297,8 +306,11 @@
         <div class="col-label"><label for="name">Name</label></div>
         <div class="col-input">
           <AutoComplete
+            textCleanFunction={text => {
+              doc.name = text;
+              return text;
+            }}
             searchFunction={(searchTerm) => {
-              doc.name = searchTerm;
               return $customerDb.fetchDocsBySelector(
                 attributeStartsWithIgnoreCaseSelector('lastname', searchTerm),
                 ['_id', 'lastname']
