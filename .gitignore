@@ -1,3 +1,4 @@
 Frontend/coverage
 Frontend/build/bundle-tests.js
 Frontend/build/bundle-tests.js.map
+Frontend/cypress/videos
