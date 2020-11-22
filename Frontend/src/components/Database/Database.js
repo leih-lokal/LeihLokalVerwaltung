@@ -14,18 +14,20 @@ class Database {
   columns;
   existingDesignDocIds;
   cache;
+  host;
 
-  constructor(name, columns) {
+  constructor(name, columns, host) {
     this.changeCallback = (updatedDocs) => {};
     this.name = name;
     this.columns = columns;
+    this.host = host;
     this.existingDesignDocIds = new Set();
     this.cache = new Cache(50);
   }
 
   connect() {
     this.database = new PouchDB(
-      `http://ENV_COUCHDB_USER:ENV_COUCHDB_PASSWORD@ENV_COUCHDB_HOST/${this.name}`
+      `http://ENV_COUCHDB_USER:ENV_COUCHDB_PASSWORD@${this.host}/${this.name}`
     );
 
     //create indices for searching
@@ -37,16 +39,21 @@ class Database {
       )
     );
 
-    this.replicationHandler = this.database
-      .changes({
-        since: "now",
-        live: true,
-        include_docs: true,
-      })
-      .on("change", async (change) => this.cache.reset())
-      .on("error", (error) => console.error(error));
+    // test connection
+    return this.database.info().then(() => {
+      this.replicationHandler = this.database
+        .changes({
+          since: "now",
+          live: true,
+          include_docs: true,
+        })
+        .on("change", async (change) => this.cache.reset())
+        .on("error", (error) => console.error(error));
+    });
+  }
 
-    return this.database.info();
+  disconnect() {
+    if (this.replicationHandler) this.replicationHandler.cancel();
   }
 
   selectorBuilder() {

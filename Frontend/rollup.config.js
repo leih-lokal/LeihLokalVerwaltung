@@ -21,7 +21,7 @@ export default {
     replace({
       ENV_COUCHDB_USER: process.env.COUCHDB_USER,
       ENV_COUCHDB_PASSWORD: process.env.COUCHDB_PASSWORD,
-      ENV_COUCHDB_HOST: process.env.COUCHDB_HOST,
+      ENV_COUCHDB_HOSTS: process.env.COUCHDB_HOSTS,
       ENV_WC_CLIENT: process.env.WC_CLIENT,
       ENV_WC_BASE_URL: process.env.WC_BASE_URL,
       ENV_WC_CONSUMER_KEY: process.env.WC_CONSUMER_KEY,

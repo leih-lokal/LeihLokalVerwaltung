@@ -6,13 +6,14 @@
   import Rentals from "./TableEditors/Rentals/Rentals.svelte";
   import Modal from "svelte-simple-modal";
   import StyledModal from "./Layout/StyledModal.svelte";
-  import DatabaseConnection from "./Database/DatabaseConnection.svelte";
+  import LoadingAnimation from "./Table/LoadingAnimation.svelte";
+  import connectDatabases from "./Database/connectDatabases";
 
   let page = 0;
 
   function onMobile() {
     let check = false;
-    (function (a) {
+    (function(a) {
       if (
         /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
           a
@@ -34,7 +35,8 @@
     overflow: hidden;
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+      "Oxygen";
   }
 
   .container {
@@ -66,18 +68,23 @@
 {:else}
   <NotificationDisplay />
   <div class="container">
-    <DatabaseConnection />
-    <Navbar bind:page />
-    <Modal>
-      <StyledModal>
-        {#if page === 0}
-          <Customers />
-        {:else if page === 1}
-          <Items />
-        {:else if page === 2}
-          <Rentals />
-        {/if}
-      </StyledModal>
-    </Modal>
+    {#await connectDatabases()}
+      <LoadingAnimation />
+    {:then result}
+      <Navbar bind:page />
+      <Modal>
+        <StyledModal>
+          {#if page === 0}
+            <Customers />
+          {:else if page === 1}
+            <Items />
+          {:else if page === 2}
+            <Rentals />
+          {/if}
+        </StyledModal>
+      </Modal>
+    {:catch error}
+      {error.message}
+    {/await}
   </div>
 {/if}
