@@ -5,7 +5,6 @@
   import DateInput from "../../Input/DateInput.svelte";
   import InputGroup from "../../Input/InputGroup.svelte";
   import { rentalDb, itemDb, customerDb } from "../../../utils/stores";
-  import SelectorBuilder from "../../Database/SelectorBuilder";
   import WoocommerceClient from "ENV_WC_CLIENT";
 
   const woocommerceClient = new WoocommerceClient();
@@ -66,10 +65,10 @@
   }
 
   const idStartsWithSelector = (searchValue) =>
-    new SelectorBuilder().withField("_id").startsWithIgnoreCase(searchValue).build();
+    $rentalDb.selectorBuilder().withField("_id").startsWithIgnoreCase(searchValue).build();
 
   const idStartsWithAndNotDeletedSelector = (searchValue) =>
-    new SelectorBuilder()
+    $rentalDb.selectorBuilder()
       .withField("_id")
       .startsWithIgnoreCaseAndLeadingZeros(searchValue)
       .withField("status_on_website")
@@ -77,10 +76,10 @@
       .build();
 
   const attributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
-    new SelectorBuilder().withField(field).startsWithIgnoreCase(searchValue).build();
+    $rentalDb.selectorBuilder().withField(field).startsWithIgnoreCase(searchValue).build();
 
   const attributeStartsWithIgnoreCaseAndNotDeletedSelector = (field, searchValue) =>
-    new SelectorBuilder()
+    $rentalDb.selectorBuilder()
       .withField(field)
       .startsWithIgnoreCase(searchValue)
       .withField("status_on_website")
@@ -174,15 +173,18 @@
         <div class="col-label"><label for="item_id">Nr</label></div>
         <div class="col-input">
           <AutoComplete
-            searchFunction={(searchTerm) => $itemDb.fetchDocsBySelector(
-                idStartsWithAndNotDeletedSelector(searchTerm),
-                ['_id', 'item_name', 'deposit']
-              )}
+            searchFunction={(searchTerm) => {
+              doc.item_id = searchTerm;
+              return $itemDb.fetchDocsBySelector(
+                  idStartsWithAndNotDeletedSelector(searchTerm),
+                  ['_id', 'item_name', 'deposit']
+                )
+              }
+            }
             beforeChange={(prevSelectedValue, newSelectedValue) => {
-              doc.item_id = newSelectedValue._id;
-              doc.item_name = newSelectedValue.item_name;
-              doc.deposit = newSelectedValue.deposit;
-              return true;
+              if(doc.item_id !== newSelectedValue._id) doc.item_id = newSelectedValue._id;
+              if(doc.item_name !== newSelectedValue.item_name) doc.item_name = newSelectedValue.item_name;
+              if(doc.deposit !== newSelectedValue.deposit) doc.deposit = newSelectedValue.deposit;
             }}
             labelFunction={(item) => {
               if (item && item.name && item.name !== '') {
@@ -203,15 +205,17 @@
         <div class="col-label"><label for="item_name">Name</label></div>
         <div class="col-input">
           <AutoComplete
-            searchFunction={(searchTerm) => $itemDb.fetchDocsBySelector(
+            searchFunction={(searchTerm) => {
+              doc.item_name = searchTerm;
+              return $itemDb.fetchDocsBySelector(
                 attributeStartsWithIgnoreCaseAndNotDeletedSelector('item_name', searchTerm),
                 ['_id', 'item_name', 'deposit']
               )}
+            }
             beforeChange={(prevSelectedValue, newSelectedValue) => {
-              doc.item_name = newSelectedValue.item_name;
-              doc.item_id = newSelectedValue._id;
-              doc.deposit = newSelectedValue.deposit;
-              return true;
+              if(doc.item_name !== newSelectedValue.item_name) doc.item_name = newSelectedValue.item_name;
+              if(doc.item_id !== newSelectedValue._id) doc.item_id = newSelectedValue._id;
+              if(doc.deposit !== newSelectedValue.deposit) doc.deposit = newSelectedValue.deposit;
             }}
             inputId="input_item_name"
             keywordsFieldName="item_name"
@@ -261,15 +265,17 @@
         <div class="col-label"><label for="customer_id">Nr</label></div>
         <div class="col-input">
           <AutoComplete
-            searchFunction={(searchTerm) => $customerDb.fetchDocsBySelector(
+            searchFunction={(searchTerm) => {
+              doc.customer_id = searchTerm;
+              return $customerDb.fetchDocsBySelector(
                 idStartsWithSelector(searchTerm),
                 ['_id', 'lastname']
               )}
+            }
             autocomplete="autocomplete-input"
             beforeChange={(prevSelectedValue, newSelectedValue) => {
-              doc.name = newSelectedValue.lastname;
-              doc.customer_id = newSelectedValue._id;
-              return true;
+              if(doc.name !== newSelectedValue.lastname) doc.name = newSelectedValue.lastname;
+              if(doc.customer_id !== newSelectedValue._id) doc.customer_id = newSelectedValue._id;
             }}
             inputId="input_customer_id"
             labelFunction={(customer) => {
@@ -291,14 +297,16 @@
         <div class="col-label"><label for="name">Name</label></div>
         <div class="col-input">
           <AutoComplete
-            searchFunction={(searchTerm) => $customerDb.fetchDocsBySelector(
+            searchFunction={(searchTerm) => {
+              doc.name = searchTerm;
+              return $customerDb.fetchDocsBySelector(
                 attributeStartsWithIgnoreCaseSelector('lastname', searchTerm),
                 ['_id', 'lastname']
               )}
+            }
             beforeChange={(prevSelectedValue, newSelectedValue) => {
-              doc.name = newSelectedValue.lastname;
-              doc.customer_id = newSelectedValue._id;
-              return true;
+              if(doc.name !== newSelectedValue.lastname) doc.name = newSelectedValue.lastname;
+              if(doc.customer_id !== newSelectedValue._id) doc.customer_id = newSelectedValue._id;
             }}
             inputId="input_lastname"
             keywordsFieldName="lastname"
