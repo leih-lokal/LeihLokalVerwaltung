@@ -1,5 +1,5 @@
 var CACHE_NAME = "leihlokal-cache-v1";
-var urlsToCache = ["/index.html", "/global.css", "/bundle.css", "/bundle.js", "/favicon.png"];
+var urlsToCache = ["index.html", "global.css", "bundle.css", "bundle.js", "favicon.png"];
 
 // https://developers.google.com/web/fundamentals/primers/service-workers
 
