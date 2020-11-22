@@ -1,0 +1,10 @@
+{
+  "name": "LeihLokal Verwaltung",
+  "short_name": "LeihLokal",
+  "theme_color": "#5bd1d7",
+  "background_color": "#f6f5f5",
+  "display": "standalone",
+  "Scope": "/",
+  "start_url": "/index.html",
+  "splash_pages": null
+}
