@@ -13,6 +13,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Test
+      - name: Unit Test
         working-directory: Frontend
         run: npm ci && npm test
+
+      - name: Integration Test
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
