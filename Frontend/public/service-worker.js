@@ -19,6 +19,10 @@ self.addEventListener("install", function (event) {
 });
 
 self.addEventListener("fetch", function (event) {
+  // exclude couchdb requests
+  if (event.request.url.includes("5984")) {
+    return false;
+  }
   event.respondWith(
     caches.match(event.request).then(function (response) {
       // Cache hit - return response
