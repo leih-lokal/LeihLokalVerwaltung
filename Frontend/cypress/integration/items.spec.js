@@ -151,7 +151,7 @@ context("items", () => {
     });
 
     it("finds a item by search for 'name type'", () => {
-      cy.get(".searchInput").type(items[14].item_name + " " + items[14].itype, { force: true };
+      cy.get(".searchInput").type(items[14].item_name + " " + items[14].itype, { force: true });
       expectDisplaysOnlyItemsWithIds([items[14]._id]);
     });
 
