@@ -1,6 +1,7 @@
 import App from "./components/App.svelte";
 
-if ("serviceWorker" in navigator) {
+// https://github.com/cypress-io/cypress/issues/702
+if ("serviceWorker" in navigator && !window.Cypress) {
   window.addEventListener("load", function () {
     navigator.serviceWorker.register("service-worker.js").then(
       function (registration) {
