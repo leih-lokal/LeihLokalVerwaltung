@@ -151,17 +151,17 @@ context("items", () => {
     });
 
     it("finds a item by search for 'name type'", () => {
-      cy.get(".searchInput").type(items[14].item_name + " " + items[14].itype);
+      cy.get(".searchInput").type(items[14].item_name + " " + items[14].itype, { force: true };
       expectDisplaysOnlyItemsWithIds([items[14]._id]);
     });
 
     it("finds two items when seaching for first id digit", () => {
-      cy.get(".searchInput").type("1");
+      cy.get(".searchInput").type("1", { force: true });
       expectDisplaysOnlyItemsWithIds(["1", "10", "11", "12", "13", "14", "15"]);
     });
 
     it("finds one item when seaching for unique id", () => {
-      cy.get(".searchInput").type("2");
+      cy.get(".searchInput").type("2", { force: true });
       expectDisplaysOnlyItemsWithIds(["2"]);
     });
   });

@@ -184,17 +184,17 @@ context("rentals", () => {
     });
 
     it("finds a rental by search for item_id", () => {
-      cy.get(".searchInput").type(rentals[3].item_id);
+      cy.get(".searchInput").type(rentals[3].item_id, { force: true });
       expectDisplaysOnlyRentalsWithIds([rentals[3]._id]);
     });
 
     it("finds a rental by search for item_name", () => {
-      cy.get(".searchInput").type(rentals[4].item_name);
+      cy.get(".searchInput").type(rentals[4].item_name, { force: true });
       expectDisplaysOnlyRentalsWithIds([rentals[4]._id]);
     });
 
     it("finds a rental by search for customer name", () => {
-      cy.get(".searchInput").type(rentals[4].name);
+      cy.get(".searchInput").type(rentals[4].name, { force: true });
       expectDisplaysOnlyRentalsWithIds([rentals[4]._id]);
     });
   });
