@@ -39,8 +39,15 @@ def append_euro(value):
     else:
         return str(value) + " €"
 
+def euro_to_int(value):
+    return parse_int(str(value).replace("€", ""))
+
 def bool_to_string(value):
     if value:
         return "Ja"
     else:
         return "Nein"
+
+def is_design_doc(doc):
+    return "_design" in doc["_id"]
+

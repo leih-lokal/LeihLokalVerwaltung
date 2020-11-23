@@ -45,13 +45,13 @@ RENTAL_COLUMNS = {
         "excel_column_index": 7
     },
     "deposit": {
-        "excel_to_db_transform": parse_int,
+        "excel_to_db_transform": euro_to_int,
         "db_to_excel_transform": append_euro,
         "excel_title": "Pfand",
         "excel_column_index": 8
     },
     "deposit_returned": {
-        "excel_to_db_transform": parse_int,
+        "excel_to_db_transform": euro_to_int,
         "db_to_excel_transform": append_euro,
         "excel_title": "Pfand zurück",
         "excel_column_index": 9
@@ -68,7 +68,7 @@ RENTAL_COLUMNS = {
         "excel_column_index": 11
     },
     "deposit_retained": {
-        "excel_to_db_transform": parse_int,
+        "excel_to_db_transform": euro_to_int,
         "db_to_excel_transform": append_euro,
         "excel_title": "Pfand einbehalten",
         "excel_column_index": 12

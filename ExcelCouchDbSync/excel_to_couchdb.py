@@ -21,7 +21,9 @@ def parseExcelSheet(sheet, columns):
         parsed_row = {}
         for column_key in columns.keys():
             column = columns[column_key]
-            excel_cell_value = row[column["excel_column_index"]]
+            excel_cell_value = ""
+            if len(row) > column["excel_column_index"]:
+                excel_cell_value = row[column["excel_column_index"]]
             parsed_cell_value = column["excel_to_db_transform"](excel_cell_value)
             parsed_row[column_key] = parsed_cell_value
         parsed_rows.append(parsed_row)

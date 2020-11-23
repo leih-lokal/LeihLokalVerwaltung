@@ -5,6 +5,7 @@ from item_columns import ITEM_COLUMNS
 from customer_columns import CUSTOMER_COLUMNS
 import os
 import logging
+from utils import is_design_doc
 
 logging.basicConfig(
     level=os.getenv("LOG_LEVEL", "INFO"),
@@ -20,14 +21,16 @@ def db_to_sheet(columns, db, sheet, sort=None):
     else:
         docs = db
     for doc in docs:
+        if is_design_doc(doc):
+            continue
         row = []
-        for col in excel_columns:
+        for col in columns:
             if col in doc:
                 if "db_to_excel_transform" in columns[col]:
                     doc[col] = columns[col]["db_to_excel_transform"](doc[col])
-                row.append(doc[col])
+                row.insert(columns[col]["excel_column_index"], doc[col])
             else:
-                row.append("")
+                row.insert(columns[col]["excel_column_index"], "")
 
         sheet.row += row
 

@@ -27,7 +27,7 @@ ITEM_COLUMNS = {
         "excel_column_index": 4
     },
     "deposit": {
-        "excel_to_db_transform": parse_int,
+        "excel_to_db_transform": euro_to_int,
         "db_to_excel_transform": append_euro,
         "excel_title": "Pfandklasse",
         "excel_column_index": 5

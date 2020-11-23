@@ -1,5 +1,6 @@
 import os
 import requests
+from utils import is_design_doc
 
 def all_items_from_woocommerce(items=[], page=1):
     r = requests.get('https://www.buergerstiftung-karlsruhe.de/wp-json/wc/v3/products?consumer_key={}&consumer_secret={}&per_page=100&page={}'
@@ -42,6 +43,8 @@ def add_wc_attributes_to_db_items(couchdb):
     print("adding woocommerce attributes to items...")
     count_updated = 0
     for item in couchdb.db("items"):
+        if is_design_doc(item):
+            continue
         if item["_id"] in additional_attributes:
             for key, value in additional_attributes[item["_id"]].items():
                 item[key] = value
@@ -56,6 +59,8 @@ def add_wc_attributes_to_db_items(couchdb):
     print("adding image urls to rentals...")
     count_updated = 0
     for rental in couchdb.db("rentals"):
+        if is_design_doc(rental):
+            continue
         if "item_id" in rental:
             item_id = parse_4_digit_id(rental["item_id"])
             if item_id in images:
