@@ -20,8 +20,8 @@ describe("Table Pagination", () => {
 
   test.each`
     pages | currentPage | expectedButtons
-    ${0}  | ${0}        | ${["1"]}
-    ${1}  | ${0}        | ${["1"]}
+    ${0}  | ${0}        | ${[]}
+    ${1}  | ${0}        | ${[]}
     ${2}  | ${0}        | ${["1", "2"]}
     ${3}  | ${0}        | ${["1", "2", "3"]}
     ${4}  | ${0}        | ${["1", "2", "3", "4"]}
@@ -43,7 +43,11 @@ describe("Table Pagination", () => {
     "displays buttons $expectedButtons for $pages pages when on page $currentPage",
     async ({ pages, currentPage, expectedButtons }) => {
       const { buttons } = renderPagination(pages, currentPage);
-      expect(buttons.map((el) => el.textContent)).toMatchObject(["«", ...expectedButtons, "»"]);
+      if (pages <= 1) {
+        expect(buttons.map((el) => el.textContent)).toMatchObject([]);
+      } else {
+        expect(buttons.map((el) => el.textContent)).toMatchObject(["«", ...expectedButtons, "»"]);
+      }
     }
   );
 
