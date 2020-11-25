@@ -17,6 +17,8 @@
       doc.image = item.image;
 
       if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
+        item.status_on_website = "instock";
+        $itemDb.updateDoc(item);
         woocommerceClient
           .updateItemStatus(item.wc_id, "instock")
           .then(() => {
@@ -30,6 +32,8 @@
             console.error(error);
           });
       } else if (createNew) {
+        item.status_on_website = "outofstock";
+        $itemDb.updateDoc(item);
         woocommerceClient
           .updateItemStatus(item.wc_id, "outofstock")
           .then(() => {
