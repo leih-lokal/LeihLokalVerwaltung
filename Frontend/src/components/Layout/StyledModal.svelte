@@ -12,17 +12,17 @@
         closeOnEsc: false,
         closeOnOuterClick: false,
         styleWindow: {
-          width: "57em",
+          width: "60rem",
           "max-width": "90%",
           height: "90%",
-          overflow: "hidden",
+          overflow: "hidden"
         },
         styleContent: {
-          height: "100%",
-        },
+          height: "100%"
+        }
       },
       {
-        onClose: onClose,
+        onClose: onClose
       }
     );
   });
