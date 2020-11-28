@@ -9,7 +9,6 @@ class Database {
   database;
   changeCallback;
   syncHandler;
-  replicationHandler;
   name;
   columns;
   existingDesignDocIds;
@@ -30,16 +29,6 @@ class Database {
       `http://ENV_COUCHDB_USER:ENV_COUCHDB_PASSWORD@${this.host}/${this.name}`
     );
 
-    const doWithTimeout = (promise, timeoutS = 3) => {
-      return new Promise((resolve, reject) => {
-        promise.then(resolve, reject);
-        setTimeout(
-          () => reject(`failed to connect to couchdb host ${this.host} after ${timeoutS}s!`),
-          timeoutS * 1000
-        );
-      });
-    };
-
     //create indices for searching
     Promise.all(
       [...this.columnsToSearch(true), ...this.columnsToSearch(false)].map((col) =>
@@ -50,20 +39,7 @@ class Database {
     );
 
     // test connection
-    return doWithTimeout(this.database.info()).then(() => {
-      this.replicationHandler = this.database
-        .changes({
-          since: "now",
-          live: true,
-          include_docs: false,
-        })
-        .on("change", async (change) => this.cache.reset())
-        .on("error", (error) => console.error(error));
-    });
-  }
-
-  disconnect() {
-    if (this.replicationHandler) this.replicationHandler.cancel();
+    return this.database.info();
   }
 
   selectorBuilder() {
