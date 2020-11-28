@@ -72,6 +72,11 @@
 
   .tablecontainer {
     overflow-x: scroll;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .tablecontainer::-webkit-scrollbar {
+    display: none;
   }
 
   :global(table tr:nth-child(odd)) {
