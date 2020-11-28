@@ -81,6 +81,7 @@ class Database {
   }
 
   updateDoc(updatedDoc) {
+    this.cache.reset();
     return this.database.get(updatedDoc._id).then((doc) => {
       updatedDoc._rev = doc._rev;
       return this.createDoc(updatedDoc);
@@ -88,14 +89,17 @@ class Database {
   }
 
   createDoc(doc) {
+    this.cache.reset();
     return this.database.put(doc);
   }
 
   createDocWithoutId(doc) {
+    this.cache.reset();
     return this.database.post(doc);
   }
 
   removeDoc(doc) {
+    this.cache.reset();
     return this.database.remove(doc._id, doc._rev);
   }
 
