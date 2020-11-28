@@ -68,6 +68,10 @@
     padding: 0 5px 0 5px;
   }
 
+  .tablecontainer {
+    overflow-x: scroll;
+  }
+
   :global(table tr:nth-child(odd)) {
     background-color: #f2f2f2;
   }
@@ -85,33 +89,35 @@
     <LoadingAnimation />
   {:then data}
     <div in:fade>
-      <table>
-        <Header {columns} bind:sortBy bind:sortReverse />
-        {#each data.rows as row}
-          {#await processRowAfterLoad(row)}
-            <Row
-              {rowBackgroundColorFunction}
-              {columns}
-              item={row}
-              {rowHeight}
-              on:click={() => onRowClicked(row)} />
-          {:then processedRow}
-            <Row
-              {rowBackgroundColorFunction}
-              {columns}
-              item={processedRow}
-              {rowHeight}
-              on:click={() => onRowClicked(processedRow)} />
-          {:catch error}
-            <Row
-              {rowBackgroundColorFunction}
-              {columns}
-              item={row}
-              {rowHeight}
-              on:click={() => onRowClicked(row)} />
-          {/await}
-        {/each}
-      </table>
+      <div class="tablecontainer">
+        <table>
+          <Header {columns} bind:sortBy bind:sortReverse />
+          {#each data.rows as row}
+            {#await processRowAfterLoad(row)}
+              <Row
+                {rowBackgroundColorFunction}
+                {columns}
+                item={row}
+                {rowHeight}
+                on:click={() => onRowClicked(row)} />
+            {:then processedRow}
+              <Row
+                {rowBackgroundColorFunction}
+                {columns}
+                item={processedRow}
+                {rowHeight}
+                on:click={() => onRowClicked(processedRow)} />
+            {:catch error}
+              <Row
+                {rowBackgroundColorFunction}
+                {columns}
+                item={row}
+                {rowHeight}
+                on:click={() => onRowClicked(row)} />
+            {/await}
+          {/each}
+        </table>
+      </div>
       <Pagination
         numberOfPages={calculateNumberOfPages(data.count, rowsPerPage)}
         bind:currentPage />
