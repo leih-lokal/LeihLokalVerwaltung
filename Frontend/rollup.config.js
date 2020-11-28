@@ -6,6 +6,9 @@ import { terser } from "rollup-plugin-terser";
 import copy from "rollup-plugin-copy";
 import nodePolyfills from "rollup-plugin-node-polyfills";
 import replace from "@rollup/plugin-replace";
+import dotenv from 'dotenv-flow';
+
+dotenv.config();
 
 const production = !process.env.ROLLUP_WATCH;
 
