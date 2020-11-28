@@ -57,7 +57,7 @@
 </script>
 
 <style>
-  div {
+  .animatecontainer {
     height: 100%;
   }
 
@@ -90,7 +90,7 @@
   {#await rows}
     <LoadingAnimation />
   {:then data}
-    <div in:fade>
+    <div in:fade class="animatecontainer">
       <div class="tablecontainer">
         <table>
           <Header {columns} bind:sortBy bind:sortReverse />
