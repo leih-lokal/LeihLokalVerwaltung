@@ -4,6 +4,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=prod rollup -c",
     "build:test": "cross-env NODE_ENV=test rollup -c",
+    "build:demo": "cross-env NODE_ENV=test rollup -c",
     "build:dev": "cross-env NODE_ENV=dev rollup -c",
     "dev": "cross-env NODE_ENV=dev rollup -c -w",
     "demo": "npm run-script build:test && npm run start",
