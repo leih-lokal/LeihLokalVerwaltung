@@ -25,12 +25,14 @@
     });
   };
 
+  const shouldBeSortedByInitially = col => "initialSort" in col;
+
   let innerHeight = window.innerHeight;
-  let sortBy = columns.some(col => "initialSort" in col)
-    ? columns.find(col => "initialSort" in col).key
+  let sortBy = columns.some(shouldBeSortedByInitially)
+    ? columns.find(shouldBeSortedByInitially).key
     : "_id";
-  let sortReverse = columns.some(col => "initialSort" in col)
-    ? columns.find(col => "initialSort" in col).initialSort === "desc"
+  let sortReverse = columns.some(shouldBeSortedByInitially)
+    ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
     : false;
   let currentPage = 0;
   let rows = new Promise(() => {});
@@ -92,7 +94,7 @@
       <div class="tablecontainer">
         <table>
           <Header {columns} bind:sortBy bind:sortReverse />
-          {#each data.rows as row}
+          {#each data.rows as row (row._id)}
             {#await processRowAfterLoad(row)}
               <Row
                 {rowBackgroundColorFunction}
