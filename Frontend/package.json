@@ -49,7 +49,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "simple-svelte-autocomplete": "^1.2.4",
     "sirv-cli": "^1.0.8",
-    "svelte": "^3.29.6",
+    "svelte": "^3.30.0",
     "svelte-calendar": "^1.5.0",
     "svelte-checkbox": "^1.0.1",
     "svelte-component-double": "^0.7.5",
