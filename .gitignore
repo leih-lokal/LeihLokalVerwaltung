@@ -2,3 +2,4 @@ Frontend/coverage
 Frontend/cypress/videos
 Frontend/public/build
 Frontend/public/demo
+.DS_Store
