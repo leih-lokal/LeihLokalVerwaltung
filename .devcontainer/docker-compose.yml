@@ -37,9 +37,10 @@ services:
     restart: unless-stopped
     ports:
       - 5984:5984
+      - 6984:6984
     volumes:
-      - couchdb-data:/opt/couchdb/data
-      - ./couchdb:/opt/couchdb/etc/local.d
+      - ./couchdb_config:/opt/couchdb/etc/local.d
+      - ./couchdb_ssl:/opt/couchdb/ssl
 
 volumes:
   couchdb-data:
