@@ -1,15 +1,4 @@
 Frontend/coverage
-Frontend/build/bundle-tests.js
-Frontend/build/bundle-tests.js.map
 Frontend/cypress/videos
-Frontend/public/demo/favicon.png
-Frontend/public/demo/global.css
-Frontend/public/demo/index.html
-Frontend/public/demo/leihlokal.png
-Frontend/public/demo/manifest.json
-Frontend/public/demo/service-worker.js
-Frontend/public/demo/build/bundle.css
-Frontend/public/demo/build/bundle.css.map
-Frontend/public/demo/build/bundle.js
-Frontend/public/demo/build/bundle.js.map
-Frontend/public/demo/build/icons/search.svg
+Frontend/public/build
+Frontend/public/demo
