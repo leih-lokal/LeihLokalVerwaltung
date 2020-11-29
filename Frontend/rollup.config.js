@@ -6,7 +6,7 @@ import { terser } from "rollup-plugin-terser";
 import copy from "rollup-plugin-copy";
 import nodePolyfills from "rollup-plugin-node-polyfills";
 import replace from "@rollup/plugin-replace";
-import dotenv from 'dotenv-flow';
+import dotenv from "dotenv-flow";
 
 dotenv.config();
 
@@ -25,6 +25,7 @@ export default {
       ENV_COUCHDB_USER: process.env.COUCHDB_USER,
       ENV_COUCHDB_PASSWORD: process.env.COUCHDB_PASSWORD,
       ENV_COUCHDB_HOSTS: process.env.COUCHDB_HOSTS,
+      ENV_COUCHDB_PROTOCOL: process.env.COUCHDB_PROTOCOL,
       ENV_WC_CLIENT: process.env.WC_CLIENT,
       ENV_WC_BASE_URL: process.env.WC_BASE_URL,
       ENV_WC_CONSUMER_KEY: process.env.WC_CONSUMER_KEY,

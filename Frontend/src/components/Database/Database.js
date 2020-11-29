@@ -26,7 +26,7 @@ class Database {
 
   connect() {
     this.database = new PouchDB(
-      `http://ENV_COUCHDB_USER:ENV_COUCHDB_PASSWORD@${this.host}/${this.name}`
+      `ENV_COUCHDB_PROTOCOL://ENV_COUCHDB_USER:ENV_COUCHDB_PASSWORD@${this.host}/${this.name}`
     );
 
     //create indices for searching
