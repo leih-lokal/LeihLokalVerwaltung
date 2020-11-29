@@ -2,7 +2,17 @@ class WoocommerceClient {
   constructor() {
     this.baseUrl = "ENV_WC_BASE_URL";
     this.consumerKey = "ENV_WC_CONSUMER_KEY";
-    this.consumerSecret = "ENV_WC_CONSUMER_SECRET";
+    this.consumerSecret = "";
+
+    if (localStorage.hasOwnProperty("wc_secret")) {
+      this.consumerSecret = localStorage.getItem("wc_secret");
+    } else {
+      const secret = prompt("Woocommerce Secret", "");
+      if (secret != null) {
+        localStorage.setItem("wc_secret", secret);
+        this.consumerSecret = secret;
+      }
+    }
   }
 
   _productUrl(productId) {

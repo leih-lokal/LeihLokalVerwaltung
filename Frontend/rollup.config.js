@@ -29,7 +29,6 @@ export default {
       ENV_WC_CLIENT: process.env.WC_CLIENT,
       ENV_WC_BASE_URL: process.env.WC_BASE_URL,
       ENV_WC_CONSUMER_KEY: process.env.WC_CONSUMER_KEY,
-      ENV_WC_CONSUMER_SECRET: process.env.WC_CONSUMER_SECRET,
       ENV_DATABASE: process.env.DATABASE,
     }),
     svelte({
