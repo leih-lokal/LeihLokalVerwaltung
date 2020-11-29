@@ -6,6 +6,7 @@
     "build:test": "cross-env NODE_ENV=test rollup -c",
     "build:demo": "cross-env NODE_ENV=test rollup -c",
     "build:dev": "cross-env NODE_ENV=dev rollup -c",
+    "build:all": "npm run-script build:demo && rm -rf public/demo && cp -r public demo/ && mv demo public/demo && npm run-script build",
     "dev": "cross-env NODE_ENV=dev rollup -c -w",
     "demo": "npm run-script build:test && npm run start",
     "start": "sirv public --port 5000",
