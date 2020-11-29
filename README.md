@@ -1,4 +1,4 @@
-# [Demo](https://leih-lokal.github.io/LeihLokalVerwaltung/)
+# [Demo](https://leih-lokal.github.io/LeihLokalVerwaltung/demo)
 
 ![Tests](https://github.com/leih-lokal/LeihLokalVerwaltung/workflows/Test,%20Build%20and%20Deploy/badge.svg)
 
