@@ -222,6 +222,18 @@
 
     <InputGroup>
       <row>
+        <h3>Bild</h3>
+      </row>
+      <row>
+        <div class="col-label"><label for="image">Bild</label></div>
+        <div class="col-input">
+          <input type="text" id="image" name="image" bind:value={doc.image} />
+        </div>
+      </row>
+    </InputGroup>
+
+    <InputGroup>
+      <row>
         <h3>Status</h3>
       </row>
       <row>
