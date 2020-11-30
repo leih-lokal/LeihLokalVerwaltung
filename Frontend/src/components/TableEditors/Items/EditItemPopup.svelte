@@ -20,7 +20,17 @@
     option => option.label
   );
 
+  const categories = [
+    "Küche",
+    "Haushalt",
+    "Garten",
+    "Kinder",
+    "Freizeit",
+    "Heimwerker"
+  ];
+
   let status_on_website;
+  let category;
   export let doc = {};
   export let createNew = false;
 
@@ -88,10 +98,13 @@
   if (createNew) {
     $itemDb.nextUnusedId().then(id => (doc._id = String(id)));
     doc.added = new Date().getTime();
+  } else {
+    category = { value: doc.category, label: doc.category };
   }
 
   setStatusOnWebsiteByValue(doc.status_on_website);
   $: status_on_website_label = status_on_website ? status_on_website.label : "";
+  $: doc.category = category ? category.label : "";
   $: setStatusOnWebsiteByLabel(status_on_website_label);
 </script>
 
@@ -229,11 +242,12 @@
           <label for="category">Kategorie</label>
         </div>
         <div class="col-input">
-          <input
-            type="text"
-            id="category"
-            name="category"
-            bind:value={doc.category} />
+          <Select
+            items={categories}
+            bind:selectedValue={category}
+            isMulti={false}
+            isCreatable={false}
+            placeholder={'Auswählen...'} />
         </div>
       </row>
       <row>
