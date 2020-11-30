@@ -271,7 +271,9 @@ context("items", () => {
       cy.get("#item_name").should("have.value", itemsNotDeleted[3].item_name);
       cy.get("#brand").should("have.value", itemsNotDeleted[3].brand);
       cy.get("#itype").should("have.value", itemsNotDeleted[3].itype);
-      cy.get("#category").should("have.value", itemsNotDeleted[3].category);
+      cy.get(":nth-child(2) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
+        itemsNotDeleted[3].category
+      );
       cy.get("#deposit").should("have.value", itemsNotDeleted[3].deposit);
       cy.get(".group row:nth-child(4) .datepicker input").should(
         "have.value",
@@ -284,7 +286,7 @@ context("items", () => {
       cy.get("#package").should("have.value", itemsNotDeleted[3].package);
       cy.get("#package").should("have.value", itemsNotDeleted[3].package);
       cy.get("#package").should("have.value", itemsNotDeleted[3].package);
-      cy.get(".selectContainer").contains(
+      cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
         statusOnWebsiteDisplayValue(itemsNotDeleted[3].status_on_website)
       );
     });
@@ -313,7 +315,7 @@ context("items", () => {
         item_name: "name",
         brand: "brand",
         itype: "itype",
-        category: "category",
+        category: "Haushalt",
         deposit: 15,
         parts: "parts",
         manual: "manual",
@@ -334,13 +336,19 @@ context("items", () => {
       cy.get("#item_name").type(newItem.item_name);
       cy.get("#brand").type(newItem.brand);
       cy.get("#itype").type(newItem.itype);
-      cy.get("#category").type(newItem.category);
+      cy.get(":nth-child(2) > .group > :nth-child(2) > .col-input > .selectContainer")
+        .click()
+        .contains(newItem.category)
+        .click();
       cy.get("#deposit").type(newItem.deposit);
       cy.get("#properties").type(newItem.properties);
       cy.get("#parts").type(newItem.parts);
       cy.get("#manual").type(newItem.manual);
       cy.get("#package").type(newItem.package);
-      cy.get(".col-input > .selectContainer").click().contains("verfügbar").click();
+      cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer")
+        .click()
+        .contains("verfügbar")
+        .click();
 
       cy.contains("Speichern").click().get(".multiSelectItem_clear").click({ force: true });
 
