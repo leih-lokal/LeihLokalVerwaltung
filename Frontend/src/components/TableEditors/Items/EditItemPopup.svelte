@@ -14,48 +14,85 @@
   const status_on_website_options = [
     { value: "deleted", label: "gelöscht" },
     { value: "instock", label: "verfügbar" },
-    { value: "outofstock", label: "verliehen" },
+    { value: "outofstock", label: "verliehen" }
   ];
-  const status_on_website_option_labels = status_on_website_options.map((option) => option.label);
+  const status_on_website_option_labels = status_on_website_options.map(
+    option => option.label
+  );
 
   let status_on_website;
-  const setStatusOnWebsiteByValue = (value) => {
-    status_on_website = status_on_website_options.find((option) => option.value === value);
-  };
-
-  function saveInDatabase() {
-    const savePromise = createNew ? $itemDb.createDoc(doc) : $itemDb.updateDoc(doc);
-
-    savePromise
-      .then((result) => notifier.success("Leihvorgang gespeichert!"))
-      .then(close)
-      .catch((error) => {
-        notifier.danger("Leihvorgang konnte nicht gespeichert werden!", 6000);
-        console.error(error);
-      });
-
-    woocommerceClient.updateItemStatus(doc.wc_id, doc.status_on_website)
-    .then(() => notifier.success("Status auf der Webseite aktualisiert!", 3000))
-    .catch((error) => {
-      notifier.warning("Status auf der Webseite konnte nicht aktualisiert werden!", 6000);
-      console.error(error);
-    });
-  }
-
   export let doc = {};
   export let createNew = false;
 
+  const setStatusOnWebsiteByValue = value => {
+    status_on_website = status_on_website_options.find(
+      option => option.value === value
+    );
+  };
+  const setStatusOnWebsiteByLabel = label => {
+    const status_on_website_option = status_on_website_options.find(
+      option => option.label === label
+    );
+    if (status_on_website_option) {
+      doc.status_on_website = status_on_website_option.value;
+    } else {
+      doc.status_on_website = "";
+    }
+  };
+
+  async function saveInDatabase() {
+    const savePromise = createNew
+      ? $itemDb.createDoc(doc)
+      : $itemDb.updateDoc(doc);
+    await savePromise
+      .then(result => notifier.success("Gegenstand gespeichert!"))
+      .then(close)
+      .catch(error => {
+        notifier.danger("Gegenstand konnte nicht gespeichert werden!", 6000);
+        console.error(error);
+      });
+
+    if (createNew) {
+      woocommerceClient
+        .createItem(doc)
+        .then(wcDoc => {
+          doc.wc_url = wcDoc.permalink;
+          doc.wc_id = wcDoc.id;
+          console.log(doc);
+          $itemDb.updateDoc(doc);
+          notifier.success("Gegenstand auf der Webseite erstellt!", 3000);
+        })
+        .catch(error => {
+          notifier.warning(
+            "Gegenstand konnte auf der Webseite nicht erstellt werden!",
+            6000
+          );
+          console.error(error);
+        });
+    } else {
+      woocommerceClient
+        .updateItem(doc)
+        .then(() =>
+          notifier.success("Status auf der Webseite aktualisiert!", 3000)
+        )
+        .catch(error => {
+          notifier.warning(
+            "Status auf der Webseite konnte nicht aktualisiert werden!",
+            6000
+          );
+          console.error(error);
+        });
+    }
+  }
+
   if (createNew) {
-    $itemDb.nextUnusedId().then((id) => (doc._id = String(id)));
+    $itemDb.nextUnusedId().then(id => (doc._id = String(id)));
     doc.added = new Date().getTime();
   }
 
   setStatusOnWebsiteByValue(doc.status_on_website);
   $: status_on_website_label = status_on_website ? status_on_website.label : "";
-  $: status_on_website_label,
-    (doc.status_on_website =
-      status_on_website_options.find((option) => option.label === status_on_website_label)?.value ??
-      "");
+  $: setStatusOnWebsiteByLabel(status_on_website_label);
 </script>
 
 <style>
@@ -141,25 +178,42 @@
         <h3>Bezeichnung</h3>
       </row>
       <row>
-        <div class="col-label"><label for="item_id">Gegenstand Nr</label></div>
+        <div class="col-label">
+          <label for="item_id">Gegenstand Nr</label>
+        </div>
         <div class="col-input">
-          <input type="text" id="item_id" name="item_id" value={doc._id} disabled />
+          <input
+            type="text"
+            id="item_id"
+            name="item_id"
+            value={doc._id}
+            disabled />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="item_name">Gegenstand Name</label></div>
+        <div class="col-label">
+          <label for="item_name">Gegenstand Name</label>
+        </div>
         <div class="col-input">
-          <input type="text" id="item_name" name="item_name" bind:value={doc.item_name} />
+          <input
+            type="text"
+            id="item_name"
+            name="item_name"
+            bind:value={doc.item_name} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="brand">Marke</label></div>
+        <div class="col-label">
+          <label for="brand">Marke</label>
+        </div>
         <div class="col-input">
           <input type="text" id="brand" name="brand" bind:value={doc.brand} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="itype">Typbezeichnung</label></div>
+        <div class="col-label">
+          <label for="itype">Typbezeichnung</label>
+        </div>
         <div class="col-input">
           <input type="text" id="itype" name="itype" bind:value={doc.itype} />
         </div>
@@ -171,27 +225,47 @@
         <h3>Eigenschaften</h3>
       </row>
       <row>
-        <div class="col-label"><label for="category">Kategorie</label></div>
+        <div class="col-label">
+          <label for="category">Kategorie</label>
+        </div>
         <div class="col-input">
-          <input type="text" id="category" name="category" bind:value={doc.category} />
+          <input
+            type="text"
+            id="category"
+            name="category"
+            bind:value={doc.category} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="deposit">Pfand</label></div>
+        <div class="col-label">
+          <label for="deposit">Pfand</label>
+        </div>
         <div class="col-input">
-          <input type="text" id="deposit" name="deposit" bind:value={doc.deposit} />
+          <input
+            type="text"
+            id="deposit"
+            name="deposit"
+            bind:value={doc.deposit} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="added">Erfasst am</label></div>
+        <div class="col-label">
+          <label for="added">Erfasst am</label>
+        </div>
         <div class="col-input">
           <DateInput bind:timeMillis={doc.added} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="properties">Eigenschaften</label></div>
+        <div class="col-label">
+          <label for="properties">Eigenschaften</label>
+        </div>
         <div class="col-input">
-          <input type="text" id="properties" name="properties" bind:value={doc.properties} />
+          <input
+            type="text"
+            id="properties"
+            name="properties"
+            bind:value={doc.properties} />
         </div>
       </row>
     </InputGroup>
@@ -201,21 +275,35 @@
         <h3>Zubehör</h3>
       </row>
       <row>
-        <div class="col-label"><label for="parts">Anzahl Teile</label></div>
+        <div class="col-label">
+          <label for="parts">Anzahl Teile</label>
+        </div>
         <div class="col-input">
           <input type="text" id="parts" name="parts" bind:value={doc.parts} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="manual">Anleitung</label></div>
+        <div class="col-label">
+          <label for="manual">Anleitung</label>
+        </div>
         <div class="col-input">
-          <input type="text" id="manual" name="manual" bind:value={doc.manual} />
+          <input
+            type="text"
+            id="manual"
+            name="manual"
+            bind:value={doc.manual} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="package">Verpackung</label></div>
+        <div class="col-label">
+          <label for="package">Verpackung</label>
+        </div>
         <div class="col-input">
-          <input type="text" id="package" name="package" bind:value={doc.package} />
+          <input
+            type="text"
+            id="package"
+            name="package"
+            bind:value={doc.package} />
         </div>
       </row>
     </InputGroup>
@@ -225,7 +313,9 @@
         <h3>Bild</h3>
       </row>
       <row>
-        <div class="col-label"><label for="image">Bild</label></div>
+        <div class="col-label">
+          <label for="image">Bild</label>
+        </div>
         <div class="col-input">
           <input type="text" id="image" name="image" bind:value={doc.image} />
         </div>
@@ -237,7 +327,9 @@
         <h3>Status</h3>
       </row>
       <row>
-        <div class="col-label"><label for="status_on_website">Status auf Webseite</label></div>
+        <div class="col-label">
+          <label for="status_on_website">Status auf Webseite</label>
+        </div>
         <div class="col-input">
           <Select
             items={status_on_website_option_labels}
@@ -258,12 +350,14 @@
               .removeDoc(doc)
               .then(() => notifier.success('Gegenstand gelöscht!'))
               .then(close)
-              .catch((error) => {
+              .catch(error => {
                 console.error(error);
                 notifier.danger('Gegenstand konnte nicht gelöscht werden!', 6000);
               });
           }
-        }}>Gegenstand Löschen</button>
+        }}>
+        Gegenstand Löschen
+      </button>
     {/if}
     <button class="button-save" on:click={saveInDatabase}>Speichern</button>
   </div>
