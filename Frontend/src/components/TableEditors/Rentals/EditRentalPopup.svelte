@@ -3,6 +3,7 @@
   import { notifier } from "@beyonk/svelte-notifications";
   import AutoComplete from "simple-svelte-autocomplete";
   import DateInput from "../../Input/DateInput.svelte";
+  import Checkbox from "svelte-checkbox";
   import InputGroup from "../../Input/InputGroup.svelte";
   import { rentalDb, itemDb, customerDb } from "../../../utils/stores";
   import WoocommerceClient from "ENV_WC_CLIENT";
@@ -16,10 +17,11 @@
       const item = await $itemDb.fetchById(doc.item_id);
       doc.image = item.image;
 
-      if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
-        item.status_on_website = "instock";
-        $itemDb.updateDoc(item);
-        woocommerceClient
+      if(updateStatusOnWebsite){        
+        if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
+          item.status_on_website = "instock";
+          $itemDb.updateDoc(item);
+          woocommerceClient
           .updateItem(item)
           .then(() => {
             notifier.success(`'${item.item_name}' wurde auf der Webseite als verfügbar markiert.`);
@@ -28,13 +30,13 @@
             notifier.warning(
               `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
               6000
-            );
-            console.error(error);
-          });
-      } else if (createNew) {
-        item.status_on_website = "outofstock";
-        $itemDb.updateDoc(item);
-        woocommerceClient
+              );
+              console.error(error);
+            });
+        } else if (createNew) {
+          item.status_on_website = "outofstock";
+          $itemDb.updateDoc(item);
+          woocommerceClient
           .updateItem(item)
           .then(() => {
             notifier.success(`'${item.item_name}' wurde auf der Webseite als verliehen markiert.`);
@@ -43,12 +45,13 @@
             notifier.warning(
               `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
               6000
-            );
-            console.error(error);
-          });
+              );
+              console.error(error);
+            });
+          }
+        }
       }
-    }
-
+          
     (createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc))
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
       .then(close)
@@ -60,6 +63,7 @@
 
   export let doc = {};
   export let createNew = false;
+  let updateStatusOnWebsite = true;
 
   if (createNew) {
     doc.rented_on = new Date().getTime();
@@ -233,6 +237,16 @@
             noResultsText="Kein Gegenstand mit diesem Name"
             hideArrow={true}
             selectedItem={{ _id: doc.item_id ?? '', item_name: doc.item_name ?? '' }} />
+        </div>
+      </row>
+      <row>
+        <div class="col-label"><label for="update_status_on_website">Status auf Webseite aktualisieren</label></div>
+        <div class="col-input">
+          <Checkbox
+            id="update_status_on_website"
+            name="update_status_on_website"
+            size="2rem"
+            bind:checked={updateStatusOnWebsite} />
         </div>
       </row>
     </InputGroup>
