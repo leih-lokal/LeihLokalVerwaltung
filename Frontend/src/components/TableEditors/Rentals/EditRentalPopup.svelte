@@ -20,7 +20,7 @@
         item.status_on_website = "instock";
         $itemDb.updateDoc(item);
         woocommerceClient
-          .updateItemStatus(item.wc_id, "instock")
+          .updateItem(item)
           .then(() => {
             notifier.success(`'${item.item_name}' wurde auf der Webseite als verfügbar markiert.`);
           })
@@ -35,7 +35,7 @@
         item.status_on_website = "outofstock";
         $itemDb.updateDoc(item);
         woocommerceClient
-          .updateItemStatus(item.wc_id, "outofstock")
+          .updateItem(item)
           .then(() => {
             notifier.success(`'${item.item_name}' wurde auf der Webseite als verliehen markiert.`);
           })
