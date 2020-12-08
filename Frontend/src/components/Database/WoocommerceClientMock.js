@@ -33,7 +33,7 @@ class WoocommerceClientMock {
     }
   }
 
-  async updateItemStatus(wcItemId, updatedStatus) {
+  async updateItem(item) {
     await new Promise((r) => setTimeout(r, 1500));
   }
 }
