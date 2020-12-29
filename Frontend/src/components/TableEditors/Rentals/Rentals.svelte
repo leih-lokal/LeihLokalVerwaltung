@@ -1,6 +1,6 @@
 <script>
   import DatabaseTableEditor from "../DatabaseTableEditor.svelte";
-  import EditRentalPopup from "./EditRentalPopup.svelte";
+  import RentalPopupFormular from "./RentalPopupFormular.svelte";
   import columns from "./Columns.js";
   import filters from "./Filters.js";
   import { rentalDb } from "../../../utils/stores";
@@ -53,4 +53,4 @@
   {filters}
   database={$rentalDb}
   {rowBackgroundColorFunction}
-  popupFormularComponent={EditRentalPopup} />
+  popupFormularComponent={RentalPopupFormular} />

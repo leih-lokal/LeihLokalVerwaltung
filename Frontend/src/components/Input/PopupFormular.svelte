@@ -4,6 +4,8 @@
     import SelectInput from "./SelectInput.svelte";
     import InputGroup from "./InputGroup.svelte";
     import DateInput from "./DateInput.svelte";
+    import TextInput from "./TextInput.svelte";
+    import AutocompleteInput from "./AutocompleteInput.svelte";
     import InputTypes from "./InputTypes";
     const { close } = getContext("simple-modal");
 
@@ -11,23 +13,12 @@
     export let createNew;
     export let doc = {};
 
-    $: console.log("pf: " + doc.firstname);
-
     if (popupFormularConfiguration.createInitialDoc && createNew) {
         popupFormularConfiguration.createInitialDoc(doc);
     }
 </script>
 
 <style>
-    input[type="text"] {
-        width: 100% !important;
-        padding: 0.5rem !important;
-        border: 1px solid #ccc !important;
-        border-radius: 4px !important;
-        resize: vertical !important;
-        height: 2.5rem !important;
-    }
-
     row {
         padding: 0.6rem;
         display: inline-block;
@@ -111,27 +102,74 @@
                             </div>
                             <div class="col-input">
                                 {#if input.type === InputTypes.TEXT}
-                                    <input
-                                        type="text"
+                                    <TextInput
                                         id={input.id}
-                                        name={input.id}
-                                        disabled={input.disabled}
-                                        bind:value={input.bindTo} />
+                                        readonly={input.readonly}
+                                        bindValueToObjectAttr={input.bindValueToObjectAttr}
+                                        bind:bindToObject={input.bindToObject}
+                                        on:change={(event) => {
+                                            if (input.onChange) input.onChange(event.detail);
+                                        }} />
+                                {:else if input.type === InputTypes.AUTOCOMPLETE}
+                                    <AutocompleteInput
+                                        inputId={input.id}
+                                        noResultsText={input.noResultsText}
+                                        bind:value={doc[input.bindToDocAttribute]}
+                                        labelAttributes={input.labelAttributes}
+                                        searchFunction={input.searchFunction}
+                                        selectedAttributeKey={input.bindToDocAttribute}
+                                        updateAttributes={input.updateAttributes}
+                                        bind:objectToUpdate={input.objectToUpdate}
+                                        on:change={(event) => {
+                                            if (input.onChange) input.onChange(event.detail);
+                                        }} />
                                 {:else if input.type === InputTypes.CHECKBOX}
-                                    <Checkbox
-                                        id={input.id}
-                                        name={input.id}
-                                        size="2rem"
-                                        bind:checked={input.bindTo} />
+                                    {#if input.bindToDocAttribute}
+                                        <Checkbox
+                                            id={input.id}
+                                            name={input.id}
+                                            size="2rem"
+                                            on:change={(event) => {
+                                                if (input.onChange) input.onChange(event.detail);
+                                            }}
+                                            bind:checked={doc[input.bindToDocAttribute]} />
+                                    {:else}
+                                        <Checkbox
+                                            id={input.id}
+                                            name={input.id}
+                                            size="2rem"
+                                            on:change={(event) => {
+                                                if (input.onChange) input.onChange(event.detail);
+                                            }} />
+                                    {/if}
                                 {:else if input.type === InputTypes.DATE}
-                                    <DateInput bind:timeMillis={input.bindTo} />
+                                    {#if input.bindToDocAttribute}
+                                        <DateInput
+                                            bind:timeMillis={doc[input.bindToDocAttribute]}
+                                            on:change={(event) => {
+                                                if (input.onChange) input.onChange(event.detail);
+                                            }} />
+                                    {:else}
+                                        <DateInput
+                                            on:change={(event) => {
+                                                if (input.onChange) input.onChange(event.detail);
+                                            }} />
+                                    {/if}
                                 {:else if input.type === InputTypes.SELECTION}
-                                    <SelectInput
-                                        bind:selectedValuesString={input.bindTo}
-                                        selectionOptions={input.selectionOptions}
-                                        isMulti={input.isMulti}
-                                        isCreatable={input.isCreatable}
-                                        isClearable={input.isClearable} />
+                                    {#if input.bindToDocAttribute}
+                                        <SelectInput
+                                            bind:selectedValuesString={doc[input.bindToDocAttribute]}
+                                            selectionOptions={input.selectionOptions}
+                                            isMulti={input.isMulti}
+                                            isCreatable={input.isCreatable}
+                                            isClearable={input.isClearable} />
+                                    {:else}
+                                        <SelectInput
+                                            selectionOptions={input.selectionOptions}
+                                            isMulti={input.isMulti}
+                                            isCreatable={input.isCreatable}
+                                            isClearable={input.isClearable} />
+                                    {/if}
                                 {/if}
                             </div>
                         </row>

@@ -2,6 +2,9 @@
   import Datepicker from "svelte-calendar/src/Components/Datepicker.svelte";
   import ClearInputButton from "./ClearInputButton.svelte";
   import { saveParseTimestampToString } from "../../utils/utils";
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
 
   const daysOfWeek = [
     ["Sonntag", "So"],
@@ -55,7 +58,10 @@
   on:dateSelected={(event) => {
     const date = event.detail.date;
     const newTimeMillis = date.getTime() - TIMEZONE_OFFSET_MS;
-    if (timeMillis !== newTimeMillis) timeMillis = newTimeMillis;
+    if (timeMillis !== newTimeMillis) {
+      timeMillis = newTimeMillis;
+      dispatch('change', date);
+    }
   }}
   weekStart={1}
   {daysOfWeek}
@@ -67,6 +73,9 @@
     type="text"
     value={timeMillis === 0 ? '-' : saveParseTimestampToString(timeMillis)} />
   <ClearInputButton
-    onClear={() => (timeMillis = 0)}
+    onClear={() => {
+      timeMillis = 0;
+      dispatch('change', undefined);
+    }}
     visible={timeMillis !== 0} />
 </Datepicker>

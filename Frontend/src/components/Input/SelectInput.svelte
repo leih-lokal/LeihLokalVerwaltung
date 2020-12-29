@@ -30,6 +30,12 @@
     $: selectedValuesArray = selectedValuesFromString(selectedValuesString);
 </script>
 
+<style>
+    :global(.selectContainer > input) {
+        cursor: pointer !important;
+    }
+</style>
+
 <Select
     items={selectionOptions}
     bind:selectedValue={selectedValuesArray}

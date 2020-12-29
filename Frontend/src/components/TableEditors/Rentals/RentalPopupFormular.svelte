@@ -11,6 +11,41 @@
     export let createNew;
     export let doc = {};
 
+    const idStartsWithSelector = (searchValue) =>
+        $rentalDb
+            .selectorBuilder()
+            .withField("_id")
+            .startsWithIgnoreCase(searchValue)
+            .build();
+
+    const idStartsWithAndNotDeletedSelector = (searchValue) =>
+        $rentalDb
+            .selectorBuilder()
+            .withField("_id")
+            .startsWithIgnoreCaseAndLeadingZeros(searchValue)
+            .withField("status_on_website")
+            .isNotEqualTo("deleted")
+            .build();
+
+    const attributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
+        $rentalDb
+            .selectorBuilder()
+            .withField(field)
+            .startsWithIgnoreCase(searchValue)
+            .build();
+
+    const attributeStartsWithIgnoreCaseAndNotDeletedSelector = (
+        field,
+        searchValue
+    ) =>
+        $rentalDb
+            .selectorBuilder()
+            .withField(field)
+            .startsWithIgnoreCase(searchValue)
+            .withField("status_on_website")
+            .isNotEqualTo("deleted")
+            .build();
+
     const popupFormularConfiguration = new PopupFormularConfiguration()
         .setDocName("Leihvorgang")
         .setCreateInitialDoc((doc) => {
@@ -108,15 +143,52 @@
                 id: "item_id",
                 label: "Nr",
                 group: "Gegenstand",
-                type: InputTypes.TEXT,
+                type: InputTypes.AUTOCOMPLETE,
                 bindToDocAttribute: "item_id",
+                searchFunction: (searchTerm) =>
+                    $itemDb
+                        .fetchDocsBySelector(
+                            idStartsWithAndNotDeletedSelector(searchTerm),
+                            ["_id", "item_name", "deposit"]
+                        )
+                        .then((docs) =>
+                            docs.map((doc) => {
+                                doc.item_id = doc._id;
+                                delete doc._id;
+                                return doc;
+                            })
+                        ),
+                objectToUpdate: doc,
+                updateAttributes: ["item_name", "item_id", "deposit"],
+                labelAttributes: ["item_id", "item_name"],
+                noResultsText: "Kein Gegenstand mit dieser Id",
             },
             {
                 id: "item_name",
                 label: "Name",
                 group: "Gegenstand",
-                type: InputTypes.TEXT,
+                type: InputTypes.AUTOCOMPLETE,
                 bindToDocAttribute: "item_name",
+                searchFunction: (searchTerm) =>
+                    $itemDb
+                        .fetchDocsBySelector(
+                            attributeStartsWithIgnoreCaseAndNotDeletedSelector(
+                                "item_name",
+                                searchTerm
+                            ),
+                            ["_id", "item_name", "deposit"]
+                        )
+                        .then((docs) =>
+                            docs.map((doc) => {
+                                doc.item_id = doc._id;
+                                delete doc._id;
+                                return doc;
+                            })
+                        ),
+                objectToUpdate: doc,
+                updateAttributes: ["item_name", "item_id", "deposit"],
+                labelAttributes: ["item_id", "item_name"],
+                noResultsText: "Kein Gegenstand mit diesem Name",
             },
             {
                 id: "update_status_on_website",

@@ -17,19 +17,25 @@
       const item = await $itemDb.fetchById(doc.item_id);
       doc.image = item.image;
 
-      if(updateStatusOnWebsite){        
-        if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
+      if (updateStatusOnWebsite) {
+        if (
+          doc.returned_on &&
+          doc.returned_on !== 0 &&
+          doc.returned_on <= new Date().getTime()
+        ) {
           item.status_on_website = "instock";
           $itemDb.updateDoc(item);
           woocommerceClient
-          .updateItem(item)
-          .then(() => {
-            notifier.success(`'${item.item_name}' wurde auf der Webseite als verfügbar markiert.`);
-          })
-          .catch((error) => {
-            notifier.warning(
-              `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
-              6000
+            .updateItem(item)
+            .then(() => {
+              notifier.success(
+                `'${item.item_name}' wurde auf der Webseite als verfügbar markiert.`
+              );
+            })
+            .catch((error) => {
+              notifier.warning(
+                `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
+                6000
               );
               console.error(error);
             });
@@ -37,21 +43,23 @@
           item.status_on_website = "outofstock";
           $itemDb.updateDoc(item);
           woocommerceClient
-          .updateItem(item)
-          .then(() => {
-            notifier.success(`'${item.item_name}' wurde auf der Webseite als verliehen markiert.`);
-          })
-          .catch((error) => {
-            notifier.warning(
-              `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
-              6000
+            .updateItem(item)
+            .then(() => {
+              notifier.success(
+                `'${item.item_name}' wurde auf der Webseite als verliehen markiert.`
+              );
+            })
+            .catch((error) => {
+              notifier.warning(
+                `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
+                6000
               );
               console.error(error);
             });
-          }
         }
       }
-          
+    }
+
     (createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc))
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
       .then(close)
@@ -73,10 +81,15 @@
   }
 
   const idStartsWithSelector = (searchValue) =>
-    $rentalDb.selectorBuilder().withField("_id").startsWithIgnoreCase(searchValue).build();
+    $rentalDb
+      .selectorBuilder()
+      .withField("_id")
+      .startsWithIgnoreCase(searchValue)
+      .build();
 
   const idStartsWithAndNotDeletedSelector = (searchValue) =>
-    $rentalDb.selectorBuilder()
+    $rentalDb
+      .selectorBuilder()
       .withField("_id")
       .startsWithIgnoreCaseAndLeadingZeros(searchValue)
       .withField("status_on_website")
@@ -84,10 +97,18 @@
       .build();
 
   const attributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
-    $rentalDb.selectorBuilder().withField(field).startsWithIgnoreCase(searchValue).build();
+    $rentalDb
+      .selectorBuilder()
+      .withField(field)
+      .startsWithIgnoreCase(searchValue)
+      .build();
 
-  const attributeStartsWithIgnoreCaseAndNotDeletedSelector = (field, searchValue) =>
-    $rentalDb.selectorBuilder()
+  const attributeStartsWithIgnoreCaseAndNotDeletedSelector = (
+    field,
+    searchValue
+  ) =>
+    $rentalDb
+      .selectorBuilder()
       .withField(field)
       .startsWithIgnoreCase(searchValue)
       .withField("status_on_website")
@@ -181,21 +202,20 @@
         <div class="col-label"><label for="item_id">Nr</label></div>
         <div class="col-input">
           <AutoComplete
-            textCleanFunction={text => {
+            textCleanFunction={(text) => {
               doc.item_id = text;
               return text;
             }}
             searchFunction={(searchTerm) => {
               return $itemDb.fetchDocsBySelector(
-                  idStartsWithAndNotDeletedSelector(searchTerm),
-                  ['_id', 'item_name', 'deposit']
-                )
-              }
-            }
+                idStartsWithAndNotDeletedSelector(searchTerm),
+                ['_id', 'item_name', 'deposit']
+              );
+            }}
             beforeChange={(prevSelectedValue, newSelectedValue) => {
-              if(doc.item_id !== newSelectedValue._id) doc.item_id = newSelectedValue._id;
-              if(doc.item_name !== newSelectedValue.item_name) doc.item_name = newSelectedValue.item_name;
-              if(doc.deposit !== newSelectedValue.deposit) doc.deposit = newSelectedValue.deposit;
+              if (doc.item_id !== newSelectedValue._id) doc.item_id = newSelectedValue._id;
+              if (doc.item_name !== newSelectedValue.item_name) doc.item_name = newSelectedValue.item_name;
+              if (doc.deposit !== newSelectedValue.deposit) doc.deposit = newSelectedValue.deposit;
             }}
             labelFunction={(item) => {
               if (item && item.name && item.name !== '') {
@@ -216,20 +236,23 @@
         <div class="col-label"><label for="item_name">Name</label></div>
         <div class="col-input">
           <AutoComplete
-            textCleanFunction={text => {
+            textCleanFunction={(text) => {
               doc.item_name = text;
               return text;
             }}
             searchFunction={(searchTerm) => {
               return $itemDb.fetchDocsBySelector(
-                attributeStartsWithIgnoreCaseAndNotDeletedSelector('item_name', searchTerm),
+                attributeStartsWithIgnoreCaseAndNotDeletedSelector(
+                  'item_name',
+                  searchTerm
+                ),
                 ['_id', 'item_name', 'deposit']
-              )}
-            }
+              );
+            }}
             beforeChange={(prevSelectedValue, newSelectedValue) => {
-              if(doc.item_name !== newSelectedValue.item_name) doc.item_name = newSelectedValue.item_name;
-              if(doc.item_id !== newSelectedValue._id) doc.item_id = newSelectedValue._id;
-              if(doc.deposit !== newSelectedValue.deposit) doc.deposit = newSelectedValue.deposit;
+              if (doc.item_name !== newSelectedValue.item_name) doc.item_name = newSelectedValue.item_name;
+              if (doc.item_id !== newSelectedValue._id) doc.item_id = newSelectedValue._id;
+              if (doc.deposit !== newSelectedValue.deposit) doc.deposit = newSelectedValue.deposit;
             }}
             inputId="input_item_name"
             keywordsFieldName="item_name"
@@ -240,7 +263,10 @@
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="update_status_on_website">Status auf Webseite aktualisieren</label></div>
+        <div class="col-label">
+          <label for="update_status_on_website">Status auf Webseite
+            aktualisieren</label>
+        </div>
         <div class="col-input">
           <Checkbox
             id="update_status_on_website"
@@ -268,13 +294,17 @@
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="to_return_on">Zurückerwartet</label></div>
+        <div class="col-label">
+          <label for="to_return_on">Zurückerwartet</label>
+        </div>
         <div class="col-input">
           <DateInput bind:timeMillis={doc.to_return_on} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="returned_on">Zurückgegeben</label></div>
+        <div class="col-label">
+          <label for="returned_on">Zurückgegeben</label>
+        </div>
         <div class="col-input">
           <DateInput bind:timeMillis={doc.returned_on} />
         </div>
@@ -289,7 +319,7 @@
         <div class="col-label"><label for="customer_id">Nr</label></div>
         <div class="col-input">
           <AutoComplete
-            textCleanFunction={text => {
+            textCleanFunction={(text) => {
               doc.customer_id = text;
               return text;
             }}
@@ -297,12 +327,12 @@
               return $customerDb.fetchDocsBySelector(
                 idStartsWithSelector(searchTerm),
                 ['_id', 'lastname']
-              )}
-            }
+              );
+            }}
             autocomplete="autocomplete-input"
             beforeChange={(prevSelectedValue, newSelectedValue) => {
-              if(doc.name !== newSelectedValue.lastname) doc.name = newSelectedValue.lastname;
-              if(doc.customer_id !== newSelectedValue._id) doc.customer_id = newSelectedValue._id;
+              if (doc.name !== newSelectedValue.lastname) doc.name = newSelectedValue.lastname;
+              if (doc.customer_id !== newSelectedValue._id) doc.customer_id = newSelectedValue._id;
             }}
             inputId="input_customer_id"
             labelFunction={(customer) => {
@@ -324,7 +354,7 @@
         <div class="col-label"><label for="name">Name</label></div>
         <div class="col-input">
           <AutoComplete
-            textCleanFunction={text => {
+            textCleanFunction={(text) => {
               doc.name = text;
               return text;
             }}
@@ -332,11 +362,11 @@
               return $customerDb.fetchDocsBySelector(
                 attributeStartsWithIgnoreCaseSelector('lastname', searchTerm),
                 ['_id', 'lastname']
-              )}
-            }
+              );
+            }}
             beforeChange={(prevSelectedValue, newSelectedValue) => {
-              if(doc.name !== newSelectedValue.lastname) doc.name = newSelectedValue.lastname;
-              if(doc.customer_id !== newSelectedValue._id) doc.customer_id = newSelectedValue._id;
+              if (doc.name !== newSelectedValue.lastname) doc.name = newSelectedValue.lastname;
+              if (doc.customer_id !== newSelectedValue._id) doc.customer_id = newSelectedValue._id;
             }}
             inputId="input_lastname"
             keywordsFieldName="lastname"
@@ -355,11 +385,17 @@
       <row>
         <div class="col-label"><label for="deposit">Pfand</label></div>
         <div class="col-input">
-          <input type="text" id="deposit" name="deposit" bind:value={doc.deposit} />
+          <input
+            type="text"
+            id="deposit"
+            name="deposit"
+            bind:value={doc.deposit} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="deposit_returned">Pfand zurück</label></div>
+        <div class="col-label">
+          <label for="deposit_returned">Pfand zurück</label>
+        </div>
         <div class="col-input">
           <input
             type="text"
@@ -369,7 +405,9 @@
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="deposit_retained">einbehalten</label></div>
+        <div class="col-label">
+          <label for="deposit_retained">einbehalten</label>
+        </div>
         <div class="col-input">
           <input
             type="text"
@@ -379,7 +417,9 @@
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="deposit_retainment_reason">Grund</label></div>
+        <div class="col-label">
+          <label for="deposit_retainment_reason">Grund</label>
+        </div>
         <div class="col-input">
           <input
             type="text"
@@ -395,7 +435,9 @@
         <h3>Mitarbeiter</h3>
       </row>
       <row>
-        <div class="col-label"><label for="passing_out_employee">Ausgabe</label></div>
+        <div class="col-label">
+          <label for="passing_out_employee">Ausgabe</label>
+        </div>
         <div class="col-input">
           <input
             type="text"
@@ -405,7 +447,9 @@
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="receiving_employee">Rücknahme</label></div>
+        <div class="col-label">
+          <label for="receiving_employee">Rücknahme</label>
+        </div>
         <div class="col-input">
           <input
             type="text"
@@ -417,7 +461,11 @@
       <row>
         <div class="col-label"><label for="remark">Bemerkung</label></div>
         <div class="col-input">
-          <input type="text" id="remark" name="remark" bind:value={doc.remark} />
+          <input
+            type="text"
+            id="remark"
+            name="remark"
+            bind:value={doc.remark} />
         </div>
       </row>
     </InputGroup>
