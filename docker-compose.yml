@@ -6,8 +6,10 @@ services:
     restart: unless-stopped
     ports:
       - 5984:5984
+      - 6984:6984
     volumes:
       - ./CouchDb/couchdb_config:/opt/couchdb/etc/local.d
+      - ./CouchDb/couchdb_ssl:/opt/couchdb/ssl
 
   excel_to_couchdb:
     build:
