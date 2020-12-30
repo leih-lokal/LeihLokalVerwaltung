@@ -23,6 +23,3 @@ services:
       COUCHDB_HOST: http://couchdb:5984
       WC_CONSUMER_KEY: <WC_CONSUMER_KEY>
       WC_CONSUMER_SECRET: <WC_CONSUMER_SECRET>
-
-volumes:
-  couchdb-data:
