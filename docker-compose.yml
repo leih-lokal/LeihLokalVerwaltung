@@ -1,0 +1,25 @@
+version: "3.4"
+
+services:
+  couchdb:
+    image: couchdb:3.1.1
+    restart: unless-stopped
+    ports:
+      - 5984:5984
+      - 6984:6984
+    volumes:
+      - ./CouchDb/couchdb_config:/opt/couchdb/etc/local.d
+      - ./CouchDb/couchdb_ssl:/opt/couchdb/ssl
+
+  excel_to_couchdb:
+    build:
+      context: ./ExcelCouchDbSync
+      dockerfile: Dockerfile
+    restart: on-failure
+    volumes:
+      - <LOCAL_EXCEL_FILE>:/Leihgegenständeliste.ods
+    environment:
+      EXCEL_FILE: /Leihgegenständeliste.ods
+      COUCHDB_HOST: http://couchdb:5984
+      WC_CONSUMER_KEY: <WC_CONSUMER_KEY>
+      WC_CONSUMER_SECRET: <WC_CONSUMER_SECRET>

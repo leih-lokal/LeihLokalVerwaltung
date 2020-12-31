@@ -7,3 +7,4 @@ python3 /home/pi/LeihLokalVerwaltung/ExcelCouchDbSync/couchdb_to_excel.py /home/
 
 # delete backups older than 30 days
 find /home/pi/backups -type f -mtime +30 -exec rm -f {} \;
+
