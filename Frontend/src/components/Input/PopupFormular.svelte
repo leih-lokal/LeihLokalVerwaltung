@@ -106,7 +106,7 @@
                                         id={input.id}
                                         readonly={input.readonly}
                                         bindValueToObjectAttr={input.bindValueToObjectAttr}
-                                        bind:bindToObject={input.bindToObject}
+                                        bind:value={input.bindTo.obj[input.bindTo.attr]}
                                         on:change={(event) => {
                                             if (input.onChange) input.onChange(event.detail);
                                         }} />
@@ -114,7 +114,7 @@
                                     <AutocompleteInput
                                         inputId={input.id}
                                         noResultsText={input.noResultsText}
-                                        bind:value={doc[input.bindToDocAttribute]}
+                                        bind:value={input.bindTo.obj[input.bindTo.attr]}
                                         labelAttributes={input.labelAttributes}
                                         searchFunction={input.searchFunction}
                                         selectedAttributeKey={input.bindToDocAttribute}
@@ -124,52 +124,27 @@
                                             if (input.onChange) input.onChange(event.detail);
                                         }} />
                                 {:else if input.type === InputTypes.CHECKBOX}
-                                    {#if input.bindToDocAttribute}
-                                        <Checkbox
-                                            id={input.id}
-                                            name={input.id}
-                                            size="2rem"
-                                            on:change={(event) => {
-                                                if (input.onChange) input.onChange(event.detail);
-                                            }}
-                                            bind:checked={doc[input.bindToDocAttribute]} />
-                                    {:else}
-                                        <Checkbox
-                                            id={input.id}
-                                            name={input.id}
-                                            size="2rem"
-                                            on:change={(event) => {
-                                                if (input.onChange) input.onChange(event.detail);
-                                            }} />
-                                    {/if}
+                                    <Checkbox
+                                        id={input.id}
+                                        name={input.id}
+                                        size="2rem"
+                                        on:change={(event) => {
+                                            if (input.onChange) input.onChange(event.detail);
+                                        }}
+                                        bind:checked={input.bindTo.obj[input.bindTo.attr]} />
                                 {:else if input.type === InputTypes.DATE}
-                                    {#if input.bindToDocAttribute}
-                                        <DateInput
-                                            bind:timeMillis={doc[input.bindToDocAttribute]}
-                                            on:change={(event) => {
-                                                if (input.onChange) input.onChange(event.detail);
-                                            }} />
-                                    {:else}
-                                        <DateInput
-                                            on:change={(event) => {
-                                                if (input.onChange) input.onChange(event.detail);
-                                            }} />
-                                    {/if}
+                                    <DateInput
+                                        bind:timeMillis={input.bindTo.obj[input.bindTo.attr]}
+                                        on:change={(event) => {
+                                            if (input.onChange) input.onChange(event.detail);
+                                        }} />
                                 {:else if input.type === InputTypes.SELECTION}
-                                    {#if input.bindToDocAttribute}
-                                        <SelectInput
-                                            bind:selectedValuesString={doc[input.bindToDocAttribute]}
-                                            selectionOptions={input.selectionOptions}
-                                            isMulti={input.isMulti}
-                                            isCreatable={input.isCreatable}
-                                            isClearable={input.isClearable} />
-                                    {:else}
-                                        <SelectInput
-                                            selectionOptions={input.selectionOptions}
-                                            isMulti={input.isMulti}
-                                            isCreatable={input.isCreatable}
-                                            isClearable={input.isClearable} />
-                                    {/if}
+                                    <SelectInput
+                                        bind:selectedValuesString={input.bindTo.obj[input.bindTo.attr]}
+                                        selectionOptions={input.selectionOptions}
+                                        isMulti={input.isMulti}
+                                        isCreatable={input.isCreatable}
+                                        isClearable={input.isClearable} />
                                 {/if}
                             </div>
                         </row>

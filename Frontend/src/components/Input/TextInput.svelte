@@ -3,8 +3,7 @@
 
     export let id = "";
     export let readonly = false;
-    export let bindToObject;
-    export let bindValueToObjectAttr;
+    export let value = "";
 
     const dispatch = createEventDispatcher();
 </script>
@@ -23,7 +22,7 @@
 <form autocomplete="off">
     <input
         type="text"
-        bind:value={bindToObject[bindValueToObjectAttr]}
+        bind:value
         {id}
         name={id}
         {readonly}

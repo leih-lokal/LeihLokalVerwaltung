@@ -11,6 +11,10 @@
     export let createNew;
     export let doc = {};
 
+    let options = {
+        update_status_on_website: true,
+    };
+
     const idStartsWithSelector = (searchValue) =>
         $rentalDb
             .selectorBuilder()
@@ -144,7 +148,7 @@
                 label: "Nr",
                 group: "Gegenstand",
                 type: InputTypes.AUTOCOMPLETE,
-                bindToDocAttribute: "item_id",
+                bindTo: { obj: doc, attr: "item_id" },
                 searchFunction: (searchTerm) =>
                     $itemDb
                         .fetchDocsBySelector(
@@ -168,7 +172,7 @@
                 label: "Name",
                 group: "Gegenstand",
                 type: InputTypes.AUTOCOMPLETE,
-                bindToDocAttribute: "item_name",
+                bindTo: { obj: doc, attr: "item_name" },
                 searchFunction: (searchTerm) =>
                     $itemDb
                         .fetchDocsBySelector(
@@ -194,6 +198,7 @@
                 id: "update_status_on_website",
                 label: "Status auf Webseite aktualisieren",
                 group: "Gegenstand",
+                bindTo: { obj: options, attr: "update_status_on_website" },
                 type: InputTypes.CHECKBOX,
             },
         ]);

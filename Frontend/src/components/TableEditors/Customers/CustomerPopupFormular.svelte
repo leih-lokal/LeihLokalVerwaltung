@@ -8,8 +8,6 @@
   export let createNew;
   export let doc = {};
 
-  $: console.log(doc);
-
   const popupFormularConfiguration = new PopupFormularConfiguration()
     .setDocName("Kunde")
     .setCreateInitialDoc(async (doc) => {
@@ -55,85 +53,77 @@
         label: "Vorname",
         group: "Name",
         type: InputTypes.TEXT,
-        bindToObject: doc,
-        bindValueToObjectAttr: "firstname",
+        bindTo: { obj: doc, attr: "firstname" },
       },
       {
         id: "lastname",
         label: "Nachname",
         group: "Name",
         type: InputTypes.TEXT,
-        bindToObject: doc,
-        bindValueToObjectAttr: "lastname",
+        bindTo: { obj: doc, attr: "lastname" },
       },
       {
         id: "street",
         label: "Strasse",
         group: "Adresse",
         type: InputTypes.TEXT,
-        bindToObject: doc,
-        bindValueToObjectAttr: "street",
+        bindTo: { obj: doc, attr: "street" },
       },
       {
         id: "house_number",
         label: "Hausnummer",
         group: "Adresse",
         type: InputTypes.TEXT,
-        bindToObject: doc,
-        bindValueToObjectAttr: "house_number",
+        bindTo: { obj: doc, attr: "house_number" },
       },
       {
         id: "postal_code",
         label: "Postleitzahl",
         group: "Adresse",
         type: InputTypes.TEXT,
-        bindToObject: doc,
-        bindValueToObjectAttr: "postal_code",
+        bindTo: { obj: doc, attr: "postal_code" },
       },
       {
         id: "city",
         label: "Stadt",
         group: "Adresse",
         type: InputTypes.TEXT,
-        bindToObject: doc,
-        bindValueToObjectAttr: "city",
+        bindTo: { obj: doc, attr: "city" },
       },
       {
         id: "email",
         label: "E-Mail",
         group: "Kontakt",
         type: InputTypes.TEXT,
-        bindToObject: doc,
-        bindValueToObjectAttr: "email",
+        bindTo: { obj: doc, attr: "email" },
       },
       {
         id: "telephone_number",
         label: "Telefonnummer",
         group: "Kontakt",
         type: InputTypes.TEXT,
-        bindToObject: doc,
-        bindValueToObjectAttr: "telephone_number",
+        bindTo: { obj: doc, attr: "telephone_number" },
       },
       {
         id: "subscribed_to_newsletter",
         label: "Newsletter",
         group: "Kontakt",
         type: InputTypes.CHECKBOX,
-        bindValueToObjectAttr: "subscribed_to_newsletter",
+        bindTo: { obj: doc, attr: "subscribed_to_newsletter" },
       },
       {
         id: "registration_date",
         label: "Beitritt",
         group: "Mitgliedschaft",
         type: InputTypes.DATE,
-        bindValueToObjectAttr: "registration_date",
+        bindTo: { obj: doc, attr: "registration_date" },
       },
       {
         id: "renewed_on",
         label: "Verlängert am",
         group: "Mitgliedschaft",
         type: InputTypes.DATE,
-        bindValueToObjectAttr: "renewed_on",
+        bindTo: { obj: doc, attr: "renewed_on" },
       },
       {
         id: "heard",
@@ -146,7 +136,7 @@
           "Zeitung / Medien",
           "Nachbarschaft",
         ],
-        bindValueToObjectAttr: "heard",
+        bindTo: { obj: doc, attr: "heard" },
         isCreatable: true,
         isMulti: true,
         isClearable: true,
@@ -156,7 +146,7 @@
         label: "Id",
         group: "Sonstiges",
         type: InputTypes.TEXT,
-        bindToObject: doc,
+        bindTo: { obj: doc, attr: "_id" },
         readonly: true,
         bindValueToObjectAttr: "_id",
       },
@@ -165,8 +155,7 @@
         label: "Bemerkung",
         group: "Sonstiges",
         type: InputTypes.TEXT,
-        bindToObject: doc,
-        bindValueToObjectAttr: "remark",
+        bindTo: { obj: doc, attr: "remark" },
       },
     ]);
 </script>

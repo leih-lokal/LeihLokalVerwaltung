@@ -98,28 +98,28 @@
                 label: "Gegenstand Nr",
                 group: "Bezeichnung",
                 type: InputTypes.TEXT,
-                bindToDocAttribute: "_id",
+                bindTo: { obj: doc, attr: "_id" },
             },
             {
                 id: "item_name",
                 label: "Gegenstand Name",
                 group: "Bezeichnung",
                 type: InputTypes.TEXT,
-                bindToDocAttribute: "item_name",
+                bindTo: { obj: doc, attr: "item_name" },
             },
             {
                 id: "brand",
                 label: "Marke",
                 group: "Bezeichnung",
                 type: InputTypes.TEXT,
-                bindToDocAttribute: "brand",
+                bindTo: { obj: doc, attr: "brand" },
             },
             {
                 id: "itype",
                 label: "Typbezeichnung",
                 group: "Bezeichnung",
                 type: InputTypes.TEXT,
-                bindToDocAttribute: "itype",
+                bindTo: { obj: doc, attr: "itype" },
             },
 
             {
@@ -127,7 +127,7 @@
                 label: "Kategorie",
                 group: "Eigenschaften",
                 type: InputTypes.SELECTION,
-                bindToDocAttribute: "category",
+                bindTo: { obj: doc, attr: "category" },
                 selectionOptions: [
                     "Küche",
                     "Haushalt",
@@ -145,21 +145,21 @@
                 label: "Pfand",
                 group: "Eigenschaften",
                 type: InputTypes.TEXT,
-                bindToDocAttribute: "deposit",
+                bindTo: { obj: doc, attr: "deposit" },
             },
             {
                 id: "added",
                 label: "Erfasst am",
                 group: "Eigenschaften",
                 type: InputTypes.DATE,
-                bindToDocAttribute: "added",
+                bindTo: { obj: doc, attr: "added" },
             },
             {
                 id: "properties",
                 label: "Eigenschaften",
                 group: "Eigenschaften",
                 type: InputTypes.TEXT,
-                bindToDocAttribute: "properties",
+                bindTo: { obj: doc, attr: "properties" },
             },
 
             {
@@ -167,21 +167,21 @@
                 label: "Anzahl Teile",
                 group: "Zubehör",
                 type: InputTypes.TEXT,
-                bindToDocAttribute: "parts",
+                bindTo: { obj: doc, attr: "parts" },
             },
             {
                 id: "manual",
                 label: "Anleitung",
                 group: "Zubehör",
                 type: InputTypes.TEXT,
-                bindToDocAttribute: "manual",
+                bindTo: { obj: doc, attr: "manual" },
             },
             {
                 id: "package",
                 label: "Verpackung",
                 group: "Zubehör",
                 type: InputTypes.TEXT,
-                bindToDocAttribute: "package",
+                bindTo: { obj: doc, attr: "package" },
             },
 
             {
@@ -189,7 +189,7 @@
                 label: "Bild",
                 group: "Bild",
                 type: InputTypes.TEXT,
-                bindToDocAttribute: "image",
+                bindTo: { obj: doc, attr: "image" },
             },
 
             {
@@ -197,7 +197,7 @@
                 label: "Status auf Webseite",
                 group: "Status",
                 type: InputTypes.SELECTION,
-                bindToDocAttribute: "status_on_website",
+                bindTo: { obj: doc, attr: "status_on_website" },
                 selectionOptions: [
                     { value: "deleted", label: "gelöscht" },
                     { value: "instock", label: "verfügbar" },
