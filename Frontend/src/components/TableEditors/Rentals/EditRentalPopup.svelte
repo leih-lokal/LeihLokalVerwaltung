@@ -127,7 +127,7 @@
   }
 
   row {
-    padding: 0.2rem;
+    padding: 0.6rem;
     display: inline-block;
   }
 
@@ -168,14 +168,13 @@
     flex-grow: 1;
     overflow: auto;
     min-height: 2em;
-    height: 20%;
   }
 
   .container {
     height: 100%;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .footer {
@@ -327,7 +326,7 @@
             searchFunction={(searchTerm) => {
               return $customerDb.fetchDocsBySelector(
                 idStartsWithSelector(searchTerm),
-                ['_id', 'lastname']
+                ['_id', 'firstname', 'lastname']
               );
             }}
             autocomplete="autocomplete-input"
@@ -338,7 +337,7 @@
             inputId="input_customer_id"
             labelFunction={(customer) => {
               if (customer && customer.lastname && customer.lastname !== '') {
-                return customer._id + ' - ' + customer.lastname;
+                return customer._id + ': ' + customer.firstname + ' ' + customer.lastname;
               } else if (customer) {
                 return customer._id;
               } else {
@@ -355,14 +354,10 @@
         <div class="col-label"><label for="name">Name</label></div>
         <div class="col-input">
           <AutoComplete
-            textCleanFunction={(text) => {
-              doc.name = text;
-              return text;
-            }}
             searchFunction={(searchTerm) => {
               return $customerDb.fetchDocsBySelector(
                 attributeStartsWithIgnoreCaseSelector('lastname', searchTerm),
-                ['_id', 'lastname']
+                ['_id', 'firstname', 'lastname']
               );
             }}
             beforeChange={(prevSelectedValue, newSelectedValue) => {
@@ -370,8 +365,15 @@
               if (doc.customer_id !== newSelectedValue._id) doc.customer_id = newSelectedValue._id;
             }}
             inputId="input_lastname"
-            keywordsFieldName="lastname"
-            labelFieldName="lastname"
+            labelFunction={(customer) => {
+              if (customer && customer.lastname && customer.firstname && customer.lastname !== '' && customer.firstname !== '') {
+                return customer._id + ': ' + customer.firstname + ' ' + customer.lastname;
+              } else if (customer) {
+                return customer.lastname;
+              } else {
+                return '';
+              }
+            }}
             noResultsText="Kein Kunde mit diesem Name"
             hideArrow={true}
             selectedItem={{ _id: doc.customer_id ?? '', lastname: doc.name ?? '' }} />
