@@ -79,7 +79,6 @@
 </style>
 
 <Datepicker
-  bind:weekStart
   bind:selected
   bind:dateChosen
   {daysOfWeek}
