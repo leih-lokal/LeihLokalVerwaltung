@@ -44,6 +44,7 @@
   export let timeMillis;
   const TIMEZONE_OFFSET_MS = new Date().getTimezoneOffset() * 60000;
 
+  
   let dateChosen = false;
   let isNone = !timeMillis || timeMillis === 0;
   let selected = isNone ? new Date() : new Date(timeMillis);
@@ -83,6 +84,7 @@
 <Datepicker
   bind:selected
   bind:dateChosen
+  weekStart = {1}
   {daysOfWeek}
   {monthsOfYear}
   format={'#{d}.#{m}.#{Y}'}
