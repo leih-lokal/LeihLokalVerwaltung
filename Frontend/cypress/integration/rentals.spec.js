@@ -108,7 +108,7 @@ context("rentals", () => {
     cy.visit("../../public/index.html").get("nav").contains("Leihvorgänge").click();
   });
 
-  /*it("displays correct number of rentals", () => {
+  it("displays correct number of rentals", () => {
     cy.get("table > tr").should("have.length", currentRentals.length);
   });
 
@@ -230,7 +230,7 @@ context("rentals", () => {
         )
       );
     });
-  });**/
+  });
 
   context("Editing", () => {
     beforeEach(() => {
@@ -241,7 +241,7 @@ context("rentals", () => {
       if (millis === 0) return "-";
       else return dateToString(new Date(millis));
     };
-    /*
+
     it("Displays correct data in Edit Popup", () => {
       cy.get("table").contains(rentals[4].item_name).click({ force: true });
       cy.get(":nth-child(1) > .group > :nth-child(2) > .col-input > .hide-arrow > .input").should(
@@ -293,7 +293,7 @@ context("rentals", () => {
       cy.get("table").contains(rentals[4].item_name).click({ force: true });
       cy.contains("Leihvorgang Löschen").click();
       expectDisplaysRentalsSortedBy(rentals.filter((rental) => rental._id != rentals[4]._id));
-    });**/
+    });
 
     it("Creates rental", () => {
       const newRental = {
