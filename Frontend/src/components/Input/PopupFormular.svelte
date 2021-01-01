@@ -115,11 +115,7 @@
                                         inputId={input.id}
                                         noResultsText={input.noResultsText}
                                         bind:value={input.bindTo.obj[input.bindTo.attr]}
-                                        labelAttributes={input.labelAttributes}
                                         searchFunction={input.searchFunction}
-                                        selectedAttributeKey={input.bindToDocAttribute}
-                                        updateAttributes={input.updateAttributes}
-                                        bind:objectToUpdate={input.objectToUpdate}
                                         on:change={(event) => {
                                             if (input.onChange) input.onChange(event.detail);
                                         }} />

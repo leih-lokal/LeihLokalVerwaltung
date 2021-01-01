@@ -201,7 +201,77 @@
                 bindTo: { obj: options, attr: "update_status_on_website" },
                 type: InputTypes.CHECKBOX,
             },
+
+            {
+                id: "rented_on",
+                label: "Erfasst am",
+                group: "Zeitraum",
+                type: InputTypes.DATE,
+                bindTo: { obj: doc, attr: "rented_on" },
+            },
+            {
+                id: "extended_on",
+                label: "Verlängert",
+                group: "Zeitraum",
+                type: InputTypes.DATE,
+                bindTo: { obj: doc, attr: "extended_on" },
+            },
+            {
+                id: "to_return_on",
+                label: "Zurückerwartet",
+                group: "Zeitraum",
+                type: InputTypes.DATE,
+                bindTo: { obj: doc, attr: "to_return_on" },
+            },
+            {
+                id: "returned_on",
+                label: "Zurückgegeben",
+                group: "Zeitraum",
+                type: InputTypes.DATE,
+                bindTo: { obj: doc, attr: "returned_on" },
+            },
+
+            {
+                id: "customer_id",
+                label: "Nr",
+                group: "Kunde",
+                type: InputTypes.AUTOCOMPLETE,
+                bindTo: { obj: doc, attr: "customer_id" },
+                onChange: (selectedCustomer) => {
+                    doc.customer_id = selectedCustomer._id;
+                    doc.name = selectedCustomer.lastname;
+                    console.log(doc);
+                },
+                searchFunction: (searchTerm) =>
+                    $customerDb.fetchDocsBySelector(
+                        idStartsWithSelector(searchTerm),
+                        ["_id", "lastname"]
+                    ),
+                noResultsText: "Kein Kunde mit dieser Id",
+            },
+            {
+                id: "customer_name",
+                label: "Name",
+                group: "Kunde",
+                type: InputTypes.AUTOCOMPLETE,
+                bindTo: { obj: doc, attr: "name" },
+                onChange: (selectedCustomer) => {
+                    doc.customer_id = selectedCustomer._id;
+                    doc.name = selectedCustomer.lastname;
+                    console.log(doc);
+                },
+                searchFunction: (searchTerm) =>
+                    $customerDb.fetchDocsBySelector(
+                        attributeStartsWithIgnoreCaseSelector(
+                            "lastname",
+                            searchTerm
+                        ),
+                        ["_id", "lastname"]
+                    ),
+                noResultsText: "Kein Kunde mit diesem Name",
+            },
         ]);
 </script>
 
 <PopupFormular {popupFormularConfiguration} {createNew} {doc} />
+{JSON.stringify(doc)}
