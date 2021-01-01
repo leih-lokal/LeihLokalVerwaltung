@@ -9,7 +9,7 @@
   import LoadingAnimation from "./Table/LoadingAnimation.svelte";
   import connectDatabases from "./Database/connectDatabases";
 
-  let page = 0;
+  let page = 2;
 
   function onMobile() {
     let check = false;
