@@ -9,10 +9,17 @@
 
   const { close } = getContext("simple-modal");
 
-  const heard_options = ["Internet", "Freunde & Bekannte", "Zeitung / Medien", "Nachbarschaft"];
+  const heard_options = [
+    "Internet",
+    "Freunde & Bekannte",
+    "Zeitung / Medien",
+    "Nachbarschaft",
+  ];
 
   function saveInDatabase() {
-    const savePromise = createNew ? $customerDb.createDoc(doc) : $customerDb.updateDoc(doc);
+    const savePromise = createNew
+      ? $customerDb.createDoc(doc)
+      : $customerDb.updateDoc(doc);
 
     savePromise
       .then((result) => notifier.success("Kunde gespeichert!"))
@@ -121,13 +128,21 @@
       <row>
         <div class="col-label"><label for="firstname">Vorname</label></div>
         <div class="col-input">
-          <input type="text" id="firstname" name="firstname" bind:value={doc.firstname} />
+          <input
+            type="text"
+            id="firstname"
+            name="firstname"
+            bind:value={doc.firstname} />
         </div>
       </row>
       <row>
         <div class="col-label"><label for="lastname">Nachname</label></div>
         <div class="col-input">
-          <input type="text" id="lastname" name="lastname" bind:value={doc.lastname} />
+          <input
+            type="text"
+            id="lastname"
+            name="lastname"
+            bind:value={doc.lastname} />
         </div>
         <row />
       </row>
@@ -140,19 +155,35 @@
       <row>
         <div class="col-label"><label for="street">Strasse</label></div>
         <div class="col-input">
-          <input type="text" id="street" name="street" bind:value={doc.street} />
+          <input
+            type="text"
+            id="street"
+            name="street"
+            bind:value={doc.street} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="house_number">Hausnummer</label></div>
+        <div class="col-label">
+          <label for="house_number">Hausnummer</label>
+        </div>
         <div class="col-input">
-          <input type="text" id="house_number" name="house_number" bind:value={doc.house_number} />
+          <input
+            type="text"
+            id="house_number"
+            name="house_number"
+            bind:value={doc.house_number} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="postal_code">Postleitzahl</label></div>
+        <div class="col-label">
+          <label for="postal_code">Postleitzahl</label>
+        </div>
         <div class="col-input">
-          <input type="text" id="postal_code" name="postal_code" bind:value={doc.postal_code} />
+          <input
+            type="text"
+            id="postal_code"
+            name="postal_code"
+            bind:value={doc.postal_code} />
         </div>
       </row>
       <row>
@@ -175,7 +206,9 @@
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="telephone_number">Telefonnummer</label></div>
+        <div class="col-label">
+          <label for="telephone_number">Telefonnummer</label>
+        </div>
         <div class="col-input">
           <input
             type="text"
@@ -185,7 +218,9 @@
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="subscribed_to_newsletter">Newsletter</label></div>
+        <div class="col-label">
+          <label for="subscribed_to_newsletter">Newsletter</label>
+        </div>
         <div class="col-input">
           <Checkbox
             id="subscribed_to_newsletter"
@@ -201,19 +236,25 @@
         <h3>Mitgliedschaft</h3>
       </row>
       <row>
-        <div class="col-label"><label for="registration_date">Beitritt</label></div>
+        <div class="col-label">
+          <label for="registration_date">Beitritt</label>
+        </div>
         <div class="col-input">
           <DateInput bind:timeMillis={doc.registration_date} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="renewed_on">Verlängert am</label></div>
+        <div class="col-label">
+          <label for="renewed_on">Verlängert am</label>
+        </div>
         <div class="col-input">
           <DateInput bind:timeMillis={doc.renewed_on} />
         </div>
       </row>
       <row>
-        <div class="col-label"><label for="heard">Aufmerksam geworden</label></div>
+        <div class="col-label">
+          <label for="heard">Aufmerksam geworden</label>
+        </div>
         <div class="col-input">
           <Select
             items={heard_options}
@@ -233,13 +274,19 @@
         <div class="col-input">
           {#if createNew}
             <input type="text" id="id" name="id" bind:value={doc._id} />
-          {:else}<input type="text" id="id" name="id" value={doc._id} disabled />{/if}
+          {:else}
+            <input type="text" id="id" name="id" value={doc._id} disabled />
+          {/if}
         </div>
       </row>
       <row>
         <div class="col-label"><label for="remark">Bemerkung</label></div>
         <div class="col-input">
-          <input type="text" id="remark" name="remark" bind:value={doc.remark} />
+          <input
+            type="text"
+            id="remark"
+            name="remark"
+            bind:value={doc.remark} />
         </div>
       </row>
     </InputGroup>

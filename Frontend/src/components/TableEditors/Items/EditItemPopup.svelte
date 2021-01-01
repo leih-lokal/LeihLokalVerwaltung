@@ -14,10 +14,10 @@
   const status_on_website_options = [
     { value: "deleted", label: "gelöscht" },
     { value: "instock", label: "verfügbar" },
-    { value: "outofstock", label: "verliehen" }
+    { value: "outofstock", label: "verliehen" },
   ];
   const status_on_website_option_labels = status_on_website_options.map(
-    option => option.label
+    (option) => option.label
   );
 
   const categories = [
@@ -26,7 +26,7 @@
     "Garten",
     "Kinder",
     "Freizeit",
-    "Heimwerker"
+    "Heimwerker",
   ];
 
   let status_on_website;
@@ -34,14 +34,14 @@
   export let doc = {};
   export let createNew = false;
 
-  const setStatusOnWebsiteByValue = value => {
+  const setStatusOnWebsiteByValue = (value) => {
     status_on_website = status_on_website_options.find(
-      option => option.value === value
+      (option) => option.value === value
     );
   };
-  const setStatusOnWebsiteByLabel = label => {
+  const setStatusOnWebsiteByLabel = (label) => {
     const status_on_website_option = status_on_website_options.find(
-      option => option.label === label
+      (option) => option.label === label
     );
     if (status_on_website_option) {
       doc.status_on_website = status_on_website_option.value;
@@ -55,9 +55,9 @@
       ? $itemDb.createDoc(doc)
       : $itemDb.updateDoc(doc);
     await savePromise
-      .then(result => notifier.success("Gegenstand gespeichert!"))
+      .then((result) => notifier.success("Gegenstand gespeichert!"))
       .then(close)
-      .catch(error => {
+      .catch((error) => {
         notifier.danger("Gegenstand konnte nicht gespeichert werden!", 6000);
         console.error(error);
       });
@@ -65,14 +65,14 @@
     if (createNew) {
       woocommerceClient
         .createItem(doc)
-        .then(wcDoc => {
+        .then((wcDoc) => {
           doc.wc_url = wcDoc.permalink;
           doc.wc_id = wcDoc.id;
           console.log(doc);
           $itemDb.updateDoc(doc);
           notifier.success("Gegenstand auf der Webseite erstellt!", 3000);
         })
-        .catch(error => {
+        .catch((error) => {
           notifier.warning(
             "Gegenstand konnte auf der Webseite nicht erstellt werden!",
             6000
@@ -85,7 +85,7 @@
         .then(() =>
           notifier.success("Status auf der Webseite aktualisiert!", 3000)
         )
-        .catch(error => {
+        .catch((error) => {
           notifier.warning(
             "Status auf der Webseite konnte nicht aktualisiert werden!",
             6000
@@ -96,7 +96,7 @@
   }
 
   if (createNew) {
-    $itemDb.nextUnusedId().then(id => (doc._id = String(id)));
+    $itemDb.nextUnusedId().then((id) => (doc._id = String(id)));
     doc.added = new Date().getTime();
   } else {
     category = { value: doc.category, label: doc.category };
@@ -191,9 +191,7 @@
         <h3>Bezeichnung</h3>
       </row>
       <row>
-        <div class="col-label">
-          <label for="item_id">Gegenstand Nr</label>
-        </div>
+        <div class="col-label"><label for="item_id">Gegenstand Nr</label></div>
         <div class="col-input">
           <input
             type="text"
@@ -216,17 +214,13 @@
         </div>
       </row>
       <row>
-        <div class="col-label">
-          <label for="brand">Marke</label>
-        </div>
+        <div class="col-label"><label for="brand">Marke</label></div>
         <div class="col-input">
           <input type="text" id="brand" name="brand" bind:value={doc.brand} />
         </div>
       </row>
       <row>
-        <div class="col-label">
-          <label for="itype">Typbezeichnung</label>
-        </div>
+        <div class="col-label"><label for="itype">Typbezeichnung</label></div>
         <div class="col-input">
           <input type="text" id="itype" name="itype" bind:value={doc.itype} />
         </div>
@@ -238,9 +232,7 @@
         <h3>Eigenschaften</h3>
       </row>
       <row>
-        <div class="col-label">
-          <label for="category">Kategorie</label>
-        </div>
+        <div class="col-label"><label for="category">Kategorie</label></div>
         <div class="col-input">
           <Select
             items={categories}
@@ -251,9 +243,7 @@
         </div>
       </row>
       <row>
-        <div class="col-label">
-          <label for="deposit">Pfand</label>
-        </div>
+        <div class="col-label"><label for="deposit">Pfand</label></div>
         <div class="col-input">
           <input
             type="text"
@@ -263,9 +253,7 @@
         </div>
       </row>
       <row>
-        <div class="col-label">
-          <label for="added">Erfasst am</label>
-        </div>
+        <div class="col-label"><label for="added">Erfasst am</label></div>
         <div class="col-input">
           <DateInput bind:timeMillis={doc.added} />
         </div>
@@ -289,17 +277,13 @@
         <h3>Zubehör</h3>
       </row>
       <row>
-        <div class="col-label">
-          <label for="parts">Anzahl Teile</label>
-        </div>
+        <div class="col-label"><label for="parts">Anzahl Teile</label></div>
         <div class="col-input">
           <input type="text" id="parts" name="parts" bind:value={doc.parts} />
         </div>
       </row>
       <row>
-        <div class="col-label">
-          <label for="manual">Anleitung</label>
-        </div>
+        <div class="col-label"><label for="manual">Anleitung</label></div>
         <div class="col-input">
           <input
             type="text"
@@ -309,9 +293,7 @@
         </div>
       </row>
       <row>
-        <div class="col-label">
-          <label for="package">Verpackung</label>
-        </div>
+        <div class="col-label"><label for="package">Verpackung</label></div>
         <div class="col-input">
           <input
             type="text"
@@ -327,9 +309,7 @@
         <h3>Bild</h3>
       </row>
       <row>
-        <div class="col-label">
-          <label for="image">Bild</label>
-        </div>
+        <div class="col-label"><label for="image">Bild</label></div>
         <div class="col-input">
           <input type="text" id="image" name="image" bind:value={doc.image} />
         </div>
@@ -364,7 +344,7 @@
               .removeDoc(doc)
               .then(() => notifier.success('Gegenstand gelöscht!'))
               .then(close)
-              .catch(error => {
+              .catch((error) => {
                 console.error(error);
                 notifier.danger('Gegenstand konnte nicht gelöscht werden!', 6000);
               });
