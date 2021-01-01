@@ -354,6 +354,10 @@
         <div class="col-label"><label for="name">Name</label></div>
         <div class="col-input">
           <AutoComplete
+            textCleanFunction={(text) => {
+              doc.name = text;
+              return text;
+            }}
             searchFunction={(searchTerm) => {
               return $customerDb.fetchDocsBySelector(
                 attributeStartsWithIgnoreCaseSelector('lastname', searchTerm),

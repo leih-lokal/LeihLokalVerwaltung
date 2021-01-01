@@ -1,6 +1,9 @@
 <script>
   import Datepicker from "svelte-calendar/src/Components/Datepicker.svelte";
-  import { saveParseStringToTimeMillis, saveParseTimestampToString } from "../../utils/utils";
+  import {
+    saveParseStringToTimeMillis,
+    saveParseTimestampToString,
+  } from "../../utils/utils";
 
   const daysOfWeek = [
     ["Sonntag", "So"],
@@ -87,10 +90,17 @@
   format={'#{d}.#{m}.#{Y}'}
   start={new Date(2018, 1, 1)}
   end={inTwoMonths()}>
-  <input type="text" value={isNone ? '-' : saveParseTimestampToString(timeMillis)} />
+  <input
+    type="text"
+    value={isNone ? '-' : saveParseTimestampToString(timeMillis)} />
   {#if !isNone}
     <div class="clear" on:click|stopPropagation={clear}>
-      <svg width="100%" height="100%" viewBox="-2 -2 50 50" focusable="false" role="presentation">
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="-2 -2 50 50"
+        focusable="false"
+        role="presentation">
         <path
           fill="currentColor"
           d="M34.923,37.251L24,26.328L13.077,37.251L9.436,33.61l10.923-10.923L9.436,11.765l3.641-3.641L24,19.047L34.923,8.124

@@ -22,7 +22,7 @@
   {columns}
   {filters}
   {rowBackgroundColorFunction}
-  onRowClicked={doc => openStyledModal(popupComponent, { doc: doc }, onModalClose)} />
+  onRowClicked={(doc) => openStyledModal(popupComponent, { doc: doc }, onModalClose)} />
 
 {#if addNewItemButton}
   <AddNewItemButton
