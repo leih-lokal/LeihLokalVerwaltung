@@ -6,7 +6,7 @@
   import LoadingAnimation from "./LoadingAnimation.svelte";
   import { fade } from "svelte/transition";
 
-  export let onRowClicked = row => {};
+  export let onRowClicked = (row) => {};
   export let database;
   export let columns = [];
   export let rowHeight = 40;
@@ -14,17 +14,17 @@
   export let rowBackgroundColorFunction;
   export const refresh = () => {
     rows = database.query({
-      filters: activeFilters.map(filterName => filters.filters[filterName]),
+      filters: activeFilters.map((filterName) => filters.filters[filterName]),
       columns: columns,
       searchTerm: searchTerm,
       currentPage: currentPage,
       rowsPerPage: rowsPerPage,
       sortBy: sortBy,
-      sortReverse: sortReverse
+      sortReverse: sortReverse,
     });
   };
 
-  const shouldBeSortedByInitially = col => "initialSort" in col;
+  const shouldBeSortedByInitially = (col) => "initialSort" in col;
 
   let innerHeight = window.innerHeight;
   let sortBy = columns.some(shouldBeSortedByInitially)

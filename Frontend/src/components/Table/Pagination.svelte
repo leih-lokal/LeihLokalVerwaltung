@@ -13,7 +13,7 @@
         currentPage - 1,
         currentPage,
         currentPage + 1,
-        currentPage + 2
+        currentPage + 2,
       ];
       if (pageButtons[0] >= 3) {
         pageButtons = [0, "...", ...pageButtons];
@@ -27,7 +27,7 @@
           pageButtons.push(pageButtons[pageButtons.length - 1] + 1);
       }
       pageButtons = pageButtons.filter(
-        button => button === "..." || (button >= 0 && button < numberOfPages)
+        (button) => button === "..." || (button >= 0 && button < numberOfPages)
       );
     }
   }
@@ -86,9 +86,7 @@
             class={pageButton === currentPage ? 'active' : ''}>
             {pageButton + 1}
           </a>
-        {:else}
-          <a href="#/" class="disabled">{pageButton}</a>
-        {/if}
+        {:else}<a href="#/" class="disabled">{pageButton}</a>{/if}
       {/each}
       <a href="#/" on:click={() => setPage(currentPage + 1)}>&raquo;</a>
     </div>

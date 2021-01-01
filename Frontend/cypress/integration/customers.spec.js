@@ -59,7 +59,7 @@ context("Customers", () => {
       .databases()
       .then((dbs) => dbs.forEach((db) => window.indexedDB.deleteDatabase(db.name)));
     cy.clock(Date.UTC(2020, 0, 1), ["Date"]);
-    cy.visit("../../public/index.html");
+    cy.visit("../../public/index.html").get("nav").contains("Kunden").click();
   });
 
   it("displays correct number of customers", () => {

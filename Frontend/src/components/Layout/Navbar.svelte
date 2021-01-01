@@ -42,17 +42,26 @@
 <nav>
   <ul>
     <li>
-      <a class={page === 0 ? 'active' : ''} href="/" on:click|preventDefault={() => (page = 0)}>
+      <a
+        class={page === 0 ? 'active' : ''}
+        href="/"
+        on:click|preventDefault={() => (page = 0)}>
         Kunden
       </a>
     </li>
     <li>
-      <a class={page === 1 ? 'active' : ''} href="/" on:click|preventDefault={() => (page = 1)}>
+      <a
+        class={page === 1 ? 'active' : ''}
+        href="/"
+        on:click|preventDefault={() => (page = 1)}>
         Gegenstände
       </a>
     </li>
     <li>
-      <a class={page === 2 ? 'active' : ''} href="/" on:click|preventDefault={() => (page = 2)}>
+      <a
+        class={page === 2 ? 'active' : ''}
+        href="/"
+        on:click|preventDefault={() => (page = 2)}>
         Leihvorgänge
       </a>
     </li>
