@@ -132,6 +132,7 @@
             type="text"
             id="firstname"
             name="firstname"
+            autocomplete="off"
             bind:value={doc.firstname} />
         </div>
       </row>
@@ -142,6 +143,7 @@
             type="text"
             id="lastname"
             name="lastname"
+            autocomplete="off"
             bind:value={doc.lastname} />
         </div>
         <row />
@@ -159,6 +161,7 @@
             type="text"
             id="street"
             name="street"
+            autocomplete="off"
             bind:value={doc.street} />
         </div>
       </row>
@@ -171,6 +174,7 @@
             type="text"
             id="house_number"
             name="house_number"
+            autocomplete="off"
             bind:value={doc.house_number} />
         </div>
       </row>
@@ -202,7 +206,12 @@
       <row>
         <div class="col-label"><label for="email">E-Mail</label></div>
         <div class="col-input">
-          <input type="text" id="email" name="email" bind:value={doc.email} />
+          <input
+            type="text"
+            id="email"
+            name="email"
+            autocomplete="off"
+            bind:value={doc.email} />
         </div>
       </row>
       <row>
@@ -214,6 +223,7 @@
             type="text"
             id="telephone_number"
             name="telephone_number"
+            autocomplete="off"
             bind:value={doc.telephone_number} />
         </div>
       </row>
@@ -296,7 +306,7 @@
     {#if !createNew}
       <button
         class="button-delete"
-        on:click={() => {
+        on:click|once={() => {
           if (confirm('Soll dieser Kunde wirklich gelöscht werden?')) {
             $customerDb
               .removeDoc(doc)
@@ -309,6 +319,8 @@
           }
         }}>Kunde Löschen</button>
     {/if}
-    <button class="button-save" on:click={saveInDatabase}>Speichern</button>
+    <button
+      class="button-save"
+      on:click|once={saveInDatabase}>Speichern</button>
   </div>
 </div>

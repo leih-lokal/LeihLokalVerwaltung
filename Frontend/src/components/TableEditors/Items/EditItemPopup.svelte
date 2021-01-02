@@ -197,6 +197,7 @@
             type="text"
             id="item_id"
             name="item_id"
+            autocomplete="off"
             value={doc._id}
             disabled />
         </div>
@@ -210,19 +211,30 @@
             type="text"
             id="item_name"
             name="item_name"
+            autocomplete="off"
             bind:value={doc.item_name} />
         </div>
       </row>
       <row>
         <div class="col-label"><label for="brand">Marke</label></div>
         <div class="col-input">
-          <input type="text" id="brand" name="brand" bind:value={doc.brand} />
+          <input
+            type="text"
+            id="brand"
+            name="brand"
+            autocomplete="off"
+            bind:value={doc.brand} />
         </div>
       </row>
       <row>
         <div class="col-label"><label for="itype">Typbezeichnung</label></div>
         <div class="col-input">
-          <input type="text" id="itype" name="itype" bind:value={doc.itype} />
+          <input
+            type="text"
+            id="itype"
+            name="itype"
+            autocomplete="off"
+            bind:value={doc.itype} />
         </div>
       </row>
     </InputGroup>
@@ -249,6 +261,7 @@
             type="text"
             id="deposit"
             name="deposit"
+            autocomplete="off"
             bind:value={doc.deposit} />
         </div>
       </row>
@@ -267,6 +280,7 @@
             type="text"
             id="properties"
             name="properties"
+            autocomplete="off"
             bind:value={doc.properties} />
         </div>
       </row>
@@ -279,7 +293,12 @@
       <row>
         <div class="col-label"><label for="parts">Anzahl Teile</label></div>
         <div class="col-input">
-          <input type="text" id="parts" name="parts" bind:value={doc.parts} />
+          <input
+            type="text"
+            id="parts"
+            name="parts"
+            autocomplete="off"
+            bind:value={doc.parts} />
         </div>
       </row>
       <row>
@@ -289,6 +308,7 @@
             type="text"
             id="manual"
             name="manual"
+            autocomplete="off"
             bind:value={doc.manual} />
         </div>
       </row>
@@ -299,6 +319,7 @@
             type="text"
             id="package"
             name="package"
+            autocomplete="off"
             bind:value={doc.package} />
         </div>
       </row>
@@ -311,7 +332,12 @@
       <row>
         <div class="col-label"><label for="image">Bild</label></div>
         <div class="col-input">
-          <input type="text" id="image" name="image" bind:value={doc.image} />
+          <input
+            type="text"
+            id="image"
+            name="image"
+            autocomplete="off"
+            bind:value={doc.image} />
         </div>
       </row>
     </InputGroup>
@@ -338,7 +364,7 @@
     {#if !createNew}
       <button
         class="button-delete"
-        on:click={() => {
+        on:click|once={() => {
           if (confirm('Soll dieser Gegenstand wirklich gelöscht werden?')) {
             $itemDb
               .removeDoc(doc)
@@ -353,6 +379,8 @@
         Gegenstand Löschen
       </button>
     {/if}
-    <button class="button-save" on:click={saveInDatabase}>Speichern</button>
+    <button
+      class="button-save"
+      on:click|once={saveInDatabase}>Speichern</button>
   </div>
 </div>

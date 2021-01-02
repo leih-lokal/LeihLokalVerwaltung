@@ -396,6 +396,7 @@
             type="text"
             id="deposit"
             name="deposit"
+            autocomplete="off"
             bind:value={doc.deposit} />
         </div>
       </row>
@@ -408,6 +409,7 @@
             type="text"
             id="deposit_returned"
             name="deposit_returned"
+            autocomplete="off"
             bind:value={doc.deposit_returned} />
         </div>
       </row>
@@ -420,6 +422,7 @@
             type="text"
             id="deposit_retained"
             name="deposit_retained"
+            autocomplete="off"
             bind:value={doc.deposit_retained} />
         </div>
       </row>
@@ -432,6 +435,7 @@
             type="text"
             id="deposit_retainment_reason"
             name="deposit_retainment_reason"
+            autocomplete="off"
             bind:value={doc.deposit_retainment_reason} />
         </div>
       </row>
@@ -472,6 +476,7 @@
             type="text"
             id="remark"
             name="remark"
+            autocomplete="off"
             bind:value={doc.remark} />
         </div>
       </row>
@@ -483,7 +488,7 @@
     {#if !createNew}
       <button
         class="button-delete"
-        on:click={() => {
+        on:click|once={() => {
           if (confirm('Soll dieser Leihvorgang wirklich gelöscht werden?')) {
             $rentalDb
               .removeDoc(doc)
@@ -496,6 +501,8 @@
           }
         }}>Leihvorgang Löschen</button>
     {/if}
-    <button class="button-save" on:click={saveInDatabase}>Speichern</button>
+    <button
+      class="button-save"
+      on:click|once={saveInDatabase}>Speichern</button>
   </div>
 </div>
