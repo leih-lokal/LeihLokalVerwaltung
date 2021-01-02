@@ -73,7 +73,7 @@
     type="text"
     value={timeMillis === 0 ? '-' : saveParseTimestampToString(timeMillis)} />
   <ClearInputButton
-    onClear={() => {
+    on:click={() => {
       timeMillis = 0;
       dispatch('change', undefined);
     }}

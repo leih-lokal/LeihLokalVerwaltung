@@ -1,5 +1,4 @@
 <script>
-    export let onClear;
     export let visible = true;
 </script>
 
@@ -22,7 +21,7 @@
 </style>
 
 {#if visible}
-    <div class="clear" on:click|stopPropagation={onClear}>
+    <div class="clear" on:click|stopPropagation>
         <svg
             width="100%"
             height="100%"
