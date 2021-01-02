@@ -12,7 +12,6 @@
     const dispatch = createEventDispatcher();
 
     export let popupFormularConfiguration;
-    export let createNew;
 </script>
 
 <style>
@@ -83,9 +82,7 @@
 
 <div>
     <div class="container">
-        <h1>
-            {`${popupFormularConfiguration.docName} ${createNew ? 'anlegen' : 'bearbeiten'}`}
-        </h1>
+        <h1>{popupFormularConfiguration.title}</h1>
         <div class="content">
             {#each popupFormularConfiguration.inputGroups as group}
                 <InputGroup>
@@ -150,10 +147,10 @@
         <button
             class="button-cancel"
             on:click={() => dispatch('cancel')}>Abbrechen</button>
-        {#if !createNew}
+        {#if popupFormularConfiguration.displayDeleteButton}
             <button
                 class="button-delete"
-                on:click={() => dispatch('delete')}>{`${popupFormularConfiguration.docName} Löschen`}</button>
+                on:click={() => dispatch('delete')}>Löschen</button>
         {/if}
         <button
             class="button-save"

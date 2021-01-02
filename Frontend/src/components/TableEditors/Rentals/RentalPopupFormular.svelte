@@ -16,7 +16,7 @@
     const woocommerceClient = new WoocommerceClient();
 
     export let createNew;
-    if (!$keyValueStore["currentDoc"]) {
+    if (createNew) {
         keyValueStore.setValue("currentDoc", {
             rented_on: new Date().getTime(),
             to_return_on: new Date(
@@ -64,7 +64,8 @@
             .build();
 
     const popupFormularConfiguration = new PopupFormularConfiguration()
-        .setDocName("Leihvorgang")
+        .setTitle(`Leihvorgang ${createNew ? "anlegen" : "bearbeiten"}`)
+        .setDisplayDeleteButton(!createNew)
         .setInputGroups([
             "Gegenstand",
             "Zeitraum",
@@ -218,12 +219,72 @@
                 type: InputTypes.TEXT,
                 bindTo: { keyValueStoreKey: "currentDoc", attr: "deposit" },
             },
+            {
+                id: "deposit_returned",
+                label: "Pfand zurück",
+                group: "Pfand",
+                type: InputTypes.TEXT,
+                bindTo: {
+                    keyValueStoreKey: "currentDoc",
+                    attr: "deposit_returned",
+                },
+            },
+            {
+                id: "deposit_retained",
+                label: "einbehalten",
+                group: "Pfand",
+                type: InputTypes.TEXT,
+                bindTo: {
+                    keyValueStoreKey: "currentDoc",
+                    attr: "deposit_retained",
+                },
+            },
+            {
+                id: "deposit_retainment_reason",
+                label: "Grund",
+                group: "Pfand",
+                type: InputTypes.TEXT,
+                bindTo: {
+                    keyValueStoreKey: "currentDoc",
+                    attr: "deposit_retainment_reason",
+                },
+            },
+
+            {
+                id: "passing_out_employee",
+                label: "Ausgabe",
+                group: "Mitarbeiter",
+                type: InputTypes.TEXT,
+                bindTo: {
+                    keyValueStoreKey: "currentDoc",
+                    attr: "passing_out_employee",
+                },
+            },
+            {
+                id: "receiving_employee",
+                label: "Rücknahme",
+                group: "Mitarbeiter",
+                type: InputTypes.TEXT,
+                bindTo: {
+                    keyValueStoreKey: "currentDoc",
+                    attr: "receiving_employee",
+                },
+            },
+            {
+                id: "remark",
+                label: "Bemerkung",
+                group: "Mitarbeiter",
+                type: InputTypes.TEXT,
+                bindTo: {
+                    keyValueStoreKey: "currentDoc",
+                    attr: "remark",
+                },
+            },
         ]);
 </script>
 
 <PopupFormular
     {popupFormularConfiguration}
-    {createNew}
     on:save={async (event) => {
         const doc = $keyValueStore['currentDoc'];
         if (doc.item_id) {

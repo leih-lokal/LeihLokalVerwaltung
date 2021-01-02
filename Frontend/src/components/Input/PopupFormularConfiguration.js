@@ -15,6 +15,16 @@ class PopupFormularConfiguration {
     this.inputs = inputs;
     return this;
   }
+
+  setDisplayDeleteButton(displayDeleteButton) {
+    this.displayDeleteButton = displayDeleteButton;
+    return this;
+  }
+
+  setTitle(title) {
+    this.title = title;
+    return this;
+  }
 }
 
 export default PopupFormularConfiguration;

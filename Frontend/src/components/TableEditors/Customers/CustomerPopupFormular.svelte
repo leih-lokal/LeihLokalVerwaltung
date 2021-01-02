@@ -4,42 +4,28 @@
   import PopupFormular from "../../Input/PopupFormular.svelte";
   import { customerDb } from "../../../utils/stores";
   import { notifier } from "@beyonk/svelte-notifications";
+  import { keyValueStore } from "../../../utils/stores";
+  import { getContext } from "svelte";
+
+  const { close } = getContext("simple-modal");
 
   export let createNew;
-  export let doc = {};
+
+  if (createNew) {
+    keyValueStore.setValue("currentDoc", {
+      registration_date: new Date().getTime(),
+    });
+    $customerDb.nextUnusedId().then((id) =>
+      keyValueStore.setValue("currentDoc", {
+        ...$keyValueStore["currentDoc"],
+        _id: id,
+      })
+    );
+  }
 
   const popupFormularConfiguration = new PopupFormularConfiguration()
-    .setDocName("Kunde")
-    .setCreateInitialDoc(async (doc) => {
-      doc.registration_date = new Date().getTime();
-      doc._id = String(await $customerDb.nextUnusedId());
-    })
-    .setOnDeleteButtonClicked((doc, close) => {
-      if (confirm("Soll dieser Kunde wirklich gelöscht werden?")) {
-        $customerDb
-          .removeDoc(doc)
-          .then(() => notifier.success("Kunde gelöscht!"))
-          .then(close)
-          .catch((error) => {
-            console.error(error);
-            notifier.danger("Kunde konnte nicht gelöscht werden!", 6000);
-          });
-      }
-    })
-    .setOnSaveButtonClicked((doc, createNew, close) => {
-      const savePromise = createNew
-        ? $customerDb.createDoc(doc)
-        : $customerDb.updateDoc(doc);
-
-      savePromise
-        .then((result) => notifier.success("Kunde gespeichert!"))
-        .then(close)
-        .catch((error) => {
-          notifier.danger("Kunde konnte nicht gespeichert werden!", 6000);
-          console.error(error);
-          close();
-        });
-    })
+    .setTitle(`Kunde ${createNew ? "anlegen" : "bearbeiten"}`)
+    .setDisplayDeleteButton(!createNew)
     .setInputGroups([
       "Name",
       "Adresse",
@@ -53,77 +39,80 @@
         label: "Vorname",
         group: "Name",
         type: InputTypes.TEXT,
-        bindTo: { obj: doc, attr: "firstname" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "firstname" },
       },
       {
         id: "lastname",
         label: "Nachname",
         group: "Name",
         type: InputTypes.TEXT,
-        bindTo: { obj: doc, attr: "lastname" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "lastname" },
       },
       {
         id: "street",
         label: "Strasse",
         group: "Adresse",
         type: InputTypes.TEXT,
-        bindTo: { obj: doc, attr: "street" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "street" },
       },
       {
         id: "house_number",
         label: "Hausnummer",
         group: "Adresse",
         type: InputTypes.TEXT,
-        bindTo: { obj: doc, attr: "house_number" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "house_number" },
       },
       {
         id: "postal_code",
         label: "Postleitzahl",
         group: "Adresse",
         type: InputTypes.TEXT,
-        bindTo: { obj: doc, attr: "postal_code" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "postal_code" },
       },
       {
         id: "city",
         label: "Stadt",
         group: "Adresse",
         type: InputTypes.TEXT,
-        bindTo: { obj: doc, attr: "city" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "city" },
       },
       {
         id: "email",
         label: "E-Mail",
         group: "Kontakt",
         type: InputTypes.TEXT,
-        bindTo: { obj: doc, attr: "email" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "email" },
       },
       {
         id: "telephone_number",
         label: "Telefonnummer",
         group: "Kontakt",
         type: InputTypes.TEXT,
-        bindTo: { obj: doc, attr: "telephone_number" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "telephone_number" },
       },
       {
         id: "subscribed_to_newsletter",
         label: "Newsletter",
         group: "Kontakt",
         type: InputTypes.CHECKBOX,
-        bindTo: { obj: doc, attr: "subscribed_to_newsletter" },
+        bindTo: {
+          keyValueStoreKey: "currentDoc",
+          attr: "subscribed_to_newsletter",
+        },
       },
       {
         id: "registration_date",
         label: "Beitritt",
         group: "Mitgliedschaft",
         type: InputTypes.DATE,
-        bindTo: { obj: doc, attr: "registration_date" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "registration_date" },
       },
       {
         id: "renewed_on",
         label: "Verlängert am",
         group: "Mitgliedschaft",
         type: InputTypes.DATE,
-        bindTo: { obj: doc, attr: "renewed_on" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "renewed_on" },
       },
       {
         id: "heard",
@@ -136,7 +125,7 @@
           "Zeitung / Medien",
           "Nachbarschaft",
         ],
-        bindTo: { obj: doc, attr: "heard" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "heard" },
         isCreatable: true,
         isMulti: true,
         isClearable: true,
@@ -146,7 +135,7 @@
         label: "Id",
         group: "Sonstiges",
         type: InputTypes.TEXT,
-        bindTo: { obj: doc, attr: "_id" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "_id" },
         readonly: true,
         bindValueToObjectAttr: "_id",
       },
@@ -155,9 +144,37 @@
         label: "Bemerkung",
         group: "Sonstiges",
         type: InputTypes.TEXT,
-        bindTo: { obj: doc, attr: "remark" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "remark" },
       },
     ]);
 </script>
 
-<PopupFormular {popupFormularConfiguration} {createNew} {doc} />
+<PopupFormular
+  {popupFormularConfiguration}
+  on:delete={(event) => {
+    const doc = $keyValueStore['currentDoc'];
+    if (confirm('Soll dieser Kunde wirklich gelöscht werden?')) {
+      $customerDb
+        .removeDoc(doc)
+        .then(() => notifier.success('Kunde gelöscht!'))
+        .then(close)
+        .catch((error) => {
+          console.error(error);
+          notifier.danger('Kunde konnte nicht gelöscht werden!', 6000);
+        });
+    }
+  }}
+  on:save={(event) => {
+    const doc = $keyValueStore['currentDoc'];
+    const savePromise = createNew ? $customerDb.createDoc(doc) : $customerDb.updateDoc(doc);
+
+    savePromise
+      .then((result) => notifier.success('Kunde gespeichert!'))
+      .then(close)
+      .catch((error) => {
+        notifier.danger('Kunde konnte nicht gespeichert werden!', 6000);
+        console.error(error);
+        close();
+      });
+  }}
+  on:cancel={close} />
