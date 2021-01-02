@@ -73,11 +73,23 @@
   export let createNew = false;
   let updateStatusOnWebsite = true;
 
+  function returnToday() {
+    let today = new Date().valueOf();
+    doc.returned_on = today;
+    console.log(doc.returned_on);
+  }
+
+  function returnInNDays(days) {
+    let inOneWeek = new Date();
+    let today = new Date();
+
+    inOneWeek.setDate(inOneWeek.getDate() + days);
+    doc.to_return_on = inOneWeek.getTime();
+  }
+
   if (createNew) {
     doc.rented_on = new Date().getTime();
-    let inOneWeek = new Date();
-    inOneWeek.setDate(inOneWeek.getDate() + 7);
-    doc.to_return_on = inOneWeek.getTime();
+    returnInNDays(7);
   }
 
   const idStartsWithSelector = (searchValue) =>
@@ -189,6 +201,13 @@
   .button-delete {
     color: darkred;
   }
+
+  .button-tight {
+    height: 1.5rem;
+    font-size: smaller;
+    line-height: 0.75rem;
+    margin-top: 0.25rem;
+  }
 </style>
 
 <div class="container">
@@ -299,6 +318,15 @@
         </div>
         <div class="col-input">
           <DateInput bind:timeMillis={doc.to_return_on} />
+          <button
+            class="button-tight"
+            on:click={() => returnInNDays(7)}>+1W</button>
+          <button
+            class="button-tight"
+            on:click={() => returnInNDays(14)}>+2W</button>
+          <button
+            class="button-tight"
+            on:click={() => returnInNDays(21)}>+3W</button>
         </div>
       </row>
       <row>
@@ -307,6 +335,7 @@
         </div>
         <div class="col-input">
           <DateInput bind:timeMillis={doc.returned_on} />
+          <button class="button-tight" on:click={returnToday}>Heute</button>
         </div>
       </row>
     </InputGroup>
