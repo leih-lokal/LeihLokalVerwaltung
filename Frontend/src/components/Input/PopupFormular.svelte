@@ -146,14 +146,14 @@
     <div class="footer">
         <button
             class="button-cancel"
-            on:click={() => dispatch('cancel')}>Abbrechen</button>
+            on:click|once={() => dispatch('cancel')}>Abbrechen</button>
         {#if popupFormularConfiguration.displayDeleteButton}
             <button
                 class="button-delete"
-                on:click={() => dispatch('delete')}>Löschen</button>
+                on:click|once={() => dispatch('delete')}>Löschen</button>
         {/if}
         <button
             class="button-save"
-            on:click={() => dispatch('save')}>Speichern</button>
+            on:click|once={() => dispatch('save')}>Speichern</button>
     </div>
 </div>
