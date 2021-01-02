@@ -8,6 +8,7 @@
     export let inputId;
     export let searchFunction;
     export let value;
+    export let suggestionFormat;
 </script>
 
 <form autocomplete="off">
@@ -17,10 +18,12 @@
         beforeChange={(prevSelectedValue, newSelectedValue) => {
             dispatch('change', newSelectedValue);
         }}
-        labelFunction={(item) => Object.keys(item)
-                .filter((attr) => item[attr])
-                .map((attr) => item[attr])
-                .join(' - ')}
+        labelFunction={(item) => {
+            const values = Object.values(item);
+            if (values.length === 0) return '';
+            else if (values.length === 1 && Object.keys(item)[0] === 'attr') return item.attr;
+            else return suggestionFormat(...values);
+        }}
         {inputId}
         {noResultsText}
         hideArrow={true}

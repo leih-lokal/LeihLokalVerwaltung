@@ -1,5 +1,4 @@
 <script>
-    import { getContext } from "svelte";
     import Checkbox from "svelte-checkbox";
     import SelectInput from "./SelectInput.svelte";
     import InputGroup from "./InputGroup.svelte";
@@ -7,15 +6,13 @@
     import TextInput from "./TextInput.svelte";
     import AutocompleteInput from "./AutocompleteInput.svelte";
     import InputTypes from "./InputTypes";
-    const { close } = getContext("simple-modal");
+    import { keyValueStore } from "../../utils/stores";
+    import { createEventDispatcher } from "svelte";
+
+    const dispatch = createEventDispatcher();
 
     export let popupFormularConfiguration;
     export let createNew;
-    export let doc = {};
-
-    if (popupFormularConfiguration.createInitialDoc && createNew) {
-        popupFormularConfiguration.createInitialDoc(doc);
-    }
 </script>
 
 <style>
@@ -105,8 +102,7 @@
                                     <TextInput
                                         id={input.id}
                                         readonly={input.readonly}
-                                        bindValueToObjectAttr={input.bindValueToObjectAttr}
-                                        bind:value={input.bindTo.obj[input.bindTo.attr]}
+                                        bind:value={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                                         on:change={(event) => {
                                             if (input.onChange) input.onChange(event.detail);
                                         }} />
@@ -114,8 +110,9 @@
                                     <AutocompleteInput
                                         inputId={input.id}
                                         noResultsText={input.noResultsText}
-                                        bind:value={input.bindTo.obj[input.bindTo.attr]}
+                                        bind:value={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                                         searchFunction={input.searchFunction}
+                                        suggestionFormat={input.suggestionFormat}
                                         on:change={(event) => {
                                             if (input.onChange) input.onChange(event.detail);
                                         }} />
@@ -127,16 +124,16 @@
                                         on:change={(event) => {
                                             if (input.onChange) input.onChange(event.detail);
                                         }}
-                                        bind:checked={input.bindTo.obj[input.bindTo.attr]} />
+                                        bind:checked={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]} />
                                 {:else if input.type === InputTypes.DATE}
                                     <DateInput
-                                        bind:timeMillis={input.bindTo.obj[input.bindTo.attr]}
+                                        bind:timeMillis={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                                         on:change={(event) => {
                                             if (input.onChange) input.onChange(event.detail);
                                         }} />
                                 {:else if input.type === InputTypes.SELECTION}
                                     <SelectInput
-                                        bind:selectedValuesString={input.bindTo.obj[input.bindTo.attr]}
+                                        bind:selectedValuesString={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                                         selectionOptions={input.selectionOptions}
                                         isMulti={input.isMulti}
                                         isCreatable={input.isCreatable}
@@ -150,14 +147,16 @@
         </div>
     </div>
     <div class="footer">
-        <button class="button-cancel" on:click={close}>Abbrechen</button>
+        <button
+            class="button-cancel"
+            on:click={() => dispatch('cancel')}>Abbrechen</button>
         {#if !createNew}
             <button
                 class="button-delete"
-                on:click={() => popupFormularConfiguration.onDeleteButtonClicked(doc, close)}>{`${popupFormularConfiguration.docName} Löschen`}</button>
+                on:click={() => dispatch('delete')}>{`${popupFormularConfiguration.docName} Löschen`}</button>
         {/if}
         <button
             class="button-save"
-            on:click={() => popupFormularConfiguration.onSaveButtonClicked(doc, createNew, close)}>Speichern</button>
+            on:click={() => dispatch('save')}>Speichern</button>
     </div>
 </div>

@@ -2,18 +2,31 @@
     import PopupFormularConfiguration from "../../Input/PopupFormularConfiguration";
     import InputTypes from "../../Input/InputTypes";
     import PopupFormular from "../../Input/PopupFormular.svelte";
-    import { itemDb, rentalDb, customerDb } from "../../../utils/stores";
+    import {
+        itemDb,
+        rentalDb,
+        customerDb,
+        keyValueStore,
+    } from "../../../utils/stores";
     import { notifier } from "@beyonk/svelte-notifications";
+    import { getContext } from "svelte";
     import WoocommerceClient from "ENV_WC_CLIENT";
 
+    const { close } = getContext("simple-modal");
     const woocommerceClient = new WoocommerceClient();
 
     export let createNew;
-    export let doc = {};
-
-    let options = {
-        update_status_on_website: true,
-    };
+    if (!$keyValueStore["currentDoc"]) {
+        keyValueStore.setValue("currentDoc", {
+            rented_on: new Date().getTime(),
+            to_return_on: new Date(
+                new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+            ),
+        });
+    }
+    keyValueStore.setValue("options", {
+        updateStatusOnWebsite: true,
+    });
 
     const idStartsWithSelector = (searchValue) =>
         $rentalDb
@@ -52,89 +65,6 @@
 
     const popupFormularConfiguration = new PopupFormularConfiguration()
         .setDocName("Leihvorgang")
-        .setCreateInitialDoc((doc) => {
-            doc.rented_on = new Date().getTime();
-            let inOneWeek = new Date();
-            inOneWeek.setDate(inOneWeek.getDate() + 7);
-            doc.to_return_on = inOneWeek.getTime();
-        })
-        .setOnDeleteButtonClicked((doc, close) => {
-            if (confirm("Soll dieser Leihvorgang wirklich gelöscht werden?")) {
-                $rentalDb
-                    .removeDoc(doc)
-                    .then(() => notifier.success("Leihvorgang gelöscht!"))
-                    .then(close)
-                    .catch((error) => {
-                        console.error(error);
-                        notifier.danger(
-                            "Leihvorgang konnte nicht gelöscht werden!",
-                            6000
-                        );
-                    });
-            }
-        })
-        .setOnSaveButtonClicked(async (doc, createNew, close) => {
-            if (doc.item_id) {
-                const item = await $itemDb.fetchById(doc.item_id);
-                doc.image = item.image;
-
-                if (updateStatusOnWebsite) {
-                    if (
-                        doc.returned_on &&
-                        doc.returned_on !== 0 &&
-                        doc.returned_on <= new Date().getTime()
-                    ) {
-                        item.status_on_website = "instock";
-                        $itemDb.updateDoc(item);
-                        woocommerceClient
-                            .updateItem(item)
-                            .then(() => {
-                                notifier.success(
-                                    `'${item.item_name}' wurde auf der Webseite als verfügbar markiert.`
-                                );
-                            })
-                            .catch((error) => {
-                                notifier.warning(
-                                    `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
-                                    6000
-                                );
-                                console.error(error);
-                            });
-                    } else if (createNew) {
-                        item.status_on_website = "outofstock";
-                        $itemDb.updateDoc(item);
-                        woocommerceClient
-                            .updateItem(item)
-                            .then(() => {
-                                notifier.success(
-                                    `'${item.item_name}' wurde auf der Webseite als verliehen markiert.`
-                                );
-                            })
-                            .catch((error) => {
-                                notifier.warning(
-                                    `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
-                                    6000
-                                );
-                                console.error(error);
-                            });
-                    }
-                }
-            }
-
-            (createNew
-                ? $rentalDb.createDocWithoutId(doc)
-                : $rentalDb.updateDoc(doc)
-            )
-                .then((result) => notifier.success("Leihvorgang gespeichert!"))
-                .then(close)
-                .catch((error) => {
-                    notifier.danger(
-                        "Leihvorgang konnte nicht gespeichert werden!",
-                        6000
-                    );
-                    console.error(error);
-                });
-        })
         .setInputGroups([
             "Gegenstand",
             "Zeitraum",
@@ -148,23 +78,21 @@
                 label: "Nr",
                 group: "Gegenstand",
                 type: InputTypes.AUTOCOMPLETE,
-                bindTo: { obj: doc, attr: "item_id" },
+                bindTo: { keyValueStoreKey: "currentDoc", attr: "item_id" },
+                onChange: (selectedItem) => {
+                    keyValueStore.setValue("currentDoc", {
+                        ...$keyValueStore["currentDoc"],
+                        item_id: selectedItem._id,
+                        item_name: selectedItem.item_name,
+                        deposit: selectedItem.deposit,
+                    });
+                },
                 searchFunction: (searchTerm) =>
-                    $itemDb
-                        .fetchDocsBySelector(
-                            idStartsWithAndNotDeletedSelector(searchTerm),
-                            ["_id", "item_name", "deposit"]
-                        )
-                        .then((docs) =>
-                            docs.map((doc) => {
-                                doc.item_id = doc._id;
-                                delete doc._id;
-                                return doc;
-                            })
-                        ),
-                objectToUpdate: doc,
-                updateAttributes: ["item_name", "item_id", "deposit"],
-                labelAttributes: ["item_id", "item_name"],
+                    $itemDb.fetchDocsBySelector(
+                        idStartsWithAndNotDeletedSelector(searchTerm),
+                        ["_id", "item_name", "deposit"]
+                    ),
+                suggestionFormat: (id, item_name) => `${id}: ${item_name}`,
                 noResultsText: "Kein Gegenstand mit dieser Id",
             },
             {
@@ -172,33 +100,34 @@
                 label: "Name",
                 group: "Gegenstand",
                 type: InputTypes.AUTOCOMPLETE,
-                bindTo: { obj: doc, attr: "item_name" },
+                bindTo: { keyValueStoreKey: "currentDoc", attr: "item_name" },
+                onChange: (selectedItem) => {
+                    keyValueStore.setValue("currentDoc", {
+                        ...$keyValueStore["currentDoc"],
+                        item_id: selectedItem._id,
+                        item_name: selectedItem.item_name,
+                        deposit: selectedItem.deposit,
+                    });
+                },
                 searchFunction: (searchTerm) =>
-                    $itemDb
-                        .fetchDocsBySelector(
-                            attributeStartsWithIgnoreCaseAndNotDeletedSelector(
-                                "item_name",
-                                searchTerm
-                            ),
-                            ["_id", "item_name", "deposit"]
-                        )
-                        .then((docs) =>
-                            docs.map((doc) => {
-                                doc.item_id = doc._id;
-                                delete doc._id;
-                                return doc;
-                            })
+                    $itemDb.fetchDocsBySelector(
+                        attributeStartsWithIgnoreCaseAndNotDeletedSelector(
+                            "item_name",
+                            searchTerm
                         ),
-                objectToUpdate: doc,
-                updateAttributes: ["item_name", "item_id", "deposit"],
-                labelAttributes: ["item_id", "item_name"],
+                        ["_id", "item_name", "deposit"]
+                    ),
+                suggestionFormat: (id, item_name) => `${id}: ${item_name}`,
                 noResultsText: "Kein Gegenstand mit diesem Name",
             },
             {
                 id: "update_status_on_website",
                 label: "Status auf Webseite aktualisieren",
                 group: "Gegenstand",
-                bindTo: { obj: options, attr: "update_status_on_website" },
+                bindTo: {
+                    keyValueStoreKey: "options",
+                    attr: "updateStatusOnWebsite",
+                },
                 type: InputTypes.CHECKBOX,
             },
 
@@ -207,28 +136,31 @@
                 label: "Erfasst am",
                 group: "Zeitraum",
                 type: InputTypes.DATE,
-                bindTo: { obj: doc, attr: "rented_on" },
+                bindTo: { keyValueStoreKey: "currentDoc", attr: "rented_on" },
             },
             {
                 id: "extended_on",
                 label: "Verlängert",
                 group: "Zeitraum",
                 type: InputTypes.DATE,
-                bindTo: { obj: doc, attr: "extended_on" },
+                bindTo: { keyValueStoreKey: "currentDoc", attr: "extended_on" },
             },
             {
                 id: "to_return_on",
                 label: "Zurückerwartet",
                 group: "Zeitraum",
                 type: InputTypes.DATE,
-                bindTo: { obj: doc, attr: "to_return_on" },
+                bindTo: {
+                    keyValueStoreKey: "currentDoc",
+                    attr: "to_return_on",
+                },
             },
             {
                 id: "returned_on",
                 label: "Zurückgegeben",
                 group: "Zeitraum",
                 type: InputTypes.DATE,
-                bindTo: { obj: doc, attr: "returned_on" },
+                bindTo: { keyValueStoreKey: "currentDoc", attr: "returned_on" },
             },
 
             {
@@ -236,17 +168,21 @@
                 label: "Nr",
                 group: "Kunde",
                 type: InputTypes.AUTOCOMPLETE,
-                bindTo: { obj: doc, attr: "customer_id" },
+                bindTo: { keyValueStoreKey: "currentDoc", attr: "customer_id" },
                 onChange: (selectedCustomer) => {
-                    doc.customer_id = selectedCustomer._id;
-                    doc.name = selectedCustomer.lastname;
-                    console.log(doc);
+                    keyValueStore.setValue("currentDoc", {
+                        ...$keyValueStore["currentDoc"],
+                        name: selectedCustomer.lastname,
+                        customer_id: selectedCustomer._id,
+                    });
                 },
                 searchFunction: (searchTerm) =>
                     $customerDb.fetchDocsBySelector(
                         idStartsWithSelector(searchTerm),
-                        ["_id", "lastname"]
+                        ["_id", "firstname", "lastname"]
                     ),
+                suggestionFormat: (id, firstname, lastname) =>
+                    `${id}: ${firstname} ${lastname}`,
                 noResultsText: "Kein Kunde mit dieser Id",
             },
             {
@@ -254,11 +190,13 @@
                 label: "Name",
                 group: "Kunde",
                 type: InputTypes.AUTOCOMPLETE,
-                bindTo: { obj: doc, attr: "name" },
+                bindTo: { keyValueStoreKey: "currentDoc", attr: "name" },
                 onChange: (selectedCustomer) => {
-                    doc.customer_id = selectedCustomer._id;
-                    doc.name = selectedCustomer.lastname;
-                    console.log(doc);
+                    keyValueStore.setValue("currentDoc", {
+                        ...$keyValueStore["currentDoc"],
+                        name: selectedCustomer.lastname,
+                        customer_id: selectedCustomer._id,
+                    });
                 },
                 searchFunction: (searchTerm) =>
                     $customerDb.fetchDocsBySelector(
@@ -266,12 +204,79 @@
                             "lastname",
                             searchTerm
                         ),
-                        ["_id", "lastname"]
+                        ["_id", "firstname", "lastname"]
                     ),
+                suggestionFormat: (id, firstname, lastname) =>
+                    `${id}: ${firstname} ${lastname}`,
                 noResultsText: "Kein Kunde mit diesem Name",
+            },
+
+            {
+                id: "deposit",
+                label: "Pfand",
+                group: "Pfand",
+                type: InputTypes.TEXT,
+                bindTo: { keyValueStoreKey: "currentDoc", attr: "deposit" },
             },
         ]);
 </script>
 
-<PopupFormular {popupFormularConfiguration} {createNew} {doc} />
-{JSON.stringify(doc)}
+<PopupFormular
+    {popupFormularConfiguration}
+    {createNew}
+    on:save={async (event) => {
+        const doc = $keyValueStore['currentDoc'];
+        if (doc.item_id) {
+            const item = await $itemDb.fetchById(doc.item_id);
+            doc.image = item.image;
+
+            if ($keyValueStore['options']['updateStatusOnWebsite']) {
+                if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
+                    item.status_on_website = 'instock';
+                    $itemDb.updateDoc(item);
+                    woocommerceClient
+                        .updateItem(item)
+                        .then(() => {
+                            notifier.success(`'${item.item_name}' wurde auf der Webseite als verfügbar markiert.`);
+                        })
+                        .catch((error) => {
+                            notifier.warning(`Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`, 6000);
+                            console.error(error);
+                        });
+                } else if (createNew) {
+                    item.status_on_website = 'outofstock';
+                    $itemDb.updateDoc(item);
+                    woocommerceClient
+                        .updateItem(item)
+                        .then(() => {
+                            notifier.success(`'${item.item_name}' wurde auf der Webseite als verliehen markiert.`);
+                        })
+                        .catch((error) => {
+                            notifier.warning(`Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`, 6000);
+                            console.error(error);
+                        });
+                }
+            }
+        }
+
+        (createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc))
+            .then((result) => notifier.success('Leihvorgang gespeichert!'))
+            .then(close)
+            .catch((error) => {
+                notifier.danger('Leihvorgang konnte nicht gespeichert werden!', 6000);
+                console.error(error);
+            });
+    }}
+    on:delete={(event) => {
+        if (confirm('Soll dieser Leihvorgang wirklich gelöscht werden?')) {
+            $rentalDb
+                .removeDoc($keyValueStore['currentDoc'])
+                .then(() => notifier.success('Leihvorgang gelöscht!'))
+                .then(close)
+                .catch((error) => {
+                    console.error(error);
+                    notifier.danger('Leihvorgang konnte nicht gelöscht werden!', 6000);
+                });
+        }
+    }}
+    on:cancel={close} />
