@@ -18,7 +18,7 @@
     $customerDb.nextUnusedId().then((id) =>
       keyValueStore.setValue("currentDoc", {
         ...$keyValueStore["currentDoc"],
-        _id: id,
+        _id: String(id),
       })
     );
   }
