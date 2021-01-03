@@ -71,7 +71,10 @@ class WoocommerceClient {
           options: [(item.deposit ?? "0") + " €"],
         },
       ],
-      categories: item.category in WC_CATEGORIES ? [WC_CATEGORIES[item.category]] : [],
+      categories: item.category
+        .split(", ")
+        .filter((category) => category in WC_CATEGORIES)
+        .map((category) => WC_CATEGORIES[category]),
     };
   }
 
