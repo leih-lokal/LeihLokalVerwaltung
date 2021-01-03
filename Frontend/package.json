@@ -53,7 +53,7 @@
     "simple-svelte-autocomplete": "^1.2.4",
     "sirv-cli": "^1.0.8",
     "svelte": "^3.30.0",
-    "svelte-calendar": "^1.5.0",
+    "svelte-calendar": "^2.0.4",
     "svelte-checkbox": "^1.0.1",
     "svelte-component-double": "^0.7.5",
     "svelte-htm": "^1.1.1",
