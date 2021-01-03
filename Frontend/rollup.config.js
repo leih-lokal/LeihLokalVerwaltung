@@ -29,6 +29,7 @@ export default {
       ENV_DATABASE: process.env.DATABASE,
     }),
     svelte({
+      emitCss: false,
       css: (css) => {
         css.write("bundle.css");
       },
