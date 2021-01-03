@@ -8,10 +8,11 @@
     export let isClearable = true;
 
     const valuesToOptions = (values) => {
-        return values.map((value) =>
-            selectionOptions.find(
-                (item) => item === value || item.value === value
-            )
+        return values.map(
+            (value) =>
+                selectionOptions.find(
+                    (item) => item === value || item.value === value
+                ) ?? value
         );
     };
 
