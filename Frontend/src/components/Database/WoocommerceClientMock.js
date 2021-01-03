@@ -36,6 +36,14 @@ class WoocommerceClientMock {
   async updateItem(item) {
     await new Promise((r) => setTimeout(r, 1500));
   }
+
+  async createItem(item) {
+    await new Promise((r) => setTimeout(r, 1500));
+    return {
+      permalink: "link",
+      id: "wcId",
+    };
+  }
 }
 
 export default WoocommerceClientMock;

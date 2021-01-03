@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/rentals";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
-import { dateToString } from "./utils";
+import { dateToString, waitForPopupToClose, clearFilter } from "./utils";
 
 let rentals;
 let currentRentals;
@@ -95,8 +95,6 @@ const expectDisplaysRentals = (rentals) => {
   });
 };
 
-const waitForPopupToClose = () => cy.get(".bg", { timeout: 3000 }).should("not.exist");
-
 context("rentals", () => {
   beforeEach(() => {
     cy.clock(Date.UTC(2020, 0, 1), ["Date"]);
@@ -181,9 +179,7 @@ context("rentals", () => {
   });
 
   context("Searching", () => {
-    beforeEach(() => {
-      cy.get(".multiSelectItem_clear").click();
-    });
+    beforeEach(clearFilter);
 
     it("finds a rental by search for item_id", () => {
       cy.get(".searchInput").type(rentals[3].item_id, { force: true });
@@ -202,9 +198,7 @@ context("rentals", () => {
   });
 
   context("Filtering", () => {
-    beforeEach(() => {
-      cy.get(".multiSelectItem_clear").click();
-    });
+    beforeEach(clearFilter);
 
     it("displays all rentals when removing filters", () => {
       cy.get("table > tr").should("have.length", rentals.length);
@@ -235,9 +229,7 @@ context("rentals", () => {
   });
 
   context("Editing", () => {
-    beforeEach(() => {
-      cy.get(".multiSelectItem_clear").click();
-    });
+    beforeEach(clearFilter);
 
     const expectedDateInputValue = (millis) => {
       if (millis === 0) return "-";

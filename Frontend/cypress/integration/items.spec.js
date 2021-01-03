@@ -1,7 +1,12 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/items";
 import columns from "../../src/components/TableEditors/Items/Columns";
-import { dateToString, statusOnWebsiteDisplayValue } from "./utils";
+import {
+  dateToString,
+  statusOnWebsiteDisplayValue,
+  waitForPopupToClose,
+  clearFilter,
+} from "./utils";
 
 let items;
 let itemsNotDeleted;
@@ -146,9 +151,7 @@ context("items", () => {
   });
 
   context("Searching", () => {
-    beforeEach(() => {
-      cy.get(".multiSelectItem_clear").click();
-    });
+    beforeEach(clearFilter);
 
     it("finds a item by search for 'name type'", () => {
       cy.get(".searchInput").type(items[14].item_name + " " + items[14].itype, { force: true });
@@ -167,9 +170,7 @@ context("items", () => {
   });
 
   context("Filtering", () => {
-    beforeEach(() => {
-      cy.get(".multiSelectItem_clear").click();
-    });
+    beforeEach(clearFilter);
 
     it("displays all items when removing filters", () => {
       cy.get("table > tr").should("have.length", items.length);
@@ -295,6 +296,7 @@ context("items", () => {
       cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
       cy.get("#item_name").clear().type("NewName");
       cy.contains("Speichern").click();
+      waitForPopupToClose();
       itemsNotDeleted[3].item_name = "NewName";
       expectDisplaysItemsSortedBy(itemsNotDeleted);
     });
@@ -302,6 +304,7 @@ context("items", () => {
     it("Deletes item", () => {
       cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
       cy.contains("Löschen").click();
+      waitForPopupToClose();
       expectDisplaysOnlyItemsWithIds(
         itemsNotDeleted
           .filter((item) => item._id !== itemsNotDeleted[3]._id)
@@ -350,7 +353,9 @@ context("items", () => {
         .contains("verfügbar")
         .click({ force: true });
 
-      cy.contains("Speichern").click().get(".multiSelectItem_clear").click({ force: true });
+      cy.contains("Speichern").click();
+      waitForPopupToClose();
+      clearFilter();
 
       items.push(newItem);
       expectDisplaysItems(items);

@@ -189,7 +189,6 @@
                 .then((wcDoc) => {
                     doc.wc_url = wcDoc.permalink;
                     doc.wc_id = wcDoc.id;
-                    console.log(doc);
                     $itemDb.updateDoc(doc);
                     notifier.success('Gegenstand auf der Webseite erstellt!', 3000);
                 })
