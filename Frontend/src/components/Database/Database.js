@@ -9,7 +9,6 @@ class Database {
   database;
   changeCallback;
   syncHandler;
-  replicationHandler;
   name;
   columns;
   existingDesignDocIds;
@@ -27,7 +26,7 @@ class Database {
 
   connect() {
     this.database = new PouchDB(
-      `http://ENV_COUCHDB_USER:ENV_COUCHDB_PASSWORD@${this.host}/${this.name}`
+      `ENV_COUCHDB_PROTOCOL://ENV_COUCHDB_USER:ENV_COUCHDB_PASSWORD@${this.host}/${this.name}`
     );
 
     //create indices for searching
@@ -40,20 +39,7 @@ class Database {
     );
 
     // test connection
-    return this.database.info().then(() => {
-      this.replicationHandler = this.database
-        .changes({
-          since: "now",
-          live: true,
-          include_docs: true,
-        })
-        .on("change", async (change) => this.cache.reset())
-        .on("error", (error) => console.error(error));
-    });
-  }
-
-  disconnect() {
-    if (this.replicationHandler) this.replicationHandler.cancel();
+    return this.database.info();
   }
 
   selectorBuilder() {
@@ -71,6 +57,7 @@ class Database {
   }
 
   updateDoc(updatedDoc) {
+    this.cache.reset();
     return this.database.get(updatedDoc._id).then((doc) => {
       updatedDoc._rev = doc._rev;
       return this.createDoc(updatedDoc);
@@ -78,14 +65,17 @@ class Database {
   }
 
   createDoc(doc) {
+    this.cache.reset();
     return this.database.put(doc);
   }
 
   createDocWithoutId(doc) {
+    this.cache.reset();
     return this.database.post(doc);
   }
 
   removeDoc(doc) {
+    this.cache.reset();
     return this.database.remove(doc._id, doc._rev);
   }
 

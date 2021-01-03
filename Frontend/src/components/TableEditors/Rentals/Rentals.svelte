@@ -1,6 +1,6 @@
 <script>
   import DatabaseTableEditor from "../DatabaseTableEditor.svelte";
-  import EditRentalPopup from "./EditRentalPopup.svelte";
+  import RentalPopupFormular from "./RentalPopupFormular.svelte";
   import columns from "./Columns.js";
   import filters from "./Filters.js";
   import { rentalDb } from "../../../utils/stores";
@@ -15,7 +15,9 @@
   }
 
   function isToday(millis) {
-    return millisAtStartOfDay(millis) === millisAtStartOfDay(new Date().getTime());
+    return (
+      millisAtStartOfDay(millis) === millisAtStartOfDay(new Date().getTime())
+    );
   }
 
   function isBeforeToday(millis) {
@@ -28,7 +30,11 @@
       return "rgb(214,252,208)";
     }
     // Heute zurückerwartet
-    else if (item.to_return_on && isToday(item.to_return_on) && !item.returned_on) {
+    else if (
+      item.to_return_on &&
+      isToday(item.to_return_on) &&
+      !item.returned_on
+    ) {
       return "rgb(160,200,250)";
     }
     // verspätet
@@ -47,4 +53,4 @@
   {filters}
   database={$rentalDb}
   {rowBackgroundColorFunction}
-  popupComponent={EditRentalPopup} />
+  popupFormularComponent={RentalPopupFormular} />

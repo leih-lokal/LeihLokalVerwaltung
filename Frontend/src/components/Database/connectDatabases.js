@@ -14,9 +14,19 @@ export default () => {
   const COUCHDB_HOSTS = "ENV_COUCHDB_HOSTS".split(",");
 
   const canConnectTo = async (host) => {
+    const doWithTimeout = (promise, timeoutS = 3) => {
+      return new Promise((resolve, reject) => {
+        promise.then(resolve, reject);
+        setTimeout(
+          () => reject(`failed to connect to couchdb host ${host} after ${timeoutS}s!`),
+          timeoutS * 1000
+        );
+      });
+    };
+
     const databases = DB_PROPS.map((props) => new Database(props.name, props.columns, host));
     try {
-      await Promise.all(databases.map((db) => db.connect()));
+      await Promise.all(databases.map((db) => doWithTimeout(db.connect())));
       console.debug("connected to couchdb host " + host);
       return databases;
     } catch (error) {
@@ -27,12 +37,6 @@ export default () => {
 
   return Promise.all(COUCHDB_HOSTS.map(canConnectTo)).then((results) => {
     const availableHostDbs = results.filter((result) => result.length !== 0);
-    if (availableHostDbs.length > 1) {
-      for (let i = 1; i < availableHostDbs.length; i++) {
-        availableHostDbs[i].forEach((db) => db.disconnect());
-        console.debug("disconnected from " + availableHostDbs[i][0].host);
-      }
-    }
     if (availableHostDbs.length !== 0) {
       DB_PROPS.map((props) => props.store).forEach((store, i) => store.set(availableHostDbs[0][i]));
     } else {

@@ -1,15 +1,15 @@
 <script>
   import AddNewItemButton from "../Input/AddNewItemButton.svelte";
   import Table from "../Table/Table.svelte";
+  import { keyValueStore } from "../../utils/stores";
   import { getContext } from "svelte";
 
   export let columns;
   export let filters;
   export let database;
-  export let popupComponent;
+  export let popupFormularComponent;
   export let addNewItemButton = true;
   export let rowBackgroundColorFunction;
-  export let processRowAfterLoad = (rows) => Promise.resolve(rows);
 
   let table;
 
@@ -23,9 +23,15 @@
   {columns}
   {filters}
   {rowBackgroundColorFunction}
-  {processRowAfterLoad}
-  onRowClicked={(doc) => openStyledModal(popupComponent, { doc: doc }, onModalClose)} />
+  onRowClicked={(doc) => {
+    keyValueStore.setValue('currentDoc', doc);
+    openStyledModal(popupFormularComponent, { createNew: false }, onModalClose);
+  }} />
 
 {#if addNewItemButton}
-  <AddNewItemButton on:click={openStyledModal(popupComponent, { createNew: true }, onModalClose)} />
+  <AddNewItemButton
+    on:click={() => {
+      keyValueStore.removeValue('currentDoc');
+      openStyledModal(popupFormularComponent, { createNew: true }, onModalClose);
+    }} />
 {/if}

@@ -11,9 +11,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build Demo 🔧
+      - name: Build 🔧
         working-directory: Frontend
-        run: npm ci && npm run build:demo
+        run: npm ci && npm run-script build:all
 
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v2

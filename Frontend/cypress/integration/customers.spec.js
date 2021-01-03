@@ -59,7 +59,7 @@ context("Customers", () => {
       .databases()
       .then((dbs) => dbs.forEach((db) => window.indexedDB.deleteDatabase(db.name)));
     cy.clock(Date.UTC(2020, 0, 1), ["Date"]);
-    cy.visit("../../public/index.html");
+    cy.visit("../../public/index.html").get("nav").contains("Kunden").click();
   });
 
   it("displays correct number of customers", () => {
@@ -219,7 +219,7 @@ context("Customers", () => {
 
     it("Deletes customer", () => {
       cy.get("table").contains(customers[3].firstname).click({ force: true });
-      cy.contains("Kunde Löschen").click();
+      cy.contains("Löschen").click();
       expectDisplaysOnlyCustomersWithIds(["1", "2", "3", "5", "6", "7", "8", "9", "10"]);
     });
 

@@ -11,4 +11,7 @@ const statusOnWebsiteDisplayValue = (status) =>
     .replace("outofstock", "verliehen")
     .replace("onbackorder", "nicht verleihbar");
 
-export default { dateToString, statusOnWebsiteDisplayValue };
+const waitForPopupToClose = () => cy.get(".bg", { timeout: 3000 }).should("not.exist");
+const clearFilter = () => cy.get(".multiSelectItem_clear").click();
+
+export default { dateToString, statusOnWebsiteDisplayValue, waitForPopupToClose, clearFilter };

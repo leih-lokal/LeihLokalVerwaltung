@@ -1,6 +1,8 @@
 import items from "../../../spec/Database/DummyData/items";
 
 class WoocommerceClientMock {
+  constructor() {}
+
   async fetchItem(wcItemId) {
     await new Promise((r) => setTimeout(r, 1500));
     const item = items.find((item) => item.wc_id == wcItemId);
@@ -31,8 +33,16 @@ class WoocommerceClientMock {
     }
   }
 
-  async updateItemStatus(wcItemId, updatedStatus) {
+  async updateItem(item) {
     await new Promise((r) => setTimeout(r, 1500));
+  }
+
+  async createItem(item) {
+    await new Promise((r) => setTimeout(r, 1500));
+    return {
+      permalink: "link",
+      id: "wcId",
+    };
   }
 }
 

@@ -6,8 +6,7 @@
   import LoadingAnimation from "./LoadingAnimation.svelte";
   import { fade } from "svelte/transition";
 
-  export let onRowClicked = row => {};
-  export let processRowAfterLoad;
+  export let onRowClicked = (row) => {};
   export let database;
   export let columns = [];
   export let rowHeight = 40;
@@ -15,22 +14,24 @@
   export let rowBackgroundColorFunction;
   export const refresh = () => {
     rows = database.query({
-      filters: activeFilters.map(filterName => filters.filters[filterName]),
+      filters: activeFilters.map((filterName) => filters.filters[filterName]),
       columns: columns,
       searchTerm: searchTerm,
       currentPage: currentPage,
       rowsPerPage: rowsPerPage,
       sortBy: sortBy,
-      sortReverse: sortReverse
+      sortReverse: sortReverse,
     });
   };
 
+  const shouldBeSortedByInitially = (col) => "initialSort" in col;
+
   let innerHeight = window.innerHeight;
-  let sortBy = columns.some(col => "initialSort" in col)
-    ? columns.find(col => "initialSort" in col).key
+  let sortBy = columns.some(shouldBeSortedByInitially)
+    ? columns.find(shouldBeSortedByInitially).key
     : "_id";
-  let sortReverse = columns.some(col => "initialSort" in col)
-    ? columns.find(col => "initialSort" in col).initialSort === "desc"
+  let sortReverse = columns.some(shouldBeSortedByInitially)
+    ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
     : false;
   let currentPage = 0;
   let rows = new Promise(() => {});
@@ -55,7 +56,7 @@
 </script>
 
 <style>
-  div {
+  .animatecontainer {
     height: 100%;
   }
 
@@ -66,6 +67,15 @@
     overflow-y: scroll;
     border-spacing: 2px 2px;
     padding: 0 5px 0 5px;
+  }
+
+  .tablecontainer {
+    overflow-x: scroll;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .tablecontainer::-webkit-scrollbar {
+    display: none;
   }
 
   :global(table tr:nth-child(odd)) {
@@ -84,34 +94,20 @@
   {#await rows}
     <LoadingAnimation />
   {:then data}
-    <div in:fade>
-      <table>
-        <Header {columns} bind:sortBy bind:sortReverse />
-        {#each data.rows as row}
-          {#await processRowAfterLoad(row)}
+    <div in:fade class="animatecontainer">
+      <div class="tablecontainer">
+        <table>
+          <Header {columns} bind:sortBy bind:sortReverse />
+          {#each data.rows as row (row._id)}
             <Row
               {rowBackgroundColorFunction}
               {columns}
               item={row}
               {rowHeight}
               on:click={() => onRowClicked(row)} />
-          {:then processedRow}
-            <Row
-              {rowBackgroundColorFunction}
-              {columns}
-              item={processedRow}
-              {rowHeight}
-              on:click={() => onRowClicked(processedRow)} />
-          {:catch error}
-            <Row
-              {rowBackgroundColorFunction}
-              {columns}
-              item={row}
-              {rowHeight}
-              on:click={() => onRowClicked(row)} />
-          {/await}
-        {/each}
-      </table>
+          {/each}
+        </table>
+      </div>
       <Pagination
         numberOfPages={calculateNumberOfPages(data.count, rowsPerPage)}
         bind:currentPage />

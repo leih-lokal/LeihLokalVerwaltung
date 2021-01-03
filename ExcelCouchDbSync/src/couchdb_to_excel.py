@@ -1,3 +1,5 @@
+import sys
+
 import pyexcel as pe
 from couchdb import CouchDb
 from rental_columns import RENTAL_COLUMNS
@@ -35,16 +37,24 @@ def db_to_sheet(columns, db, sheet, sort=None):
         sheet.row += row
 
 
-book = pe.Book()
-book += pe.Sheet(name='Kunden')
-book += pe.Sheet(name='Gegenstände')
-book += pe.Sheet(name='Leihvorgang')
+if __name__ == "__main__":
+    output_file_name = "output.ods"
+    if len(sys.argv) > 1:
+        output_file_name = sys.argv[1] + ".ods"
 
-logging.info("Connecting to CouchDb")
-database = CouchDb()
+    book = pe.Book()
+    book += pe.Sheet(name='Kunden')
+    book += pe.Sheet(name='Gegenstände')
+    book += pe.Sheet(name='Leihvorgang')
 
-db_to_sheet(RENTAL_COLUMNS, database.db("rentals"), book["Leihvorgang"], sort={'rented_on': 'asc'})
-db_to_sheet(CUSTOMER_COLUMNS, database.db("customers"), book["Kunden"], sort={'registration_date': 'asc'})
-db_to_sheet(ITEM_COLUMNS, database.db("items"), book["Gegenstände"], sort={'_id': 'asc'})
+    logging.info("Connecting to CouchDb")
+    database = CouchDb()
 
-book.save_as("test.ods")
+    logging.info("Writing rentals to excel...")
+    db_to_sheet(RENTAL_COLUMNS, database.db("rentals"), book["Leihvorgang"], sort={'rented_on': 'asc'})
+    logging.info("Writing customers to excel...")
+    db_to_sheet(CUSTOMER_COLUMNS, database.db("customers"), book["Kunden"], sort={'registration_date': 'asc'})
+    logging.info("Writing items to excel...")
+    db_to_sheet(ITEM_COLUMNS, database.db("items"), book["Gegenstände"], sort={'_id': 'asc'})
+
+    book.save_as(output_file_name)

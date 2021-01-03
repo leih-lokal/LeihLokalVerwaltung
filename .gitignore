@@ -1,4 +1,8 @@
 Frontend/coverage
-Frontend/build/bundle-tests.js
-Frontend/build/bundle-tests.js.map
 Frontend/cypress/videos
+Frontend/cypress/screenshots
+Frontend/public/build
+Frontend/public/demo
+.DS_Store
+venv
+.idea

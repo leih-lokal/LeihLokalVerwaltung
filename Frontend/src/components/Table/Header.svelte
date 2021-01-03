@@ -53,12 +53,19 @@
         {col.title}
         <span
           class="sort-indicator"
-          class:visible={showSortIndicator[col.key] && sortBy !== col.key}><Icon
-            icon={faSort} /></span>
-        <span class="sort-indicator-up" class:visible={sortBy === col.key && sortReverse}><Icon
-            icon={faSortUp} /></span>
-        <span class="sort-indicator-down" class:visible={sortBy === col.key && !sortReverse}><Icon
-            icon={faSortDown} /></span>
+          class:visible={showSortIndicator[col.key] && sortBy !== col.key}>
+          <Icon icon={faSort} />
+        </span>
+        <span
+          class="sort-indicator-up"
+          class:visible={sortBy === col.key && sortReverse}>
+          <Icon icon={faSortUp} />
+        </span>
+        <span
+          class="sort-indicator-down"
+          class:visible={sortBy === col.key && !sortReverse}>
+          <Icon icon={faSortDown} />
+        </span>
       </th>
     {/each}
   </tr>

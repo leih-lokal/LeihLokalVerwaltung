@@ -1,7 +1,12 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/items";
 import columns from "../../src/components/TableEditors/Items/Columns";
-import { dateToString, statusOnWebsiteDisplayValue } from "./utils";
+import {
+  dateToString,
+  statusOnWebsiteDisplayValue,
+  waitForPopupToClose,
+  clearFilter,
+} from "./utils";
 
 let items;
 let itemsNotDeleted;
@@ -146,9 +151,7 @@ context("items", () => {
   });
 
   context("Searching", () => {
-    beforeEach(() => {
-      cy.get(".multiSelectItem_clear").click();
-    });
+    beforeEach(clearFilter);
 
     it("finds a item by search for 'name type'", () => {
       cy.get(".searchInput").type(items[14].item_name + " " + items[14].itype, { force: true });
@@ -167,9 +170,7 @@ context("items", () => {
   });
 
   context("Filtering", () => {
-    beforeEach(() => {
-      cy.get(".multiSelectItem_clear").click();
-    });
+    beforeEach(clearFilter);
 
     it("displays all items when removing filters", () => {
       cy.get("table > tr").should("have.length", items.length);
@@ -271,7 +272,9 @@ context("items", () => {
       cy.get("#item_name").should("have.value", itemsNotDeleted[3].item_name);
       cy.get("#brand").should("have.value", itemsNotDeleted[3].brand);
       cy.get("#itype").should("have.value", itemsNotDeleted[3].itype);
-      cy.get("#category").should("have.value", itemsNotDeleted[3].category);
+      cy.get(":nth-child(2) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
+        itemsNotDeleted[3].category
+      );
       cy.get("#deposit").should("have.value", itemsNotDeleted[3].deposit);
       cy.get(".group row:nth-child(4) .datepicker input").should(
         "have.value",
@@ -284,7 +287,7 @@ context("items", () => {
       cy.get("#package").should("have.value", itemsNotDeleted[3].package);
       cy.get("#package").should("have.value", itemsNotDeleted[3].package);
       cy.get("#package").should("have.value", itemsNotDeleted[3].package);
-      cy.get(".selectContainer").contains(
+      cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
         statusOnWebsiteDisplayValue(itemsNotDeleted[3].status_on_website)
       );
     });
@@ -293,13 +296,15 @@ context("items", () => {
       cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
       cy.get("#item_name").clear().type("NewName");
       cy.contains("Speichern").click();
+      waitForPopupToClose();
       itemsNotDeleted[3].item_name = "NewName";
       expectDisplaysItemsSortedBy(itemsNotDeleted);
     });
 
     it("Deletes item", () => {
       cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
-      cy.contains("Gegenstand Löschen").click();
+      cy.contains("Löschen").click();
+      waitForPopupToClose();
       expectDisplaysOnlyItemsWithIds(
         itemsNotDeleted
           .filter((item) => item._id !== itemsNotDeleted[3]._id)
@@ -313,7 +318,7 @@ context("items", () => {
         item_name: "name",
         brand: "brand",
         itype: "itype",
-        category: "category",
+        category: "Haushalt",
         deposit: 15,
         parts: "parts",
         manual: "manual",
@@ -334,15 +339,23 @@ context("items", () => {
       cy.get("#item_name").type(newItem.item_name);
       cy.get("#brand").type(newItem.brand);
       cy.get("#itype").type(newItem.itype);
-      cy.get("#category").type(newItem.category);
+      cy.get(":nth-child(2) > .group > :nth-child(2) > .col-input > .selectContainer")
+        .click()
+        .contains(newItem.category)
+        .click();
       cy.get("#deposit").type(newItem.deposit);
       cy.get("#properties").type(newItem.properties);
       cy.get("#parts").type(newItem.parts);
       cy.get("#manual").type(newItem.manual);
       cy.get("#package").type(newItem.package);
-      cy.get(".col-input > .selectContainer").click().contains("verfügbar").click();
+      cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer")
+        .click()
+        .contains("verfügbar")
+        .click({ force: true });
 
-      cy.contains("Speichern").click().get(".multiSelectItem_clear").click({ force: true });
+      cy.contains("Speichern").click();
+      waitForPopupToClose();
+      clearFilter();
 
       items.push(newItem);
       expectDisplaysItems(items);
