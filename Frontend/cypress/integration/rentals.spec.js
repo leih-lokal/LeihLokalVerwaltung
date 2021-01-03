@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/rentals";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
-import { dateToString } from "./utils";
+import { dateToString, waitForPopupToClose, clearFilter } from "./utils";
 
 let rentals;
 let currentRentals;
@@ -179,9 +179,7 @@ context("rentals", () => {
   });
 
   context("Searching", () => {
-    beforeEach(() => {
-      cy.get(".multiSelectItem_clear").click();
-    });
+    beforeEach(clearFilter);
 
     it("finds a rental by search for item_id", () => {
       cy.get(".searchInput").type(rentals[3].item_id, { force: true });
@@ -200,9 +198,7 @@ context("rentals", () => {
   });
 
   context("Filtering", () => {
-    beforeEach(() => {
-      cy.get(".multiSelectItem_clear").click();
-    });
+    beforeEach(clearFilter);
 
     it("displays all rentals when removing filters", () => {
       cy.get("table > tr").should("have.length", rentals.length);
@@ -233,9 +229,7 @@ context("rentals", () => {
   });
 
   context("Editing", () => {
-    beforeEach(() => {
-      cy.get(".multiSelectItem_clear").click();
-    });
+    beforeEach(clearFilter);
 
     const expectedDateInputValue = (millis) => {
       if (millis === 0) return "-";
@@ -244,11 +238,8 @@ context("rentals", () => {
 
     it("Displays correct data in Edit Popup", () => {
       cy.get("table").contains(rentals[4].item_name).click({ force: true });
-      cy.get(":nth-child(1) > .group > :nth-child(2) > .col-input > .hide-arrow > .input").should(
-        "have.value",
-        rentals[4].item_id
-      );
-      cy.get("#input_item_name").should("have.value", rentals[4].item_name);
+      cy.get("#item_id").should("have.value", rentals[4].item_id);
+      cy.get("#item_name").should("have.value", rentals[4].item_name);
       cy.get(".group row:nth-child(2) .datepicker input").should(
         "have.value",
         expectedDateInputValue(rentals[4].rented_on)
@@ -266,8 +257,8 @@ context("rentals", () => {
         expectedDateInputValue(rentals[4].returned_on)
       );
 
-      cy.get("#input_customer_id").should("have.value", rentals[4].customer_id);
-      cy.get("#input_lastname").should("have.value", rentals[4].name);
+      cy.get("#customer_id").should("have.value", rentals[4].customer_id);
+      cy.get("#customer_name").should("have.value", rentals[4].name);
       cy.get("#deposit").should("have.value", rentals[4].deposit);
       cy.get("#deposit_returned").should("have.value", rentals[4].deposit_returned);
       cy.get("#deposit_retained").should("have.value", rentals[4].deposit_retained);
@@ -284,14 +275,16 @@ context("rentals", () => {
     it("Saves changes", () => {
       cy.get("table").contains(rentals[4].item_name).click({ force: true });
       cy.get("#deposit_retainment_reason").clear().type("reason");
-      cy.get(".button-save").click();
+      cy.contains("Speichern").click();
+      waitForPopupToClose();
       rentals[4].deposit_retainment_reason = "reason";
       expectDisplaysRentalsSortedBy(rentals);
     });
 
     it("Deletes rental", () => {
       cy.get("table").contains(rentals[4].item_name).click({ force: true });
-      cy.contains("Leihvorgang Löschen").click();
+      cy.contains("Löschen").click();
+      waitForPopupToClose();
       expectDisplaysRentalsSortedBy(rentals.filter((rental) => rental._id != rentals[4]._id));
     });
 
@@ -327,15 +320,13 @@ context("rentals", () => {
         expectedDateInputValue(newRental.to_return_on)
       );
 
-      cy.get(":nth-child(1) > .group > :nth-child(2) > .col-input > .hide-arrow > .input").type(
-        newRental.item_id
-      );
+      cy.get("#item_id").type(newRental.item_id);
       cy.get(".autocomplete-list-item").contains(newRental.item_id).click();
-      cy.get("#input_item_name").clear().type(newRental.item_name);
+      cy.get("#item_name").clear().type(newRental.item_name);
       cy.get(".autocomplete-list-item").contains(newRental.item_name).click();
-      cy.get("#input_customer_id").clear().type(newRental.customer_id);
+      cy.get("#customer_id").clear().type(newRental.customer_id);
       cy.get(".autocomplete-list-item").contains(newRental.name).click();
-      cy.get("#input_lastname").clear().type(newRental.name);
+      cy.get("#customer_name").clear().type(newRental.name);
       cy.get(".autocomplete-list-item").contains(newRental.name).click();
       cy.get("#deposit").type(newRental.deposit);
       cy.get("#deposit_returned").type(newRental.deposit_returned);
@@ -344,9 +335,9 @@ context("rentals", () => {
       cy.get("#remark").type(newRental.remark);
 
       cy.contains("Speichern").click();
+      waitForPopupToClose();
 
       rentals.push(newRental);
-      console.log(rentals);
       expectDisplaysRentalsSortedBy(rentals);
     });
   });
