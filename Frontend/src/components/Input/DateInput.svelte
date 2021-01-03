@@ -37,6 +37,11 @@
     return date;
   }
 
+  export let calculate_from;
+  export let today = false;
+  export let quick_days = [];
+  export let quick_weeks = [];
+  export let quick_months = [];
   export let timeMillis = 0;
   function setToday() {
     let date = new Date();
@@ -51,7 +56,8 @@
       date.setDate(date.getDate() + days);
       timeMillis = date.getTime();
     }
-  }</script>
+  }
+</script>
 
 <style>
   input {
