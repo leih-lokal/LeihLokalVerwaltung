@@ -41,13 +41,33 @@
     selected = new Date();
   }
 
+  export let calculate_from;
+  export let quick_days = [];
+  export let quick_weeks = [];
+  export let quick_months = [];
+  export let today = false;
+
   export let timeMillis;
   const TIMEZONE_OFFSET_MS = new Date().getTimezoneOffset() * 60000;
 
-  
   let dateChosen = false;
   let isNone = !timeMillis || timeMillis === 0;
   let selected = isNone ? new Date() : new Date(timeMillis);
+
+  function setToday() {
+    let date = new Date();
+    timeMillis = date.getTime();
+  }
+
+  function addDays(days) {
+    if (calculate_from) {
+      timeMillis = calculate_from + days * 60 * 60 * 24 * 1000;
+    } else {
+      let date = new Date();
+      date.setDate(date.getDate() + days);
+      timeMillis = date.getTime();
+    }
+  }
 
   $: dateChosen, (isNone = !dateChosen && isNone);
   $: timeMillis = isNone ? 0 : selected.getTime() - TIMEZONE_OFFSET_MS;
@@ -79,12 +99,18 @@
   .clear {
     color: #3f4f5f;
   }
+  .button-tight {
+    height: 1.5rem;
+    font-size: smaller;
+    line-height: 0.75rem;
+    margin-top: 0.25rem;
+  }
 </style>
 
 <Datepicker
   bind:selected
   bind:dateChosen
-  weekStart = {1}
+  weekStart={1}
   {daysOfWeek}
   {monthsOfYear}
   format={'#{d}.#{m}.#{Y}'}
@@ -109,3 +135,23 @@
     </div>
   {/if}
 </Datepicker>
+
+{#if today}
+  <button class="button-tight" on:click={() => setToday()}>{today}</button>
+{/if}
+
+{#each quick_days as day}
+  <button class="button-tight" on:click={() => addDays(day)}>+{day}D</button>
+{/each}
+
+{#each quick_weeks as week}
+  <button
+    class="button-tight"
+    on:click={() => addDays(week * 7)}>+{week}W</button>
+{/each}
+
+{#each quick_months as month}
+  <button
+    class="button-tight"
+    on:click={() => addDays(month * 7 * 4)}>+{month}M</button>
+{/each}

@@ -201,13 +201,6 @@
   .button-delete {
     color: darkred;
   }
-
-  .button-tight {
-    height: 1.5rem;
-    font-size: smaller;
-    line-height: 0.75rem;
-    margin-top: 0.25rem;
-  }
 </style>
 
 <div class="container">
@@ -317,16 +310,10 @@
           <label for="to_return_on">Zurückerwartet</label>
         </div>
         <div class="col-input">
-          <DateInput bind:timeMillis={doc.to_return_on} />
-          <button
-            class="button-tight"
-            on:click={() => returnInNDays(7)}>+1W</button>
-          <button
-            class="button-tight"
-            on:click={() => returnInNDays(14)}>+2W</button>
-          <button
-            class="button-tight"
-            on:click={() => returnInNDays(21)}>+3W</button>
+          <DateInput
+            bind:timeMillis={doc.to_return_on}
+            quick_weeks={[1, 2, 3]}
+            bind:calculate_from={doc.rented_on} />
         </div>
       </row>
       <row>
@@ -334,8 +321,7 @@
           <label for="returned_on">Zurückgegeben</label>
         </div>
         <div class="col-input">
-          <DateInput bind:timeMillis={doc.returned_on} />
-          <button class="button-tight" on:click={returnToday}>Heute</button>
+          <DateInput bind:timeMillis={doc.returned_on} today="Heute" />
         </div>
       </row>
     </InputGroup>
