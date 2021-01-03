@@ -301,7 +301,7 @@ context("items", () => {
 
     it("Deletes item", () => {
       cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
-      cy.contains("Gegenstand Löschen").click();
+      cy.contains("Löschen").click();
       expectDisplaysOnlyItemsWithIds(
         itemsNotDeleted
           .filter((item) => item._id !== itemsNotDeleted[3]._id)
@@ -348,7 +348,7 @@ context("items", () => {
       cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer")
         .click()
         .contains("verfügbar")
-        .click();
+        .click({ force: true });
 
       cy.contains("Speichern").click().get(".multiSelectItem_clear").click({ force: true });
 

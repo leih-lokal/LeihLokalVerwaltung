@@ -219,7 +219,7 @@ context("Customers", () => {
 
     it("Deletes customer", () => {
       cy.get("table").contains(customers[3].firstname).click({ force: true });
-      cy.contains("Kunde Löschen").click();
+      cy.contains("Löschen").click();
       expectDisplaysOnlyCustomersWithIds(["1", "2", "3", "5", "6", "7", "8", "9", "10"]);
     });
 
