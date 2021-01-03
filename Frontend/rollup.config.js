@@ -6,6 +6,7 @@ import { terser } from "rollup-plugin-terser";
 import copy from "rollup-plugin-copy";
 import nodePolyfills from "rollup-plugin-node-polyfills";
 import replace from "@rollup/plugin-replace";
+import css from "rollup-plugin-css-only";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -29,11 +30,9 @@ export default {
       ENV_DATABASE: process.env.DATABASE,
     }),
     svelte({
-      emitCss: false,
-      css: (css) => {
-        css.write("bundle.css");
-      },
+      emitCss: true,
     }),
+    css({ output: "bundle.css" }),
     copy({
       targets: [{ src: "src/icons", dest: "public/build" }],
     }),
