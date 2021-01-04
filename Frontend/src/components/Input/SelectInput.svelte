@@ -1,5 +1,5 @@
 <script>
-    import Select from "svelte-select";
+    import Select from "svelte-select/src/Select.svelte";
 
     export let selectedValuesString = "";
     export let selectionOptions = [];
