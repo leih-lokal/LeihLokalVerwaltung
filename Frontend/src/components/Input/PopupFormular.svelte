@@ -85,10 +85,6 @@
     .button-delete {
         color: darkred;
     }
-
-    .hidden {
-        display: None;
-    }
 </style>
 
 <div>
@@ -102,12 +98,10 @@
                     </row>
                     {#each popupFormularConfiguration.inputs.filter((input) => input.group === group) as input}
                         <row>
-                            <div
-                                class="col-label {input.hidden ? 'hidden' : ''}">
+                            <div class="col-label">
                                 <label for={input.id}>{input.label}</label>
                             </div>
-                            <div
-                                class="col-input {input.hidden ? 'hidden' : ''}">
+                            <div class="col-input">
                                 {#if input.type === InputTypes.TEXT}
                                     <TextInput
                                         id={input.id}
