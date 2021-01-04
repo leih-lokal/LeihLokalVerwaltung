@@ -40,15 +40,6 @@
   }
 
   $: numberOfPages, setPage(currentPage);
-
-  document.onkeydown = function (event) {
-    event = event || window.event;
-    if (event.key == "ArrowLeft") {
-      setPage(currentPage - 1);
-    } else if (event.key == "ArrowRight") {
-      setPage(currentPage + 1);
-    }
-  };
 </script>
 
 <style>
@@ -83,6 +74,14 @@
   }
 </style>
 
+<svelte:window
+  on:keydown={(event) => {
+    if (event.key == 'ArrowLeft') {
+      setPage(currentPage - 1);
+    } else if (event.key == 'ArrowRight') {
+      setPage(currentPage + 1);
+    }
+  }} />
 {#if numberOfPages > 1}
   <div class="container">
     <div class="pagination">
