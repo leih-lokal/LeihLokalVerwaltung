@@ -208,17 +208,23 @@ class Database {
 
   async fetchUniqueDocsBySelector(selector, fields) {
     const result = await this.database.find({
-      limit: 9999,
+      limit: 100,
       fields: fields,
       selector: selector,
     });
-    const unique = [...new Set(result.docs.map(x => x[fields[0]]))];
+    const docs = []
+    for (let doc of result.docs) {
+      doc = doc[fields[0]].trim()
+      doc = doc.replace("ß", "ss")
+      docs.push(doc)
+    }
+    const unique = new Set(docs);
     const arr =  []
     for (const val of unique) {
       const obj = {}
       obj[fields[0]] = val
       arr.push(obj)
-  }
+    }
     return arr;
   }
 
