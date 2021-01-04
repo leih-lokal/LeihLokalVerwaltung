@@ -40,6 +40,15 @@
   }
 
   $: numberOfPages, setPage(currentPage);
+
+  document.onkeydown = function (event) {
+    event = event || window.event;
+    if (event.key == "ArrowLeft") {
+      setPage(currentPage - 1);
+    } else if (event.key == "ArrowRight") {
+      setPage(currentPage + 1);
+    }
+  };
 </script>
 
 <style>
