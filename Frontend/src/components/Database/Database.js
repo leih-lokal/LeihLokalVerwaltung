@@ -202,8 +202,24 @@ class Database {
       limit: 10,
       fields: fields,
       selector: selector,
-    });
+    }); 
     return result.docs;
+  }
+
+  async fetchUniqueDocsBySelector(selector, fields) {
+    const result = await this.database.find({
+      limit: 9999,
+      fields: fields,
+      selector: selector,
+    });
+    const unique = [...new Set(result.docs.map(x => x[fields[0]]))];
+    const arr =  []
+    for (const val of unique) {
+      const obj = {}
+      obj[fields[0]] = val
+      arr.push(obj)
+  }
+    return arr;
   }
 
   selectorsForSearchTerm(searchTerm) {
