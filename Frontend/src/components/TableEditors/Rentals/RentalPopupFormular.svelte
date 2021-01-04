@@ -143,6 +143,7 @@
                 id: "extended_on",
                 label: "Verlängert",
                 group: "Zeitraum",
+                hidden: createNew,
                 type: InputTypes.DATE,
                 bindTo: { keyValueStoreKey: "currentDoc", attr: "extended_on" },
             },
@@ -160,6 +161,7 @@
                 id: "returned_on",
                 label: "Zurückgegeben",
                 group: "Zeitraum",
+                hidden: createNew,
                 type: InputTypes.DATE,
                 bindTo: { keyValueStoreKey: "currentDoc", attr: "returned_on" },
             },
@@ -223,6 +225,7 @@
                 id: "deposit_returned",
                 label: "Pfand zurück",
                 group: "Pfand",
+                hidden: createNew,
                 type: InputTypes.TEXT,
                 bindTo: {
                     keyValueStoreKey: "currentDoc",
@@ -233,6 +236,7 @@
                 id: "deposit_retained",
                 label: "einbehalten",
                 group: "Pfand",
+                hidden: createNew,
                 type: InputTypes.TEXT,
                 bindTo: {
                     keyValueStoreKey: "currentDoc",
@@ -243,6 +247,7 @@
                 id: "deposit_retainment_reason",
                 label: "Grund",
                 group: "Pfand",
+                hidden: createNew,
                 type: InputTypes.TEXT,
                 bindTo: {
                     keyValueStoreKey: "currentDoc",
@@ -264,6 +269,7 @@
                 id: "receiving_employee",
                 label: "Rücknahme",
                 group: "Mitarbeiter",
+                hidden: createNew,
                 type: InputTypes.TEXT,
                 bindTo: {
                     keyValueStoreKey: "currentDoc",
@@ -274,6 +280,7 @@
                 id: "remark",
                 label: "Bemerkung",
                 group: "Mitarbeiter",
+                hidden: createNew,
                 type: InputTypes.TEXT,
                 bindTo: {
                     keyValueStoreKey: "currentDoc",
