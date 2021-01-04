@@ -88,9 +88,11 @@ const expectDisplaysRentals = (rentals) => {
       expect(row).to.have.css("background-color", "rgb(240, 200, 200)"); // red
     }
     row.find("td").each((colIndex, cell) => {
-      expect(cell.innerHTML).to.contain(
-        expectedDisplayValue(rentals[rowIndex], columns[colIndex].key)
-      );
+      if (rentals[rowIndex][columns[colIndex].key]) {
+        expect(cell.innerHTML).to.contain(
+          expectedDisplayValue(rentals[rowIndex], columns[colIndex].key)
+        );
+      }
     });
   });
 };
@@ -294,18 +296,11 @@ context("rentals", () => {
         item_id: "0001",
         item_name: "Dekupiersäge",
         rented_on: Date.UTC(2020, 0, 1),
-        extended_on: 0,
         to_return_on: Date.UTC(2020, 0, 8),
         passing_out_employee: "MM",
         customer_id: "5",
         name: "Viviana",
         deposit: 15,
-        deposit_returned: 0,
-        deposit_retained: 0,
-        returned_on: 0,
-        receiving_employee: "",
-        deposit_retainment_reason: "",
-        remark: "remark",
         image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/3106.jpg",
       };
 
@@ -315,7 +310,7 @@ context("rentals", () => {
         "have.value",
         expectedDateInputValue(newRental.rented_on)
       );
-      cy.get(".group row:nth-child(4) .datepicker input").should(
+      cy.get(".group row:nth-child(3) .datepicker input").should(
         "have.value",
         expectedDateInputValue(newRental.to_return_on)
       );
@@ -329,10 +324,7 @@ context("rentals", () => {
       cy.get("#customer_name").clear().type(newRental.name);
       cy.get(".autocomplete-list-item").contains(newRental.name).click();
       cy.get("#deposit").type(newRental.deposit);
-      cy.get("#deposit_returned").type(newRental.deposit_returned);
-      cy.get("#deposit_retained").type(newRental.deposit_retained);
       cy.get("#passing_out_employee").type(newRental.passing_out_employee);
-      cy.get("#remark").type(newRental.remark);
 
       cy.contains("Speichern").click();
       waitForPopupToClose();
