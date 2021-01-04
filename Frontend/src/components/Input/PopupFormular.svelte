@@ -12,6 +12,13 @@
     const dispatch = createEventDispatcher();
 
     export let popupFormularConfiguration;
+
+    document.onkeydown = function (evt) {
+        evt = evt || window.event;
+        if (evt.key == "Escape") {
+            dispatch("cancel");
+        }
+    };
 </script>
 
 <style>
@@ -78,6 +85,10 @@
     .button-delete {
         color: darkred;
     }
+
+    .hidden {
+        display: None;
+    }
 </style>
 
 <div>
@@ -91,10 +102,12 @@
                     </row>
                     {#each popupFormularConfiguration.inputs.filter((input) => input.group === group) as input}
                         <row>
-                            <div class="col-label">
+                            <div
+                                class="col-label {input.hidden ? 'hidden' : ''}">
                                 <label for={input.id}>{input.label}</label>
                             </div>
-                            <div class="col-input">
+                            <div
+                                class="col-input {input.hidden ? 'hidden' : ''}">
                                 {#if input.type === InputTypes.TEXT}
                                     <TextInput
                                         id={input.id}
