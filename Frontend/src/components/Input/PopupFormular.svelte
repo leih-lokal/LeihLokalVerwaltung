@@ -12,13 +12,6 @@
     const dispatch = createEventDispatcher();
 
     export let popupFormularConfiguration;
-
-    document.onkeydown = function (evt) {
-        evt = evt || window.event;
-        if (evt.key == "Escape") {
-            dispatch("cancel");
-        }
-    };
 </script>
 
 <style>
