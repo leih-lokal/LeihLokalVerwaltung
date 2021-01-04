@@ -23,6 +23,13 @@
     );
   }
 
+  const attributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
+    $customerDb
+      .selectorBuilder()
+      .withField(field)
+      .startsWithIgnoreCase(searchValue)
+      .build();
+
   const popupFormularConfiguration = new PopupFormularConfiguration()
     .setTitle(`Kunde ${createNew ? "anlegen" : "bearbeiten"}`)
     .setDisplayDeleteButton(!createNew)
@@ -52,8 +59,21 @@
         id: "street",
         label: "Strasse",
         group: "Adresse",
-        type: InputTypes.TEXT,
+        type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "street" },
+        onChange: (selectedItem) => {
+          keyValueStore.setValue("currentDoc", {
+            ...$keyValueStore["currentDoc"],
+            street: selectedItem.street,
+          });
+        },
+        searchFunction: (searchTerm) =>
+          $customerDb.fetchUniqueDocsBySelector(
+            attributeStartsWithIgnoreCaseSelector("street", searchTerm),
+            ["street"]
+          ),
+        suggestionFormat: (street) => `${street}`,
+        noResultsText: "Straße noch nicht in Datenbank",
       },
       {
         id: "house_number",
@@ -66,15 +86,41 @@
         id: "postal_code",
         label: "Postleitzahl",
         group: "Adresse",
-        type: InputTypes.TEXT,
+        type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "postal_code" },
+        onChange: (selectedItem) => {
+          keyValueStore.setValue("currentDoc", {
+            ...$keyValueStore["currentDoc"],
+            postal_code: selectedItem.postal_code,
+          });
+        },
+        searchFunction: (searchTerm) =>
+          $customerDb.fetchUniqueDocsBySelector(
+            attributeStartsWithIgnoreCaseSelector("postal_code", searchTerm),
+            ["postal_code"]
+          ),
+        suggestionFormat: (postal_code) => `${postal_code}`,
+        noResultsText: "PLZ noch nicht in Datenbank",
       },
       {
         id: "city",
         label: "Stadt",
         group: "Adresse",
-        type: InputTypes.TEXT,
+        type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "city" },
+        onChange: (selectedItem) => {
+          keyValueStore.setValue("currentDoc", {
+            ...$keyValueStore["currentDoc"],
+            city: selectedItem.city,
+          });
+        },
+        searchFunction: (searchTerm) =>
+          $customerDb.fetchUniqueDocsBySelector(
+            attributeStartsWithIgnoreCaseSelector("city", searchTerm),
+            ["city"]
+          ),
+        suggestionFormat: (city) => `${city}`,
+        noResultsText: "Stadt noch nicht in Datenbank",
       },
       {
         id: "email",

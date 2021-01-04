@@ -255,8 +255,10 @@ context("Customers", () => {
       cy.get("#telephone_number").type(newCustomer.telephone_number);
       cy.get("#subscribed_to_newsletter").click();
       cy.get("#street").type(newCustomer.street);
+      cy.get("body").click();
       cy.get("#house_number").type(newCustomer.house_number);
       cy.get("#postal_code").type(newCustomer.postal_code);
+      cy.get("body").click();
       cy.get("#city").type(newCustomer.city);
       cy.get("#remark").type(newCustomer.remark);
 
