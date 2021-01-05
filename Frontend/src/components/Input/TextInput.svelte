@@ -4,6 +4,7 @@
     export let id = "";
     export let readonly = false;
     export let value = "";
+    export let disabled = false;
 
     const dispatch = createEventDispatcher();
 </script>
@@ -26,5 +27,6 @@
         {id}
         name={id}
         {readonly}
+        {disabled}
         on:input={(event) => dispatch('change', event.target.value)} />
 </form>

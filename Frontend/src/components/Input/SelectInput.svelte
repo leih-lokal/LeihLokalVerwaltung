@@ -6,6 +6,7 @@
     export let isMulti = true;
     export let isCreatable = true;
     export let isClearable = true;
+    export let disabled = false;
 
     const valuesToOptions = (values) => {
         return values.map(
@@ -51,6 +52,7 @@
             selectedValuesString = '';
         }
     }}
+    isDisabled={disabled}
     {isMulti}
     {isCreatable}
     {isClearable}
