@@ -39,13 +39,12 @@
 
   export let quickset = {};
   export let timeMillis = 0;
-
+  export let disabled = false;
   function addDays(days) {
     let date = new Date();
     date.setDate(date.getDate() + days);
     timeMillis = date.getTime();
-  }
-</script>
+  }</script>
 
 <style>
   input {
@@ -67,32 +66,39 @@
   }
 </style>
 
-<Datepicker
-  selected={timeMillis === 0 ? new Date() : new Date(timeMillis)}
-  on:dateSelected={(event) => {
-    const date = event.detail.date;
-    const newTimeMillis = date.getTime() - TIMEZONE_OFFSET_MS;
-    if (timeMillis !== newTimeMillis) {
-      timeMillis = newTimeMillis;
-      dispatch('change', date);
-    }
-  }}
-  weekStart={1}
-  {daysOfWeek}
-  {monthsOfYear}
-  format={'#{d}.#{m}.#{Y}'}
-  start={new Date(2018, 1, 1)}
-  end={inTwoMonths()}>
+{#if disabled}
   <input
     type="text"
-    value={timeMillis === 0 ? '-' : saveParseTimestampToString(timeMillis)} />
-  <ClearInputButton
-    on:click={() => {
-      timeMillis = 0;
-      dispatch('change', undefined);
+    value={timeMillis === 0 ? '-' : saveParseTimestampToString(timeMillis)}
+    disabled={true} />
+{:else}
+  <Datepicker
+    selected={timeMillis === 0 ? new Date() : new Date(timeMillis)}
+    on:dateSelected={(event) => {
+      const date = event.detail.date;
+      const newTimeMillis = date.getTime() - TIMEZONE_OFFSET_MS;
+      if (timeMillis !== newTimeMillis) {
+        timeMillis = newTimeMillis;
+        dispatch('change', date);
+      }
     }}
-    visible={timeMillis !== 0} />
-</Datepicker>
+    weekStart={1}
+    {daysOfWeek}
+    {monthsOfYear}
+    format={'#{d}.#{m}.#{Y}'}
+    start={new Date(2018, 1, 1)}
+    end={inTwoMonths()}>
+    <input
+      type="text"
+      value={timeMillis === 0 ? '-' : saveParseTimestampToString(timeMillis)} />
+    <ClearInputButton
+      on:click={() => {
+        timeMillis = 0;
+        dispatch('change', undefined);
+      }}
+      visible={timeMillis !== 0} />
+  </Datepicker>
+{/if}
 
 {#each Object.entries(quickset) as [days, label]}
   <button
