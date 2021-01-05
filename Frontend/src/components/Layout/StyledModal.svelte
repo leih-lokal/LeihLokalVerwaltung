@@ -9,7 +9,7 @@
       props,
       {
         closeButton: false,
-        closeOnEsc: false,
+        closeOnEsc: true,
         closeOnOuterClick: false,
         styleWindow: {
           width: "60rem",

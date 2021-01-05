@@ -37,23 +37,13 @@
     return date;
   }
 
-  export let calculate_from;
-  export let today = false;
   export let quickset = {};
   export let timeMillis = 0;
-  function setToday() {
-    let date = new Date();
-    timeMillis = date.getTime();
-  }
 
   function addDays(days) {
-    if (calculate_from) {
-      timeMillis = calculate_from + days * 60 * 60 * 24 * 1000;
-    } else {
-      let date = new Date();
-      date.setDate(date.getDate() + days);
-      timeMillis = date.getTime();
-    }
+    let date = new Date();
+    date.setDate(date.getDate() + days);
+    timeMillis = date.getTime();
   }
 </script>
 
@@ -104,10 +94,8 @@
     visible={timeMillis !== 0} />
 </Datepicker>
 
-{#if today}
-  <button class="button-tight" on:click={() => setToday()}>{today}</button>
-{/if}
-
 {#each Object.entries(quickset) as [days, label]}
-  <button class="button-tight" on:click={() => addDays(days)}>{label}</button>
+  <button
+    class="button-tight"
+    on:click={() => addDays(parseInt(days))}>{label}</button>
 {/each}
