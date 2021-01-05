@@ -101,6 +101,7 @@
                                     <TextInput
                                         id={input.id}
                                         readonly={input.readonly}
+                                        disabled={input.disabled}
                                         bind:value={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                                         on:change={(event) => {
                                             if (input.onChange) input.onChange(event.detail);
@@ -108,6 +109,7 @@
                                 {:else if input.type === InputTypes.AUTOCOMPLETE}
                                     <AutocompleteInput
                                         inputId={input.id}
+                                        disabled={input.disabled}
                                         noResultsText={input.noResultsText}
                                         bind:value={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                                         searchFunction={input.searchFunction}
@@ -126,6 +128,7 @@
                                         bind:checked={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]} />
                                 {:else if input.type === InputTypes.DATE}
                                     <DateInput
+                                        disabled={input.disabled}
                                         bind:timeMillis={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                                         on:change={(event) => {
                                             if (input.onChange) input.onChange(event.detail);
@@ -134,6 +137,7 @@
                                     <SelectInput
                                         bind:selectedValuesString={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                                         selectionOptions={input.selectionOptions}
+                                        disabled={input.disabled}
                                         isMulti={input.isMulti}
                                         isCreatable={input.isCreatable}
                                         isClearable={input.isClearable} />

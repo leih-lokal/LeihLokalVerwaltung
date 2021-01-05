@@ -9,6 +9,7 @@
     export let searchFunction;
     export let value;
     export let suggestionFormat;
+    export let disabled;
 </script>
 
 <form autocomplete="off">
@@ -26,6 +27,7 @@
         }}
         {inputId}
         {noResultsText}
+        {disabled}
         hideArrow={true}
         selectedItem={{ attr: value }} />
 </form>

@@ -26,6 +26,13 @@
         );
     }
 
+    const docIsDeleted =
+        $keyValueStore["currentDoc"].status_on_website === "deleted";
+
+    keyValueStore.setValue("mock", {
+        status_on_website: "gelöscht",
+    });
+
     const popupFormularConfiguration = new PopupFormularConfiguration()
         .setTitle(`Gegenstand ${createNew ? "anlegen" : "bearbeiten"}`)
         .setDisplayDeleteButton(!createNew)
@@ -39,6 +46,7 @@
         .setInputs([
             {
                 id: "item_id",
+                disabled: docIsDeleted,
                 label: "Gegenstand Nr",
                 group: "Bezeichnung",
                 type: InputTypes.TEXT,
@@ -46,6 +54,7 @@
             },
             {
                 id: "item_name",
+                disabled: docIsDeleted,
                 label: "Gegenstand Name",
                 group: "Bezeichnung",
                 type: InputTypes.TEXT,
@@ -53,6 +62,7 @@
             },
             {
                 id: "brand",
+                disabled: docIsDeleted,
                 label: "Marke",
                 group: "Bezeichnung",
                 type: InputTypes.TEXT,
@@ -60,6 +70,7 @@
             },
             {
                 id: "itype",
+                disabled: docIsDeleted,
                 label: "Typbezeichnung",
                 group: "Bezeichnung",
                 type: InputTypes.TEXT,
@@ -68,6 +79,7 @@
 
             {
                 id: "category",
+                disabled: docIsDeleted,
                 label: "Kategorie",
                 group: "Eigenschaften",
                 type: InputTypes.SELECTION,
@@ -86,6 +98,7 @@
             },
             {
                 id: "deposit",
+                disabled: docIsDeleted,
                 label: "Pfand",
                 group: "Eigenschaften",
                 type: InputTypes.TEXT,
@@ -93,6 +106,7 @@
             },
             {
                 id: "added",
+                disabled: docIsDeleted,
                 label: "Erfasst am",
                 group: "Eigenschaften",
                 type: InputTypes.DATE,
@@ -100,6 +114,7 @@
             },
             {
                 id: "properties",
+                disabled: docIsDeleted,
                 label: "Eigenschaften",
                 group: "Eigenschaften",
                 type: InputTypes.TEXT,
@@ -108,6 +123,7 @@
 
             {
                 id: "parts",
+                disabled: docIsDeleted,
                 label: "Anzahl Teile",
                 group: "Zubehör",
                 type: InputTypes.TEXT,
@@ -115,6 +131,7 @@
             },
             {
                 id: "manual",
+                disabled: docIsDeleted,
                 label: "Anleitung",
                 group: "Zubehör",
                 type: InputTypes.TEXT,
@@ -122,6 +139,7 @@
             },
             {
                 id: "package",
+                disabled: docIsDeleted,
                 label: "Verpackung",
                 group: "Zubehör",
                 type: InputTypes.TEXT,
@@ -130,6 +148,7 @@
 
             {
                 id: "image",
+                disabled: docIsDeleted,
                 label: "Bild",
                 group: "Bild",
                 type: InputTypes.TEXT,
@@ -138,17 +157,18 @@
 
             {
                 id: "status_on_website",
+                disabled: docIsDeleted,
                 label: "Status auf Webseite",
                 group: "Status",
                 type: InputTypes.SELECTION,
                 bindTo: {
-                    keyValueStoreKey: "currentDoc",
+                    keyValueStoreKey: docIsDeleted ? "mock" : "currentDoc",
                     attr: "status_on_website",
                 },
                 selectionOptions: [
-                    { value: "deleted", label: "gelöscht" },
                     { value: "instock", label: "verfügbar" },
                     { value: "outofstock", label: "verliehen" },
+                    { value: "onbackorder", label: "nicht verleihbar" },
                 ],
                 isCreatable: false,
                 isMulti: false,
