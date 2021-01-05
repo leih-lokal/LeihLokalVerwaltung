@@ -3,25 +3,18 @@ import { render, fireEvent } from "@testing-library/svelte";
 import html from "svelte-htm";
 import { writable, get } from "svelte/store";
 
-const renderDateInputWithTimeMillis = (timeMillis) => {
+const renderDateInputWithTimeMillis = (timeMillis, quickset = {}) => {
   const timeMillisStore = writable();
   timeMillisStore.set(timeMillis);
-  const { container, getAllByText } = render(
-    html`<${DateInput} bind:timeMillis=${timeMillisStore} />`
+  const { container, getByText } = render(
+    html`<${DateInput} bind:timeMillis=${timeMillisStore} quickset=${quickset} />`
   );
   const textInput = container.querySelector('input[type="text"]');
   return {
     textInput: textInput,
     timeMillisStore: timeMillisStore,
     container: container,
-    pickAnotherDate: async () => {
-      await fireEvent.click(textInput);
-      await fireEvent.click(getAllByText("1")[0]);
-    },
-    openAndCloseDatePicker: async () => {
-      await fireEvent.click(textInput);
-      await fireEvent.keyDown(container, { key: "Escape", code: 27 });
-    },
+    getByText: getByText,
   };
 };
 
@@ -32,29 +25,52 @@ const dateToString = (date) =>
   )}.${date.getFullYear()}`;
 
 describe("DateInput", () => {
-  beforeAll(() => {});
   it("displays formatted date for given time millis", () => {
     const { textInput } = renderDateInputWithTimeMillis(1);
     expect(textInput).toHaveValue("01.01.1970");
   });
 
-  it("displays '-' if time millis is 0", () => {
+  it("displays '-' if timeMillis is 0", () => {
     const { textInput } = renderDateInputWithTimeMillis(0);
     expect(textInput).toHaveValue("-");
   });
 
-  /**
-  it("selects today when opening datepicker with timeMillis 0", async () => {
-    const { textInput, openAndCloseDatePicker } = renderDateInputWithTimeMillis(0);
-    expect(textInput).toHaveValue("-");
-    await openAndCloseDatePicker();
+  it("displays no clear button if timeMillis = 0", () => {
+    const { container } = renderDateInputWithTimeMillis(0);
+    expect(container.querySelectorAll(".clear").length).toEqual(0);
+  });
+
+  it("displays clear button if timeMillis != 0", () => {
+    const { container } = renderDateInputWithTimeMillis(1);
+    expect(container.querySelectorAll(".clear").length).toEqual(1);
+  });
+
+  it("clear button sets timeMillis to 0", async () => {
+    const { container, timeMillisStore } = renderDateInputWithTimeMillis(1);
+    expect(get(timeMillisStore)).toEqual(1);
+    await fireEvent.click(container.querySelector(".clear"));
+    expect(get(timeMillisStore)).toEqual(0);
+  });
+
+  it("shows today in datepicker if timeMillis = 0", async () => {
+    const { container, textInput } = renderDateInputWithTimeMillis(0);
+    await fireEvent.click(textInput);
+    await fireEvent.click(container.querySelector(".highlighted"));
     expect(textInput).toHaveValue(dateToString(new Date()));
   });
 
-  it("does not change selected date when opening datepicker with timeMillis 1", async () => {
-    const { textInput, openAndCloseDatePicker } = renderDateInputWithTimeMillis(1);
-    //expect(textInput).toHaveValue(dateToString(new Date(1)));
-    await openAndCloseDatePicker();
-    expect(textInput).toHaveValue(dateToString(new Date(1)));
-  }); */
+  it("displays all quickset buttons", () => {
+    const quicksetConfig = {
+      0: "Heute",
+      7: "1 Woche",
+      14: "2 Wochen",
+      21: "3 Wochen",
+    };
+    const { container } = renderDateInputWithTimeMillis(0, quicksetConfig);
+    const quicksetButtons = container.querySelectorAll(".button-tight");
+    expect(quicksetButtons.length).toEqual(Object.keys(quicksetConfig).length);
+    Object.keys(quicksetConfig).forEach((k, i) => {
+      expect(quicksetButtons[i].textContent).toEqual(quicksetConfig[k]);
+    });
+  });
 });
