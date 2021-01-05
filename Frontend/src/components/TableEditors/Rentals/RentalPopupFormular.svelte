@@ -144,6 +144,7 @@
                 label: "Verlängert",
                 group: "Zeitraum",
                 hidden: createNew,
+                quickset: { 0: "Heute" },
                 type: InputTypes.DATE,
                 bindTo: { keyValueStoreKey: "currentDoc", attr: "extended_on" },
             },
@@ -151,6 +152,7 @@
                 id: "to_return_on",
                 label: "Zurückerwartet",
                 group: "Zeitraum",
+                quickset: { 7: "1 Woche", 14: "2 Wochen", 21: "3 Wochen" },
                 type: InputTypes.DATE,
                 bindTo: {
                     keyValueStoreKey: "currentDoc",
@@ -162,6 +164,7 @@
                 label: "Zurückgegeben",
                 group: "Zeitraum",
                 hidden: createNew,
+                quickset: { 0: "Heute" },
                 type: InputTypes.DATE,
                 bindTo: { keyValueStoreKey: "currentDoc", attr: "returned_on" },
             },
