@@ -89,7 +89,9 @@
                     <row>
                         <h3>{group}</h3>
                     </row>
-                    {#each popupFormularConfiguration.inputs.filter((input) => input.group === group) as input}
+                    {#each popupFormularConfiguration.inputs
+                        .filter((input) => !input.hidden)
+                        .filter((input) => input.group === group) as input}
                         <row>
                             <div class="col-label">
                                 <label for={input.id}>{input.label}</label>
