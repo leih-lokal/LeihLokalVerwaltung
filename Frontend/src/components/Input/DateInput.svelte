@@ -36,9 +36,15 @@
     date.setMonth(date.getMonth() + 2);
     return date;
   }
-
+  export let quickset = {};
   export let timeMillis = 0;
   export let disabled = false;
+
+  function addDays(days) {
+    let date = new Date();
+    date.setDate(date.getDate() + days);
+    timeMillis = date.getTime();
+  }
 </script>
 
 <style>
@@ -51,6 +57,13 @@
     cursor: pointer;
     background-color: white;
     color: black;
+  }
+  .button-tight {
+    height: 1.5rem;
+    font-size: smaller;
+    line-height: 0.75rem;
+    margin-top: 0.25rem;
+    margin-left: 0.1rem;
   }
 </style>
 
@@ -87,3 +100,9 @@
       visible={timeMillis !== 0} />
   </Datepicker>
 {/if}
+
+{#each Object.entries(quickset) as [days, label]}
+  <button
+    class="button-tight"
+    on:click={() => addDays(parseInt(days))}>{label}</button>
+{/each}

@@ -129,6 +129,7 @@
                                 {:else if input.type === InputTypes.DATE}
                                     <DateInput
                                         disabled={input.disabled}
+                                        quickset={input.quickset ?? {}}
                                         bind:timeMillis={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                                         on:change={(event) => {
                                             if (input.onChange) input.onChange(event.detail);
