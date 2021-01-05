@@ -47,7 +47,9 @@ const expectDisplaysCustomers = (customers) => {
   cy.get("table > tr").should("have.length", customers.length);
   cy.get("table > tr").each((row, rowIndex) => {
     row.find("td > div").each((colIndex, cell) => {
-      expect(cell).to.contain(expectedDisplayValue(customers[rowIndex], columns[colIndex].key));
+      if (customers[rowIndex][columns[colIndex].key]) {
+        expect(cell).to.contain(expectedDisplayValue(customers[rowIndex], columns[colIndex].key));
+      }
     });
   });
 };
@@ -229,7 +231,6 @@ context("Customers", () => {
         lastname: "lastname",
         firstname: "firstname",
         registration_date: new Date(2020, 0, 1).getTime(),
-        renewed_on: 0,
         remark: "Bemerkung 123",
         subscribed_to_newsletter: true,
         email: "mail@mail.com",
