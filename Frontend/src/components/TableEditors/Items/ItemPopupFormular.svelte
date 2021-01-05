@@ -29,6 +29,10 @@
     const docIsDeleted =
         $keyValueStore["currentDoc"].status_on_website === "deleted";
 
+    keyValueStore.setValue("mock", {
+        status_on_website: "gelöscht",
+    });
+
     const popupFormularConfiguration = new PopupFormularConfiguration()
         .setTitle(`Gegenstand ${createNew ? "anlegen" : "bearbeiten"}`)
         .setDisplayDeleteButton(!createNew)
@@ -158,11 +162,10 @@
                 group: "Status",
                 type: InputTypes.SELECTION,
                 bindTo: {
-                    keyValueStoreKey: "currentDoc",
+                    keyValueStoreKey: docIsDeleted ? "mock" : "currentDoc",
                     attr: "status_on_website",
                 },
                 selectionOptions: [
-                    { value: "deleted", label: "gelöscht" },
                     { value: "instock", label: "verfügbar" },
                     { value: "outofstock", label: "verliehen" },
                 ],
