@@ -312,7 +312,7 @@
         <div class="col-input">
           <DateInput
             bind:timeMillis={doc.to_return_on}
-            quick_weeks={[1, 2, 3]}
+            quickset={{ 7: '1 Woche', 14: '2 Wochen', 21: '3 Wochen' }}
             bind:calculate_from={doc.rented_on} />
         </div>
       </row>

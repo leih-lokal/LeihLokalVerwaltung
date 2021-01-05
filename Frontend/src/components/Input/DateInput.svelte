@@ -39,9 +39,7 @@
 
   export let calculate_from;
   export let today = false;
-  export let quick_days = [];
-  export let quick_weeks = [];
-  export let quick_months = [];
+  export let quickset = {};
   export let timeMillis = 0;
   function setToday() {
     let date = new Date();
@@ -75,6 +73,7 @@
     font-size: smaller;
     line-height: 0.75rem;
     margin-top: 0.25rem;
+    margin-left: 0.1rem;
   }
 </style>
 
@@ -109,18 +108,6 @@
   <button class="button-tight" on:click={() => setToday()}>{today}</button>
 {/if}
 
-{#each quick_days as day}
-  <button class="button-tight" on:click={() => addDays(day)}>+{day}D</button>
-{/each}
-
-{#each quick_weeks as week}
-  <button
-    class="button-tight"
-    on:click={() => addDays(week * 7)}>+{week}W</button>
-{/each}
-
-{#each quick_months as month}
-  <button
-    class="button-tight"
-    on:click={() => addDays(month * 7 * 4)}>+{month}M</button>
+{#each Object.entries(quickset) as [days, label]}
+  <button class="button-tight" on:click={() => addDays(days)}>{label}</button>
 {/each}
