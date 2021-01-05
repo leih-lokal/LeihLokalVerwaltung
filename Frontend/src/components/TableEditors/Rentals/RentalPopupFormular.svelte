@@ -144,6 +144,7 @@
                 label: "Verlängert",
                 group: "Zeitraum",
                 hidden: createNew,
+                quickset: { 0: "Heute" },
                 type: InputTypes.DATE,
                 bindTo: { keyValueStoreKey: "currentDoc", attr: "extended_on" },
             },
