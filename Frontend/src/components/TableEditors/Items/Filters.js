@@ -32,6 +32,14 @@ export default {
         },
       },
     },
+    "nicht verleihbar": {
+      required_fields: ["status_on_website"],
+      selectors: {
+        status_on_website: {
+          $eq: "onbackorder",
+        },
+      },
+    },
     "Kategorie Küche": {
       required_fields: ["category"],
       selectors: {

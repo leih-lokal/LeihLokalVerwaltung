@@ -168,6 +168,7 @@
                 selectionOptions: [
                     { value: "instock", label: "verfügbar" },
                     { value: "outofstock", label: "verliehen" },
+                    { value: "onbackorder", label: "nicht verleihbar" },
                 ],
                 isCreatable: false,
                 isMulti: false,
