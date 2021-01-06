@@ -12,6 +12,7 @@
     const woocommerceClient = new WoocommerceClient();
 
     export let createNew;
+    export let onSave;
 
     if (createNew) {
         keyValueStore.setValue("currentDoc", {
@@ -198,6 +199,7 @@
         await savePromise
             .then((result) => notifier.success('Gegenstand gespeichert!'))
             .then(close)
+            .then(onSave)
             .catch((error) => {
                 notifier.danger('Gegenstand konnte nicht gespeichert werden!', 6000);
                 console.error(error);

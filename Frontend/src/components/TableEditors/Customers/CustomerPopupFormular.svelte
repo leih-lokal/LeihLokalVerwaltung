@@ -10,6 +10,7 @@
   const { close } = getContext("simple-modal");
 
   export let createNew;
+  export let onSave;
 
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
@@ -219,6 +220,7 @@
     savePromise
       .then((result) => notifier.success('Kunde gespeichert!'))
       .then(close)
+      .then(onSave)
       .catch((error) => {
         notifier.danger('Kunde konnte nicht gespeichert werden!', 6000);
         console.error(error);

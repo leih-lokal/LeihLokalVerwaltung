@@ -16,6 +16,8 @@
     const woocommerceClient = new WoocommerceClient();
 
     export let createNew;
+    export let onSave;
+
     if (createNew) {
         keyValueStore.setValue("currentDoc", {
             rented_on: new Date().getTime(),
@@ -333,6 +335,7 @@
         (createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc))
             .then((result) => notifier.success('Leihvorgang gespeichert!'))
             .then(close)
+            .then(onSave)
             .catch((error) => {
                 notifier.danger('Leihvorgang konnte nicht gespeichert werden!', 6000);
                 console.error(error);
@@ -344,6 +347,7 @@
                 .removeDoc($keyValueStore['currentDoc'])
                 .then(() => notifier.success('Leihvorgang gelöscht!'))
                 .then(close)
+                .then(onSave)
                 .catch((error) => {
                     console.error(error);
                     notifier.danger('Leihvorgang konnte nicht gelöscht werden!', 6000);

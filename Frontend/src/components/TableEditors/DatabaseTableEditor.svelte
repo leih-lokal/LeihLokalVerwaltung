@@ -14,7 +14,6 @@
   let table;
 
   const openStyledModal = getContext("openStyledModal");
-  const onModalClose = () => table.refresh();
 </script>
 
 <Table
@@ -25,13 +24,19 @@
   {rowBackgroundColorFunction}
   onRowClicked={(doc) => {
     keyValueStore.setValue('currentDoc', doc);
-    openStyledModal(popupFormularComponent, { createNew: false }, onModalClose);
+    openStyledModal(popupFormularComponent, {
+      createNew: false,
+      onSave: table.refresh,
+    });
   }} />
 
 {#if addNewItemButton}
   <AddNewItemButton
     on:click={() => {
       keyValueStore.removeValue('currentDoc');
-      openStyledModal(popupFormularComponent, { createNew: true }, onModalClose);
+      openStyledModal(popupFormularComponent, {
+        createNew: true,
+        onSave: table.refresh,
+      });
     }} />
 {/if}
