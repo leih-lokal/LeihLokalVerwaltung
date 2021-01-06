@@ -1,5 +1,5 @@
 <script>
-  export let page = 0;
+  export let page;
 </script>
 
 <style>
@@ -62,7 +62,7 @@
         class={page === 2 ? 'active' : ''}
         href="/"
         on:click|preventDefault={() => (page = 2)}>
-        Leihvorgänge
+        Leihvorgänge 6
       </a>
     </li>
   </ul>
