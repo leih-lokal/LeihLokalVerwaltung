@@ -40,9 +40,9 @@ export default [
     sort: function (doc) {
       if (doc.returned_on && doc.returned_on !== 0) {
         // display returned rentals before not returned rentals
-        return [0, doc.to_return_on];
+        return [0, doc.to_return_on, doc.name];
       } else {
-        return [1, doc.to_return_on];
+        return [1, doc.to_return_on, doc.name];
       }
     },
     initialSort: "asc",
