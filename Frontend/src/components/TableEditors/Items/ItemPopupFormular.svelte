@@ -187,6 +187,7 @@
                 .removeDoc(doc)
                 .then(() => notifier.success('Gegenstand gelöscht!'))
                 .then(close)
+                .then(onSave)
                 .catch((error) => {
                     console.error(error);
                     notifier.danger('Gegenstand konnte nicht gelöscht werden!', 6000);
