@@ -62,7 +62,7 @@
         class={page === 2 ? 'active' : ''}
         href="/"
         on:click|preventDefault={() => (page = 2)}>
-        Leihvorgänge 6
+        Leihvorgänge
       </a>
     </li>
   </ul>
