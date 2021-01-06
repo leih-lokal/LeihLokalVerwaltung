@@ -42,8 +42,8 @@ const expectedDisplayedTableDataSortedBy = (key, rentals) => {
     return rentals.sort(function (a, b) {
       if (a.returned_on && !b.returned_on) return -1;
       if (b.returned_on && !a.returned_on) return 1;
-      var x = parseInt(a[key]);
-      var y = parseInt(b[key]);
+      var x = parseInt(a.to_return_on) + String(a.name).localeCompare(b.name);
+      var y = parseInt(b.to_return_on) + String(b.name).localeCompare(a.name);
       return x < y ? -1 : x > y ? 1 : 0;
     });
   } else {
