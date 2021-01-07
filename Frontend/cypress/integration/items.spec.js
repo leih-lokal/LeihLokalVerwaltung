@@ -282,7 +282,7 @@ context("items", () => {
       );
       cy.get("#properties").should("have.value", itemsNotDeleted[3].properties);
       cy.get("#parts").should("have.value", itemsNotDeleted[3].parts);
-      cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
+      cy.get(":nth-child(4) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
         statusOnWebsiteDisplayValue(itemsNotDeleted[3].status_on_website)
       );
     });
@@ -339,7 +339,7 @@ context("items", () => {
       cy.get("#deposit").type(newItem.deposit);
       cy.get("#properties").type(newItem.properties);
       cy.get("#parts").type(newItem.parts);
-      cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer")
+      cy.get(":nth-child(4) > .group > :nth-child(2) > .col-input > .selectContainer")
         .click()
         .contains("verfügbar")
         .click({ force: true });
