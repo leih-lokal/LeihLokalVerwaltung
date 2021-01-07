@@ -10,6 +10,7 @@
   const { close } = getContext("simple-modal");
 
   export let createNew;
+  export let onSave;
 
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
@@ -206,6 +207,7 @@
         .removeDoc(doc)
         .then(() => notifier.success('Kunde gelöscht!'))
         .then(close)
+        .then(onSave)
         .catch((error) => {
           console.error(error);
           notifier.danger('Kunde konnte nicht gelöscht werden!', 6000);
@@ -219,6 +221,7 @@
     savePromise
       .then((result) => notifier.success('Kunde gespeichert!'))
       .then(close)
+      .then(onSave)
       .catch((error) => {
         notifier.danger('Kunde konnte nicht gespeichert werden!', 6000);
         console.error(error);
