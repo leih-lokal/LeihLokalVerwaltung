@@ -37,13 +37,7 @@
     const popupFormularConfiguration = new PopupFormularConfiguration()
         .setTitle(`Gegenstand ${createNew ? "anlegen" : "bearbeiten"}`)
         .setDisplayDeleteButton(!createNew)
-        .setInputGroups([
-            "Bezeichnung",
-            "Eigenschaften",
-            "Zubehör",
-            "Bild",
-            "Status",
-        ])
+        .setInputGroups(["Bezeichnung", "Eigenschaften", "Bild", "Status"])
         .setInputs([
             {
                 id: "item_id",
@@ -126,25 +120,9 @@
                 id: "parts",
                 disabled: docIsDeleted,
                 label: "Anzahl Teile",
-                group: "Zubehör",
+                group: "Eigenschaften",
                 type: InputTypes.TEXT,
                 bindTo: { keyValueStoreKey: "currentDoc", attr: "parts" },
-            },
-            {
-                id: "manual",
-                disabled: docIsDeleted,
-                label: "Anleitung",
-                group: "Zubehör",
-                type: InputTypes.TEXT,
-                bindTo: { keyValueStoreKey: "currentDoc", attr: "manual" },
-            },
-            {
-                id: "package",
-                disabled: docIsDeleted,
-                label: "Verpackung",
-                group: "Zubehör",
-                type: InputTypes.TEXT,
-                bindTo: { keyValueStoreKey: "currentDoc", attr: "package" },
             },
 
             {

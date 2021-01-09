@@ -237,28 +237,6 @@
                     attr: "deposit_returned",
                 },
             },
-            {
-                id: "deposit_retained",
-                label: "einbehalten",
-                group: "Pfand",
-                hidden: createNew,
-                type: InputTypes.TEXT,
-                bindTo: {
-                    keyValueStoreKey: "currentDoc",
-                    attr: "deposit_retained",
-                },
-            },
-            {
-                id: "deposit_retainment_reason",
-                label: "Grund",
-                group: "Pfand",
-                hidden: createNew,
-                type: InputTypes.TEXT,
-                bindTo: {
-                    keyValueStoreKey: "currentDoc",
-                    attr: "deposit_retainment_reason",
-                },
-            },
 
             {
                 id: "passing_out_employee",

@@ -282,12 +282,7 @@ context("items", () => {
       );
       cy.get("#properties").should("have.value", itemsNotDeleted[3].properties);
       cy.get("#parts").should("have.value", itemsNotDeleted[3].parts);
-      cy.get("#manual").should("have.value", itemsNotDeleted[3].manual);
-      cy.get("#package").should("have.value", itemsNotDeleted[3].package);
-      cy.get("#package").should("have.value", itemsNotDeleted[3].package);
-      cy.get("#package").should("have.value", itemsNotDeleted[3].package);
-      cy.get("#package").should("have.value", itemsNotDeleted[3].package);
-      cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
+      cy.get(":nth-child(4) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
         statusOnWebsiteDisplayValue(itemsNotDeleted[3].status_on_website)
       );
     });
@@ -321,8 +316,6 @@ context("items", () => {
         category: "Haushalt",
         deposit: 15,
         parts: "parts",
-        manual: "manual",
-        package: "package",
         added: new Date().getTime(),
         properties: "properties",
         status_on_website: "instock",
@@ -346,9 +339,7 @@ context("items", () => {
       cy.get("#deposit").type(newItem.deposit);
       cy.get("#properties").type(newItem.properties);
       cy.get("#parts").type(newItem.parts);
-      cy.get("#manual").type(newItem.manual);
-      cy.get("#package").type(newItem.package);
-      cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer")
+      cy.get(":nth-child(4) > .group > :nth-child(2) > .col-input > .selectContainer")
         .click()
         .contains("verfügbar")
         .click({ force: true });
