@@ -3,7 +3,7 @@
   import RentalPopupFormular from "./RentalPopupFormular.svelte";
   import columns from "./Columns.js";
   import filters from "./Filters.js";
-  import { rentalDb } from "../../../utils/stores";
+  import { rentalDb, customerDb } from "../../../utils/stores";
 
   function millisAtStartOfDay(millis) {
     var msPerDay = 86400 * 1000;
@@ -23,6 +23,16 @@
   function isBeforeToday(millis) {
     return isBeforeDay(millis, new Date().getTime());
   }
+
+  const cellBackgroundColorFunction = (col, item) => {
+    if (col.key == "customer_id" || col.key == "name") {
+      const customer = $customerDb.fetchById(item.customer_id);
+      return customer.highlight ?? "";
+    } else if (col.key == "item_id") {
+      return "green";
+    }
+    return "none";
+  };
 
   const rowBackgroundColorFunction = (item) => {
     // Heute zurückgegeben
@@ -53,4 +63,6 @@
   {filters}
   database={$rentalDb}
   {rowBackgroundColorFunction}
-  popupFormularComponent={RentalPopupFormular} />
+  {cellBackgroundColorFunction}
+  popupFormularComponent={RentalPopupFormular}
+/>

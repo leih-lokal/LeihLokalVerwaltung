@@ -10,6 +10,7 @@
   export let popupFormularComponent;
   export let addNewItemButton = true;
   export let rowBackgroundColorFunction;
+  export let cellBackgroundColorFunction;
 
   let table;
 
@@ -22,6 +23,7 @@
   {columns}
   {filters}
   {rowBackgroundColorFunction}
+  {cellBackgroundColorFunction}
   onRowClicked={(doc) => {
     keyValueStore.setValue('currentDoc', doc);
     openStyledModal(popupFormularComponent, {

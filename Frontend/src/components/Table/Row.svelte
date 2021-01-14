@@ -3,6 +3,7 @@
   export let item = {};
   export let rowHeight = 40;
   export let rowBackgroundColorFunction;
+  export let cellBackgroundColorFunction;
 
   const displayValue = (col, item) => {
     if (!(col.key in item)) {
@@ -55,7 +56,11 @@
           <img src={displayValue(col, item)} alt="item" />
         {/if}
       {:else}
-        <div class="cell">{displayValue(col, item)}</div>
+        <div
+          class="cell"
+          style={`${cellBackgroundColorFunction ? 'background-color: ' + cellBackgroundColorFunction(col, item) : ''}`}>
+          {displayValue(col, item)}
+        </div>
       {/if}
     </td>
   {/each}
