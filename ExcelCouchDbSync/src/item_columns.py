@@ -37,16 +37,6 @@ ITEM_COLUMNS = {
         "excel_title": "Anzahl Teile",
         "excel_column_index": 6
     },
-    "manual": {
-        "excel_to_db_transform": str,
-        "excel_title": "Bedienungsanleitung",
-        "excel_column_index": 7
-    },
-    "package": {
-        "excel_to_db_transform": str,
-        "excel_title": "Verpackung",
-        "excel_column_index": 8
-    },
     "added": {
         "excel_to_db_transform": parse_date,
         "db_to_excel_transform": millis_to_date_string,

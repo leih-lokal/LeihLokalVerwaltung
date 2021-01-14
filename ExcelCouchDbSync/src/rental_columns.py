@@ -67,17 +67,6 @@ RENTAL_COLUMNS = {
         "excel_title": "Mitarbeiter",
         "excel_column_index": 11
     },
-    "deposit_retained": {
-        "excel_to_db_transform": euro_to_int,
-        "db_to_excel_transform": append_euro,
-        "excel_title": "Pfand einbehalten",
-        "excel_column_index": 12
-    },
-    "deposit_retainment_reason": {
-        "excel_to_db_transform": str,
-        "excel_title": "Grund",
-        "excel_column_index": 13
-    },
     "remark": {
         "excel_to_db_transform": str,
         "excel_title": "Bemerkung",

@@ -27,7 +27,11 @@ def parse_4_digit_id(value):
     return value
 
 def millis_to_date_string(millis):
-    if millis is None or millis <= 0:
+    try:
+        int(millis)
+    except:
+        return ""
+    if millis is None or int(millis) <= 0:
         return ""
     else:
         time = datetime.datetime.fromtimestamp(millis / 1000.0)
