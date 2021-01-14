@@ -75,6 +75,20 @@ class WoocommerceClient {
         .split(", ")
         .filter((category) => category in WC_CATEGORIES)
         .map((category) => WC_CATEGORIES[category]),
+      meta_data: [
+        {
+          key: "marke",
+          value: item.brand ?? "-",
+        },
+        {
+          key: "typenbezeichnung",
+          value: item.itype ?? "-",
+        },
+        {
+          key: "anzahl_teile",
+          value: item.parts ?? "-",
+        },
+      ],
     };
   }
 
