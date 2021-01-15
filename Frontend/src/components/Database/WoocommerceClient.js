@@ -75,6 +75,7 @@ class WoocommerceClient {
         .split(", ")
         .filter((category) => category in WC_CATEGORIES)
         .map((category) => WC_CATEGORIES[category]),
+      short_description: `<div class="hidden">Art.Nr.: ${item._id}</div>${item.properties}`,
       meta_data: [
         {
           key: "marke",
