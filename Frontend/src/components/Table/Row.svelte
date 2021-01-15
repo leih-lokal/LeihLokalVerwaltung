@@ -14,6 +14,33 @@
   };
 </script>
 
+<tr
+  on:click
+  style={`--rowHeight: ${rowHeight}px; ${
+    rowBackgroundColorFunction
+      ? "background-color: " + rowBackgroundColorFunction(item)
+      : ""
+  }`}>
+  {#each columns as col}
+    <td>
+      {#if col.isImageUrl}
+        {#if item[col.key] && displayValue(col, item) !== ""}
+          <img src={displayValue(col, item)} alt="item" />
+        {/if}
+      {:else}
+        <div
+          class="cell"
+          style={cellBackgroundColorFunction
+            ? "background-color: " + cellBackgroundColorFunction(col, item)
+            : ""}
+        >
+          {displayValue(col, item)}
+        </div>
+      {/if}
+    </td>
+  {/each}
+</tr>
+
 <style>
   tr:hover {
     background-color: #ff9ef2 !important;
@@ -45,23 +72,3 @@
     margin-top: -100px;
   }
 </style>
-
-<tr
-  on:click
-  style={`--rowHeight: ${rowHeight}px; ${rowBackgroundColorFunction ? 'background-color: ' + rowBackgroundColorFunction(item) : ''}`}>
-  {#each columns as col}
-    <td>
-      {#if col.isImageUrl}
-        {#if item[col.key] && displayValue(col, item) !== ''}
-          <img src={displayValue(col, item)} alt="item" />
-        {/if}
-      {:else}
-        <div
-          class="cell"
-          style={`${cellBackgroundColorFunction ? 'background-color: ' + cellBackgroundColorFunction(col, item) : ''}`}>
-          {displayValue(col, item)}
-        </div>
-      {/if}
-    </td>
-  {/each}
-</tr>
