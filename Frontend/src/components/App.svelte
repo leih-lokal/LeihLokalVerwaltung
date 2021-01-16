@@ -1,7 +1,7 @@
 <script>
   import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import Navbar from "./Layout/Navbar.svelte";
-  import DatabaseTableEditor from "./TableEditors/DatabaseTableEditor.svelte";
+  import TableEditor from "./TableEditors/TableEditor.svelte";
   import Modal from "svelte-simple-modal";
   import StyledModal from "./Layout/StyledModal.svelte";
   import LoadingAnimation from "./Table/LoadingAnimation.svelte";
@@ -40,7 +40,7 @@
       <Navbar bind:page />
       <Modal>
         <StyledModal>
-          <DatabaseTableEditor tableEditorId={page} />
+          <TableEditor tableEditorId={page} />
         </StyledModal>
       </Modal>
     {:catch error}
