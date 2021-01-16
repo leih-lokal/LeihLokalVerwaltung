@@ -38,10 +38,29 @@ function hashString(text) {
   return String(hash);
 }
 
+function millisAtStartOfDay(millis) {
+  var msPerDay = 86400 * 1000;
+  return millis - (millis % msPerDay);
+}
+
+function isBeforeDay(m1, m2) {
+  return millisAtStartOfDay(m1) < millisAtStartOfDay(m2);
+}
+
+function isToday(millis) {
+  return millisAtStartOfDay(millis) === millisAtStartOfDay(new Date().getTime());
+}
+
+function isBeforeToday(millis) {
+  return isBeforeDay(millis, new Date().getTime());
+}
+
 export {
   saveParseTimestampToString,
   saveParseStringToInt,
   saveParseStringToTimeMillis,
   saveParseStringToBoolean,
   hashString,
+  isToday,
+  isBeforeToday,
 };
