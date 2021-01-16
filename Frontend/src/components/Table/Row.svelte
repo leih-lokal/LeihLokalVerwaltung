@@ -27,13 +27,22 @@
         {#if item[col.key] && displayValue(col, item) !== ""}
           <img src={displayValue(col, item)} alt="item" />
         {/if}
+      {:else if cellBackgroundColorFunction}
+        {#await cellBackgroundColorFunction(col, item)}
+          <div class="cell">
+            {displayValue(col, item)}
+          </div>
+        {:then color}
+          <div class="cell" style={color}>
+            {displayValue(col, item)}
+          </div>
+        {:catch error}
+          <div class="cell">
+            {displayValue(col, item)}
+          </div>
+        {/await}
       {:else}
-        <div
-          class="cell"
-          style={cellBackgroundColorFunction
-            ? "background-color: " + cellBackgroundColorFunction(col, item)
-            : ""}
-        >
+        <div class="cell">
           {displayValue(col, item)}
         </div>
       {/if}

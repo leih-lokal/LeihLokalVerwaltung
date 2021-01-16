@@ -1,6 +1,7 @@
 <script>
     import PopupFormularConfiguration from "../../Input/PopupFormularConfiguration";
     import InputTypes from "../../Input/InputTypes";
+    import ColorDefs from "../../Input/ColorDefs";
     import PopupFormular from "../../Input/PopupFormular.svelte";
     import { itemDb, keyValueStore } from "../../../utils/stores";
     import { notifier } from "@beyonk/svelte-notifications";
@@ -159,26 +160,35 @@
                 group: "Status",
                 type: InputTypes.SELECTION,
                 selectionOptions: [
+                    { value: "", label: "Nicht markieren" },
                     {
-                        value: "",
-                        label: "Nicht markieren",
+                        value: ColorDefs.GREEN,
+                        label:
+                            "<a style='color:" +
+                            ColorDefs.GREEN +
+                            "'>■</a> Grün",
                     },
                     {
-                        value: "green",
-                        label: "<a style='color:green'>■</a> Grün",
+                        value: ColorDefs.BLUE,
+                        label:
+                            "<a style='color: " +
+                            ColorDefs.BLUE +
+                            "'>■</a> Blau",
                     },
                     {
-                        value: "blue",
-                        label: "<a style='color:blue'>■</a> Blau",
+                        value: ColorDefs.YELLOW,
+                        label:
+                            "<a style='color: " +
+                            ColorDefs.YELLOW +
+                            "'>■</a> Gelb",
                     },
                     {
-                        value: "yellow",
-                        label: "<a style='color:yellow'>■</a> Gelb",
+                        value: ColorDefs.RED,
+                        label:
+                            "<a style='color: " + ColorDefs.RED + "'>■</a> Rot",
                     },
-                    { value: "red", label: "<a style='color:red'>■</a> Rot" },
                 ],
                 bindTo: { keyValueStoreKey: "currentDoc", attr: "highlight" },
-                isCreatable: true,
                 isClearable: true,
                 isMulti: false,
             },

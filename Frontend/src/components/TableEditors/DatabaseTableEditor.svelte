@@ -25,20 +25,22 @@
   {rowBackgroundColorFunction}
   {cellBackgroundColorFunction}
   onRowClicked={(doc) => {
-    keyValueStore.setValue('currentDoc', doc);
+    keyValueStore.setValue("currentDoc", doc);
     openStyledModal(popupFormularComponent, {
       createNew: false,
       onSave: table.refresh,
     });
-  }} />
+  }}
+/>
 
 {#if addNewItemButton}
   <AddNewItemButton
     on:click={() => {
-      keyValueStore.removeValue('currentDoc');
+      keyValueStore.removeValue("currentDoc");
       openStyledModal(popupFormularComponent, {
         createNew: true,
         onSave: table.refresh,
       });
-    }} />
+    }}
+  />
 {/if}
