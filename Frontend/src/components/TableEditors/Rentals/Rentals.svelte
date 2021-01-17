@@ -47,10 +47,10 @@
     return isBeforeDay(millis, new Date().getTime());
   }
 
-  async function cellBackgroundColorFunction(col, item) {
-    if (col.key == "customer_id" || col.key == "name" || col.key == "item_id") {
-      const id = col.key == "item_id" ? item.item_id : item.customer_id;
-      const $db = col.key == "item_id" ? $itemDb : $customerDb;
+  function cellStyleFunction(col, rental) {
+    if (["customer_id", "name", "item_id", "item_name"].includes(col.key)) {
+      const id = col.key.includes("item") ? rental.item_id : rental.customer_id;
+      const $db = col.key.includes("item") ? $itemDb : $customerDb;
 
       return $db.fetchById(id).then(function (doc) {
         if (doc.highlight) {
@@ -67,24 +67,25 @@
     return Promise.resolve("");
   }
 
-  const rowBackgroundColorFunction = (item) => {
+  const rowBackgroundColorFunction = (rental) => {
     // Heute zurückgegeben
-    if (item.returned_on && isToday(item.returned_on)) {
+    if (rental.returned_on && isToday(rental.returned_on)) {
       return "rgb(214,252,208)";
     }
     // Heute zurückerwartet
     else if (
-      item.to_return_on &&
-      isToday(item.to_return_on) &&
-      !item.returned_on
+      rental.to_return_on &&
+      isToday(rental.to_return_on) &&
+      !rental.returned_on
     ) {
       return "rgb(160,200,250)";
     }
     // verspätet
     else if (
-      item.to_return_on &&
-      ((!item.returned_on && isBeforeToday(item.to_return_on)) ||
-        (item.returned_on && isBeforeDay(item.to_return_on, item.returned_on)))
+      rental.to_return_on &&
+      ((!rental.returned_on && isBeforeToday(rental.to_return_on)) ||
+        (rental.returned_on &&
+          isBeforeDay(rental.to_return_on, rental.returned_on)))
     ) {
       return "rgb(240,200,200)";
     }
@@ -96,6 +97,6 @@
   {filters}
   database={$rentalDb}
   {rowBackgroundColorFunction}
-  {cellBackgroundColorFunction}
+  {cellStyleFunction}
   popupFormularComponent={RentalPopupFormular}
 />
