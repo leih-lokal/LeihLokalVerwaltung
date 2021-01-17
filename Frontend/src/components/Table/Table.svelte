@@ -12,7 +12,7 @@
   export let rowHeight = 40;
   export let filters = {};
   export let rowBackgroundColorFunction;
-  export let cellBackgroundColorFunction;
+  export let cellStyleFunction;
   export const refresh = () => {
     rows = database.query({
       filters: activeFilters.map((filterName) => filters.filters[filterName]),
@@ -75,7 +75,7 @@
           {#each data.rows as row (row._id)}
             <Row
               {rowBackgroundColorFunction}
-              {cellBackgroundColorFunction}
+              {cellStyleFunction}
               {columns}
               item={row}
               {rowHeight}
