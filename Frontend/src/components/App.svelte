@@ -4,7 +4,7 @@
   import TableEditor from "./TableEditors/TableEditor.svelte";
   import Modal from "svelte-simple-modal";
   import StyledModal from "./Layout/StyledModal.svelte";
-  import LoadingAnimation from "./Table/LoadingAnimation.svelte";
+  import LoadingAnimation from "./LoadingAnimation.svelte";
   import connectDatabases from "./Database/connectDatabases";
 
   let page = 2;

@@ -1,7 +1,6 @@
 import Header from "../../src/components/Table/Header.svelte";
 import { render, fireEvent } from "@testing-library/svelte";
 import html from "svelte-htm";
-import { writable, get } from "svelte/store";
 
 const columns = [
   {
@@ -18,30 +17,31 @@ const columns = [
   },
 ];
 
+const indicateSort = ["", "up", "down"];
+
 describe(Header.name, () => {
-  const renderHeader = (sortBy = "_id") => {
-    const sortByStore = writable(sortBy);
-    const sortReverseStore = writable(false);
-    const { container } = render(
+  const renderHeader = () => {
+    const onColHeaderClickedMock = jest.fn();
+    const { container, component } = render(
       html`<${Header}
-        bind:sortBy=${sortByStore}
-        bind:sortReverse=${sortReverseStore}
         columns=${columns}
+        indicateSort=${indicateSort}
+        on:colHeaderClicked=${onColHeaderClickedMock}
       />`
     );
     return {
       columnTitles: container.querySelectorAll("th"),
-      sortByStore: sortByStore,
-      sortReverseStore: sortReverseStore,
+      onColHeaderClickedMock: onColHeaderClickedMock,
+      component: component,
     };
   };
 
-  const expectIndicatesSortBy = (columnId, columnTitles, reverse = false) => {
+  const expectIndicatesSort = (columnTitles) => {
     columnTitles.forEach((titleElement, i) => {
-      if (i === columnId && reverse) {
+      if (indicateSort[i] == "up") {
         expect(titleElement.querySelector(".sort-indicator-down")).not.toBeVisible();
         expect(titleElement.querySelector(".sort-indicator-up")).toBeVisible();
-      } else if (i === columnId && !reverse) {
+      } else if (indicateSort[i] == "down") {
         expect(titleElement.querySelector(".sort-indicator-down")).toBeVisible();
         expect(titleElement.querySelector(".sort-indicator-up")).not.toBeVisible();
       } else {
@@ -59,42 +59,18 @@ describe(Header.name, () => {
     });
   });
 
-  it("sorts by column on title click", async () => {
-    const { columnTitles, sortByStore } = renderHeader();
-    expect(get(sortByStore)).toBe("_id");
-    expectIndicatesSortBy(0, columnTitles, false);
-
-    await fireEvent.click(columnTitles[1]);
-    expect(get(sortByStore)).toBe(columns[1].key);
-    expectIndicatesSortBy(1, columnTitles, false);
-
-    await fireEvent.click(columnTitles[2]);
-    expect(get(sortByStore)).toBe(columns[2].key);
-    expectIndicatesSortBy(2, columnTitles, false);
+  it("displays sort indicators", () => {
+    const { columnTitles } = renderHeader();
+    expectIndicatesSort(columnTitles);
   });
 
-  it("sorts reverse on second click on same column", async () => {
-    const { columnTitles, sortByStore, sortReverseStore } = renderHeader();
-
-    const clickOnColumnAndExpectSorted = async (i, reverse = false) => {
-      await fireEvent.click(columnTitles[i]);
-      expect(get(sortByStore)).toBe(columns[i].key);
-      expect(get(sortReverseStore)).toBe(reverse);
-      expectIndicatesSortBy(i, columnTitles, reverse);
-    };
-
-    expect(get(sortByStore)).toBe("_id");
-    expect(get(sortReverseStore)).toBe(false);
-    expectIndicatesSortBy(0, columnTitles, false);
-
-    await clickOnColumnAndExpectSorted(0, true);
-    await clickOnColumnAndExpectSorted(0, false);
-
-    await clickOnColumnAndExpectSorted(1, false);
-    await clickOnColumnAndExpectSorted(1, true);
-    await clickOnColumnAndExpectSorted(1, false);
-    await clickOnColumnAndExpectSorted(1, true);
-
-    await clickOnColumnAndExpectSorted(0, false);
+  it("fires onColHeaderClicked event", async () => {
+    const { columnTitles, onColHeaderClickedMock, component } = renderHeader();
+    await fireEvent.click(columnTitles[0]);
+    expect(onColHeaderClickedMock).toHaveBeenCalledTimes(1);
+    await fireEvent.click(columnTitles[1]);
+    expect(onColHeaderClickedMock).toHaveBeenCalledTimes(2);
+    await fireEvent.click(columnTitles[2]);
+    expect(onColHeaderClickedMock).toHaveBeenCalledTimes(3);
   });
 });

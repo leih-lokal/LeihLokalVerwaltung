@@ -63,4 +63,5 @@ export {
   hashString,
   isToday,
   isBeforeToday,
+  isBeforeDay,
 };

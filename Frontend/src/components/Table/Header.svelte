@@ -1,15 +1,46 @@
 <script>
   import Icon from "fa-svelte/src/Icon.svelte";
+  import { createEventDispatcher } from "svelte";
   import { faSort } from "@fortawesome/free-solid-svg-icons/faSort";
   import { faSortDown } from "@fortawesome/free-solid-svg-icons/faSortDown";
   import { faSortUp } from "@fortawesome/free-solid-svg-icons/faSortUp";
 
-  export let columns = [];
-  export let sortBy;
-  export let sortReverse = false;
+  const dispatch = createEventDispatcher();
 
-  let showSortIndicator = {};
+  export let columns = [];
+  export let indicateSort = [];
+
+  let mouseOverColHeader = {};
 </script>
+
+<thead>
+  <tr>
+    {#each columns as col, i}
+      <th
+        on:mouseout={() => (mouseOverColHeader = {})}
+        on:mouseover={() => {
+          mouseOverColHeader = {};
+          mouseOverColHeader[col.key] = true;
+        }}
+        on:click={() => dispatch("colHeaderClicked", col)}>
+        {col.title}
+        <span class="sort-indicator" class:visible={mouseOverColHeader[col.key]}>
+          <Icon icon={faSort} />
+        </span>
+        <span
+          class="sort-indicator-up"
+          class:visible={indicateSort[i] === "up" && !mouseOverColHeader[col.key]}>
+          <Icon icon={faSortUp} />
+        </span>
+        <span
+          class="sort-indicator-down"
+          class:visible={indicateSort[i] === "down" && !mouseOverColHeader[col.key]}>
+          <Icon icon={faSortDown} />
+        </span>
+      </th>
+    {/each}
+  </tr>
+</thead>
 
 <style>
   th {
@@ -35,38 +66,3 @@
     display: inline;
   }
 </style>
-
-<thead>
-  <tr>
-    {#each columns as col}
-      <th
-        on:mouseout={() => (showSortIndicator = {})}
-        on:mouseover={() => {
-          showSortIndicator = {};
-          showSortIndicator[col.key] = true;
-        }}
-        on:click={() => {
-          if (sortBy == col.key) sortReverse = !sortReverse;
-          else sortReverse = false;
-          sortBy = col.key;
-        }}>
-        {col.title}
-        <span
-          class="sort-indicator"
-          class:visible={showSortIndicator[col.key] && sortBy !== col.key}>
-          <Icon icon={faSort} />
-        </span>
-        <span
-          class="sort-indicator-up"
-          class:visible={sortBy === col.key && sortReverse}>
-          <Icon icon={faSortUp} />
-        </span>
-        <span
-          class="sort-indicator-down"
-          class:visible={sortBy === col.key && !sortReverse}>
-          <Icon icon={faSortDown} />
-        </span>
-      </th>
-    {/each}
-  </tr>
-</thead>

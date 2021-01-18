@@ -1,9 +1,13 @@
 <script>
   import AddNewItemButton from "../Input/AddNewItemButton.svelte";
+  import LoadingAnimation from "../LoadingAnimation.svelte";
+  import SearchFilterBar from "../Input/SearchFilterBar.svelte";
+  import Pagination from "../Table/Pagination.svelte";
   import Table from "../Table/Table.svelte";
   import { keyValueStore, customerDb, rentalDb, itemDb } from "../../utils/stores";
-  import { isToday, isBeforeToday } from "../../utils/utils";
+  import { isToday, isBeforeToday, isBeforeDay } from "../../utils/utils";
   import { getContext } from "svelte";
+  import { fade } from "svelte/transition";
 
   import CustomerPopupFormular from "./Customers/CustomerPopupFormular.svelte";
   import customerColumns from "./Customers/Columns.js";
@@ -19,15 +23,14 @@
 
   export let tableEditorId;
 
-  let table;
-
   const openStyledModal = getContext("openStyledModal");
   const openPopupFormular = (createNew) => {
     openStyledModal(TABLE_EDITOR_CONFIG[tableEditorId].popupFormularComponent, {
       createNew: createNew,
-      onSave: table.refresh,
+      onSave: refresh,
     });
   };
+  const shouldBeSortedByInitially = (col) => "initialSort" in col;
 
   const TABLE_EDITOR_CONFIG = [
     {
@@ -68,19 +71,92 @@
       return "rgb(240,200,200)";
     }
   };
+
+  async function calculateNumberOfPages() {
+    const data = await loadData();
+    const rowsOnLastPage = data.count % rowsPerPage;
+    numberOfPages = (data.count - rowsOnLastPage) / rowsPerPage;
+    if (rowsOnLastPage > 0) numberOfPages += 1;
+  }
+
+  const refresh = () =>
+    (loadData = () =>
+      database.query({
+        filters: activeFilters.map((filterName) => filters.filters[filterName]),
+        columns: columns,
+        searchTerm: searchTerm,
+        currentPage: currentPage,
+        rowsPerPage: rowsPerPage,
+        sortBy: sortBy,
+        sortReverse: sortReverse,
+      }));
+
+  const reset = () => {
+    searchTerm = "";
+    activeFilters = filters.activeByDefault;
+    calculateNumberOfPages();
+  };
+
+  let loadData = new Promise(() => {});
+  let searchTerm = "";
+  let currentPage = 0;
+  let rowHeight = 40;
+  let innerHeight = window.innerHeight;
+  let numberOfPages = 0;
+  let activeFilters = [];
+  $: columns = TABLE_EDITOR_CONFIG[tableEditorId].columns;
+  $: filters = TABLE_EDITOR_CONFIG[tableEditorId].filters;
+  $: database = TABLE_EDITOR_CONFIG[tableEditorId].database;
+  $: sortBy = columns.some(shouldBeSortedByInitially)
+    ? columns.find(shouldBeSortedByInitially).key
+    : "_id";
+  $: sortReverse = columns.some(shouldBeSortedByInitially)
+    ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
+    : false;
+  $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
+  $: tableEditorId, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
+  $: tableEditorId, reset();
+  $: activeFilters, calculateNumberOfPages();
+  $: indicateSort = columns.map((col) => {
+    if (col.key === sortBy) {
+      return sortReverse ? "up" : "down";
+    } else {
+      return "";
+    }
+  });
 </script>
 
-<Table
-  bind:this={table}
-  database={TABLE_EDITOR_CONFIG[tableEditorId].database}
-  columns={TABLE_EDITOR_CONFIG[tableEditorId].columns}
-  filters={TABLE_EDITOR_CONFIG[tableEditorId].filters}
-  {rowBackgroundColorFunction}
-  onRowClicked={(doc) => {
-    keyValueStore.setValue("currentDoc", doc);
-    openPopupFormular(false);
-  }}
+<svelte:window bind:innerHeight />
+
+<SearchFilterBar
+  filterOptions={Object.keys(filters.filters).map((filter) => ({ value: filter, label: filter }))}
+  bind:activeFilters
+  bind:searchTerm
 />
+
+{#await loadData()}
+  <LoadingAnimation />
+{:then data}
+  <div in:fade class="animatecontainer">
+    <Table
+      {rowHeight}
+      {columns}
+      {data}
+      {rowBackgroundColorFunction}
+      {indicateSort}
+      on:rowClicked={(event) => {
+        keyValueStore.setValue("currentDoc", event.detail);
+        openPopupFormular(false);
+      }}
+      on:colHeaderClicked={(event) => {
+        if (sortBy == event.detail.key) sortReverse = !sortReverse;
+        else sortReverse = false;
+        sortBy = event.detail.key;
+      }}
+    />
+  </div>
+{/await}
+<Pagination {numberOfPages} bind:currentPage />
 
 <AddNewItemButton
   on:click={() => {
@@ -88,3 +164,9 @@
     openPopupFormular(true);
   }}
 />
+
+<style>
+  .animatecontainer {
+    height: 100%;
+  }
+</style>
