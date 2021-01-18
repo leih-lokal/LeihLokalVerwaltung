@@ -2,10 +2,9 @@
   import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import Navbar from "./Layout/Navbar.svelte";
   import TableEditor from "./TableEditors/TableEditor.svelte";
-  import Modal from "svelte-simple-modal";
-  import StyledModal from "./Layout/StyledModal.svelte";
   import LoadingAnimation from "./LoadingAnimation.svelte";
   import connectDatabases from "./Database/connectDatabases";
+  import Modal from "./Layout/Modal.svelte";
 
   let page = 2;
 
@@ -39,11 +38,9 @@
     {:then}
       <Navbar bind:page />
       <Modal>
-        <StyledModal>
-          <TableEditor tableEditorId={page} />
-        </StyledModal>
+        <TableEditor tableEditorId={page} />
       </Modal>
-    {:catch error}
+    {:catch error}ø
       {error.message}
     {/await}
   </div>
