@@ -44,16 +44,6 @@ export default [
     search: "exclude",
   },
   {
-    title: "Anleitung",
-    key: "manual",
-    search: "exclude",
-  },
-  {
-    title: "Verpackung",
-    key: "package",
-    search: "exclude",
-  },
-  {
     title: "Erfasst am",
     key: "added",
     display: (value) => saveParseTimestampToString(value),

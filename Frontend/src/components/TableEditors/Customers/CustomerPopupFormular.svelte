@@ -1,6 +1,7 @@
 <script>
   import PopupFormularConfiguration from "../../Input/PopupFormularConfiguration";
   import InputTypes from "../../Input/InputTypes";
+  import ColorDefs from "../../Input/ColorDefs";
   import PopupFormular from "../../Input/PopupFormular.svelte";
   import { customerDb } from "../../../utils/stores";
   import { notifier } from "@beyonk/svelte-notifications";
@@ -10,6 +11,7 @@
   const { close } = getContext("simple-modal");
 
   export let createNew;
+  export let onSave;
 
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
@@ -194,35 +196,68 @@
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "remark" },
       },
+      {
+        id: "highlight",
+        label: "Markieren",
+        group: "Sonstiges",
+        type: InputTypes.SELECTION,
+        selectionOptions: [
+          { value: "", label: "Nicht markieren" },
+          {
+            value: ColorDefs.GREEN,
+            label: "<a style='color:" + ColorDefs.GREEN + "'>■</a> Grün",
+          },
+          {
+            value: ColorDefs.BLUE,
+            label: "<a style='color: " + ColorDefs.BLUE + "'>■</a> Blau",
+          },
+          {
+            value: ColorDefs.YELLOW,
+            label: "<a style='color: " + ColorDefs.YELLOW + "'>■</a> Gelb",
+          },
+          {
+            value: ColorDefs.RED,
+            label: "<a style='color: " + ColorDefs.RED + "'>■</a> Rot",
+          },
+        ],
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "highlight" },
+        isClearable: true,
+        isMulti: false,
+      },
     ]);
 </script>
 
 <PopupFormular
   {popupFormularConfiguration}
   on:delete={(event) => {
-    const doc = $keyValueStore['currentDoc'];
-    if (confirm('Soll dieser Kunde wirklich gelöscht werden?')) {
+    const doc = $keyValueStore["currentDoc"];
+    if (confirm("Soll dieser Kunde wirklich gelöscht werden?")) {
       $customerDb
         .removeDoc(doc)
-        .then(() => notifier.success('Kunde gelöscht!'))
+        .then(() => notifier.success("Kunde gelöscht!"))
         .then(close)
+        .then(onSave)
         .catch((error) => {
           console.error(error);
-          notifier.danger('Kunde konnte nicht gelöscht werden!', 6000);
+          notifier.danger("Kunde konnte nicht gelöscht werden!", 6000);
         });
     }
   }}
   on:save={(event) => {
-    const doc = $keyValueStore['currentDoc'];
-    const savePromise = createNew ? $customerDb.createDoc(doc) : $customerDb.updateDoc(doc);
+    const doc = $keyValueStore["currentDoc"];
+    const savePromise = createNew
+      ? $customerDb.createDoc(doc)
+      : $customerDb.updateDoc(doc);
 
     savePromise
-      .then((result) => notifier.success('Kunde gespeichert!'))
+      .then((result) => notifier.success("Kunde gespeichert!"))
       .then(close)
+      .then(onSave)
       .catch((error) => {
-        notifier.danger('Kunde konnte nicht gespeichert werden!', 6000);
+        notifier.danger("Kunde konnte nicht gespeichert werden!", 6000);
         console.error(error);
         close();
       });
   }}
-  on:cancel={close} />
+  on:cancel={close}
+/>

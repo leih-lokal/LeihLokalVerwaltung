@@ -18,6 +18,11 @@ export default {
             },
           },
           {
+            returned_on: {
+              $exists: false,
+            },
+          },
+          {
             $and: [
               {
                 returned_on: {

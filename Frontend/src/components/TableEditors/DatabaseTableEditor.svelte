@@ -10,11 +10,11 @@
   export let popupFormularComponent;
   export let addNewItemButton = true;
   export let rowBackgroundColorFunction;
+  export let cellStyleFunction;
 
   let table;
 
   const openStyledModal = getContext("openStyledModal");
-  const onModalClose = () => table.refresh();
 </script>
 
 <Table
@@ -23,15 +23,24 @@
   {columns}
   {filters}
   {rowBackgroundColorFunction}
+  {cellStyleFunction}
   onRowClicked={(doc) => {
-    keyValueStore.setValue('currentDoc', doc);
-    openStyledModal(popupFormularComponent, { createNew: false }, onModalClose);
-  }} />
+    keyValueStore.setValue("currentDoc", doc);
+    openStyledModal(popupFormularComponent, {
+      createNew: false,
+      onSave: table.refresh,
+    });
+  }}
+/>
 
 {#if addNewItemButton}
   <AddNewItemButton
     on:click={() => {
-      keyValueStore.removeValue('currentDoc');
-      openStyledModal(popupFormularComponent, { createNew: true }, onModalClose);
-    }} />
+      keyValueStore.removeValue("currentDoc");
+      openStyledModal(popupFormularComponent, {
+        createNew: true,
+        onSave: table.refresh,
+      });
+    }}
+  />
 {/if}

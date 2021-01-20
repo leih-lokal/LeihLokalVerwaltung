@@ -268,11 +268,6 @@ context("rentals", () => {
       cy.get("#customer_name").should("have.value", rentals[4].name);
       cy.get("#deposit").should("have.value", rentals[4].deposit);
       cy.get("#deposit_returned").should("have.value", rentals[4].deposit_returned);
-      cy.get("#deposit_retained").should("have.value", rentals[4].deposit_retained);
-      cy.get("#deposit_retainment_reason").should(
-        "have.value",
-        rentals[4].deposit_retainment_reason
-      );
 
       cy.get("#passing_out_employee").should("have.value", rentals[4].passing_out_employee);
       cy.get("#receiving_employee").should("have.value", rentals[4].receiving_employee);
@@ -281,10 +276,8 @@ context("rentals", () => {
 
     it("Saves changes", () => {
       cy.get("table").contains(rentals[4].item_name).click({ force: true });
-      cy.get("#deposit_retainment_reason").clear().type("reason");
       cy.contains("Speichern").click();
       waitForPopupToClose();
-      rentals[4].deposit_retainment_reason = "reason";
       expectDisplaysRentalsSortedBy(rentals);
     });
 

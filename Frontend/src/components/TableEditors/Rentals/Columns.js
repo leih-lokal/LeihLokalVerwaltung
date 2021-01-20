@@ -93,19 +93,6 @@ export default [
     search: "exclude",
   },
   {
-    title: "Pfand einbehalten",
-    key: "deposit_retained",
-    sort: function (doc) {
-      return parseInt(doc.deposit_retained, 10);
-    },
-    search: "exclude",
-  },
-  {
-    title: "Grund",
-    key: "deposit_retainment_reason",
-    search: "exclude",
-  },
-  {
     title: "Bemerkung",
     key: "remark",
     search: "exclude",
