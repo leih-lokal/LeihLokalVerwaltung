@@ -12,6 +12,7 @@
   export let rowHeight = 40;
   export let filters = {};
   export let rowBackgroundColorFunction;
+  export let cellStyleFunction;
   export const refresh = () => {
     rows = database.query({
       filters: activeFilters.map((filterName) => filters.filters[filterName]),
@@ -55,6 +56,42 @@
     refresh();
 </script>
 
+<svelte:window bind:innerHeight />
+<div class="container">
+  <SearchFilterBar
+    {filters}
+    onFilterOrSearchTermChange={(updatedActiveFilters, updatedSearchTerm) => {
+      activeFilters = updatedActiveFilters;
+      searchTerm = updatedSearchTerm;
+    }}
+  />
+  {#await rows}
+    <LoadingAnimation />
+  {:then data}
+    <div in:fade class="animatecontainer">
+      <div class="tablecontainer">
+        <table>
+          <Header {columns} bind:sortBy bind:sortReverse />
+          {#each data.rows as row (row._id)}
+            <Row
+              {rowBackgroundColorFunction}
+              {cellStyleFunction}
+              {columns}
+              item={row}
+              {rowHeight}
+              on:click={() => onRowClicked(row)}
+            />
+          {/each}
+        </table>
+      </div>
+      <Pagination
+        numberOfPages={calculateNumberOfPages(data.count, rowsPerPage)}
+        bind:currentPage
+      />
+    </div>
+  {/await}
+</div>
+
 <style>
   .animatecontainer {
     height: 100%;
@@ -82,35 +119,3 @@
     background-color: #f2f2f2;
   }
 </style>
-
-<svelte:window bind:innerHeight />
-<div class="container">
-  <SearchFilterBar
-    {filters}
-    onFilterOrSearchTermChange={(updatedActiveFilters, updatedSearchTerm) => {
-      activeFilters = updatedActiveFilters;
-      searchTerm = updatedSearchTerm;
-    }} />
-  {#await rows}
-    <LoadingAnimation />
-  {:then data}
-    <div in:fade class="animatecontainer">
-      <div class="tablecontainer">
-        <table>
-          <Header {columns} bind:sortBy bind:sortReverse />
-          {#each data.rows as row (row._id)}
-            <Row
-              {rowBackgroundColorFunction}
-              {columns}
-              item={row}
-              {rowHeight}
-              on:click={() => onRowClicked(row)} />
-          {/each}
-        </table>
-      </div>
-      <Pagination
-        numberOfPages={calculateNumberOfPages(data.count, rowsPerPage)}
-        bind:currentPage />
-    </div>
-  {/await}
-</div>

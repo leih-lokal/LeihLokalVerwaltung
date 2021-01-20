@@ -1,6 +1,7 @@
 <script>
     import PopupFormularConfiguration from "../../Input/PopupFormularConfiguration";
     import InputTypes from "../../Input/InputTypes";
+    import ColorDefs from "../../Input/ColorDefs";
     import PopupFormular from "../../Input/PopupFormular.svelte";
     import { itemDb, keyValueStore } from "../../../utils/stores";
     import { notifier } from "@beyonk/svelte-notifications";
@@ -153,34 +154,80 @@
                 isMulti: false,
                 isClearable: false,
             },
+            {
+                id: "highlight",
+                label: "Markieren",
+                group: "Status",
+                type: InputTypes.SELECTION,
+                selectionOptions: [
+                    { value: "", label: "Nicht markieren" },
+                    {
+                        value: ColorDefs.GREEN,
+                        label:
+                            "<a style='color:" +
+                            ColorDefs.GREEN +
+                            "'>■</a> Grün",
+                    },
+                    {
+                        value: ColorDefs.BLUE,
+                        label:
+                            "<a style='color: " +
+                            ColorDefs.BLUE +
+                            "'>■</a> Blau",
+                    },
+                    {
+                        value: ColorDefs.YELLOW,
+                        label:
+                            "<a style='color: " +
+                            ColorDefs.YELLOW +
+                            "'>■</a> Gelb",
+                    },
+                    {
+                        value: ColorDefs.RED,
+                        label:
+                            "<a style='color: " + ColorDefs.RED + "'>■</a> Rot",
+                    },
+                ],
+                bindTo: { keyValueStoreKey: "currentDoc", attr: "highlight" },
+                isClearable: true,
+                isMulti: false,
+            },
         ]);
 </script>
 
 <PopupFormular
     {popupFormularConfiguration}
     on:delete={(event) => {
-        const doc = $keyValueStore['currentDoc'];
-        if (confirm('Soll dieser Gegenstand wirklich gelöscht werden?')) {
+        const doc = $keyValueStore["currentDoc"];
+        if (confirm("Soll dieser Gegenstand wirklich gelöscht werden?")) {
             $itemDb
                 .removeDoc(doc)
-                .then(() => notifier.success('Gegenstand gelöscht!'))
+                .then(() => notifier.success("Gegenstand gelöscht!"))
                 .then(close)
                 .then(onSave)
                 .catch((error) => {
                     console.error(error);
-                    notifier.danger('Gegenstand konnte nicht gelöscht werden!', 6000);
+                    notifier.danger(
+                        "Gegenstand konnte nicht gelöscht werden!",
+                        6000
+                    );
                 });
         }
     }}
     on:save={async (event) => {
-        const doc = $keyValueStore['currentDoc'];
-        const savePromise = createNew ? $itemDb.createDoc(doc) : $itemDb.updateDoc(doc);
+        const doc = $keyValueStore["currentDoc"];
+        const savePromise = createNew
+            ? $itemDb.createDoc(doc)
+            : $itemDb.updateDoc(doc);
         await savePromise
-            .then((result) => notifier.success('Gegenstand gespeichert!'))
+            .then((result) => notifier.success("Gegenstand gespeichert!"))
             .then(close)
             .then(onSave)
             .catch((error) => {
-                notifier.danger('Gegenstand konnte nicht gespeichert werden!', 6000);
+                notifier.danger(
+                    "Gegenstand konnte nicht gespeichert werden!",
+                    6000
+                );
                 console.error(error);
             });
 
@@ -191,10 +238,16 @@
                     doc.wc_url = wcDoc.permalink;
                     doc.wc_id = wcDoc.id;
                     $itemDb.updateDoc(doc);
-                    notifier.success('Gegenstand auf der Webseite erstellt!', 3000);
+                    notifier.success(
+                        "Gegenstand auf der Webseite erstellt!",
+                        3000
+                    );
                 })
                 .catch((error) => {
-                    notifier.warning('Gegenstand konnte auf der Webseite nicht erstellt werden!', 6000);
+                    notifier.warning(
+                        "Gegenstand konnte auf der Webseite nicht erstellt werden!",
+                        6000
+                    );
                     console.error(error);
                 });
         } else {
@@ -202,14 +255,18 @@
                 .updateItem(doc)
                 .then(() =>
                     notifier.success(
-                        'Status auf der Webseite aktualisiert!',
+                        "Status auf der Webseite aktualisiert!",
                         3000
                     )
                 )
                 .catch((error) => {
-                    notifier.warning('Status auf der Webseite konnte nicht aktualisiert werden!', 6000);
+                    notifier.warning(
+                        "Status auf der Webseite konnte nicht aktualisiert werden!",
+                        6000
+                    );
                     console.error(error);
                 });
         }
     }}
-    on:cancel={close} />
+    on:cancel={close}
+/>
