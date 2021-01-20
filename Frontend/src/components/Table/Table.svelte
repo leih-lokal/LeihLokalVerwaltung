@@ -7,7 +7,7 @@
   export let rowBackgroundColorFunction;
   export let data;
   export let indicateSort = {};
-
+  export let cellStyleFunction;
   const dispatch = createEventDispatcher();
 </script>
 
@@ -17,6 +17,7 @@
     {#each data.rows as row (row._id)}
       <Row
         {rowBackgroundColorFunction}
+        {cellStyleFunction}
         {columns}
         item={row}
         {rowHeight}
