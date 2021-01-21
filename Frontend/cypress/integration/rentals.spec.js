@@ -113,8 +113,6 @@ context("rentals", () => {
     cy.visit("../../public/index.html").get("nav").contains("Leihvorgänge").click();
   });
 
-  /**
-
   it("displays correct number of rentals", () => {
     cy.get("table > tr").should("have.length", currentRentals.length);
   });
@@ -233,7 +231,7 @@ context("rentals", () => {
         )
       );
     });
-  });*/
+  });
 
   context("Editing", () => {
     beforeEach(clearFilter);
