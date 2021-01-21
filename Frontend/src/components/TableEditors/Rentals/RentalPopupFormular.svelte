@@ -16,7 +16,7 @@
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
       rented_on: new Date().getTime(),
-      to_return_on: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+      to_return_on: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).getTime(),
       returned_on: 0,
       extended_on: 0,
     });
