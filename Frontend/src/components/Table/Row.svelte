@@ -3,6 +3,7 @@
   export let item = {};
   export let rowHeight = 40;
   export let rowBackgroundColorFunction;
+  export let cellStyleFunction = (col, item) => "";
 
   const displayValue = (col, item) => {
     if (!(col.key in item)) {
@@ -12,6 +13,38 @@
     }
   };
 </script>
+
+<tr
+  on:click
+  style={`--rowHeight: ${rowHeight}px; ${
+    rowBackgroundColorFunction
+      ? "background-color: " + rowBackgroundColorFunction(item)
+      : ""
+  }`}>
+  {#each columns as col}
+    <td>
+      {#if col.isImageUrl}
+        {#if item[col.key] && displayValue(col, item) !== ""}
+          <img src={displayValue(col, item)} alt="item" />
+        {/if}
+      {:else if cellStyleFunction}
+        {#await cellStyleFunction(col, item)}
+          <div class="cell">
+            {displayValue(col, item)}
+          </div>
+        {:then color}
+          <div class="cell" style={color}>
+            {displayValue(col, item)}
+          </div>
+        {:catch error}
+          <div class="cell">
+            {displayValue(col, item)}
+          </div>
+        {/await}
+      {/if}
+    </td>
+  {/each}
+</tr>
 
 <style>
   tr:hover {
@@ -44,19 +77,3 @@
     margin-top: -100px;
   }
 </style>
-
-<tr
-  on:click
-  style={`--rowHeight: ${rowHeight}px; ${rowBackgroundColorFunction ? 'background-color: ' + rowBackgroundColorFunction(item) : ''}`}>
-  {#each columns as col}
-    <td>
-      {#if col.isImageUrl}
-        {#if item[col.key] && displayValue(col, item) !== ''}
-          <img src={displayValue(col, item)} alt="item" />
-        {/if}
-      {:else}
-        <div class="cell">{displayValue(col, item)}</div>
-      {/if}
-    </td>
-  {/each}
-</tr>

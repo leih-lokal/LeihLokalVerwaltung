@@ -39,13 +39,16 @@ const expectedDisplayValue = (rental, rentalKey) => {
 
 const expectedDisplayedTableDataSortedBy = (key, rentals) => {
   if (key === "to_return_on") {
-    return rentals.sort(function (a, b) {
+    let sorted = rentals.sort(function (a, b) {
       if (a.returned_on && !b.returned_on) return -1;
       if (b.returned_on && !a.returned_on) return 1;
-      var x = parseInt(a[key]);
-      var y = parseInt(b[key]);
+      var x = parseInt(a.to_return_on) + String(a.name).localeCompare(b.name);
+      var y = parseInt(b.to_return_on) + String(b.name).localeCompare(a.name);
       return x < y ? -1 : x > y ? 1 : 0;
     });
+
+    console.log(sorted.map((rental) => rental.item_name));
+    return sorted;
   } else {
     let transformBeforeSort = (value) => value;
     if (["returned_on", "extended_on", "rented_on", "item_id", "customer_id"].includes(key))
@@ -292,6 +295,7 @@ context("rentals", () => {
         to_return_on: Date.UTC(2020, 0, 8),
         passing_out_employee: "MM",
         customer_id: "5",
+        returned_on: 0,
         name: "Viviana",
         deposit: 15,
         image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/3106.jpg",
@@ -316,7 +320,7 @@ context("rentals", () => {
       cy.get(".autocomplete-list-item").contains(newRental.name).click();
       cy.get("#customer_name").clear().type(newRental.name);
       cy.get(".autocomplete-list-item").contains(newRental.name).click();
-      cy.get("#deposit").type(newRental.deposit);
+      cy.get("#deposit").clear().type(newRental.deposit);
       cy.get("#passing_out_employee").type(newRental.passing_out_employee);
 
       cy.contains("Speichern").click();
