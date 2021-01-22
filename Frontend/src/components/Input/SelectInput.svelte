@@ -7,6 +7,8 @@
   export let isCreatable = true;
   export let isClearable = true;
   export let disabled = false;
+  export let inputStyles = "cursor: pointer;";
+  export let placeholder = "Auswählen...";
 
   const valuesToOptions = (values) => {
     return values.map(
@@ -30,7 +32,8 @@
 
 <Select
   items={selectionOptions}
-  bind:selectedValue={selectedValuesArray}
+  {inputStyles}
+  selectedValue={selectedValuesArray.length !== 0 ? selectedValuesArray : undefined}
   on:select={(event) => {
     let selection = event.detail;
     if (selection) {
@@ -44,11 +47,5 @@
   {isMulti}
   {isCreatable}
   {isClearable}
-  placeholder={"Auswählen..."}
+  {placeholder}
 />
-
-<style>
-  :global(.selectContainer > input) {
-    cursor: pointer !important;
-  }
-</style>

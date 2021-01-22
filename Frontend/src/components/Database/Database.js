@@ -202,7 +202,7 @@ class Database {
       limit: 10,
       fields: fields,
       selector: selector,
-    }); 
+    });
     return result.docs;
   }
 
@@ -212,18 +212,18 @@ class Database {
       fields: fields,
       selector: selector,
     });
-    const docs = []
+    const docs = [];
     for (let doc of result.docs) {
-      doc = doc[fields[0]].trim()
-      doc = doc.replace("ß", "ss")
-      docs.push(doc)
+      doc = doc[fields[0]].trim();
+      doc = doc.replace("ß", "ss");
+      docs.push(doc);
     }
     const unique = new Set(docs);
-    const arr =  []
+    const arr = [];
     for (const val of unique) {
-      const obj = {}
-      obj[fields[0]] = val
-      arr.push(obj)
+      const obj = {};
+      obj[fields[0]] = val;
+      arr.push(obj);
     }
     return arr;
   }

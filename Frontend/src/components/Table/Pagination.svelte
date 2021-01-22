@@ -39,15 +39,46 @@
     calculatePageButtons(numberOfPages);
   }
 
-  $: numberOfPages, setPage(currentPage);
+  $: numberOfPages, currentPage, setPage(currentPage);
 </script>
+
+<svelte:window
+  on:keydown={(event) => {
+    if (event.key == "ArrowLeft") {
+      setPage(currentPage - 1);
+    } else if (event.key == "ArrowRight") {
+      setPage(currentPage + 1);
+    }
+  }}
+/>
+{#if numberOfPages > 1}
+  <div class="container">
+    <div class="pagination">
+      <a href="#/" on:click={() => setPage(currentPage - 1)}>&laquo;</a>
+      {#each pageButtons as pageButton}
+        {#if typeof pageButton === "number"}
+          <a
+            href="#/"
+            on:click={() => setPage(pageButton)}
+            class={pageButton === currentPage ? "active" : ""}>
+            {pageButton + 1}
+          </a>
+        {:else}<a href="#/" class="disabled">{pageButton}</a>{/if}
+      {/each}
+      <a href="#/" on:click={() => setPage(currentPage + 1)}>&raquo;</a>
+    </div>
+  </div>
+{/if}
 
 <style>
   .container {
-    height: 100%;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    z-index: -100;
   }
   .pagination {
     display: flex;
@@ -73,30 +104,3 @@
     background-color: #ddd;
   }
 </style>
-
-<svelte:window
-  on:keydown={(event) => {
-    if (event.key == 'ArrowLeft') {
-      setPage(currentPage - 1);
-    } else if (event.key == 'ArrowRight') {
-      setPage(currentPage + 1);
-    }
-  }} />
-{#if numberOfPages > 1}
-  <div class="container">
-    <div class="pagination">
-      <a href="#/" on:click={() => setPage(currentPage - 1)}>&laquo;</a>
-      {#each pageButtons as pageButton}
-        {#if typeof pageButton === 'number'}
-          <a
-            href="#/"
-            on:click={() => setPage(pageButton)}
-            class={pageButton === currentPage ? 'active' : ''}>
-            {pageButton + 1}
-          </a>
-        {:else}<a href="#/" class="disabled">{pageButton}</a>{/if}
-      {/each}
-      <a href="#/" on:click={() => setPage(currentPage + 1)}>&raquo;</a>
-    </div>
-  </div>
-{/if}

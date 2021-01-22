@@ -3,18 +3,21 @@ import { render, fireEvent } from "@testing-library/svelte";
 import html from "svelte-htm";
 import { writable, get } from "svelte/store";
 
-const renderSelectInputWithValueAndOptions = (value, options = []) => {
+const renderSelectInputWithValueAndOptions = (value, options = [], isMulti = true) => {
   const selectedValuesStringStore = writable();
   selectedValuesStringStore.set(value);
   const { container } = render(
     html`<${SelectInput}
       bind:selectedValuesString=${selectedValuesStringStore}
       selectionOptions=${options}
+      isMulti=${isMulti}
     />`
   );
   return {
     selectedValuesStringStore: selectedValuesStringStore,
     container: container,
+    multiSelectedItemElements: container.querySelectorAll(".multiSelectItem_label"),
+    singleSelectedItemElement: container.querySelector(".selectedItem .selection"),
   };
 };
 
@@ -26,11 +29,32 @@ describe("SelectInput", () => {
     expect(container.querySelectorAll(".multiSelectItem_label")[0].textContent).toEqual("value1");
   });
 
+  it("displays empty string without value for isMulti=true", () => {
+    const { multiSelectedItemElements } = renderSelectInputWithValueAndOptions("");
+    expect(multiSelectedItemElements.length).toEqual(0);
+  });
+
+  it("displays empty string without value for isMulti=false", () => {
+    const { singleSelectedItemElement } = renderSelectInputWithValueAndOptions("", [], false);
+    expect(singleSelectedItemElement).toBeNull();
+  });
+
+  it("displays given single value for isMulti=false", () => {
+    const { singleSelectedItemElement } = renderSelectInputWithValueAndOptions(
+      "singleValue",
+      [],
+      false
+    );
+    expect(singleSelectedItemElement.textContent).toEqual("singleValue");
+  });
+
   it("displays given multiple values", () => {
-    const { container } = renderSelectInputWithValueAndOptions("value1, value2, value3");
-    expect(container.querySelectorAll(".multiSelectItem_label")[0].textContent).toEqual("value1");
-    expect(container.querySelectorAll(".multiSelectItem_label")[1].textContent).toEqual("value2");
-    expect(container.querySelectorAll(".multiSelectItem_label")[2].textContent).toEqual("value3");
+    const { multiSelectedItemElements } = renderSelectInputWithValueAndOptions(
+      "value1, value2, value3"
+    );
+    expect(multiSelectedItemElements[0].textContent).toEqual("value1");
+    expect(multiSelectedItemElements[1].textContent).toEqual("value2");
+    expect(multiSelectedItemElements[2].textContent).toEqual("value3");
   });
 
   it("displays given options", async () => {

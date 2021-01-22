@@ -1,13 +1,10 @@
 <script>
   import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import Navbar from "./Layout/Navbar.svelte";
-  import Customers from "./TableEditors/Customers/Customers.svelte";
-  import Items from "./TableEditors/Items/Items.svelte";
-  import Rentals from "./TableEditors/Rentals/Rentals.svelte";
-  import Modal from "svelte-simple-modal";
-  import StyledModal from "./Layout/StyledModal.svelte";
-  import LoadingAnimation from "./Table/LoadingAnimation.svelte";
+  import TableEditor from "./TableEditors/TableEditor.svelte";
+  import LoadingAnimation from "./LoadingAnimation.svelte";
   import connectDatabases from "./Database/connectDatabases";
+  import Modal from "./Layout/Modal.svelte";
 
   let page = 2;
 
@@ -28,6 +25,27 @@
   }
 </script>
 
+{#if onMobile()}
+  <div class="notificationcontainer">
+    <span>Die Anwendung benötigt einen größeren Bildschirm.</span>
+    <span>Dieses Gerät ist zu klein.</span>
+  </div>
+{:else}
+  <NotificationDisplay />
+  <div class="container">
+    {#await connectDatabases()}
+      <LoadingAnimation />
+    {:then}
+      <Navbar bind:page />
+      <Modal>
+        <TableEditor tableEditorId={page} />
+      </Modal>
+    {:catch error}ø
+      {error.message}
+    {/await}
+  </div>
+{/if}
+
 <style>
   :global(body, html) {
     height: 100%;
@@ -35,8 +53,7 @@
     overflow: hidden;
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-      "Oxygen";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen";
   }
 
   .container {
@@ -59,32 +76,3 @@
     padding: 10px;
   }
 </style>
-
-{#if onMobile()}
-  <div class="notificationcontainer">
-    <span>Die Anwendung benötigt einen größeren Bildschirm.</span>
-    <span>Dieses Gerät ist zu klein.</span>
-  </div>
-{:else}
-  <NotificationDisplay />
-  <div class="container">
-    {#await connectDatabases()}
-      <LoadingAnimation />
-    {:then result}
-      <Navbar bind:page />
-      <Modal>
-        <StyledModal>
-          {#if page === 0}
-            <Customers />
-          {:else if page === 1}
-            <Items />
-          {:else if page === 2}
-            <Rentals />
-          {/if}
-        </StyledModal>
-      </Modal>
-    {:catch error}
-      {error.message}
-    {/await}
-  </div>
-{/if}
