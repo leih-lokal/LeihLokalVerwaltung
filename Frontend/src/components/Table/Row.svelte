@@ -1,9 +1,10 @@
 <script>
+  import Cell from "./Cell.svelte";
+
   export let columns = [];
   export let item = {};
   export let rowHeight = 40;
-  export let rowBackgroundColorFunction;
-  export let cellStyleFunction = (col, item) => "";
+  export let cellBackgroundColorsFunction;
 
   const displayValue = (col, item) => {
     if (!(col.key in item)) {
@@ -12,68 +13,26 @@
       return col.display ? col.display(item[col.key]) : item[col.key];
     }
   };
+
+  let cellBackgroundColors = new Array(columns.length).fill("white");
+  $: cellBackgroundColorsFunction(item).then(
+    (newCellBackgroundColors) => (cellBackgroundColors = newCellBackgroundColors)
+  );
 </script>
 
-<tr
-  on:click
-  style={`--rowHeight: ${rowHeight}px; ${
-    rowBackgroundColorFunction
-      ? "background-color: " + rowBackgroundColorFunction(item)
-      : ""
-  }`}>
-  {#each columns as col}
-    <td>
-      {#if col.isImageUrl}
-        {#if item[col.key] && displayValue(col, item) !== ""}
-          <img src={displayValue(col, item)} alt="item" />
-        {/if}
-      {:else if cellStyleFunction}
-        {#await cellStyleFunction(col, item)}
-          <div class="cell">
-            {displayValue(col, item)}
-          </div>
-        {:then color}
-          <div class="cell" style={color}>
-            {displayValue(col, item)}
-          </div>
-        {:catch error}
-          <div class="cell">
-            {displayValue(col, item)}
-          </div>
-        {/await}
-      {/if}
-    </td>
+<tr on:click style={`height: ${rowHeight}px;`}>
+  {#each columns as col, i}
+    <Cell
+      {rowHeight}
+      isImage={col.isImageUrl}
+      value={displayValue(col, item)}
+      backgroundColor={cellBackgroundColors[i]}
+    />
   {/each}
 </tr>
 
 <style>
   tr:hover {
     background-color: #ff9ef2 !important;
-  }
-
-  tr,
-  td {
-    cursor: pointer;
-    height: var(--rowHeight);
-    padding: 0px;
-    padding-left: 2px;
-    padding-right: 2px;
-  }
-
-  .cell {
-    overflow: hidden;
-    max-height: var(--rowHeight);
-    text-overflow: ellipsis;
-  }
-
-  img {
-    height: 100%;
-    display: block;
-  }
-
-  img:hover {
-    height: 200px;
-    position: absolute;
-    margin-top: -100px;
   }
 </style>

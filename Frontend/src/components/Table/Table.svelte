@@ -4,10 +4,9 @@
   import Header from "./Header.svelte";
   export let columns = [];
   export let rowHeight = 40;
-  export let rowBackgroundColorFunction;
+  export let cellBackgroundColorsFunction;
   export let data;
   export let indicateSort = {};
-  export let cellStyleFunction;
   const dispatch = createEventDispatcher();
 </script>
 
@@ -16,8 +15,7 @@
     <Header {columns} {indicateSort} on:colHeaderClicked />
     {#each data.rows as row (row._id)}
       <Row
-        {rowBackgroundColorFunction}
-        {cellStyleFunction}
+        {cellBackgroundColorsFunction}
         {columns}
         item={row}
         {rowHeight}
