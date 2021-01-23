@@ -39,6 +39,7 @@ describe(Row.name, () => {
       props: {
         columns: columns,
         item: row,
+        cellBackgroundColorsFunction: async () => new Array(columns.length).fill("white"),
       },
     });
 
