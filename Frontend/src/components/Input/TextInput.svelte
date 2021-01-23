@@ -1,14 +1,40 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { prevent_default } from "svelte/internal";
 
   export let id = "";
   export let readonly = false;
   export let value = "";
   export let disabled = false;
+  export let multiline = false;
 
   const dispatch = createEventDispatcher();
 </script>
+
+<form autocomplete="off">
+  {#if multiline}
+    <textarea
+      type="text"
+      bind:value
+      {id}
+      name={id}
+      {readonly}
+      {disabled}
+      on:input={(event) => dispatch("change", event.target.value)}
+      rows="4"
+    />
+  {:else}
+    <input
+      type="text"
+      bind:value
+      {id}
+      name={id}
+      {readonly}
+      {disabled}
+      on:keydown={(event) => (event.key === "Enter" ? event.preventDefault() : event)}
+      on:input={(event) => dispatch("change", event.target.value)}
+    />
+  {/if}
+</form>
 
 <style>
   input[type="text"] {
@@ -20,18 +46,3 @@
     height: 2.5rem !important;
   }
 </style>
-
-<form
-  autocomplete="off"
-  on:keydown={(event) => (event.key === "Enter" ? event.preventDefault() : event)}
->
-  <input
-    type="text"
-    bind:value
-    {id}
-    name={id}
-    {readonly}
-    {disabled}
-    on:input={(event) => dispatch("change", event.target.value)}
-  />
-</form>
