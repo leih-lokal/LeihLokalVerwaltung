@@ -160,6 +160,7 @@
   $: tableEditorId, reset();
   $: activeFilters, calculateNumberOfPages();
   $: searchTerm, calculateNumberOfPages();
+  $: sortBy, sortReverse, (currentPage = 0);
   $: indicateSort = columns.map((col) => {
     if (col.key === sortBy) {
       return sortReverse ? "up" : "down";
