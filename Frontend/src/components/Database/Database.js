@@ -58,7 +58,7 @@ class Database {
 
   updateDoc(updatedDoc) {
     this.cache.reset();
-    return this.database.get(updatedDoc._id).then((doc) => {
+    return this.fetchById(updatedDoc._id).then((doc) => {
       updatedDoc._rev = doc._rev;
       return this.createDoc(updatedDoc);
     });
