@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/rentals";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
-import { dateToString, waitForPopupToClose, clearFilter, isAtDay } from "./utils";
+import { dateToString, waitForPopupToClose, clearFilter, isAtSameDay } from "./utils";
 import COLORS from "../../src/components/Input/ColorDefs";
 
 let rentals;
@@ -199,7 +199,7 @@ context("rentals", () => {
     it("finds rentals by filtering for 'Rückgabe heute'", () => {
       cy.get(".selectContainer").click().get(".listContainer").contains("Rückgabe heute").click();
       expectDisplaysRentalsSortedBy(
-        rentals.filter((rental) => isAtDay(parseInt(rental.to_return_on), TODAY))
+        rentals.filter((rental) => isAtSameDay(parseInt(rental.to_return_on), TODAY))
       );
     });
 
