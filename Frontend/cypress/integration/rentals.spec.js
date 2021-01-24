@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/rentals";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
-import { dateToString, waitForPopupToClose, clearFilter } from "./utils";
+import { dateToString, waitForPopupToClose, clearFilter, isToday } from "./utils";
+import COLORS from "../../src/components/Input/ColorDefs";
 
 let rentals;
 let currentRentals;
@@ -277,6 +278,7 @@ context("rentals", () => {
         name: "Viviana",
         deposit: 15,
         image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/3106.jpg",
+        expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEF),
       };
 
       cy.contains("+").click();
