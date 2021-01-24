@@ -1,3 +1,6 @@
+import columns from "../../../src/components/TableEditors/Rentals/Columns";
+import COLORS from "../../../src/components/Input/ColorDefs";
+
 export default (time = new Date().getTime()) => {
   const ONE_DAY = 86400000;
   const ONE_WEEK = ONE_DAY * 7;
@@ -23,6 +26,7 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "MM",
       remark: "",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2019/03/1908.jpg",
+      expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEFAULT_BACKGROUND),
     },
     {
       _id: "00149eb362e4e8a2ab43ad5e5f6d2904",
@@ -39,6 +43,7 @@ export default (time = new Date().getTime()) => {
       returned_on: 0,
       receiving_employee: "WS",
       remark: "",
+      expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.RENTAL_LATE_RED),
     },
     {
       _id: "00161450d33a9688152864ddc1109dda",
@@ -56,6 +61,9 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "MM",
       remark: "4 Stück 4.4.5.6.",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2019/04/5023.jpg",
+      expectedCellBackgroundColors: new Array(columns.length).fill(
+        COLORS.RENTAL_TO_RETURN_TODAY_BLUE
+      ),
     },
     {
       _id: "001e458f159f72cb68f97cf9e66da014",
@@ -73,6 +81,9 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "CI",
       remark: "",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2019/03/1107.jpg",
+      expectedCellBackgroundColors: new Array(columns.length).fill(
+        COLORS.RENTAL_TO_RETURN_TODAY_BLUE
+      ),
     },
     {
       _id: "00476565ea2f645b74692e0aac9f7514",
@@ -90,6 +101,9 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "SK",
       remark: "",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/005.jpg",
+      expectedCellBackgroundColors: new Array(columns.length).fill(
+        COLORS.RENTAL_RETURNED_TODAY_GREEN
+      ),
     },
     {
       _id: "005604ea4fce99a1b3ad7a06915629f8",
@@ -107,6 +121,7 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "",
       remark: "",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2019/03/1708.jpg",
+      expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEFAULT_BACKGROUND),
     },
     {
       _id: "0068a7b96d0cb7d41c72d9e7b9085e83",
@@ -124,6 +139,7 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "MM",
       remark: "0176 45809592 Frau 175 anrufen, wenn wieder da",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2019/11/3312.jpg",
+      expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEFAULT_BACKGROUND),
     },
     {
       _id: "007737b7e60654e862fb3756beffbc06",
@@ -141,6 +157,7 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "CI",
       remark: "kommt zum RC",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2019/03/1814.jpg",
+      expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEFAULT_BACKGROUND),
     },
     {
       _id: "00a8d5c18c7377bf6e3802faaac1a089",
@@ -158,6 +175,7 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "LH",
       remark: "",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/10/5003.jpg",
+      expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEFAULT_BACKGROUND),
     },
     {
       _id: "00b2e7344faa8300caa973a712445c01",
@@ -175,6 +193,7 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "MM",
       remark: "am 17.7.20 per email erinnert",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2019/03/1218.jpg",
+      expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEFAULT_BACKGROUND),
     },
   ];
 };

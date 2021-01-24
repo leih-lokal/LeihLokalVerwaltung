@@ -6,27 +6,9 @@ import { dateToString, waitForPopupToClose, clearFilter } from "./utils";
 let rentals;
 let currentRentals;
 
-function millisAtStartOfDay(millis) {
-  var msPerDay = 86400 * 1000;
-  return millis - (millis % msPerDay);
-}
-
-function isBeforeDay(m1, m2) {
-  return millisAtStartOfDay(m1) < millisAtStartOfDay(m2);
-}
-
-function isToday(millis) {
-  return millisAtStartOfDay(millis) === Date.UTC(2020, 0, 1);
-}
-
-function isBeforeToday(millis) {
-  return isBeforeDay(millis, Date.UTC(2020, 0, 1));
-}
-
-const expectedDisplayValue = (rental, rentalKey) => {
-  let expectedValue = rental[rentalKey];
-  let colKey = columns.find((col) => col.key === rentalKey).key;
-  if (["returned_on", "extended_on", "rented_on", "to_return_on"].includes(colKey)) {
+const expectedDisplayValue = (rental, column) => {
+  let expectedValue = rental[column.key];
+  if (["returned_on", "extended_on", "rented_on", "to_return_on"].includes(column.key)) {
     if (expectedValue === 0) {
       expectedValue = "";
     } else {
@@ -47,7 +29,6 @@ const expectedDisplayedTableDataSortedBy = (key, rentals) => {
       return x < y ? -1 : x > y ? 1 : 0;
     });
 
-    console.log(sorted.map((rental) => rental.item_name));
     return sorted;
   } else {
     let transformBeforeSort = (value) => value;
@@ -75,29 +56,26 @@ const expectDisplaysOnlyRentalsWithIds = (ids) => {
 };
 
 const expectDisplaysRentals = (rentals) => {
-  cy.get("table > tr").should("have.length", rentals.length);
-  cy.get("table > tr").each((row, rowIndex) => {
-    if (isToday(parseInt(rentals[rowIndex].returned_on))) {
-      expect(row).to.have.css("background-color", "rgb(214, 252, 208)"); // green
-    } else if (
-      isToday(parseInt(rentals[rowIndex].to_return_on)) &&
-      rentals[rowIndex].returned_on == 0
-    ) {
-      expect(row).to.have.css("background-color", "rgb(160, 200, 250)"); // blue
-    } else if (
-      rentals[rowIndex].returned_on === 0 &&
-      isBeforeToday(rentals[rowIndex].to_return_on)
-    ) {
-      expect(row).to.have.css("background-color", "rgb(240, 200, 200)"); // red
-    }
-    row.find("td").each((colIndex, cell) => {
-      if (rentals[rowIndex][columns[colIndex].key]) {
-        expect(cell.innerHTML).to.contain(
-          expectedDisplayValue(rentals[rowIndex], columns[colIndex].key)
-        );
-      }
-    });
-  });
+  cy.get("table > tr")
+    .should("be.visible")
+    .should("have.length", rentals.length)
+    .each((row, i) =>
+      cy
+        .wrap(row)
+        .children("td")
+        .each((cell, x) =>
+          expect(cell).to.have.css("background-color", rentals[i].expectedCellBackgroundColors[x])
+        )
+        .each((cell, x) => {
+          if (columns[x].isImageUrl && rentals[i][columns[x].key]) {
+            cy.wrap(cell).children("img").should("have.attr", "src", rentals[i][columns[x].key]);
+          } else {
+            expect(cell).to.have.text(
+              rentals[i][columns[x].key] ? expectedDisplayValue(rentals[i], columns[x]) : ""
+            );
+          }
+        })
+    );
 };
 
 context("rentals", () => {
