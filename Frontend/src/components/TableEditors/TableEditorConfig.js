@@ -1,6 +1,7 @@
 import { get } from "svelte/store";
 import { customerDb, rentalDb, itemDb } from "../../utils/stores";
 import { isToday, isBeforeToday, isBeforeDay } from "../../utils/utils";
+import COLORS from "../Input/ColorDefs";
 
 import CustomerPopupFormular from "./Customers/CustomerPopupFormular.svelte";
 import customerColumns from "./Customers/Columns.js";
@@ -45,19 +46,29 @@ export default [
     getDatabase: () => get(rentalDb),
     popupFormularComponent: RentalPopupFormular,
     cellBackgroundColorsFunction: async (rental) => {
-      const item = await get(itemDb).fetchById(rental.item_id);
-      const customer = await get(customerDb).fetchById(rental.customer_id);
+      let item = {};
+      let customer = {};
+      try {
+        item = await get(itemDb).fetchById(rental.item_id);
+      } catch (e) {
+        console.warn(e);
+      }
+      try {
+        customer = await get(customerDb).fetchById(rental.customer_id);
+      } catch (e) {
+        console.warn(e);
+      }
       return rentalColumns.map((col) => {
         if (item.highlight && ["item_id", "item_name"].includes(col.key)) {
           return item.highlight;
         } else if (customer.highlight && ["customer_id", "name"].includes(col.key)) {
           return customer.highlight;
         } else if (hasBeenReturnedToday(rental)) {
-          return "rgb(214,252,208)";
+          return COLORS.RENTAL_RETURNED_TODAY_GREEN;
         } else if (shouldBeReturnedToday(rental)) {
-          return "rgb(160,200,250)";
+          return COLORS.RENTAL_TO_RETURN_TODAY_BLUE;
         } else if (shouldHaveBeenReturnedBeforeToday(rental)) {
-          return "rgb(240,200,200)";
+          return COLORS.RENTAL_LATE_RED;
         } else {
           return "white";
         }
