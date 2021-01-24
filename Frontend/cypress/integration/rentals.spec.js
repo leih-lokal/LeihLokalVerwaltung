@@ -1,11 +1,13 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/rentals";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
-import { dateToString, waitForPopupToClose, clearFilter, isToday } from "./utils";
+import { dateToString, waitForPopupToClose, clearFilter, isAtDay } from "./utils";
 import COLORS from "../../src/components/Input/ColorDefs";
 
 let rentals;
 let currentRentals;
+
+const TODAY = Date.UTC(2020, 0, 1);
 
 const expectedDisplayValue = (rental, column) => {
   let expectedValue = rental[column.key];
@@ -81,8 +83,8 @@ const expectDisplaysRentals = (rentals) => {
 
 context("rentals", () => {
   beforeEach(() => {
-    cy.clock(Date.UTC(2020, 0, 1), ["Date"]);
-    rentals = data(Date.UTC(2020, 0, 1));
+    cy.clock(TODAY, ["Date"]);
+    rentals = data(TODAY);
     currentRentals = rentals.filter(
       (rental) => rental.returned_on === 0 || rental.returned_on > Date.UTC(2019, 11, 31)
     );
@@ -197,7 +199,7 @@ context("rentals", () => {
     it("finds rentals by filtering for 'Rückgabe heute'", () => {
       cy.get(".selectContainer").click().get(".listContainer").contains("Rückgabe heute").click();
       expectDisplaysRentalsSortedBy(
-        rentals.filter((rental) => isToday(parseInt(rental.to_return_on)))
+        rentals.filter((rental) => isAtDay(parseInt(rental.to_return_on), TODAY))
       );
     });
 
@@ -278,7 +280,7 @@ context("rentals", () => {
         name: "Viviana",
         deposit: 15,
         image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/3106.jpg",
-        expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEF),
+        expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEFAULT_BACKGROUND),
       };
 
       cy.contains("+").click();

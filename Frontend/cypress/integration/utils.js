@@ -19,8 +19,8 @@ function millisAtStartOfDay(millis) {
   return millis - (millis % msPerDay);
 }
 
-function isToday(millis) {
-  return millisAtStartOfDay(millis) === millisAtStartOfDay(new Date().getTime());
+function isAtDay(millis, day) {
+  return millisAtStartOfDay(millis) === millisAtStartOfDay(day.getTime());
 }
 
 export default {
@@ -28,5 +28,5 @@ export default {
   statusOnWebsiteDisplayValue,
   waitForPopupToClose,
   clearFilter,
-  isToday,
+  isAtDay,
 };
