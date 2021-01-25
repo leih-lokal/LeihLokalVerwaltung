@@ -14,7 +14,11 @@
   export let popupFormularConfiguration;
 </script>
 
-<div>
+<div
+  on:keydown={(event) => {
+    if (event.key == "ArrowLeft" || event.key == "ArrowRight") event.stopPropagation();
+  }}
+>
   <div class="container">
     <h1>{popupFormularConfiguration.title}</h1>
     <div class="content">
