@@ -280,7 +280,7 @@ context("items", () => {
         "have.value",
         expectedDateInputValue(itemsNotDeleted[3].added)
       );
-      cy.get("#properties").should("have.value", itemsNotDeleted[3].properties);
+      cy.get("#description").should("have.value", itemsNotDeleted[3].description);
       cy.get("#parts").should("have.value", itemsNotDeleted[3].parts);
       cy.get(":nth-child(4) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
         statusOnWebsiteDisplayValue(itemsNotDeleted[3].status_on_website)
@@ -317,7 +317,7 @@ context("items", () => {
         deposit: 15,
         parts: "parts",
         added: new Date().getTime(),
-        properties: "properties",
+        description: "description",
         status_on_website: "instock",
       };
 
@@ -337,7 +337,7 @@ context("items", () => {
         .contains(newItem.category)
         .click();
       cy.get("#deposit").type(newItem.deposit);
-      cy.get("#properties").type(newItem.properties);
+      cy.get("#description").type(newItem.description);
       cy.get("#parts").type(newItem.parts);
       cy.get(":nth-child(4) > .group > :nth-child(2) > .col-input > .selectContainer")
         .click()
