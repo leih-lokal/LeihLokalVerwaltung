@@ -55,6 +55,10 @@ export default [
     search: "exclude",
   },
   {
+    title: "Synonyme",
+    key: "synonyms",
+  },
+  {
     title: "Status Webseite",
     key: "status_on_website",
     search: "exclude",
