@@ -7,6 +7,13 @@ var urlsToCache = [
   "favicon.png",
 ];
 
+function shouldCache(request) {
+  return (
+    request.method === "GET" &&
+    !["items", "rentals", "customers"].some((dbName) => request.url.includes(dbName))
+  );
+}
+
 self.addEventListener("install", function (event) {
   event.waitUntil(async () => {
     const cache = await caches.open(CACHE_NAME);
@@ -27,7 +34,7 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.method === "GET") {
+  if (shouldCache(event.request)) {
     event.respondWith(
       (async function () {
         const cache = await caches.open(CACHE_NAME);

@@ -118,6 +118,7 @@
     const rowsOnLastPage = data.count % rowsPerPage;
     numberOfPages = (data.count - rowsOnLastPage) / rowsPerPage;
     if (rowsOnLastPage > 0) numberOfPages += 1;
+    currentPage = 0;
   }
 
   const refresh = () =>
@@ -158,6 +159,8 @@
   $: tableEditorId, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
   $: tableEditorId, reset();
   $: activeFilters, calculateNumberOfPages();
+  $: searchTerm, calculateNumberOfPages();
+  $: sortBy, sortReverse, (currentPage = 0);
   $: indicateSort = columns.map((col) => {
     if (col.key === sortBy) {
       return sortReverse ? "up" : "down";
