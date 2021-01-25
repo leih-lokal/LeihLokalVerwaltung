@@ -50,8 +50,8 @@ export default [
     search: "exclude",
   },
   {
-    title: "Eigenschaften",
-    key: "properties",
+    title: "Beschreibung",
+    key: "description",
     search: "exclude",
   },
   {
