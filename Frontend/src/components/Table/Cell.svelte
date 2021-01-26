@@ -1,8 +1,8 @@
 <script>
   export let backgroundColor = "white";
   export let isImage = false;
-  export let value;
-  export let rowHeight;
+  export let value = "";
+  export let rowHeight = 40;
 
   let fontColor = "black";
 
@@ -18,11 +18,11 @@
           b = parseInt(m[2], 16);
     }
     if (isRGB) {
-      var m = color.match(/(\d+){3}/g);
+      var m = color.match(/rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)/);
       if (m)
-        var r = m[0],
-          g = m[1],
-          b = m[2];
+        var r = m[1],
+          g = m[2],
+          b = m[3];
     }
     if (typeof r != "undefined") return (r * 299 + g * 587 + b * 114) / 1000;
   }
