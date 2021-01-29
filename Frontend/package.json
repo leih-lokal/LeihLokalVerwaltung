@@ -58,6 +58,7 @@
     "svelte-component-double": "^0.7.5",
     "svelte-htm": "^1.1.1",
     "svelte-jester": "^1.3.0",
+    "svelte-jester-mock": "^1.0.3",
     "svelte-loading-spinners": "^0.1.4",
     "svelte-select": "^3.16.1",
     "svelte-simple-modal": "^0.6.1"

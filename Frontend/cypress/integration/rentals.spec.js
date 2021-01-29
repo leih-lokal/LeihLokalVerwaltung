@@ -1,32 +1,17 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/rentals";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
-import { dateToString, waitForPopupToClose, clearFilter } from "./utils";
+import { dateToString, waitForPopupToClose, clearFilter, isAtSameDay } from "./utils";
+import COLORS from "../../src/components/Input/ColorDefs";
 
 let rentals;
 let currentRentals;
 
-function millisAtStartOfDay(millis) {
-  var msPerDay = 86400 * 1000;
-  return millis - (millis % msPerDay);
-}
+const TODAY = Date.UTC(2020, 0, 1);
 
-function isBeforeDay(m1, m2) {
-  return millisAtStartOfDay(m1) < millisAtStartOfDay(m2);
-}
-
-function isToday(millis) {
-  return millisAtStartOfDay(millis) === Date.UTC(2020, 0, 1);
-}
-
-function isBeforeToday(millis) {
-  return isBeforeDay(millis, Date.UTC(2020, 0, 1));
-}
-
-const expectedDisplayValue = (rental, rentalKey) => {
-  let expectedValue = rental[rentalKey];
-  let colKey = columns.find((col) => col.key === rentalKey).key;
-  if (["returned_on", "extended_on", "rented_on", "to_return_on"].includes(colKey)) {
+const expectedDisplayValue = (rental, column) => {
+  let expectedValue = rental[column.key];
+  if (["returned_on", "extended_on", "rented_on", "to_return_on"].includes(column.key)) {
     if (expectedValue === 0) {
       expectedValue = "";
     } else {
@@ -47,7 +32,6 @@ const expectedDisplayedTableDataSortedBy = (key, rentals) => {
       return x < y ? -1 : x > y ? 1 : 0;
     });
 
-    console.log(sorted.map((rental) => rental.item_name));
     return sorted;
   } else {
     let transformBeforeSort = (value) => value;
@@ -75,35 +59,32 @@ const expectDisplaysOnlyRentalsWithIds = (ids) => {
 };
 
 const expectDisplaysRentals = (rentals) => {
-  cy.get("table > tr").should("have.length", rentals.length);
-  cy.get("table > tr").each((row, rowIndex) => {
-    if (isToday(parseInt(rentals[rowIndex].returned_on))) {
-      expect(row).to.have.css("background-color", "rgb(214, 252, 208)"); // green
-    } else if (
-      isToday(parseInt(rentals[rowIndex].to_return_on)) &&
-      rentals[rowIndex].returned_on == 0
-    ) {
-      expect(row).to.have.css("background-color", "rgb(160, 200, 250)"); // blue
-    } else if (
-      rentals[rowIndex].returned_on === 0 &&
-      isBeforeToday(rentals[rowIndex].to_return_on)
-    ) {
-      expect(row).to.have.css("background-color", "rgb(240, 200, 200)"); // red
-    }
-    row.find("td").each((colIndex, cell) => {
-      if (rentals[rowIndex][columns[colIndex].key]) {
-        expect(cell.innerHTML).to.contain(
-          expectedDisplayValue(rentals[rowIndex], columns[colIndex].key)
-        );
-      }
-    });
-  });
+  cy.get("table > tr")
+    .should("be.visible")
+    .should("have.length", rentals.length)
+    .each((row, i) =>
+      cy
+        .wrap(row)
+        .children("td")
+        .each((cell, x) =>
+          expect(cell).to.have.css("background-color", rentals[i].expectedCellBackgroundColors[x])
+        )
+        .each((cell, x) => {
+          if (columns[x].isImageUrl && rentals[i][columns[x].key]) {
+            cy.wrap(cell).children("img").should("have.attr", "src", rentals[i][columns[x].key]);
+          } else {
+            expect(cell).to.have.text(
+              rentals[i][columns[x].key] ? expectedDisplayValue(rentals[i], columns[x]) : ""
+            );
+          }
+        })
+    );
 };
 
 context("rentals", () => {
   beforeEach(() => {
-    cy.clock(Date.UTC(2020, 0, 1), ["Date"]);
-    rentals = data(Date.UTC(2020, 0, 1));
+    cy.clock(TODAY, ["Date"]);
+    rentals = data(TODAY);
     currentRentals = rentals.filter(
       (rental) => rental.returned_on === 0 || rental.returned_on > Date.UTC(2019, 11, 31)
     );
@@ -218,7 +199,7 @@ context("rentals", () => {
     it("finds rentals by filtering for 'Rückgabe heute'", () => {
       cy.get(".selectContainer").click().get(".listContainer").contains("Rückgabe heute").click();
       expectDisplaysRentalsSortedBy(
-        rentals.filter((rental) => isToday(parseInt(rental.to_return_on)))
+        rentals.filter((rental) => isAtSameDay(parseInt(rental.to_return_on), TODAY))
       );
     });
 
@@ -299,6 +280,7 @@ context("rentals", () => {
         name: "Viviana",
         deposit: 15,
         image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/3106.jpg",
+        expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEFAULT_BACKGROUND),
       };
 
       cy.contains("+").click();

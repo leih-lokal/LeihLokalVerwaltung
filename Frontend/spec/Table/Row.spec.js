@@ -1,75 +1,120 @@
+jest.mock("../../src/components/Table/Cell.svelte", () => {
+  const html = require("svelte-htm");
+  const component = html`<div>Mocked Cell</div>`;
+  const mock = require("svelte-jester-mock").mockComponent(component);
+
+  return mock;
+});
+
 import Row from "../../src/components/Table/Row.svelte";
+import Cell from "../../src/components/Table/Cell.svelte";
 import { render, fireEvent } from "@testing-library/svelte";
 
-const columns = [
-  {
-    title: "Id",
-    key: "_id",
-  },
-  {
-    title: "Nachname",
-    key: "lastname",
-  },
-  {
-    title: "Vorname",
-    key: "firstname",
-  },
-  {
-    title: "Function Test",
-    key: "functionTest",
-    display: (value) => "functionTest1",
-  },
-  {
-    title: "Image",
-    key: "image",
-    isImageUrl: true,
-  },
-];
-
-const row = {
-  _id: "0",
-  firstname: "pljrtbr",
-  functionTest: "functionTest",
-  image: "url",
-};
-
 describe(Row.name, () => {
-  const renderRow = () => {
-    const { container, component } = render(Row, {
+  const renderRowWithItemsAndCols = (item, cols) => {
+    const cellBackgroundColorsMock = jest.fn(() => Promise.resolve("background color"));
+    const { queryAllByText, component, container } = render(Row, {
       props: {
-        columns: columns,
-        item: row,
+        columns: cols,
+        item: item,
+        rowHeight: 40,
+        cellBackgroundColorsFunction: cellBackgroundColorsMock,
       },
     });
 
     return {
-      cells: container.querySelectorAll("tr > td"),
       clickOnRow: () => fireEvent.click(container.querySelector("tr")),
-      component: component,
+      queryAllByText,
+      component,
+      cellBackgroundColorsMock,
     };
   };
 
-  it("displays a value for each column", () => {
-    const { cells } = renderRow();
-    expect(cells.length).toEqual(columns.length);
+  it("passes item value to cell", () => {
+    renderRowWithItemsAndCols({ firstname: "firstname" }, [
+      {
+        title: "Vorname",
+        key: "firstname",
+      },
+    ]);
 
-    cells.forEach((cell, i) => {
-      const actualCellContent = cell.textContent.trim();
-      const givenRowValue = row[columns[i].key];
-      if (columns[i].isImageUrl) {
-        expect(cell.querySelector("img")).toHaveAttribute("src", givenRowValue);
-      } else if (givenRowValue && !columns[i].display) {
-        expect(actualCellContent).toEqual(givenRowValue);
-      } else if (givenRowValue && columns[i].display) {
-        expect(actualCellContent).toEqual(columns[i].display(givenRowValue));
-      } else if (!givenRowValue) {
-        expect(actualCellContent).toEqual("");
-      }
-    });
+    expect(Cell).toHaveSvelteProp("value", "firstname");
+  });
+
+  it("transforms value before passing it to a cell", () => {
+    renderRowWithItemsAndCols({ firstname: "firstname" }, [
+      {
+        title: "Vorname",
+        key: "firstname",
+        display: (value) => "transformed value",
+      },
+    ]);
+
+    expect(Cell).toHaveSvelteProp("value", "transformed value");
+  });
+
+  it("forwards prop rowHeight to cell", () => {
+    renderRowWithItemsAndCols({ firstname: "firstname" }, [
+      {
+        title: "Vorname",
+        key: "firstname",
+      },
+    ]);
+
+    expect(Cell).toHaveSvelteProp("rowHeight", 40);
+  });
+
+  it("forwards isImage to cell", () => {
+    renderRowWithItemsAndCols({ image: "url" }, [
+      {
+        title: "Bild",
+        key: "image",
+        isImageUrl: true,
+      },
+    ]);
+
+    expect(Cell).toHaveSvelteProp("isImage", true);
+  });
+
+  it("calls cellBackgroundColorsFunction with item", async () => {
+    const item = { firstname: "firstname" };
+    const { cellBackgroundColorsMock } = renderRowWithItemsAndCols(item, [
+      {
+        title: "Vorname",
+        key: "firstname",
+      },
+    ]);
+
+    expect(cellBackgroundColorsMock.mock.calls.length).toBe(1);
+    expect(cellBackgroundColorsMock.mock.calls[0][0]).toMatchObject(item);
+  });
+
+  it("renders a cell for each column", () => {
+    const { queryAllByText } = renderRowWithItemsAndCols({}, [
+      {
+        title: "Vorname",
+        key: "firstname",
+      },
+      {
+        title: "Nachname",
+        key: "lastname",
+      },
+      {
+        title: "Id",
+        key: "id",
+      },
+    ]);
+
+    expect(queryAllByText("Mocked Cell")).toHaveLength(3);
+  });
+
+  it("does not render item prop without column", () => {
+    const { queryAllByText } = renderRowWithItemsAndCols({ attrWithoutCol: "firstname" }, []);
+    expect(queryAllByText("Mocked Cell")).toHaveLength(0);
   });
 
   it("fires click event", async () => {
-    const { component, clickOnRow } = renderRow();
+    const { component, clickOnRow } = renderRowWithItemsAndCols([], []);
 
     listen(component, "click");
     await clickOnRow();

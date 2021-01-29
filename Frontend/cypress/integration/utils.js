@@ -14,4 +14,19 @@ const statusOnWebsiteDisplayValue = (status) =>
 const waitForPopupToClose = () => cy.get(".bg", { timeout: 3000 }).should("not.exist");
 const clearFilter = () => cy.get(".multiSelectItem_clear").click();
 
-export default { dateToString, statusOnWebsiteDisplayValue, waitForPopupToClose, clearFilter };
+function millisAtStartOfDay(millis) {
+  var msPerDay = 86400 * 1000;
+  return millis - (millis % msPerDay);
+}
+
+function isAtSameDay(millis1, millis2) {
+  return millisAtStartOfDay(millis1) === millisAtStartOfDay(millis2);
+}
+
+export default {
+  dateToString,
+  statusOnWebsiteDisplayValue,
+  waitForPopupToClose,
+  clearFilter,
+  isAtSameDay,
+};
