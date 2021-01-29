@@ -43,16 +43,25 @@ const expectDisplaysOnlyCustomersWithIds = (ids) => {
   expectDisplaysCustomers(customersWithIds);
 };
 
-const expectDisplaysCustomers = (customers) => {
-  cy.get("table > tr").should("have.length", customers.length);
-  cy.get("table > tr").each((row, rowIndex) => {
-    row.find("td > div").each((colIndex, cell) => {
-      if (customers[rowIndex][columns[colIndex].key]) {
-        expect(cell).to.contain(expectedDisplayValue(customers[rowIndex], columns[colIndex].key));
-      }
-    });
-  });
-};
+const expectDisplaysCustomers = (customers) =>
+  cy
+    .get("table > tr", { timeout: 10000 })
+    .should("have.length", customers.length)
+    .each((row, rowIndex) =>
+      cy
+        .wrap(row)
+        .children("td")
+        .each((cell, colIndex) =>
+          cy
+            .wrap(cell)
+            .should(
+              "have.text",
+              customers[rowIndex].hasOwnProperty([columns[colIndex].key])
+                ? expectedDisplayValue(customers[rowIndex], columns[colIndex].key)
+                : ""
+            )
+        )
+    );
 
 context("Customers", () => {
   beforeEach(() => {
@@ -60,8 +69,11 @@ context("Customers", () => {
     window.indexedDB
       .databases()
       .then((dbs) => dbs.forEach((db) => window.indexedDB.deleteDatabase(db.name)));
-    cy.clock(Date.UTC(2020, 0, 1), ["Date"]);
-    cy.visit("../../public/index.html").get("nav").contains("Kunden").click();
+    cy.clock(Date.UTC(2020, 0, 1), ["Date"])
+      .visit("../../public/index.html")
+      .get("nav")
+      .contains("Kunden")
+      .click();
   });
 
   it("displays correct number of customers", () => {
@@ -74,83 +86,121 @@ context("Customers", () => {
     });
 
     it("sorts customers by id reverse", () => {
-      cy.get("thead").contains("Id").click();
-      expectDisplaysAllCustomersSortedBy("_id", true);
+      cy.get("thead")
+        .contains("Id")
+        .click()
+        .then(() => expectDisplaysAllCustomersSortedBy("_id", true));
     });
 
     it("sorts customers by lastname", () => {
-      cy.get("thead").contains("Nachname").click();
-      expectDisplaysAllCustomersSortedBy("lastname");
+      cy.get("thead")
+        .contains("Nachname")
+        .click()
+        .then(() => expectDisplaysAllCustomersSortedBy("lastname"));
     });
 
     it("sorts customers by lastname reverse", () => {
-      cy.get("thead").contains("Nachname").click();
-      cy.get("thead").contains("Nachname").click();
-      expectDisplaysAllCustomersSortedBy("lastname", true);
+      cy.get("thead")
+        .contains("Nachname")
+        .click()
+        .get("thead")
+        .contains("Nachname")
+        .click()
+        .then(() => expectDisplaysAllCustomersSortedBy("lastname", true));
     });
 
     it("sorts customers by firstname", () => {
-      cy.get("thead").contains("Vorname").click();
-      expectDisplaysAllCustomersSortedBy("firstname");
+      cy.get("thead")
+        .contains("Vorname")
+        .click()
+        .then(() => expectDisplaysAllCustomersSortedBy("firstname"));
     });
 
     it("sorts customers by firstname reverse", () => {
-      cy.get("thead").contains("Vorname").click();
-      cy.get("thead").contains("Vorname").click();
-      expectDisplaysAllCustomersSortedBy("firstname", true);
+      cy.get("thead")
+        .contains("Vorname")
+        .click()
+        .get("thead")
+        .contains("Vorname")
+        .click()
+        .then(() => expectDisplaysAllCustomersSortedBy("firstname", true));
     });
 
     it("sorts customers by street", () => {
-      cy.get("thead").contains("Strasse").click();
-      expectDisplaysAllCustomersSortedBy("street");
+      cy.get("thead")
+        .contains("Strasse")
+        .click()
+        .then(() => expectDisplaysAllCustomersSortedBy("street"));
     });
 
     it("sorts customers by street reverse", () => {
-      cy.get("thead").contains("Strasse").click();
-      cy.get("thead").contains("Strasse").click();
-      expectDisplaysAllCustomersSortedBy("street", true);
+      cy.get("thead")
+        .contains("Strasse")
+        .click()
+        .get("thead")
+        .contains("Strasse")
+        .click()
+        .then(() => expectDisplaysAllCustomersSortedBy("street", true));
     });
 
     it("sorts customers by registration date", () => {
-      cy.get("thead").contains("Beitritt").click();
-      expectDisplaysAllCustomersSortedBy("registration_date");
+      cy.get("thead")
+        .contains("Beitritt")
+        .click()
+        .then(() => expectDisplaysAllCustomersSortedBy("registration_date"));
     });
 
     it("sorts customers by registration date reverse", () => {
-      cy.get("thead").contains("Beitritt").click();
-      cy.get("thead").contains("Beitritt").click();
-      expectDisplaysAllCustomersSortedBy("registration_date", true);
+      cy.get("thead")
+        .contains("Beitritt")
+        .click()
+        .get("thead")
+        .contains("Beitritt")
+        .click()
+        .then(() => expectDisplaysAllCustomersSortedBy("registration_date", true));
     });
   });
 
   context("Searching", () => {
     it("finds a customer by search for 'firstname lastname'", () => {
-      cy.get(".searchInput").type(customers[5].firstname + " " + customers[5].lastname);
-      expectDisplaysOnlyCustomersWithIds([customers[5]._id]);
+      cy.get(".searchInput")
+        .type(customers[5].firstname + " " + customers[5].lastname)
+        .then(() => expectDisplaysOnlyCustomersWithIds([customers[5]._id]));
     });
 
     it("finds two customers when seaching for first id digit", () => {
-      cy.get(".searchInput").type("1");
-      expectDisplaysOnlyCustomersWithIds(["1", "10"]);
+      cy.get(".searchInput")
+        .type("1")
+        .then(() => expectDisplaysOnlyCustomersWithIds(["1", "10"]));
     });
 
     it("finds one customer when seaching for unique id", () => {
-      cy.get(".searchInput").type("2");
-      expectDisplaysOnlyCustomersWithIds(["2"]);
+      cy.get(".searchInput")
+        .type("2")
+        .then(() => expectDisplaysOnlyCustomersWithIds(["2"]));
     });
   });
 
   context("Filtering", () => {
     it("Displays all customers when removing filters", () => {
-      cy.get(".selectContainer").click().get(".listContainer").contains("Newsletter: Ja").click();
-      expectDisplaysOnlyCustomersWithIds(["2", "6", "7"]);
-      cy.get(".multiSelectItem_clear").click();
-      expectDisplaysAllCustomersSortedBy("_id");
+      cy.get(".selectContainer")
+        .click()
+        .get(".listContainer")
+        .contains("Newsletter: Ja")
+        .click()
+        .then(() => expectDisplaysOnlyCustomersWithIds(["2", "6", "7"]))
+        .get(".multiSelectItem_clear")
+        .click()
+        .then(() => expectDisplaysAllCustomersSortedBy("_id"));
     });
 
     it("finds customers by filtering for 'Newsletter: Ja'", () => {
-      cy.get(".selectContainer").click().get(".listContainer").contains("Newsletter: Ja").click();
-      expectDisplaysOnlyCustomersWithIds(["2", "6", "7"]);
+      cy.get(".selectContainer")
+        .click()
+        .get(".listContainer")
+        .contains("Newsletter: Ja")
+        .click()
+        .then(() => expectDisplaysOnlyCustomersWithIds(["2", "6", "7"]));
     });
 
     it("finds customers by filtering for 'Beitritt vor > 1 Jahr'", () => {
@@ -158,8 +208,8 @@ context("Customers", () => {
         .click()
         .get(".listContainer")
         .contains("Beitritt vor > 1 Jahr")
-        .click();
-      expectDisplaysOnlyCustomersWithIds(["1", "2", "3", "4", "5"]);
+        .click()
+        .then(() => expectDisplaysOnlyCustomersWithIds(["1", "2", "3", "4", "5"]));
     });
 
     it("finds customers by filtering for 'Beitritt vor < 1 Jahr'", () => {
@@ -167,8 +217,8 @@ context("Customers", () => {
         .click()
         .get(".listContainer")
         .contains("Beitritt vor < 1 Jahr")
-        .click();
-      expectDisplaysOnlyCustomersWithIds(["6", "7", "8", "9", "10"]);
+        .click()
+        .then(() => expectDisplaysOnlyCustomersWithIds(["6", "7", "8", "9", "10"]));
     });
   });
 
