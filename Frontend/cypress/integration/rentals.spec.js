@@ -70,7 +70,14 @@ const expectDisplaysRentals = (rentals) =>
         .each((cell, x) =>
           cy
             .wrap(cell)
-            .should("have.css", "background-color", rentals[i].expectedCellBackgroundColors[x])
+            .should(
+              "have.css",
+              "background-color",
+              i % 2 == 0 &&
+                rentals[i].expectedCellBackgroundColors[x] === COLORS.DEFAULT_ROW_BACKGROUND_ODD
+                ? COLORS.DEFAULT_ROW_BACKGROUND_EVEN
+                : rentals[i].expectedCellBackgroundColors[x]
+            )
         )
         .each((cell, x) => {
           if (columns[x].isImageUrl && rentals[i][columns[x].key]) {
@@ -342,7 +349,9 @@ context("rentals", () => {
         name: "Viviana",
         deposit: 15,
         image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/3106.jpg",
-        expectedCellBackgroundColors: new Array(columns.length).fill(COLORS.DEFAULT_BACKGROUND),
+        expectedCellBackgroundColors: new Array(columns.length).fill(
+          COLORS.DEFAULT_ROW_BACKGROUND_ODD
+        ),
       };
 
       cy.contains("+").click();
