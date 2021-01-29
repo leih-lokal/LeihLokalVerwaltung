@@ -9,4 +9,6 @@ export default Object.freeze({
   RENTAL_TO_RETURN_TODAY_BLUE: "rgb(160, 200, 250)",
 
   DEFAULT_BACKGROUND: "rgb(255, 255, 255)",
+
+  EVEN_ROW_BACKGROUND_GREY: "#f2f2f2",
 });

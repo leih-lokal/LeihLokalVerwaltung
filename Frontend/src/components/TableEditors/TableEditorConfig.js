@@ -29,23 +29,33 @@ export default [
     filters: customerFilters,
     getDatabase: () => get(customerDb),
     popupFormularComponent: CustomerPopupFormular,
-    cellBackgroundColorsFunction: async (customer) =>
-      new Array(customerColumns.length).fill(customer.highlight ?? "white"),
+    cellBackgroundColorsFunction: async (customer, isEven) => {
+      if (customer.highlight) {
+        return new Array(customerColumns.length).fill(customer.highlight);
+      } else {
+        return isEven ? COLORS.EVEN_ROW_BACKGROUND_GREY : "white";
+      }
+    },
   },
   {
     columns: itemColumns,
     filters: itemFilters,
     getDatabase: () => get(itemDb),
     popupFormularComponent: ItemPopupFormular,
-    cellBackgroundColorsFunction: async (item) =>
-      new Array(itemColumns.length).fill(item.highlight ?? "white"),
+    cellBackgroundColorsFunction: async (item, isEven) => {
+      if (item.highlight) {
+        return new Array(itemColumns.length).fill(item.highlight);
+      } else {
+        return isEven ? COLORS.EVEN_ROW_BACKGROUND_GREY : "white";
+      }
+    },
   },
   {
     columns: rentalColumns,
     filters: rentalFilters,
     getDatabase: () => get(rentalDb),
     popupFormularComponent: RentalPopupFormular,
-    cellBackgroundColorsFunction: async (rental) => {
+    cellBackgroundColorsFunction: async (rental, isEven) => {
       let item = {};
       let customer = {};
       try {
@@ -70,7 +80,7 @@ export default [
         } else if (shouldHaveBeenReturnedBeforeToday(rental)) {
           return COLORS.RENTAL_LATE_RED;
         } else {
-          return "white";
+          return isEven ? COLORS.EVEN_ROW_BACKGROUND_GREY : "white";
         }
       });
     },

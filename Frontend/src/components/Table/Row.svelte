@@ -5,6 +5,7 @@
   export let item = {};
   export let rowHeight = 40;
   export let cellBackgroundColorsFunction;
+  export let evenRowNumber = false;
 
   const displayValue = (col, item) => {
     if (!(col.key in item)) {
@@ -15,7 +16,7 @@
   };
 
   let cellBackgroundColors = new Array(columns.length).fill("white");
-  $: cellBackgroundColorsFunction(item).then(
+  $: cellBackgroundColorsFunction(item, evenRowNumber).then(
     (newCellBackgroundColors) => (cellBackgroundColors = newCellBackgroundColors)
   );
 </script>

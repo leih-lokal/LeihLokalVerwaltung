@@ -13,12 +13,13 @@
 <div class="tablecontainer">
   <table>
     <Header {columns} {indicateSort} on:colHeaderClicked />
-    {#each data.rows as row (row._id)}
+    {#each data.rows as row, i (row._id)}
       <Row
         {cellBackgroundColorsFunction}
         {columns}
         item={row}
         {rowHeight}
+        evenRowNumber={i % 2 == 0}
         on:click={() => dispatch("rowClicked", row)}
       />
     {/each}
@@ -42,9 +43,5 @@
   }
   .tablecontainer::-webkit-scrollbar {
     display: none;
-  }
-
-  :global(table tr:nth-child(odd)) {
-    background-color: #f2f2f2;
   }
 </style>
