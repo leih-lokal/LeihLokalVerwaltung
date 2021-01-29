@@ -48,7 +48,7 @@ const expectedDisplayedTableDataSortedBy = (key, rentals) => {
 const expectDisplaysRentalsSortedBy = (rentals, sortKey = "to_return_on", reverse = false) => {
   let expectedDisplayedTableDataSortedById = expectedDisplayedTableDataSortedBy(sortKey, rentals);
   if (reverse) expectedDisplayedTableDataSortedById.reverse();
-  expectDisplaysRentals(expectedDisplayedTableDataSortedById);
+  return expectDisplaysRentals(expectedDisplayedTableDataSortedById);
 };
 
 const expectDisplaysOnlyRentalsWithIds = (ids) => {
@@ -58,8 +58,9 @@ const expectDisplaysOnlyRentalsWithIds = (ids) => {
   expectDisplaysRentals(rentalsWithIds);
 };
 
-const expectDisplaysRentals = (rentals) => {
-  cy.get("table > tr")
+const expectDisplaysRentals = (rentals) =>
+  cy
+    .get("table > tr")
     .should("be.visible")
     .should("have.length", rentals.length)
     .each((row, i) =>
@@ -67,19 +68,26 @@ const expectDisplaysRentals = (rentals) => {
         .wrap(row)
         .children("td")
         .each((cell, x) =>
-          expect(cell).to.have.css("background-color", rentals[i].expectedCellBackgroundColors[x])
+          cy
+            .wrap(cell)
+            .should("have.css", "background-color", rentals[i].expectedCellBackgroundColors[x])
         )
         .each((cell, x) => {
           if (columns[x].isImageUrl && rentals[i][columns[x].key]) {
-            cy.wrap(cell).children("img").should("have.attr", "src", rentals[i][columns[x].key]);
+            return cy
+              .wrap(cell)
+              .children("img")
+              .should("have.attr", "src", rentals[i][columns[x].key]);
           } else {
-            expect(cell).to.have.text(
-              rentals[i][columns[x].key] ? expectedDisplayValue(rentals[i], columns[x]) : ""
-            );
+            return cy
+              .wrap(cell)
+              .should(
+                "have.text",
+                rentals[i][columns[x].key] ? expectedDisplayValue(rentals[i], columns[x]) : ""
+              );
           }
         })
     );
-};
 
 context("rentals", () => {
   beforeEach(() => {
@@ -104,63 +112,95 @@ context("rentals", () => {
     });
 
     it("sorts by to return on reverse", () => {
-      cy.get("thead").contains("Zurückerwartet").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "to_return_on", true);
+      cy.get("thead")
+        .contains("Zurückerwartet")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "to_return_on", true));
     });
 
     it("sorts rentals by number", () => {
-      cy.get("thead").contains("Gegenstand Nr").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "item_id");
+      cy.get("thead")
+        .contains("Gegenstand Nr")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "item_id"));
     });
 
     it("sorts rentals by number reverse", () => {
-      cy.get("thead").contains("Gegenstand Nr").click();
-      cy.get("thead").contains("Gegenstand Nr").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "item_id", true);
+      cy.get("thead")
+        .contains("Gegenstand Nr")
+        .click()
+        .get("thead")
+        .contains("Gegenstand Nr")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "item_id", true));
     });
 
     it("sorts rentals by name", () => {
-      cy.get("thead").contains("Gegenstand Name").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "item_name");
+      cy.get("thead")
+        .contains("Gegenstand Name")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "item_name"));
     });
 
     it("sorts rentals by name reverse", () => {
-      cy.get("thead").contains("Gegenstand Name").click();
-      cy.get("thead").contains("Gegenstand Name").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "item_name", true);
+      cy.get("thead")
+        .contains("Gegenstand Name")
+        .click()
+        .get("thead")
+        .contains("Gegenstand Name")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "item_name", true));
     });
 
     it("sorts rentals by rented on", () => {
-      cy.get("thead").contains("Ausgegeben").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "rented_on");
+      cy.get("thead")
+        .contains("Ausgegeben")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "rented_on"));
     });
 
     it("sorts rentals by rented on reverse", () => {
-      cy.get("thead").contains("Ausgegeben").click();
-      cy.get("thead").contains("Ausgegeben").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "rented_on", true);
+      cy.get("thead")
+        .contains("Ausgegeben")
+        .click()
+        .get("thead")
+        .contains("Ausgegeben")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "rented_on", true));
     });
 
     it("sorts rentals by customer_id", () => {
-      cy.get("thead").contains("Kunde Nr").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "customer_id");
+      cy.get("thead")
+        .contains("Kunde Nr")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "customer_id"));
     });
 
     it("sorts rentals by customer_id reverse", () => {
-      cy.get("thead").contains("Kunde Nr").click();
-      cy.get("thead").contains("Kunde Nr").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "customer_id", true);
+      cy.get("thead")
+        .contains("Kunde Nr")
+        .click()
+        .get("thead")
+        .contains("Kunde Nr")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "customer_id", true));
     });
 
     it("sorts rentals by customer name", () => {
-      cy.get("thead").contains("Kunde Name").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "name");
+      cy.get("thead")
+        .contains("Kunde Name")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "name"));
     });
 
     it("sorts rentals by customer name reverse", () => {
-      cy.get("thead").contains("Kunde Name").click();
-      cy.get("thead").contains("Kunde Name").click();
-      expectDisplaysRentalsSortedBy(currentRentals, "name", true);
+      cy.get("thead")
+        .contains("Kunde Name")
+        .click()
+        .get("thead")
+        .contains("Kunde Name")
+        .click()
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "name", true));
     });
   });
 
@@ -168,18 +208,21 @@ context("rentals", () => {
     beforeEach(clearFilter);
 
     it("finds a rental by search for item_id", () => {
-      cy.get(".searchInput").type(rentals[3].item_id, { force: true });
-      expectDisplaysOnlyRentalsWithIds([rentals[3]._id]);
+      cy.get(".searchInput")
+        .type(rentals[3].item_id, { force: true })
+        .then(() => expectDisplaysOnlyRentalsWithIds([rentals[3]._id]));
     });
 
     it("finds a rental by search for item_name", () => {
-      cy.get(".searchInput").type(rentals[4].item_name, { force: true });
-      expectDisplaysOnlyRentalsWithIds([rentals[4]._id]);
+      cy.get(".searchInput")
+        .type(rentals[4].item_name, { force: true })
+        .then(() => expectDisplaysOnlyRentalsWithIds([rentals[4]._id]));
     });
 
     it("finds a rental by search for customer name", () => {
-      cy.get(".searchInput").type(rentals[4].name, { force: true });
-      expectDisplaysOnlyRentalsWithIds([rentals[4]._id]);
+      cy.get(".searchInput")
+        .type(rentals[4].name, { force: true })
+        .then(() => expectDisplaysOnlyRentalsWithIds([rentals[4]._id]));
     });
   });
 
@@ -187,30 +230,49 @@ context("rentals", () => {
     beforeEach(clearFilter);
 
     it("displays all rentals when removing filters", () => {
-      cy.get("table > tr").should("have.length", rentals.length);
-      expectDisplaysRentalsSortedBy(rentals);
+      cy.get("table > tr")
+        .should("have.length", rentals.length)
+        .then(() => expectDisplaysRentalsSortedBy(rentals));
     });
 
     it("finds rentals by filtering for 'abgeschlossen'", () => {
-      cy.get(".selectContainer").click().get(".listContainer").contains("abgeschlossen").click();
-      expectDisplaysRentalsSortedBy(rentals.filter((rental) => rental.returned_on != 0));
+      cy.get(".selectContainer")
+        .click()
+        .get(".listContainer")
+        .contains("abgeschlossen")
+        .click()
+        .then(() =>
+          expectDisplaysRentalsSortedBy(rentals.filter((rental) => rental.returned_on != 0))
+        );
     });
 
     it("finds rentals by filtering for 'Rückgabe heute'", () => {
-      cy.get(".selectContainer").click().get(".listContainer").contains("Rückgabe heute").click();
-      expectDisplaysRentalsSortedBy(
-        rentals.filter((rental) => isAtSameDay(parseInt(rental.to_return_on), TODAY))
-      );
+      cy.get(".selectContainer")
+        .click()
+        .get(".listContainer")
+        .contains("Rückgabe heute")
+        .click()
+        .then(() =>
+          expectDisplaysRentalsSortedBy(
+            rentals.filter((rental) => isAtSameDay(parseInt(rental.to_return_on), TODAY))
+          )
+        );
     });
 
     it("finds rentals by filtering for 'verspätet'", () => {
-      cy.get(".selectContainer").click().get(".listContainer").contains("verspätet").click();
-      expectDisplaysRentalsSortedBy(
-        rentals.filter(
-          (rental) =>
-            parseInt(rental.to_return_on) < Date.UTC(2020, 0, 1) && rental.returned_on == 0
-        )
-      );
+      cy.get(".selectContainer")
+        .click()
+        .get(".listContainer")
+        .contains("verspätet")
+        .click()
+        .then(() =>
+          expectDisplaysRentalsSortedBy(
+            rentals.filter(
+              (rental) =>
+                parseInt(rental.to_return_on) < Date.UTC(2020, 0, 1) && rental.returned_on == 0
+            )
+          )
+        );
     });
   });
 
