@@ -272,7 +272,7 @@ context("items", () => {
       cy.get("#item_name").should("have.value", itemsNotDeleted[3].item_name);
       cy.get("#brand").should("have.value", itemsNotDeleted[3].brand);
       cy.get("#itype").should("have.value", itemsNotDeleted[3].itype);
-      cy.get(":nth-child(2) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
+      cy.get(":nth-child(3) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
         itemsNotDeleted[3].category
       );
       cy.get("#deposit").should("have.value", itemsNotDeleted[3].deposit);
@@ -280,9 +280,9 @@ context("items", () => {
         "have.value",
         expectedDateInputValue(itemsNotDeleted[3].added)
       );
-      cy.get("#properties").should("have.value", itemsNotDeleted[3].properties);
+      cy.get("#description").should("have.value", itemsNotDeleted[3].description);
       cy.get("#parts").should("have.value", itemsNotDeleted[3].parts);
-      cy.get(":nth-child(4) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
+      cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
         statusOnWebsiteDisplayValue(itemsNotDeleted[3].status_on_website)
       );
     });
@@ -317,7 +317,7 @@ context("items", () => {
         deposit: 15,
         parts: "parts",
         added: new Date().getTime(),
-        properties: "properties",
+        description: "description",
         status_on_website: "instock",
       };
 
@@ -332,14 +332,14 @@ context("items", () => {
       cy.get("#item_name").type(newItem.item_name);
       cy.get("#brand").type(newItem.brand);
       cy.get("#itype").type(newItem.itype);
-      cy.get(":nth-child(2) > .group > :nth-child(2) > .col-input > .selectContainer")
+      cy.get(":nth-child(3) > .group > :nth-child(2) > .col-input > .selectContainer")
         .click()
         .contains(newItem.category)
         .click();
       cy.get("#deposit").type(newItem.deposit);
-      cy.get("#properties").type(newItem.properties);
+      cy.get("#description").type(newItem.description).type("{enter}");
       cy.get("#parts").type(newItem.parts);
-      cy.get(":nth-child(4) > .group > :nth-child(2) > .col-input > .selectContainer")
+      cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer")
         .click()
         .contains("verfügbar")
         .click({ force: true });

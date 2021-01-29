@@ -50,9 +50,13 @@ export default [
     search: "exclude",
   },
   {
-    title: "Eigenschaften",
-    key: "properties",
+    title: "Beschreibung",
+    key: "description",
     search: "exclude",
+  },
+  {
+    title: "Synonyme",
+    key: "synonyms",
   },
   {
     title: "Status Webseite",
