@@ -1,4 +1,8 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
+
   export let numberOfPages;
   export let currentPage;
 
@@ -36,10 +40,10 @@
     page = Math.min(page, numberOfPages - 1);
     page = Math.max(page, 0);
     currentPage = page;
-    calculatePageButtons(numberOfPages);
+    dispatch("pageChange", currentPage);
   }
 
-  $: numberOfPages, currentPage, setPage(currentPage);
+  $: calculatePageButtons(numberOfPages);
 </script>
 
 <svelte:window
@@ -60,7 +64,8 @@
           <a
             href="#/"
             on:click={() => setPage(pageButton)}
-            class={pageButton === currentPage ? "active" : ""}>
+            class={pageButton === currentPage ? "active" : ""}
+          >
             {pageButton + 1}
           </a>
         {:else}<a href="#/" class="disabled">{pageButton}</a>{/if}

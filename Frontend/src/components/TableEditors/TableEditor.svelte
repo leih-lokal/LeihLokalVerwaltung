@@ -1,4 +1,5 @@
 <script>
+  import { replace, push, location } from "svelte-spa-router";
   import AddNewItemButton from "../Input/AddNewItemButton.svelte";
   import LoadingAnimation from "../LoadingAnimation.svelte";
   import SearchFilterBar from "../Input/SearchFilterBar.svelte";
@@ -6,14 +7,14 @@
   import Table from "../Table/Table.svelte";
   import CONFIG from "./TableEditorConfig";
   import { keyValueStore } from "../../utils/stores";
-  import { getContext } from "svelte";
+  import { getContext, tick } from "svelte";
   import { fade } from "svelte/transition";
 
-  export let tableEditorId;
+  export let params;
 
   const openStyledModal = getContext("openStyledModal");
   const openPopupFormular = (createNew) => {
-    openStyledModal(CONFIG[tableEditorId].popupFormularComponent, {
+    openStyledModal(CONFIG[params.type].popupFormularComponent, {
       createNew: createNew,
       onSave: refresh,
     });
@@ -52,11 +53,11 @@
   let currentPage = 0;
   let rowHeight = 40;
   let innerHeight = window.innerHeight;
-  let numberOfPages = 0;
+  let numberOfPages = 1;
   let activeFilters = [];
-  $: columns = CONFIG[tableEditorId].columns;
-  $: filters = CONFIG[tableEditorId].filters;
-  $: database = CONFIG[tableEditorId].getDatabase();
+  $: columns = CONFIG[params.type].columns;
+  $: filters = CONFIG[params.type].filters;
+  $: database = CONFIG[params.type].getDatabase();
   $: sortBy = columns.some(shouldBeSortedByInitially)
     ? columns.find(shouldBeSortedByInitially).key
     : "_id";
@@ -64,9 +65,9 @@
     ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
     : false;
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
-  $: tableEditorId, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
-  $: tableEditorId, reset();
-  $: tableEditorId, searchInputRef?.focusSearchInput();
+  $: params.type, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
+  $: params.type, reset();
+  $: params.type, searchInputRef?.focusSearchInput();
   $: activeFilters, calculateNumberOfPages();
   $: searchTerm, calculateNumberOfPages();
   $: sortBy, sortReverse, (currentPage = 0);
@@ -77,6 +78,18 @@
       return "";
     }
   });
+  $: if (params.offset >= rowsPerPage * numberOfPages) {
+    replace(`/${params.type}/${rowsPerPage * (numberOfPages - 1)}`);
+  } else if (params.offset < 0) {
+    replace(`/${params.type}/0`);
+  } else {
+    currentPage = Math.min(
+      numberOfPages,
+      (params.offset - (params.offset % rowsPerPage)) / rowsPerPage
+    );
+  }
+
+  $: console.log($location);
 </script>
 
 <svelte:window bind:innerHeight />
@@ -96,7 +109,7 @@
       {rowHeight}
       {columns}
       {data}
-      cellBackgroundColorsFunction={CONFIG[tableEditorId].cellBackgroundColorsFunction}
+      cellBackgroundColorsFunction={CONFIG[params.type].cellBackgroundColorsFunction}
       {indicateSort}
       on:rowClicked={(event) => {
         keyValueStore.setValue("currentDoc", event.detail);
@@ -110,7 +123,16 @@
     />
   </div>
 {/await}
-<Pagination {numberOfPages} bind:currentPage />
+<Pagination
+  {numberOfPages}
+  {currentPage}
+  on:pageChange={(event) => {
+    if (currentPage != event.detail) {
+      console.log("change page to " + event.detail);
+      push(`/${params.type}/${rowsPerPage * event.detail}`);
+    }
+  }}
+/>
 
 <AddNewItemButton
   on:click={() => {

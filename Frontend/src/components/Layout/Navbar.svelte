@@ -1,6 +1,21 @@
 <script>
-  export let page;
+  import { link } from "svelte-spa-router";
+  import active from "svelte-spa-router/active";
 </script>
+
+<nav>
+  <ul>
+    <li>
+      <a use:active={"/customers/*"} href="/customers/0" use:link> Kunden </a>
+    </li>
+    <li>
+      <a use:active={"/items/*"} href="/items/0" use:link> Gegenstände </a>
+    </li>
+    <li>
+      <a use:active={"/rentals/*"} href="/rentals/0" use:link> Leihvorgänge </a>
+    </li>
+  </ul>
+</nav>
 
 <style>
   nav {
@@ -17,7 +32,8 @@
     font-size: 30px;
   }
 
-  a.active {
+  /* Style for "active" links; need to mark this :global because the router adds the class directly */
+  :global(a.active) {
     color: rgb(255, 208, 0) !important;
   }
 
@@ -38,32 +54,3 @@
     display: flex;
   }
 </style>
-
-<nav>
-  <ul>
-    <li>
-      <a
-        class={page === 0 ? 'active' : ''}
-        href="/"
-        on:click|preventDefault={() => (page = 0)}>
-        Kunden
-      </a>
-    </li>
-    <li>
-      <a
-        class={page === 1 ? 'active' : ''}
-        href="/"
-        on:click|preventDefault={() => (page = 1)}>
-        Gegenstände
-      </a>
-    </li>
-    <li>
-      <a
-        class={page === 2 ? 'active' : ''}
-        href="/"
-        on:click|preventDefault={() => (page = 2)}>
-        Leihvorgänge
-      </a>
-    </li>
-  </ul>
-</nav>

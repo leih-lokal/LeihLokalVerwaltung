@@ -23,8 +23,8 @@ const shouldHaveBeenReturnedBeforeToday = (rental) =>
   ((!rental.returned_on && isBeforeToday(rental.to_return_on)) ||
     (rental.returned_on && isBeforeDay(rental.to_return_on, rental.returned_on)));
 
-export default [
-  {
+export default {
+  customers: {
     columns: customerColumns,
     filters: customerFilters,
     getDatabase: () => get(customerDb),
@@ -39,7 +39,7 @@ export default [
       }
     },
   },
-  {
+  items: {
     columns: itemColumns,
     filters: itemFilters,
     getDatabase: () => get(itemDb),
@@ -54,7 +54,7 @@ export default [
       }
     },
   },
-  {
+  rentals: {
     columns: rentalColumns,
     filters: rentalFilters,
     getDatabase: () => get(rentalDb),
@@ -89,4 +89,4 @@ export default [
       });
     },
   },
-];
+};
