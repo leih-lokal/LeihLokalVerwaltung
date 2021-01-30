@@ -26,22 +26,12 @@
   }
 
   const attributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
-    $customerDb
-      .selectorBuilder()
-      .withField(field)
-      .startsWithIgnoreCase(searchValue)
-      .build();
+    $customerDb.selectorBuilder().withField(field).startsWithIgnoreCase(searchValue).build();
 
   const popupFormularConfiguration = new PopupFormularConfiguration()
     .setTitle(`Kunde ${createNew ? "anlegen" : "bearbeiten"}`)
     .setDisplayDeleteButton(!createNew)
-    .setInputGroups([
-      "Name",
-      "Adresse",
-      "Kontakt",
-      "Mitgliedschaft",
-      "Sonstiges",
-    ])
+    .setInputGroups(["Name", "Adresse", "Kontakt", "Mitgliedschaft", "Sonstiges"])
     .setInputs([
       {
         id: "firstname",
@@ -169,12 +159,7 @@
         label: "Aufmerksam geworden",
         group: "Mitgliedschaft",
         type: InputTypes.SELECTION,
-        selectionOptions: [
-          "Internet",
-          "Freunde & Bekannte",
-          "Zeitung / Medien",
-          "Nachbarschaft",
-        ],
+        selectionOptions: ["Internet", "Freunde & Bekannte", "Zeitung / Medien", "Nachbarschaft"],
         bindTo: { keyValueStoreKey: "currentDoc", attr: "heard" },
         isCreatable: true,
         isMulti: true,
@@ -205,19 +190,19 @@
           { value: "", label: "Nicht markieren" },
           {
             value: ColorDefs.GREEN,
-            label: "<a style='color:" + ColorDefs.GREEN + "'>■</a> Grün",
+            label: "<a style='color:" + ColorDefs.HIGHLIGHT_GREEN + "'>■</a> Grün",
           },
           {
             value: ColorDefs.BLUE,
-            label: "<a style='color: " + ColorDefs.BLUE + "'>■</a> Blau",
+            label: "<a style='color: " + ColorDefs.HIGHLIGHT_BLUE + "'>■</a> Blau",
           },
           {
             value: ColorDefs.YELLOW,
-            label: "<a style='color: " + ColorDefs.YELLOW + "'>■</a> Gelb",
+            label: "<a style='color: " + ColorDefs.HIGHLIGHT_YELLOW + "'>■</a> Gelb",
           },
           {
             value: ColorDefs.RED,
-            label: "<a style='color: " + ColorDefs.RED + "'>■</a> Rot",
+            label: "<a style='color: " + ColorDefs.HIGHLIGHT_RED + "'>■</a> Rot",
           },
         ],
         bindTo: { keyValueStoreKey: "currentDoc", attr: "highlight" },
@@ -245,9 +230,7 @@
   }}
   on:save={(event) => {
     const doc = $keyValueStore["currentDoc"];
-    const savePromise = createNew
-      ? $customerDb.createDoc(doc)
-      : $customerDb.updateDoc(doc);
+    const savePromise = createNew ? $customerDb.createDoc(doc) : $customerDb.updateDoc(doc);
 
     savePromise
       .then((result) => notifier.success("Kunde gespeichert!"))

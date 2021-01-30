@@ -168,19 +168,19 @@
           { value: "", label: "Nicht markieren" },
           {
             value: ColorDefs.GREEN,
-            label: "<a style='color:" + ColorDefs.GREEN + "'>■</a> Grün",
+            label: "<a style='color:" + ColorDefs.HIGHLIGHT_GREEN + "'>■</a> Grün",
           },
           {
             value: ColorDefs.BLUE,
-            label: "<a style='color: " + ColorDefs.BLUE + "'>■</a> Blau",
+            label: "<a style='color: " + ColorDefs.HIGHLIGHT_BLUE + "'>■</a> Blau",
           },
           {
             value: ColorDefs.YELLOW,
-            label: "<a style='color: " + ColorDefs.YELLOW + "'>■</a> Gelb",
+            label: "<a style='color: " + ColorDefs.HIGHLIGHT_YELLOW + "'>■</a> Gelb",
           },
           {
             value: ColorDefs.RED,
-            label: "<a style='color: " + ColorDefs.RED + "'>■</a> Rot",
+            label: "<a style='color: " + ColorDefs.HIGHLIGHT_RED + "'>■</a> Rot",
           },
         ],
         bindTo: { keyValueStoreKey: "currentDoc", attr: "highlight" },
