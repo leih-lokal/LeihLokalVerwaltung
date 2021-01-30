@@ -46,6 +46,7 @@
     calculateNumberOfPages();
   };
 
+  let searchInputRef;
   let loadData = new Promise(() => {});
   let searchTerm = "";
   let currentPage = 0;
@@ -65,6 +66,7 @@
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
   $: tableEditorId, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
   $: tableEditorId, reset();
+  $: tableEditorId, searchInputRef?.focusSearchInput();
   $: activeFilters, calculateNumberOfPages();
   $: searchTerm, calculateNumberOfPages();
   $: sortBy, sortReverse, (currentPage = 0);
@@ -83,6 +85,7 @@
   filterOptions={Object.keys(filters.filters).map((filter) => ({ value: filter, label: filter }))}
   bind:activeFilters
   bind:searchTerm
+  bind:this={searchInputRef}
 />
 
 {#await loadData()}

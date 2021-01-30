@@ -4,6 +4,8 @@
   export let filterOptions = [];
   export let activeFilters = [];
   export let searchTerm = "";
+  export const focusSearchInput = () => searchInputRef.focus();
+  let searchInputRef;
 
   let undebouncedSearchTerm = "";
   let selectedValuesString = "";
@@ -37,6 +39,8 @@
   <div class="searchFilterBar">
     <input
       class="searchInput"
+      type="text"
+      bind:this={searchInputRef}
       bind:value={undebouncedSearchTerm}
       on:input={(event) => debounce(() => (searchTerm = event.target.value))}
       placeholder="Suche"
