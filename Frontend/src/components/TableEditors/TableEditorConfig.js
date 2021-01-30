@@ -33,7 +33,9 @@ export default [
       if (customer.highlight) {
         return new Array(customerColumns.length).fill(customer.highlight);
       } else {
-        return isEven ? COLORS.DEFAULT_ROW_BACKGROUND_EVEN : "white";
+        return isEven
+          ? new Array(customerColumns.length).fill(COLORS.DEFAULT_ROW_BACKGROUND_EVEN)
+          : new Array(customerColumns.length).fill(COLORS.DEFAULT_ROW_BACKGROUND_ODD);
       }
     },
   },
@@ -46,7 +48,9 @@ export default [
       if (item.highlight) {
         return new Array(itemColumns.length).fill(item.highlight);
       } else {
-        return isEven ? COLORS.DEFAULT_ROW_BACKGROUND_EVEN : "white";
+        return isEven
+          ? new Array(itemColumns.length).fill(COLORS.DEFAULT_ROW_BACKGROUND_EVEN)
+          : new Array(itemColumns.length).fill(COLORS.DEFAULT_ROW_BACKGROUND_ODD);
       }
     },
   },
