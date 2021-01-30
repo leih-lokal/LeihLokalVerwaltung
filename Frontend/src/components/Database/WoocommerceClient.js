@@ -76,9 +76,9 @@ class WoocommerceClient {
         .split(", ")
         .filter((category) => category in WC_CATEGORIES)
         .map((category) => WC_CATEGORIES[category]),
-      short_description: `<div class="hidden">Art.Nr.: ${item._id}</div>${item.description}<br /> ${
-        hasSynonyms ? `<small>(Synonyme: ${item.synonyms})</small>` : ""
-      }`,
+      short_description: `<div class="hidden">Art.Nr.: ${item._id}</div>${
+        item.description ?? ""
+      }<br /> ${hasSynonyms ? `<small>(Synonyme: ${item.synonyms})</small>` : ""}`,
       meta_data: [
         {
           key: "marke",
