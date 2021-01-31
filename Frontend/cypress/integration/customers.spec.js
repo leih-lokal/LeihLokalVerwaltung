@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/customers";
+import ColorDefs from "../../src/components/Input/ColorDefs";
 import columns from "../../src/components/TableEditors/Customers/Columns";
 import { dateToString } from "./utils";
 
@@ -43,6 +44,16 @@ const expectDisplaysOnlyCustomersWithIds = (ids) => {
   expectDisplaysCustomers(customersWithIds);
 };
 
+const expectedBackgroundColorForRow = (rowIndex) => {
+  if (customers[rowIndex].hasOwnProperty("highlight")) {
+    return customers[rowIndex]["highlight"];
+  } else {
+    return rowIndex % 2 === 0
+      ? ColorDefs.DEFAULT_ROW_BACKGROUND_EVEN
+      : ColorDefs.DEFAULT_ROW_BACKGROUND_ODD;
+  }
+};
+
 const expectDisplaysCustomers = (customers) =>
   cy
     .get("table > tr", { timeout: 10000 })
@@ -60,6 +71,7 @@ const expectDisplaysCustomers = (customers) =>
                 ? expectedDisplayValue(customers[rowIndex], columns[colIndex].key)
                 : ""
             )
+            .should("have.css", "background-color", expectedBackgroundColorForRow(rowIndex))
         )
     );
 
