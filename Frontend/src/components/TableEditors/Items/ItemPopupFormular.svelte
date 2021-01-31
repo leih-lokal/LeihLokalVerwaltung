@@ -167,19 +167,19 @@
         selectionOptions: [
           { value: "", label: "Nicht markieren" },
           {
-            value: ColorDefs.GREEN,
+            value: ColorDefs.HIGHLIGHT_GREEN,
             label: "<a style='color:" + ColorDefs.HIGHLIGHT_GREEN + "'>■</a> Grün",
           },
           {
-            value: ColorDefs.BLUE,
+            value: ColorDefs.HIGHLIGHT_BLUE,
             label: "<a style='color: " + ColorDefs.HIGHLIGHT_BLUE + "'>■</a> Blau",
           },
           {
-            value: ColorDefs.YELLOW,
+            value: ColorDefs.HIGHLIGHT_YELLOW,
             label: "<a style='color: " + ColorDefs.HIGHLIGHT_YELLOW + "'>■</a> Gelb",
           },
           {
-            value: ColorDefs.RED,
+            value: ColorDefs.HIGHLIGHT_RED,
             label: "<a style='color: " + ColorDefs.HIGHLIGHT_RED + "'>■</a> Rot",
           },
         ],
