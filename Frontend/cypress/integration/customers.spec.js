@@ -44,7 +44,7 @@ const expectDisplaysOnlyCustomersWithIds = (ids) => {
   expectDisplaysCustomers(customersWithIds);
 };
 
-const expectedBackgroundColorForRow = (rowIndex) => {
+const expectedBackgroundColorForRow = (customers, rowIndex) => {
   if (customers[rowIndex].hasOwnProperty("highlight")) {
     return customers[rowIndex]["highlight"];
   } else {
@@ -71,7 +71,11 @@ const expectDisplaysCustomers = (customers) =>
                 ? expectedDisplayValue(customers[rowIndex], columns[colIndex].key)
                 : ""
             )
-            .should("have.css", "background-color", expectedBackgroundColorForRow(rowIndex))
+            .should(
+              "have.css",
+              "background-color",
+              expectedBackgroundColorForRow(customers, rowIndex)
+            )
         )
     );
 
