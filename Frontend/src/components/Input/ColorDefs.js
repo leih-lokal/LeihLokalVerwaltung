@@ -1,8 +1,8 @@
 export default Object.freeze({
-  HIGHLIGHT_RED: "#fa2d1e",
-  HIGHLIGHT_GREEN: "#83eb34",
-  HIGHLIGHT_BLUE: "#2d90e0",
-  HIGHLIGHT_YELLOW: "#f7ef0a",
+  HIGHLIGHT_RED: "rgb(250, 45, 30)",
+  HIGHLIGHT_GREEN: "rgb(131, 235, 52)",
+  HIGHLIGHT_BLUE: "rgb(45, 144, 224)",
+  HIGHLIGHT_YELLOW: "rgb(247, 239, 10)",
 
   RENTAL_RETURNED_TODAY_GREEN: "rgb(214, 252, 208)",
   RENTAL_LATE_RED: "rgb(240, 200, 200)",

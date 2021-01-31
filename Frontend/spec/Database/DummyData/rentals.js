@@ -155,17 +155,18 @@ export default (time = new Date().getTime()) => {
       extended_on: 0,
       to_return_on: IN_ONE_WEEK,
       passing_out_employee: "KA",
-      customer_id: "94",
-      name: "Eichler",
+      customer_id: "1",
+      name: "Cohen",
       deposit: 217,
       deposit_returned: -10,
       returned_on: 0,
       receiving_employee: "CI",
       remark: "kommt zum RC",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2019/03/1814.jpg",
-      expectedCellBackgroundColors: new Array(columns.length).fill(
-        COLORS.DEFAULT_ROW_BACKGROUND_ODD
-      ),
+      expectedCellBackgroundColors: columns.map((col) => {
+        if (col.key === "name" || col.key === "customer_id") return COLORS.HIGHLIGHT_YELLOW;
+        else return COLORS.DEFAULT_ROW_BACKGROUND_ODD;
+      }),
     },
     {
       _id: "00a8d5c18c7377bf6e3802faaac1a089",
