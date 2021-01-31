@@ -1,3 +1,5 @@
+import COLORS from "../../../src/components/Input/ColorDefs";
+
 export default [
   {
     _id: "0001",
@@ -14,6 +16,7 @@ export default [
       "https://www.buergerstiftung-karlsruhe.de/leihlokal/sortiment/heimwerker/dekupiersaege-3/",
     wc_id: 3302,
     image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/3106.jpg",
+    highlight: COLORS.HIGHLIGHT_BLUE,
   },
   {
     _id: "0002",

@@ -89,8 +89,8 @@ export default (time = new Date().getTime()) => {
     },
     {
       _id: "00476565ea2f645b74692e0aac9f7514",
-      item_id: "0005",
-      item_name: "Christbaumständer",
+      item_id: "0001",
+      item_name: "Dekupiersäge",
       rented_on: ONE_WEEK_AGO,
       extended_on: 0,
       to_return_on: TODAY,
@@ -103,9 +103,10 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "SK",
       remark: "",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/005.jpg",
-      expectedCellBackgroundColors: new Array(columns.length).fill(
-        COLORS.RENTAL_RETURNED_TODAY_GREEN
-      ),
+      expectedCellBackgroundColors: columns.map((col) => {
+        if (col.key === "item_id" || col.key === "item_name") return COLORS.HIGHLIGHT_BLUE;
+        else return COLORS.RENTAL_RETURNED_TODAY_GREEN;
+      }),
     },
     {
       _id: "005604ea4fce99a1b3ad7a06915629f8",
