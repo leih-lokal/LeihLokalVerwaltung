@@ -368,7 +368,7 @@ context("items", () => {
         .contains(newItem.category)
         .click();
       cy.get("#deposit").type(newItem.deposit);
-      cy.get("#description").type(newItem.description).type("{enter}");
+      cy.get("#description").type(newItem.description);
       cy.get("#parts").type(newItem.parts);
       cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer")
         .click()
