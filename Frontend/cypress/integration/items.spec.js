@@ -193,6 +193,11 @@ context("items", () => {
       cy.get(".searchInput").type("2", { force: true });
       expectDisplaysOnlyItemsWithIds(["2"]);
     });
+
+    it("finds item when seaching for synonym", () => {
+      cy.get(".searchInput").type("Bohrer", { force: true });
+      expectDisplaysOnlyItemsWithIds(["7"]);
+    });
   });
 
   context("Filtering", () => {
