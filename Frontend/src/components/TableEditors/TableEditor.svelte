@@ -46,6 +46,16 @@
     calculateNumberOfPages();
   };
 
+  const setInitialSortCol = (tableEditorId) =>
+    (sortBy = columns.some(shouldBeSortedByInitially)
+      ? columns.find(shouldBeSortedByInitially).key
+      : "_id");
+
+  const setInitialSortDirection = (tableEditorId) =>
+    (sortReverse = columns.some(shouldBeSortedByInitially)
+      ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
+      : false);
+
   let searchInputRef;
   let loadData = new Promise(() => {});
   let searchTerm = "";
@@ -54,15 +64,13 @@
   let innerHeight = window.innerHeight;
   let numberOfPages = 0;
   let activeFilters = [];
+  let sortBy;
+  let sortReverse;
   $: columns = CONFIG[tableEditorId].columns;
   $: filters = CONFIG[tableEditorId].filters;
   $: database = CONFIG[tableEditorId].getDatabase();
-  $: sortBy = columns.some(shouldBeSortedByInitially)
-    ? columns.find(shouldBeSortedByInitially).key
-    : "_id";
-  $: sortReverse = columns.some(shouldBeSortedByInitially)
-    ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
-    : false;
+  $: setInitialSortCol(tableEditorId);
+  $: setInitialSortDirection(tableEditorId);
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
   $: tableEditorId, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
   $: tableEditorId, reset();
