@@ -14,7 +14,7 @@
 
   const openStyledModal = getContext("openStyledModal");
   const openPopupFormular = (createNew) => {
-    openStyledModal(CONFIG[params.type].popupFormularComponent, {
+    openStyledModal(CONFIG[params.tab].popupFormularComponent, {
       createNew: createNew,
       onSave: refresh,
     });
@@ -42,6 +42,7 @@
       }));
 
   const reset = () => {
+    console.log("reset");
     searchTerm = "";
     activeFilters = filters.activeByDefault;
     calculateNumberOfPages();
@@ -57,6 +58,11 @@
       ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
       : false);
 
+  const setUrlByParams = () => {
+    //replace(`/${params.tab}/${params.offset}/${params.searchterm}/${params.sortby}/${params.sortreverse}/${params.filters}`);
+    replace(`/${params.tab}/${params.offset}`);
+  };
+
   let searchInputRef;
   let loadData = new Promise(() => {});
   let searchTerm = "";
@@ -67,15 +73,15 @@
   let activeFilters = [];
   let sortBy;
   let sortReverse;
-  $: columns = CONFIG[params.type].columns;
-  $: filters = CONFIG[params.type].filters;
-  $: database = CONFIG[params.type].getDatabase();
-  $: setInitialSortCol(params.type);
-  $: setInitialSortDirection(params.type);
+  $: columns = CONFIG[params.tab].columns;
+  $: filters = CONFIG[params.tab].filters;
+  $: database = CONFIG[params.tab].getDatabase();
+  $: setInitialSortCol(params.tab);
+  $: setInitialSortDirection(params.tab);
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
-  $: params.type, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
-  $: params.type, reset();
-  $: params.type, searchInputRef?.focusSearchInput();
+  $: params.tab, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
+  $: params.tab, reset();
+  $: params.tab, searchInputRef?.focusSearchInput();
   $: activeFilters, calculateNumberOfPages();
   $: searchTerm, calculateNumberOfPages();
   $: sortBy, sortReverse, (currentPage = 0);
@@ -87,9 +93,11 @@
     }
   });
   $: if (params.offset >= rowsPerPage * numberOfPages) {
-    replace(`/${params.type}/${rowsPerPage * (numberOfPages - 1)}`);
+    params.offset = rowsPerPage * (numberOfPages - 1);
+    setUrlByParams();
   } else if (params.offset < 0) {
-    replace(`/${params.type}/0`);
+    params.offset = 0;
+    setUrlByParams();
   } else {
     currentPage = Math.min(
       numberOfPages,
@@ -115,7 +123,7 @@
       {rowHeight}
       {columns}
       {data}
-      cellBackgroundColorsFunction={CONFIG[params.type].cellBackgroundColorsFunction}
+      cellBackgroundColorsFunction={CONFIG[params.tab].cellBackgroundColorsFunction}
       {indicateSort}
       on:rowClicked={(event) => {
         keyValueStore.setValue("currentDoc", event.detail);
@@ -134,7 +142,8 @@
   {currentPage}
   on:pageChange={(event) => {
     if (currentPage != event.detail) {
-      replace(`/${params.type}/${rowsPerPage * event.detail}`);
+      params.offset = rowsPerPage * event.detail;
+      setUrlByParams();
     }
   }}
 />

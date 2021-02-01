@@ -23,7 +23,7 @@
   {:then}
     <Navbar />
     <Modal>
-      <Router routes={{ "/:type/:offset/:editId?": TableEditor }} />
+      <Router routes={{ "/:tab/:offset/:editId?": TableEditor }} />
     </Modal>
   {:catch error}
     {error.message}
