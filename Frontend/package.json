@@ -61,6 +61,6 @@
     "svelte-jester-mock": "^1.0.3",
     "svelte-loading-spinners": "^0.1.4",
     "svelte-select": "^3.16.1",
-    "svelte-simple-modal": "^0.6.1"
+    "svelte-simple-modal": "^0.7.0"
   }
 }
