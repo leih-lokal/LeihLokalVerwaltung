@@ -1,5 +1,5 @@
 <script>
-  import { replace, push, location } from "svelte-spa-router";
+  import { replace, location } from "svelte-spa-router";
   import AddNewItemButton from "../Input/AddNewItemButton.svelte";
   import LoadingAnimation from "../LoadingAnimation.svelte";
   import SearchFilterBar from "../Input/SearchFilterBar.svelte";
@@ -7,7 +7,7 @@
   import Table from "../Table/Table.svelte";
   import CONFIG from "./TableEditorConfig";
   import { keyValueStore } from "../../utils/stores";
-  import { getContext, tick } from "svelte";
+  import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
   export let params;
@@ -96,8 +96,6 @@
       (params.offset - (params.offset % rowsPerPage)) / rowsPerPage
     );
   }
-
-  $: console.log($location);
 </script>
 
 <svelte:window bind:innerHeight />
@@ -136,8 +134,7 @@
   {currentPage}
   on:pageChange={(event) => {
     if (currentPage != event.detail) {
-      console.log("change page to " + event.detail);
-      push(`/${params.type}/${rowsPerPage * event.detail}`);
+      replace(`/${params.type}/${rowsPerPage * event.detail}`);
     }
   }}
 />
