@@ -138,6 +138,10 @@ class Database {
   }
 
   async query(options) {
+    if (this.cache.has(JSON.stringify(options))) {
+      return this.cache.get(JSON.stringify(options));
+    }
+
     const { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm } = options;
     const requiredFields = filters.flatMap((filter) => filter.required_fields);
     const ddocId = "query-" + hashString(sortBy);
@@ -184,17 +188,20 @@ class Database {
       sortedFilteredIds = sortedIds.filter((id) => idsMatchingAllFilters.includes(id));
     }
 
-    const result = await this.database.allDocs({
+    const resultDocs = await this.database.allDocs({
       skip: rowsPerPage * currentPage,
       limit: rowsPerPage,
       include_docs: true,
       keys: sortedFilteredIds,
     });
 
-    return {
-      rows: result.rows.map((row) => row.doc),
+    const result = {
+      rows: resultDocs.rows.map((row) => row.doc),
       count: sortedFilteredIds.length,
     };
+
+    this.cache.set(JSON.stringify(options), result);
+    return result;
   }
 
   async fetchDocsBySelector(selector, fields) {
