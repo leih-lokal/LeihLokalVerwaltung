@@ -1,5 +1,4 @@
 <script>
-  import { replace, location } from "svelte-spa-router";
   import AddNewItemButton from "../Input/AddNewItemButton.svelte";
   import LoadingAnimation from "../LoadingAnimation.svelte";
   import SearchFilterBar from "../Input/SearchFilterBar.svelte";
@@ -118,6 +117,19 @@
       }}
     />
   </div>
+{:catch error}
+  {#if error.status === 401}
+    <p class="error">
+      Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den Einstellungen (Zahnrad
+      rechts oben) überprüfen.
+    </p>
+  {:else}
+    <p class="error">
+      Keine Verbindung mit der Datenbank. <br />{error.hasOwnProperty("message")
+        ? error.message
+        : ""}
+    </p>
+  {/if}
 {/await}
 <Pagination {numberOfPages} bind:currentPage />
 
@@ -131,5 +143,11 @@
 <style>
   .animatecontainer {
     height: 100%;
+  }
+
+  .error {
+    color: red;
+    font-size: large;
+    margin: 20px;
   }
 </style>

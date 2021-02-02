@@ -7,26 +7,25 @@ PouchDB.plugin(PouchDBFind);
 
 class Database {
   database;
-  changeCallback;
   syncHandler;
-  name;
   columns;
   existingDesignDocIds;
   cache;
-  host;
 
-  constructor(name, columns, host) {
-    this.changeCallback = (updatedDocs) => {};
-    this.name = name;
+  constructor(name, columns) {
     this.columns = columns;
-    this.host = host;
+    this.name = name;
     this.existingDesignDocIds = new Set();
     this.cache = new Cache(50);
+    this.connect();
   }
 
   connect() {
+    this.cache.reset();
     this.database = new PouchDB(
-      `ENV_COUCHDB_PROTOCOL://ENV_COUCHDB_USER:ENV_COUCHDB_PASSWORD@${this.host}/${this.name}`
+      `https://${localStorage.getItem("couchdbUser")}:${localStorage.getItem(
+        "couchdbPassword"
+      )}@${localStorage.getItem("couchdbHost")}:${localStorage.getItem("couchdbPort")}/${this.name}`
     );
 
     //create indices for searching
@@ -37,9 +36,6 @@ class Database {
         })
       )
     );
-
-    // test connection
-    return this.database.info();
   }
 
   selectorBuilder() {
