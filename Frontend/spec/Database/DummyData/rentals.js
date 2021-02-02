@@ -11,8 +11,8 @@ export default (time = new Date().getTime()) => {
 
   return [
     {
-      _id: "000eb2bf4e2402858e0e8174d16ec524",
-      item_id: "0001",
+      _id: "000eb2bf4e2402858e0e8174d16ec523",
+      item_id: "0017",
       item_name: "Mini-Handkreissäge",
       rented_on: TWO_WEEKS_AGO,
       extended_on: 0,
