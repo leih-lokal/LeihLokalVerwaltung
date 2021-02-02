@@ -1,20 +1,13 @@
 <script>
   import Router from "svelte-spa-router";
-  import { location, replace } from "svelte-spa-router";
+  import { replace } from "svelte-spa-router";
   import { wrap } from "svelte-spa-router/wrap";
-  import { onMount } from "svelte";
   import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import Navbar from "./Layout/Navbar.svelte";
   import TableEditor from "./TableEditors/TableEditor.svelte";
   import LoadingAnimation from "./LoadingAnimation.svelte";
   import connectDatabases from "./Database/connectDatabases";
   import Modal from "./Layout/Modal.svelte";
-
-  onMount(() => {
-    if ($location === "/") {
-      replace("/rentals");
-    }
-  });
 </script>
 
 <NotificationDisplay />
@@ -43,6 +36,15 @@
             props: {
               tab: "customers",
             },
+          }),
+          "*": wrap({
+            component: {},
+            conditions: [
+              (detail) => {
+                replace("/rentals");
+                return false;
+              },
+            ],
           }),
         }}
       />
