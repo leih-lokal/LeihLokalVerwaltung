@@ -8,6 +8,7 @@
   import LoadingAnimation from "./LoadingAnimation.svelte";
   import connectDatabases from "./Database/connectDatabases";
   import Modal from "./Layout/Modal.svelte";
+  import Settings from "./Input/SettingsFormular.svelte";
 </script>
 
 <NotificationDisplay />
@@ -36,6 +37,9 @@
             props: {
               tab: "customers",
             },
+          }),
+          "/settings": wrap({
+            component: Settings,
           }),
           "*": wrap({
             component: {},

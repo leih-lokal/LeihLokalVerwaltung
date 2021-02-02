@@ -1,6 +1,7 @@
 <script>
   import { link } from "svelte-spa-router";
   import active from "svelte-spa-router/active";
+  import SettingsButton from "../Input/SettingsButton.svelte";
 </script>
 
 <nav>
@@ -13,6 +14,9 @@
     </li>
     <li>
       <a use:active={"/rentals"} href="/rentals" use:link> Leihvorgänge </a>
+    </li>
+    <li>
+      <SettingsButton />
     </li>
   </ul>
 </nav>
@@ -32,8 +36,14 @@
     font-size: 30px;
   }
 
+  li:last-child {
+    position: absolute;
+    right: 0;
+  }
+
   /* Style for "active" links; need to mark this :global because the router adds the class directly */
-  :global(a.active) {
+  :global(a.active),
+  :global(svg.active) {
     color: rgb(255, 208, 0) !important;
   }
 
