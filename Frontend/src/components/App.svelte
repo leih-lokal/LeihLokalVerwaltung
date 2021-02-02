@@ -1,6 +1,7 @@
 <script>
   import Router from "svelte-spa-router";
   import { location, replace } from "svelte-spa-router";
+  import { wrap } from "svelte-spa-router/wrap";
   import { onMount } from "svelte";
   import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import Navbar from "./Layout/Navbar.svelte";
@@ -11,7 +12,7 @@
 
   onMount(() => {
     if ($location === "/") {
-      replace("/rentals/0");
+      replace("/rentals");
     }
   });
 </script>
@@ -23,7 +24,28 @@
   {:then}
     <Navbar />
     <Modal>
-      <Router routes={{ "/:tab/:offset/:editId?": TableEditor }} />
+      <Router
+        routes={{
+          "/rentals": wrap({
+            component: TableEditor,
+            props: {
+              tab: "rentals",
+            },
+          }),
+          "/items": wrap({
+            component: TableEditor,
+            props: {
+              tab: "items",
+            },
+          }),
+          "/customers": wrap({
+            component: TableEditor,
+            props: {
+              tab: "customers",
+            },
+          }),
+        }}
+      />
     </Modal>
   {:catch error}
     {error.message}

@@ -10,11 +10,11 @@
   import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
-  export let params;
+  export let tab;
 
   const openStyledModal = getContext("openStyledModal");
   const openPopupFormular = (createNew) => {
-    openStyledModal(CONFIG[params.tab].popupFormularComponent, {
+    openStyledModal(CONFIG[tab].popupFormularComponent, {
       createNew: createNew,
       onSave: refresh,
     });
@@ -42,7 +42,6 @@
       }));
 
   const reset = () => {
-    console.log("reset");
     searchTerm = "";
     activeFilters = filters.activeByDefault;
     calculateNumberOfPages();
@@ -58,11 +57,6 @@
       ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
       : false);
 
-  const setUrlByParams = () => {
-    //replace(`/${params.tab}/${params.offset}/${params.searchterm}/${params.sortby}/${params.sortreverse}/${params.filters}`);
-    replace(`/${params.tab}/${params.offset}`);
-  };
-
   let searchInputRef;
   let loadData = new Promise(() => {});
   let searchTerm = "";
@@ -73,15 +67,15 @@
   let activeFilters = [];
   let sortBy;
   let sortReverse;
-  $: columns = CONFIG[params.tab].columns;
-  $: filters = CONFIG[params.tab].filters;
-  $: database = CONFIG[params.tab].getDatabase();
-  $: setInitialSortCol(params.tab);
-  $: setInitialSortDirection(params.tab);
+  $: columns = CONFIG[tab].columns;
+  $: filters = CONFIG[tab].filters;
+  $: database = CONFIG[tab].getDatabase();
+  $: setInitialSortCol(tab);
+  $: setInitialSortDirection(tab);
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
-  $: params.tab, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
-  $: params.tab, reset();
-  $: params.tab, searchInputRef?.focusSearchInput();
+  $: tab, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
+  $: tab, reset();
+  $: tab, searchInputRef?.focusSearchInput();
   $: activeFilters, calculateNumberOfPages();
   $: searchTerm, calculateNumberOfPages();
   $: sortBy, sortReverse, (currentPage = 0);
@@ -92,18 +86,6 @@
       return "";
     }
   });
-  $: if (params.offset >= rowsPerPage * numberOfPages) {
-    params.offset = rowsPerPage * (numberOfPages - 1);
-    setUrlByParams();
-  } else if (params.offset < 0) {
-    params.offset = 0;
-    setUrlByParams();
-  } else {
-    currentPage = Math.min(
-      numberOfPages,
-      (params.offset - (params.offset % rowsPerPage)) / rowsPerPage
-    );
-  }
 </script>
 
 <svelte:window bind:innerHeight />
@@ -123,7 +105,7 @@
       {rowHeight}
       {columns}
       {data}
-      cellBackgroundColorsFunction={CONFIG[params.tab].cellBackgroundColorsFunction}
+      cellBackgroundColorsFunction={CONFIG[tab].cellBackgroundColorsFunction}
       {indicateSort}
       on:rowClicked={(event) => {
         keyValueStore.setValue("currentDoc", event.detail);
@@ -137,16 +119,7 @@
     />
   </div>
 {/await}
-<Pagination
-  {numberOfPages}
-  {currentPage}
-  on:pageChange={(event) => {
-    if (currentPage != event.detail) {
-      params.offset = rowsPerPage * event.detail;
-      setUrlByParams();
-    }
-  }}
-/>
+<Pagination {numberOfPages} bind:currentPage />
 
 <AddNewItemButton
   on:click={() => {

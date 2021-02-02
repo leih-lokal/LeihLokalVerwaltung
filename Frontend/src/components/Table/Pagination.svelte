@@ -1,8 +1,4 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-
-  const dispatch = createEventDispatcher();
-
   export let numberOfPages;
   export let currentPage;
 
@@ -40,7 +36,6 @@
     page = Math.min(page, numberOfPages - 1);
     page = Math.max(page, 0);
     currentPage = page;
-    dispatch("pageChange", currentPage);
   }
 
   $: currentPage, calculatePageButtons(numberOfPages);

@@ -6,13 +6,13 @@
 <nav>
   <ul>
     <li>
-      <a use:active={"/customers/*"} href="/customers/0" use:link> Kunden </a>
+      <a use:active={"/customers"} href="/customers" use:link> Kunden </a>
     </li>
     <li>
-      <a use:active={"/items/*"} href="/items/0" use:link> Gegenstände </a>
+      <a use:active={"/items"} href="/items" use:link> Gegenstände </a>
     </li>
     <li>
-      <a use:active={"/rentals/*"} href="/rentals/0" use:link> Leihvorgänge </a>
+      <a use:active={"/rentals"} href="/rentals" use:link> Leihvorgänge </a>
     </li>
   </ul>
 </nav>
