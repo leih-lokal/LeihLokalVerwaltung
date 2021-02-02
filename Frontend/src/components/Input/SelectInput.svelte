@@ -19,7 +19,7 @@
   const selectedValuesFromString = (valueString) => {
     let selectedValues = [];
     if (valueString !== "") {
-      selectedValues = valuesToOptions(valueString.split(", "));
+      selectedValues = valuesToOptions(isMulti ? valueString.split(", ") : [valueString]);
     }
     if (!isMulti) {
       selectedValues = selectedValues.length === 0 ? "" : selectedValues[0];
@@ -43,6 +43,7 @@
       selectedValuesString = "";
     }
   }}
+  on:clear={(event) => (selectedValuesString = "")}
   isDisabled={disabled}
   {isMulti}
   {isCreatable}
