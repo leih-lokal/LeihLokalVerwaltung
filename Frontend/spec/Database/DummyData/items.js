@@ -15,7 +15,7 @@ export default [
     wc_url:
       "https://www.buergerstiftung-karlsruhe.de/leihlokal/sortiment/heimwerker/dekupiersaege-3/",
     wc_id: 3302,
-    image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/3106.jpg",
+    image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/005.jpg",
     highlight: COLORS.HIGHLIGHT_BLUE,
   },
   {

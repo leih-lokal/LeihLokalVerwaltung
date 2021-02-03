@@ -348,10 +348,11 @@ context("rentals", () => {
         returned_on: 0,
         name: "Viviana",
         deposit: 15,
-        image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/3106.jpg",
-        expectedCellBackgroundColors: new Array(columns.length).fill(
-          COLORS.DEFAULT_ROW_BACKGROUND_ODD
-        ),
+        image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/005.jpg",
+        expectedCellBackgroundColors: columns.map((col) => {
+          if (col.key === "item_id" || col.key === "item_name") return COLORS.HIGHLIGHT_BLUE;
+          else return COLORS.RENTAL_RETURNED_TODAY_GREEN;
+        }),
       };
 
       cy.contains("+").click();
