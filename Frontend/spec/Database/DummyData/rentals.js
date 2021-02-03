@@ -11,8 +11,8 @@ export default (time = new Date().getTime()) => {
 
   return [
     {
-      _id: "000eb2bf4e2402858e0e8174d16ec524",
-      item_id: "0001",
+      _id: "000eb2bf4e2402858e0e8174d16ec523",
+      item_id: "0017",
       item_name: "Mini-Handkreissäge",
       rented_on: TWO_WEEKS_AGO,
       extended_on: 0,
@@ -89,8 +89,8 @@ export default (time = new Date().getTime()) => {
     },
     {
       _id: "00476565ea2f645b74692e0aac9f7514",
-      item_id: "0005",
-      item_name: "Christbaumständer",
+      item_id: "0001",
+      item_name: "Dekupiersäge",
       rented_on: ONE_WEEK_AGO,
       extended_on: 0,
       to_return_on: TODAY,
@@ -103,9 +103,10 @@ export default (time = new Date().getTime()) => {
       receiving_employee: "SK",
       remark: "",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/005.jpg",
-      expectedCellBackgroundColors: new Array(columns.length).fill(
-        COLORS.RENTAL_RETURNED_TODAY_GREEN
-      ),
+      expectedCellBackgroundColors: columns.map((col) => {
+        if (col.key === "item_id" || col.key === "item_name") return COLORS.HIGHLIGHT_BLUE;
+        else return COLORS.RENTAL_RETURNED_TODAY_GREEN;
+      }),
     },
     {
       _id: "005604ea4fce99a1b3ad7a06915629f8",
@@ -155,17 +156,18 @@ export default (time = new Date().getTime()) => {
       extended_on: 0,
       to_return_on: IN_ONE_WEEK,
       passing_out_employee: "KA",
-      customer_id: "94",
-      name: "Eichler",
+      customer_id: "1",
+      name: "Cohen",
       deposit: 217,
       deposit_returned: -10,
       returned_on: 0,
       receiving_employee: "CI",
       remark: "kommt zum RC",
       image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2019/03/1814.jpg",
-      expectedCellBackgroundColors: new Array(columns.length).fill(
-        COLORS.DEFAULT_ROW_BACKGROUND_ODD
-      ),
+      expectedCellBackgroundColors: columns.map((col) => {
+        if (col.key === "name" || col.key === "customer_id") return COLORS.HIGHLIGHT_YELLOW;
+        else return COLORS.DEFAULT_ROW_BACKGROUND_ODD;
+      }),
     },
     {
       _id: "00a8d5c18c7377bf6e3802faaac1a089",
