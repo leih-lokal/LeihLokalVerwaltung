@@ -351,7 +351,7 @@ context("rentals", () => {
         image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/005.jpg",
         expectedCellBackgroundColors: columns.map((col) => {
           if (col.key === "item_id" || col.key === "item_name") return COLORS.HIGHLIGHT_BLUE;
-          else return COLORS.RENTAL_RETURNED_TODAY_GREEN;
+          else return COLORS.DEFAULT_ROW_BACKGROUND_ODD;
         }),
       };
 
