@@ -36,10 +36,9 @@
     page = Math.min(page, numberOfPages - 1);
     page = Math.max(page, 0);
     currentPage = page;
-    calculatePageButtons(numberOfPages);
   }
 
-  $: numberOfPages, currentPage, setPage(currentPage);
+  $: currentPage, calculatePageButtons(numberOfPages);
 </script>
 
 <svelte:window
@@ -54,18 +53,19 @@
 {#if numberOfPages > 1}
   <div class="container">
     <div class="pagination">
-      <a href="#/" on:click={() => setPage(currentPage - 1)}>&laquo;</a>
+      <a href="#/" on:click|preventDefault={() => setPage(currentPage - 1)}>&laquo;</a>
       {#each pageButtons as pageButton}
         {#if typeof pageButton === "number"}
           <a
             href="#/"
-            on:click={() => setPage(pageButton)}
-            class={pageButton === currentPage ? "active" : ""}>
+            on:click|preventDefault={() => setPage(pageButton)}
+            class={pageButton === currentPage ? "active" : ""}
+          >
             {pageButton + 1}
           </a>
-        {:else}<a href="#/" class="disabled">{pageButton}</a>{/if}
+        {:else}<a href="#/" class="disabled" on:click|preventDefault>{pageButton}</a>{/if}
       {/each}
-      <a href="#/" on:click={() => setPage(currentPage + 1)}>&raquo;</a>
+      <a href="#/" on:click|preventDefault={() => setPage(currentPage + 1)}>&raquo;</a>
     </div>
   </div>
 {/if}

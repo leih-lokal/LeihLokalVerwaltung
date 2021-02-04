@@ -5,13 +5,14 @@ var urlsToCache = [
   "build/bundle.css",
   "build/bundle.js",
   "favicon.png",
+  "#/rentals",
+  "#/items",
+  "#/customers",
+  "#/settings",
 ];
 
 function shouldCache(request) {
-  return (
-    request.method === "GET" &&
-    !["items", "rentals", "customers"].some((dbName) => request.url.includes(dbName))
-  );
+  return request.method === "GET" && !request.url.includes(":6984");
 }
 
 self.addEventListener("install", function (event) {

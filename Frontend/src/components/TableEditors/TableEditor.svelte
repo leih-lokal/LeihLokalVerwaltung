@@ -9,11 +9,11 @@
   import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
-  export let tableEditorId;
+  export let tab;
 
   const openStyledModal = getContext("openStyledModal");
   const openPopupFormular = (createNew) => {
-    openStyledModal(CONFIG[tableEditorId].popupFormularComponent, {
+    openStyledModal(CONFIG[tab].popupFormularComponent, {
       createNew: createNew,
       onSave: refresh,
     });
@@ -46,12 +46,12 @@
     calculateNumberOfPages();
   };
 
-  const setInitialSortCol = (tableEditorId) =>
+  const setInitialSortCol = (type) =>
     (sortBy = columns.some(shouldBeSortedByInitially)
       ? columns.find(shouldBeSortedByInitially).key
       : "_id");
 
-  const setInitialSortDirection = (tableEditorId) =>
+  const setInitialSortDirection = (type) =>
     (sortReverse = columns.some(shouldBeSortedByInitially)
       ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
       : false);
@@ -62,19 +62,19 @@
   let currentPage = 0;
   let rowHeight = 40;
   let innerHeight = window.innerHeight;
-  let numberOfPages = 0;
+  let numberOfPages = 1;
   let activeFilters = [];
   let sortBy;
   let sortReverse;
-  $: columns = CONFIG[tableEditorId].columns;
-  $: filters = CONFIG[tableEditorId].filters;
-  $: database = CONFIG[tableEditorId].getDatabase();
-  $: setInitialSortCol(tableEditorId);
-  $: setInitialSortDirection(tableEditorId);
+  $: columns = CONFIG[tab].columns;
+  $: filters = CONFIG[tab].filters;
+  $: database = CONFIG[tab].getDatabase();
+  $: setInitialSortCol(tab);
+  $: setInitialSortDirection(tab);
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
-  $: tableEditorId, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
-  $: tableEditorId, reset();
-  $: tableEditorId, searchInputRef?.focusSearchInput();
+  $: tab, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
+  $: tab, reset();
+  $: tab, searchInputRef?.focusSearchInput();
   $: activeFilters, calculateNumberOfPages();
   $: searchTerm, calculateNumberOfPages();
   $: sortBy, sortReverse, (currentPage = 0);
@@ -104,7 +104,7 @@
       {rowHeight}
       {columns}
       {data}
-      cellBackgroundColorsFunction={CONFIG[tableEditorId].cellBackgroundColorsFunction}
+      cellBackgroundColorsFunction={CONFIG[tab].cellBackgroundColorsFunction}
       {indicateSort}
       on:rowClicked={(event) => {
         keyValueStore.setValue("currentDoc", event.detail);
@@ -117,6 +117,19 @@
       }}
     />
   </div>
+{:catch error}
+  {#if error.status === 401}
+    <p class="error">
+      Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den Einstellungen (Zahnrad
+      rechts oben) überprüfen.
+    </p>
+  {:else}
+    <p class="error">
+      Keine Verbindung mit der Datenbank. <br />{error.hasOwnProperty("message")
+        ? error.message
+        : ""}
+    </p>
+  {/if}
 {/await}
 <Pagination {numberOfPages} bind:currentPage />
 
@@ -130,5 +143,11 @@
 <style>
   .animatecontainer {
     height: 100%;
+  }
+
+  .error {
+    color: red;
+    font-size: large;
+    margin: 20px;
   }
 </style>

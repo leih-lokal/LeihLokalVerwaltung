@@ -7,26 +7,25 @@ PouchDB.plugin(PouchDBFind);
 
 class Database {
   database;
-  changeCallback;
   syncHandler;
-  name;
   columns;
   existingDesignDocIds;
   cache;
-  host;
 
-  constructor(name, columns, host) {
-    this.changeCallback = (updatedDocs) => {};
-    this.name = name;
+  constructor(name, columns) {
     this.columns = columns;
-    this.host = host;
+    this.name = name;
     this.existingDesignDocIds = new Set();
     this.cache = new Cache(50);
+    this.connect();
   }
 
   connect() {
+    this.cache.reset();
     this.database = new PouchDB(
-      `ENV_COUCHDB_PROTOCOL://ENV_COUCHDB_USER:ENV_COUCHDB_PASSWORD@${this.host}/${this.name}`
+      `https://${localStorage.getItem("couchdbUser")}:${localStorage.getItem(
+        "couchdbPassword"
+      )}@${localStorage.getItem("couchdbHost")}:${localStorage.getItem("couchdbPort")}/${this.name}`
     );
 
     //create indices for searching
@@ -37,9 +36,6 @@ class Database {
         })
       )
     );
-
-    // test connection
-    return this.database.info();
   }
 
   selectorBuilder() {
@@ -138,6 +134,10 @@ class Database {
   }
 
   async query(options) {
+    if (this.cache.has(JSON.stringify(options))) {
+      return this.cache.get(JSON.stringify(options));
+    }
+
     const { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm } = options;
     const requiredFields = filters.flatMap((filter) => filter.required_fields);
     const ddocId = "query-" + hashString(sortBy);
@@ -184,17 +184,20 @@ class Database {
       sortedFilteredIds = sortedIds.filter((id) => idsMatchingAllFilters.includes(id));
     }
 
-    const result = await this.database.allDocs({
+    const resultDocs = await this.database.allDocs({
       skip: rowsPerPage * currentPage,
       limit: rowsPerPage,
       include_docs: true,
       keys: sortedFilteredIds,
     });
 
-    return {
-      rows: result.rows.map((row) => row.doc),
+    const result = {
+      rows: resultDocs.rows.map((row) => row.doc),
       count: sortedFilteredIds.length,
     };
+
+    this.cache.set(JSON.stringify(options), result);
+    return result;
   }
 
   async fetchDocsBySelector(selector, fields) {
