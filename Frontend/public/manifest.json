@@ -4,7 +4,7 @@
   "theme_color": "#008cba",
   "background_color": "#008cba",
   "display": "standalone",
-  "start_url": "/",
+  "start_url": "/LeihLokalVerwaltung",
   "icons": [
     {
       "src": "leihlokal.png",
