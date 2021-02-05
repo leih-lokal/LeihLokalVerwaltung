@@ -1,3 +1,5 @@
+import COLORS from "../../../src/components/Input/ColorDefs";
+
 export default [
   {
     _id: "1",
@@ -14,6 +16,7 @@ export default [
     city: "Karlsruhe",
     telephone_number: "01761881433",
     heard: "",
+    highlight: COLORS.HIGHLIGHT_YELLOW,
   },
   {
     _id: "2",

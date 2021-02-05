@@ -33,19 +33,9 @@ const WC_CATEGORIES = {
 
 class WoocommerceClient {
   constructor() {
-    this.baseUrl = "ENV_WC_BASE_URL";
-    this.consumerKey = "ENV_WC_CONSUMER_KEY";
-    this.consumerSecret = "";
-
-    if (localStorage.hasOwnProperty("wc_secret")) {
-      this.consumerSecret = localStorage.getItem("wc_secret");
-    } else {
-      const secret = prompt("Woocommerce Secret", "");
-      if (secret != null) {
-        localStorage.setItem("wc_secret", secret);
-        this.consumerSecret = secret;
-      }
-    }
+    this.baseUrl = localStorage.getItem("wcUrl");
+    this.consumerKey = localStorage.getItem("wcKey");
+    this.consumerSecret = localStorage.getItem("wcSecret");
   }
 
   _productsUrl() {

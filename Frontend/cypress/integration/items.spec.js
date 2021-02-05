@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import data from "../../spec/Database/DummyData/items";
+import ColorDefs from "../../src/components/Input/ColorDefs";
 import columns from "../../src/components/TableEditors/Items/Columns";
 import {
   dateToString,
@@ -50,13 +51,38 @@ const expectDisplaysOnlyItemsWithIds = (ids) => {
 
 const expectDisplaysItems = (items) => {
   cy.get("table > tr").should("have.length", items.length);
-  cy.get("table > tr").each((row, rowIndex) => {
-    row.find("td").each((colIndex, cell) => {
-      expect(cell.innerHTML).to.contain(
-        expectedDisplayValue(items[rowIndex], columns[colIndex].key)
-      );
-    });
-  });
+  cy.get("table > tr").each((row, rowIndex) =>
+    cy
+      .wrap(row)
+      .children("td")
+      .each((cell, colIndex) =>
+        cy
+          .wrap(cell)
+          .should("have.css", "background-color", expectedBackgroundColorForRow(items, rowIndex))
+      )
+      .each((cell, colIndex) => {
+        if (columns[colIndex].isImageUrl && items[rowIndex][columns[colIndex].key]) {
+          return cy
+            .wrap(cell)
+            .children("img")
+            .should("have.attr", "src", items[rowIndex][columns[colIndex].key]);
+        } else {
+          return cy
+            .wrap(cell)
+            .should("have.text", expectedDisplayValue(items[rowIndex], columns[colIndex].key));
+        }
+      })
+  );
+};
+
+const expectedBackgroundColorForRow = (items, rowIndex) => {
+  if (items[rowIndex].hasOwnProperty("highlight")) {
+    return items[rowIndex]["highlight"];
+  } else {
+    return rowIndex % 2 === 0
+      ? ColorDefs.DEFAULT_ROW_BACKGROUND_EVEN
+      : ColorDefs.DEFAULT_ROW_BACKGROUND_ODD;
+  }
 };
 
 context("items", () => {
@@ -166,6 +192,11 @@ context("items", () => {
     it("finds one item when seaching for unique id", () => {
       cy.get(".searchInput").type("2", { force: true });
       expectDisplaysOnlyItemsWithIds(["2"]);
+    });
+
+    it("finds item when seaching for synonym", () => {
+      cy.get(".searchInput").type("Bohrer", { force: true });
+      expectDisplaysOnlyItemsWithIds(["7"]);
     });
   });
 
@@ -337,7 +368,7 @@ context("items", () => {
         .contains(newItem.category)
         .click();
       cy.get("#deposit").type(newItem.deposit);
-      cy.get("#description").type(newItem.description).type("{enter}");
+      cy.get("#description").type(newItem.description);
       cy.get("#parts").type(newItem.parts);
       cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer")
         .click()

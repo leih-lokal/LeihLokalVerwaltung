@@ -1,3 +1,5 @@
+import COLORS from "../../../src/components/Input/ColorDefs";
+
 export default [
   {
     _id: "0001",
@@ -13,7 +15,8 @@ export default [
     wc_url:
       "https://www.buergerstiftung-karlsruhe.de/leihlokal/sortiment/heimwerker/dekupiersaege-3/",
     wc_id: 3302,
-    image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/3106.jpg",
+    image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/005.jpg",
+    highlight: COLORS.HIGHLIGHT_BLUE,
   },
   {
     _id: "0002",
@@ -96,6 +99,7 @@ export default [
     added: 1580342400000,
     description: "ABS 18VE (18 V) mit 2 Maschinen 3 Akkus 2 Ladestationen und 1 Ladekabel",
     status_on_website: "outofstock",
+    synonyms: "Bohrer",
     wc_url:
       "https://www.buergerstiftung-karlsruhe.de/leihlokal/sortiment/heimwerker/akku-bohrschrauber/",
     wc_id: 3349,
