@@ -17,7 +17,6 @@ class Database {
     this.name = name;
     this.existingDesignDocIds = new Set();
     this.cache = new Cache(50);
-    this.connect();
   }
 
   connect() {
@@ -262,6 +261,17 @@ class Database {
       });
       this.existingDesignDocIds.add(name);
     }
+  }
+
+  async createAllViews() {
+    await this.createDesignDoc(
+      "customers",
+      `function (doc) {
+        if(doc.type === "customer"){
+          emit(doc);
+        }
+      }`
+    );
   }
 }
 
