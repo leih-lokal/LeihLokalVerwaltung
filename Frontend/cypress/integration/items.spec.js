@@ -330,6 +330,7 @@ context("items", () => {
     it("Deletes item", () => {
       cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
       cy.contains("Löschen").click();
+      itemsNotDeleted[3].status_on_website = "deleted";
       waitForPopupToClose();
       expectDisplaysOnlyItemsWithIds(
         itemsNotDeleted

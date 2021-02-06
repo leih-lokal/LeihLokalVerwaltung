@@ -192,17 +192,26 @@
 
 <PopupFormular
   {popupFormularConfiguration}
-  on:delete={(event) => {
+  on:delete={async (event) => {
     const doc = $keyValueStore["currentDoc"];
     if (confirm("Soll dieser Gegenstand wirklich gelöscht werden?")) {
-      $itemDb
-        .removeDoc(doc)
-        .then(() => notifier.success("Gegenstand gelöscht!"))
+      doc.status_on_website = "deleted";
+      await $itemDb
+        .updateDoc(doc)
+        .then(() => notifier.success("Gegenstand als gelöscht markiert!"))
         .then(close)
         .then(onSave)
         .catch((error) => {
           console.error(error);
           notifier.danger("Gegenstand konnte nicht gelöscht werden!", 6000);
+        });
+
+      await woocommerceClient
+        .deleteItem(doc)
+        .then(() => notifier.success("Gegenstand von der Webseite gelöscht!", 3000))
+        .catch((error) => {
+          notifier.warning("Gegenstand konnte nicht von der Webseite gelöscht werden!", 6000);
+          console.error(error);
         });
     }
   }}
