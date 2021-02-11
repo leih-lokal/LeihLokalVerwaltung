@@ -37,6 +37,7 @@
               <div class="col-input">
                 {#if input.type === InputTypes.TEXT}
                   <TextInput
+                    inputType={input.inputType}
                     id={input.id}
                     readonly={input.readonly}
                     disabled={input.disabled}
@@ -104,7 +105,27 @@
     {#if popupFormularConfiguration.displayDeleteButton}
       <button class="button-delete" on:click|once={() => dispatch("delete")}>Löschen</button>
     {/if}
-    <button class="button-save" on:click|once={() => dispatch("save")}>Speichern</button>
+    <button
+      class="button-save"
+      on:click|once={() => {
+        popupFormularConfiguration.inputs
+          .filter((input) => input.inputType && input.inputType === "number")
+          .forEach((input) => {
+            const value = String(
+              $keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]
+            ).trim();
+            if (value.length === 0) {
+              $keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr] = 0;
+            } else {
+              $keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr] = parseInt(
+                value,
+                10
+              );
+            }
+          });
+        dispatch("save");
+      }}>Speichern</button
+    >
   </div>
 </div>
 

@@ -1,7 +1,6 @@
-import { get } from "svelte/store";
-import { customerDb, rentalDb, itemDb } from "../../utils/stores";
 import { isToday, isBeforeToday, isBeforeDay } from "../../utils/utils";
 import COLORS from "../Input/ColorDefs";
+import Database from "../Database/ENV_DATABASE";
 
 import CustomerPopupFormular from "./Customers/CustomerPopupFormular.svelte";
 import customerColumns from "./Customers/Columns.js";
@@ -25,9 +24,9 @@ const shouldHaveBeenReturnedBeforeToday = (rental) =>
 
 export default {
   customers: {
+    docType: "customer",
     columns: customerColumns,
     filters: customerFilters,
-    getDatabase: () => get(customerDb),
     popupFormularComponent: CustomerPopupFormular,
     cellBackgroundColorsFunction: async (customer, isEven) => {
       if (customer.highlight) {
@@ -40,9 +39,9 @@ export default {
     },
   },
   items: {
+    docType: "item",
     columns: itemColumns,
     filters: itemFilters,
-    getDatabase: () => get(itemDb),
     popupFormularComponent: ItemPopupFormular,
     cellBackgroundColorsFunction: async (item, isEven) => {
       if (item.highlight) {
@@ -55,20 +54,20 @@ export default {
     },
   },
   rentals: {
+    docType: "rental",
     columns: rentalColumns,
     filters: rentalFilters,
-    getDatabase: () => get(rentalDb),
     popupFormularComponent: RentalPopupFormular,
     cellBackgroundColorsFunction: async (rental, isEven) => {
       let item = {};
       let customer = {};
       try {
-        item = await get(itemDb).fetchById(rental.item_id);
+        item = await Database.fetchItemById(rental.item_id);
       } catch (e) {
         console.warn(e);
       }
       try {
-        customer = await get(customerDb).fetchById(rental.customer_id);
+        customer = await Database.fetchCustomerById(rental.customer_id);
       } catch (e) {
         console.warn(e);
       }

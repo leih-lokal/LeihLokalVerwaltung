@@ -1,22 +1,28 @@
 import PouchDB from "pouchdb-browser";
 import PouchDBFind from "pouchdb-find";
-import { hashString } from "../../utils/utils";
 import Cache from "lru-cache";
 import SelectorBuilder from "./SelectorBuilder";
+import customerColumns from "../TableEditors/Customers/Columns";
+import itemColumns from "../TableEditors/Items/Columns";
+import rentalColumns from "../TableEditors/Rentals/Columns";
 PouchDB.plugin(PouchDBFind);
+
+const COLUMNS = {
+  rental: rentalColumns,
+  item: itemColumns,
+  customer: customerColumns,
+};
 
 class Database {
   database;
-  syncHandler;
-  columns;
   existingDesignDocIds;
   cache;
 
-  constructor(name, columns) {
-    this.columns = columns;
-    this.name = name;
+  constructor() {
     this.existingDesignDocIds = new Set();
     this.cache = new Cache(50);
+    this.connect();
+    console.log("new database!");
   }
 
   connect() {
@@ -24,27 +30,12 @@ class Database {
     this.database = new PouchDB(
       `https://${localStorage.getItem("couchdbUser")}:${localStorage.getItem(
         "couchdbPassword"
-      )}@${localStorage.getItem("couchdbHost")}:${localStorage.getItem("couchdbPort")}/${this.name}`
-    );
-
-    //create indices for searching
-    Promise.all(
-      [...this.columnsToSearch(true), ...this.columnsToSearch(false)].map((col) =>
-        this.database.createIndex({
-          index: { fields: [col.key] },
-        })
-      )
+      )}@${localStorage.getItem("couchdbHost")}:${localStorage.getItem("couchdbPort")}/leihlokal`
     );
   }
 
   selectorBuilder() {
     return new SelectorBuilder();
-  }
-
-  columnsToSearch(numeric = false) {
-    return this.columns
-      .filter((column) => (!numeric && !column.numeric) || (numeric && column.numeric))
-      .filter((column) => !column.search || column.search !== "exclude");
   }
 
   fetchById(id) {
@@ -55,16 +46,11 @@ class Database {
     this.cache.reset();
     return this.fetchById(updatedDoc._id).then((doc) => {
       updatedDoc._rev = doc._rev;
-      return this.createDoc(updatedDoc);
+      return this.database.put(updatedDoc);
     });
   }
 
   createDoc(doc) {
-    this.cache.reset();
-    return this.database.put(doc);
-  }
-
-  createDocWithoutId(doc) {
     this.cache.reset();
     return this.database.post(doc);
   }
@@ -74,205 +60,191 @@ class Database {
     return this.database.remove(doc._id, doc._rev);
   }
 
-  async nextUnusedId() {
-    const result = await this.database.allDocs({
-      include_docs: false,
-      limit: 999999,
+  fetchItemById(id) {
+    return this.findCached({
+      selector: this.selectorBuilder().withDocType("item").withField("id").equals(id).build(),
     });
-    return (
-      Math.max(
-        ...result.rows
-          .map((row) => row.id)
-          .filter((id) => !isNaN(id))
-          .map((id) => parseInt(id))
-      ) + 1
-    );
   }
 
-  async createDesignDoc(id, mapFun) {
-    if (!this.existingDesignDocIds.has(id)) {
-      var ddoc = {
-        _id: "_design/" + id,
+  fetchCustomerById(id) {
+    return this.findCached({
+      selector: this.selectorBuilder().withDocType("item").withField("id").equals(id).build(),
+    });
+  }
+
+  async nextUnusedId(docType) {
+    const result = await this.findCached({
+      fields: ["id"],
+      limit: 999999,
+      selector: {
+        type: {
+          $eq: docType,
+        },
+      },
+    });
+    return Math.max(...result.docs.map((doc) => doc.id).filter(Number.isInteger)) + 1;
+  }
+
+  async createView(name, mapFun) {
+    try {
+      await this.database.put({
+        _id: "_design/" + name,
         views: {
-          index: {
+          [name]: {
             map: mapFun,
           },
         },
-      };
-      try {
-        await this.database.put(ddoc);
-        this.existingDesignDocIds.add(id);
-      } catch (err) {
-        if (err.name !== "conflict") {
-          throw err;
-        } else {
-          this.existingDesignDocIds.add(id);
-        }
-        // ignore if doc already exists
+      });
+    } catch (err) {
+      // ignore if doc already exists
+      if (err.name !== "conflict") {
+        throw err;
       }
     }
   }
 
-  async idsMatchingAllSelectors(selectors) {
-    const cacheKey = hashString(JSON.stringify(selectors));
+  async docsMatchingAllSelectorsSortedBy(options) {
+    const { selectors, sortBy, rowsPerPage, skip } = options;
+    const cacheKey = JSON.stringify(options);
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
     } else {
-      const result = await this.database
-        .find({
-          fields: ["_id"],
-          limit: 999999,
-          selector: {
-            $and: selectors,
-          },
+      // first get all ids to know the count (for pagination)
+      const allIds = await this.findCached({
+        sort: sortBy,
+        limit: 9999999,
+        fields: ["_id"],
+        selector: {
+          $and: selectors,
+        },
+      }).then((result) => result.docs.map((doc) => doc._id));
+
+      // then get all docs of current page
+      const docsForPage = await this.database
+        .allDocs({
+          include_docs: true,
+          keys: allIds.slice(skip, skip + rowsPerPage),
         })
-        .then((result) => result.docs.map((doc) => doc._id));
+        .then((result) => result.rows.map((entry) => entry.doc));
+
+      const result = {
+        docs: docsForPage,
+        count: allIds.length,
+      };
       this.cache.set(cacheKey, result);
       return result;
     }
   }
 
   async query(options) {
-    if (this.cache.has(JSON.stringify(options))) {
-      return this.cache.get(JSON.stringify(options));
+    const cacheKey = JSON.stringify(options);
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
     }
 
-    const { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm } = options;
-    const requiredFields = filters.flatMap((filter) => filter.required_fields);
-    const ddocId = "query-" + hashString(sortBy);
+    const { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm, docType } = options;
+
+    // filter by filters
     let selectors = filters.flatMap((filter) => filter.selectors);
-    if (searchTerm && searchTerm.length > 0) {
-      selectors = [...selectors, this.selectorsForSearchTerm(searchTerm)];
-    }
-
-    let fetchFilteredIdsPromise = Promise.resolve([]);
-    if (selectors.length > 0) {
-      fetchFilteredIdsPromise = this.createIndexForFields(requiredFields).then(() =>
-        this.idsMatchingAllSelectors(selectors)
-      );
-    }
-
-    const [idsMatchingAllFilters, sortedIds] = await Promise.all([
-      fetchFilteredIdsPromise,
-
-      this.createDesignDoc(
-        ddocId,
-        `function (doc) {
-          var transformBeforeSort = ${this.columns
-            .find((col) => col.key === sortBy)
-            ?.sort?.toString()};
-          if(typeof transformBeforeSort === 'undefined'){
-            emit(doc.${sortBy});
-          }else{
-            emit(transformBeforeSort(doc));
-          }
-        }`
-      )
-        .then(() =>
-          this.database.query(ddocId + "/index", {
-            include_docs: false,
-            descending: sortReverse,
-            limit: 999999,
-          })
-        )
-        .then((result) => result.rows.map((row) => row.id)),
-    ]);
-
-    let sortedFilteredIds = sortedIds;
-    if (selectors.length > 0) {
-      sortedFilteredIds = sortedIds.filter((id) => idsMatchingAllFilters.includes(id));
-    }
-
-    const resultDocs = await this.database.allDocs({
-      skip: rowsPerPage * currentPage,
-      limit: rowsPerPage,
-      include_docs: true,
-      keys: sortedFilteredIds,
+    selectors.push({
+      type: {
+        $eq: docType,
+      },
     });
 
-    const result = {
-      rows: resultDocs.rows.map((row) => row.doc),
-      count: sortedFilteredIds.length,
-    };
+    // filter by searchTerm
+    if (searchTerm && searchTerm.length > 0) {
+      selectors.push(this.selectorsForSearchTerm(searchTerm, docType));
+    }
 
-    this.cache.set(JSON.stringify(options), result);
+    await this.createAllViews();
+
+    // query with selectors and sort
+    const result = await this.docsMatchingAllSelectorsSortedBy({
+      selectors,
+      sortBy: [{ [sortBy]: sortReverse ? "desc" : "asc" }],
+      rowsPerPage,
+      skip: rowsPerPage * currentPage,
+    });
+    this.cache.set(cacheKey, result);
     return result;
   }
 
-  async fetchDocsBySelector(selector, fields) {
-    const result = await this.database.find({
+  fetchDocsBySelector(selector, fields) {
+    return this.findCached({
       limit: 10,
       fields: fields,
       selector: selector,
-    });
-    return result.docs;
+    }).then((result) => result.docs);
   }
 
-  async fetchUniqueDocsBySelector(selector, fields) {
-    const result = await this.database.find({
+  async findCached(options) {
+    const cacheKey = JSON.stringify(options);
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
+    }
+    const result = await this.database.find(options);
+    this.cache.set(cacheKey, result);
+    return result;
+  }
+
+  async fetchUniqueCustomerFieldValues(field, startsWith) {
+    const fieldValues = await this.findCached({
       limit: 100,
-      fields: fields,
-      selector: selector,
-    });
-    const docs = [];
-    for (let doc of result.docs) {
-      doc = doc[fields[0]].trim();
-      doc = doc.replace("ß", "ss");
-      docs.push(doc);
-    }
-    const unique = new Set(docs);
-    const arr = [];
-    for (const val of unique) {
-      const obj = {};
-      obj[fields[0]] = val;
-      arr.push(obj);
-    }
-    return arr;
+      fields: [field],
+      selector: this.selectorBuilder()
+        .withDocType("customer")
+        .withField(field)
+        .startsWithIgnoreCase(startsWith)
+        .build(),
+    }).then((result) => result.docs.map((doc) => doc[field].trim().replace("ß", "ss")));
+    return Array.from(new Set(fieldValues));
   }
 
-  selectorsForSearchTerm(searchTerm) {
+  selectorsForSearchTerm(searchTerm, docType) {
     const formattedSearchTerm = searchTerm.toLowerCase();
     const searchTermWords = formattedSearchTerm
       .split(" ")
       .map((searchTerm) => searchTerm.trim())
       .filter((searchTerm) => searchTerm !== "");
 
+    const selectorsForSearchWord = (searchWord) => {
+      return columnsToSearch(!isNaN(searchWord)).map((column) => ({
+        [column.key]: {
+          $regex: "(?i)" + (column?.search === "from_beginning" ? "^(0+?)?" : "") + searchWord,
+        },
+      }));
+    };
+
+    const columnsToSearch = (numericSearchTerm = false) => {
+      return COLUMNS[docType]
+        .filter(
+          (column) =>
+            (!numericSearchTerm && !column.numeric) || (numericSearchTerm && column.numeric)
+        )
+        .filter((column) => !column.search || column.search !== "exclude");
+    };
+
     return {
       $and: searchTermWords.map((searchTermWord) => ({
-        $or: this.selectorsForSearchWord(searchTermWord),
+        $or: selectorsForSearchWord(searchTermWord),
       })),
     };
   }
 
-  selectorsForSearchWord(searchWord) {
-    return this.columnsToSearch(!isNaN(searchWord)).map((column) => ({
-      [column.key]: {
-        $regex: "(?i)" + (column?.search === "from_beginning" ? "^(0+?)?" : "") + searchWord,
-      },
-    }));
-  }
-
-  async createIndexForFields(fields) {
-    const name = hashString(fields.join(","));
-    if (!this.existingDesignDocIds.has(name)) {
-      await this.database.createIndex({
-        index: { fields: fields },
-        ddoc: name,
-      });
-      this.existingDesignDocIds.add(name);
-    }
-  }
-
   async createAllViews() {
-    await this.createDesignDoc(
-      "customers",
-      `function (doc) {
-        if(doc.type === "customer"){
-          emit(doc);
-        }
-      }`
-    );
+    let createDesignDocPromises = [];
+    [...customerColumns, ...itemColumns, ...rentalColumns].forEach((column) => {
+      createDesignDocPromises.push(
+        this.database.createIndex({
+          index: {
+            fields: [column.key],
+          },
+        })
+      );
+    });
+    await Promise.all(createDesignDocPromises);
   }
 }
 
-export default Database;
+export default new Database();

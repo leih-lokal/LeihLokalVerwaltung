@@ -22,7 +22,7 @@ const expectedDisplayValue = (item, itemKey) => {
       const date = new Date(expectedValue);
       expectedValue = dateToString(date);
     }
-  } else if (colKey === "status_on_website") {
+  } else if (colKey === "status") {
     expectedValue = statusOnWebsiteDisplayValue(expectedValue);
   }
   return expectedValue ?? "";
@@ -88,7 +88,7 @@ const expectedBackgroundColorForRow = (items, rowIndex) => {
 context("items", () => {
   beforeEach(() => {
     items = JSON.parse(JSON.stringify(data));
-    itemsNotDeleted = items.filter((item) => item.status_on_website !== "deleted");
+    itemsNotDeleted = items.filter((item) => item.status !== "deleted");
     window.indexedDB
       .databases()
       .then((dbs) => dbs.forEach((db) => window.indexedDB.deleteDatabase(db.name)));
@@ -166,13 +166,13 @@ context("items", () => {
 
     it("sorts items by status", () => {
       cy.get("thead").contains("Status").click();
-      expectDisplaysItemsSortedBy(itemsNotDeleted, "status_on_website");
+      expectDisplaysItemsSortedBy(itemsNotDeleted, "status");
     });
 
     it("sorts items by status reverse", () => {
       cy.get("thead").contains("Status").click();
       cy.get("thead").contains("Status").click();
-      expectDisplaysItemsSortedBy(itemsNotDeleted, "status_on_website", true);
+      expectDisplaysItemsSortedBy(itemsNotDeleted, "status", true);
     });
   });
 
@@ -211,7 +211,7 @@ context("items", () => {
     it("finds items by filtering for 'nicht gelöscht'", () => {
       cy.get(".selectContainer").click().get(".listContainer").contains("nicht gelöscht").click();
       expectDisplaysOnlyItemsWithIds(
-        items.filter((item) => item.status_on_website !== "deleted").map((item) => item._id)
+        items.filter((item) => item.status !== "deleted").map((item) => item._id)
       );
     });
 
@@ -222,21 +222,21 @@ context("items", () => {
         .contains(/^gelöscht$/)
         .click();
       expectDisplaysOnlyItemsWithIds(
-        items.filter((item) => item.status_on_website === "deleted").map((item) => item._id)
+        items.filter((item) => item.status === "deleted").map((item) => item._id)
       );
     });
 
     it("finds items by filtering for 'ausgeliehen'", () => {
       cy.get(".selectContainer").click().get(".listContainer").contains("ausgeliehen").click();
       expectDisplaysOnlyItemsWithIds(
-        items.filter((item) => item.status_on_website === "outofstock").map((item) => item._id)
+        items.filter((item) => item.status === "outofstock").map((item) => item._id)
       );
     });
 
     it("finds items by filtering for 'verfügbar'", () => {
       cy.get(".selectContainer").click().get(".listContainer").contains("verfügbar").click();
       expectDisplaysOnlyItemsWithIds(
-        items.filter((item) => item.status_on_website === "instock").map((item) => item._id)
+        items.filter((item) => item.status === "instock").map((item) => item._id)
       );
     });
 
@@ -314,7 +314,7 @@ context("items", () => {
       cy.get("#description").should("have.value", itemsNotDeleted[3].description);
       cy.get("#parts").should("have.value", itemsNotDeleted[3].parts);
       cy.get(":nth-child(5) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
-        statusOnWebsiteDisplayValue(itemsNotDeleted[3].status_on_website)
+        statusOnWebsiteDisplayValue(itemsNotDeleted[3].status)
       );
     });
 
@@ -349,7 +349,7 @@ context("items", () => {
         parts: "parts",
         added: new Date().getTime(),
         description: "description",
-        status_on_website: "instock",
+        status: "instock",
       };
 
       cy.contains("+").click();

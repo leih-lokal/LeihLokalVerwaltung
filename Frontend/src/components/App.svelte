@@ -7,6 +7,7 @@
   import TableEditor from "./TableEditors/TableEditor.svelte";
   import Modal from "./Layout/Modal.svelte";
   import Settings from "./Input/SettingsFormular.svelte";
+  import DatabaseProvider from "../components/Database/DatabaseProvider.svelte";
 </script>
 
 <NotificationDisplay />

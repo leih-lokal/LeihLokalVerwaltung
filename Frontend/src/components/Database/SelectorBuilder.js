@@ -13,6 +13,13 @@ class SelectorBuilder {
     return this;
   }
 
+  withDocType(docType) {
+    this.selector["type"] = {
+      $eq: docType,
+    };
+    return this;
+  }
+
   containsIgnoreCase(value) {
     this.selector[this.currentFieldName] = {
       $regex: this.regexIgnoreCase(value),
@@ -30,6 +37,13 @@ class SelectorBuilder {
   startsWithIgnoreCaseAndLeadingZeros(value) {
     this.selector[this.currentFieldName] = {
       $regex: this.regexIgnoreCase("^(0+)?" + value),
+    };
+    return this;
+  }
+
+  equals(value) {
+    this.selector[this.currentFieldName] = {
+      $eq: value,
     };
     return this;
   }

@@ -3,7 +3,8 @@
   import InputTypes from "../../Input/InputTypes";
   import ColorDefs from "../../Input/ColorDefs";
   import PopupFormular from "../../Input/PopupFormular.svelte";
-  import { itemDb, keyValueStore } from "../../../utils/stores";
+  import { keyValueStore } from "../../../utils/stores";
+  import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import WoocommerceClient from "ENV_WC_CLIENT";
   import { getContext } from "svelte";
@@ -18,20 +19,21 @@
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
       added: new Date().getTime(),
-      status_on_website: "instock",
+      status: "instock",
+      type: "item",
     });
-    $itemDb.nextUnusedId().then((id) =>
+    Database.nextUnusedId("item").then((id) =>
       keyValueStore.setValue("currentDoc", {
         ...$keyValueStore["currentDoc"],
-        _id: String(id),
+        id: id,
       })
     );
   }
 
-  const docIsDeleted = $keyValueStore["currentDoc"].status_on_website === "deleted";
+  const docIsDeleted = $keyValueStore["currentDoc"].status === "deleted";
 
   keyValueStore.setValue("mock", {
-    status_on_website: "gelöscht",
+    status: "gelöscht",
   });
 
   const popupFormularConfiguration = new PopupFormularConfiguration()
@@ -44,8 +46,9 @@
         disabled: docIsDeleted,
         label: "Gegenstand Nr",
         group: "Bezeichnung",
+        inputType: "number",
         type: InputTypes.TEXT,
-        bindTo: { keyValueStoreKey: "currentDoc", attr: "_id" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "id" },
       },
       {
         id: "item_name",
@@ -87,6 +90,7 @@
       {
         id: "deposit",
         disabled: docIsDeleted,
+        inputType: "number",
         label: "Pfand",
         group: "Eigenschaften",
         type: InputTypes.TEXT,
@@ -127,6 +131,7 @@
         disabled: docIsDeleted,
         label: "Anzahl Teile",
         group: "Eigenschaften",
+        inputType: "number",
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "parts" },
       },
@@ -141,14 +146,14 @@
       },
 
       {
-        id: "status_on_website",
+        id: "status",
         disabled: docIsDeleted,
         label: "Status auf Webseite",
         group: "Status",
         type: InputTypes.SELECTION,
         bindTo: {
           keyValueStoreKey: docIsDeleted ? "mock" : "currentDoc",
-          attr: "status_on_website",
+          attr: "status",
         },
         selectionOptions: [
           { value: "instock", label: "verfügbar" },
@@ -195,8 +200,7 @@
   on:delete={(event) => {
     const doc = $keyValueStore["currentDoc"];
     if (confirm("Soll dieser Gegenstand wirklich gelöscht werden?")) {
-      $itemDb
-        .removeDoc(doc)
+      Database.removeDoc(doc)
         .then(() => notifier.success("Gegenstand gelöscht!"))
         .then(close)
         .then(onSave)
@@ -208,7 +212,7 @@
   }}
   on:save={async (event) => {
     const doc = $keyValueStore["currentDoc"];
-    const savePromise = createNew ? $itemDb.createDoc(doc) : $itemDb.updateDoc(doc);
+    const savePromise = createNew ? Database.createDoc(doc) : Database.updateDoc(doc);
     await savePromise
       .then((result) => notifier.success("Gegenstand gespeichert!"))
       .then(close)
@@ -224,7 +228,7 @@
         .then((wcDoc) => {
           doc.wc_url = wcDoc.permalink;
           doc.wc_id = wcDoc.id;
-          $itemDb.updateDoc(doc);
+          Database.updateDoc(doc);
           notifier.success("Gegenstand auf der Webseite erstellt!", 3000);
         })
         .catch((error) => {

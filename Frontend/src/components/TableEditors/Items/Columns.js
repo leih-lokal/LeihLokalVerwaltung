@@ -3,12 +3,9 @@ import { saveParseTimestampToString } from "../../../utils/utils.js";
 export default [
   {
     title: "Id",
-    key: "_id",
+    key: "id",
     numeric: true,
     search: "from_beginning",
-    sort: function (doc) {
-      return parseInt(doc._id, 10);
-    },
   },
   {
     title: "Bild",
@@ -59,8 +56,8 @@ export default [
     key: "synonyms",
   },
   {
-    title: "Status Webseite",
-    key: "status_on_website",
+    title: "Status",
+    key: "status",
     search: "exclude",
     display: (value) => {
       if (value === "deleted") return "gelöscht";

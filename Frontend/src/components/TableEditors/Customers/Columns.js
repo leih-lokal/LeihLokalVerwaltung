@@ -3,11 +3,8 @@ import { saveParseStringToBoolean, saveParseTimestampToString } from "../../../u
 export default [
   {
     title: "Id",
-    key: "_id",
+    key: "id",
     numeric: true,
-    sort: function (doc) {
-      return parseInt(doc._id, 10);
-    },
     search: "from_beginning",
   },
   {
@@ -26,9 +23,6 @@ export default [
   {
     title: "Hausnummer",
     key: "house_number",
-    sort: function (doc) {
-      return parseInt(doc.house_number, 10);
-    },
     search: "exclude",
   },
   {

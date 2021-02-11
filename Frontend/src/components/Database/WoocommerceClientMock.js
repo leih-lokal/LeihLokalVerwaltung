@@ -8,7 +8,7 @@ class WoocommerceClientMock {
     const item = items.find((item) => item.wc_id == wcItemId);
     if (wcItemId && item) {
       return {
-        stock_status: item.status_on_website,
+        stock_status: item.status,
         attributes: [
           {
             options: [item.deposit + " €"],

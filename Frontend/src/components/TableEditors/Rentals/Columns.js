@@ -10,9 +10,6 @@ export default [
   {
     title: "Gegenstand Nr",
     key: "item_id",
-    sort: function (doc) {
-      return parseInt(doc.item_id, 10);
-    },
     numeric: true,
     search: "from_beginning",
   },
@@ -57,29 +54,20 @@ export default [
     title: "Kunde Nr",
     key: "customer_id",
     numeric: true,
-    sort: function (doc) {
-      return parseInt(doc.customer_id, 10);
-    },
     search: "from_beginning",
   },
   {
     title: "Kunde Name",
-    key: "name",
+    key: "customer_name",
   },
   {
     title: "Pfand",
     key: "deposit",
-    sort: function (value) {
-      return parseInt(value, 10);
-    },
     search: "exclude",
   },
   {
     title: "Pfand zurück",
     key: "deposit_returned",
-    sort: function (doc) {
-      return parseInt(doc.deposit_returned, 10);
-    },
     search: "exclude",
   },
   {

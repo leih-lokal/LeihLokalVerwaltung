@@ -5,6 +5,7 @@
   import Pagination from "../Table/Pagination.svelte";
   import Table from "../Table/Table.svelte";
   import CONFIG from "./TableEditorConfig";
+  import Database from "../Database/ENV_DATABASE";
   import { keyValueStore } from "../../utils/stores";
   import { getContext } from "svelte";
   import { fade } from "svelte/transition";
@@ -30,14 +31,15 @@
 
   const refresh = () =>
     (loadData = () =>
-      database.query({
+      Database.query({
         filters: activeFilters.map((filterName) => filters.filters[filterName]),
-        columns: columns,
-        searchTerm: searchTerm,
-        currentPage: currentPage,
-        rowsPerPage: rowsPerPage,
-        sortBy: sortBy,
-        sortReverse: sortReverse,
+        columns,
+        searchTerm,
+        currentPage,
+        rowsPerPage,
+        sortBy,
+        sortReverse,
+        docType,
       }));
 
   const reset = () => {
@@ -49,7 +51,7 @@
   const setInitialSortCol = (type) =>
     (sortBy = columns.some(shouldBeSortedByInitially)
       ? columns.find(shouldBeSortedByInitially).key
-      : "_id");
+      : "id");
 
   const setInitialSortDirection = (type) =>
     (sortReverse = columns.some(shouldBeSortedByInitially)
@@ -68,7 +70,7 @@
   let sortReverse;
   $: columns = CONFIG[tab].columns;
   $: filters = CONFIG[tab].filters;
-  $: database = CONFIG[tab].getDatabase();
+  $: docType = CONFIG[tab].docType;
   $: setInitialSortCol(tab);
   $: setInitialSortDirection(tab);
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
@@ -103,7 +105,7 @@
     <Table
       {rowHeight}
       {columns}
-      {data}
+      data={data.docs}
       cellBackgroundColorsFunction={CONFIG[tab].cellBackgroundColorsFunction}
       {indicateSort}
       on:rowClicked={(event) => {

@@ -1,6 +1,5 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
-  import { itemDb, customerDb, rentalDb } from "../../utils/stores";
+  import { onMount, onDestroy, getContext } from "svelte";
 
   let defaultSettings = {
     wcUrl: "https://www.buergerstiftung-karlsruhe.de/wp-json/wc/v3",
@@ -43,9 +42,7 @@
       localStorage.setItem(key, settings[key]);
     });
     if (dbSettingsChanged) {
-      $customerDb.connect();
-      $itemDb.connect();
-      $rentalDb.connect();
+      getContext("getDatabase")().connect();
     }
   };
 

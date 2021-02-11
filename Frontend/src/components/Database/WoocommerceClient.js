@@ -51,7 +51,7 @@ class WoocommerceClient {
     return {
       name: item.item_name,
       sku: item._id,
-      ...(item.status_on_website && { stock_status: item.status_on_website }),
+      ...(item.status && { stock_status: item.status }),
       attributes: [
         {
           id: 1,
