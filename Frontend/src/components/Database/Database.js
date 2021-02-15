@@ -22,7 +22,6 @@ class Database {
     this.existingDesignDocIds = new Set();
     this.cache = new Cache(50);
     this.connect();
-    console.log("new database!");
   }
 
   connect() {

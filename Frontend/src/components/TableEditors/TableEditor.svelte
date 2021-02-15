@@ -21,17 +21,9 @@
   };
   const shouldBeSortedByInitially = (col) => "initialSort" in col;
 
-  async function calculateNumberOfPages() {
-    const data = await loadData();
-    const rowsOnLastPage = data.count % rowsPerPage;
-    numberOfPages = (data.count - rowsOnLastPage) / rowsPerPage;
-    if (rowsOnLastPage > 0) numberOfPages += 1;
-    currentPage = 0;
-  }
-
   const refresh = () =>
-    (loadData = () =>
-      Database.query({
+    (loadData = () => {
+      return Database.query({
         filters: activeFilters.map((filterName) => filters.filters[filterName]),
         columns,
         searchTerm,
@@ -40,26 +32,52 @@
         sortBy,
         sortReverse,
         docType,
-      }));
+      }).then((data) => {
+        const rowsOnLastPage = data.count % rowsPerPage;
+        numberOfPages = (data.count - rowsOnLastPage) / rowsPerPage;
+        if (rowsOnLastPage > 0) numberOfPages += 1;
+        return data;
+      });
+    });
 
-  const reset = () => {
-    searchTerm = "";
-    activeFilters = filters.activeByDefault;
-    calculateNumberOfPages();
+  const initNewTab = (tab) => {
+    if (tab) {
+      if (searchTerm !== "") searchTerm = "";
+      columns = CONFIG[tab].columns;
+      filters = CONFIG[tab].filters;
+      docType = CONFIG[tab].docType;
+      activeFilters = filters.activeByDefault;
+      setInitialSortCol();
+      setInitialSortDirection();
+      searchInputRef?.focusSearchInput();
+      indicateSort = columns.map((col) => {
+        if (col.key === sortBy) {
+          return sortReverse ? "up" : "down";
+        } else {
+          return "";
+        }
+      });
+    }
   };
 
-  const setInitialSortCol = (type) =>
+  const setInitialSortCol = () =>
     (sortBy = columns.some(shouldBeSortedByInitially)
       ? columns.find(shouldBeSortedByInitially).key
       : "id");
 
-  const setInitialSortDirection = (type) =>
+  const setInitialSortDirection = () =>
     (sortReverse = columns.some(shouldBeSortedByInitially)
       ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
       : false);
 
+  const goToFirstPage = () => {
+    if (currentPage !== 0) {
+      currentPage = 0;
+    }
+  };
+
   let searchInputRef;
-  let loadData = new Promise(() => {});
+  let loadData = () => new Promise(() => {});
   let searchTerm = "";
   let currentPage = 0;
   let rowHeight = 40;
@@ -68,33 +86,27 @@
   let activeFilters = [];
   let sortBy;
   let sortReverse;
-  $: columns = CONFIG[tab].columns;
-  $: filters = CONFIG[tab].filters;
-  $: docType = CONFIG[tab].docType;
-  $: setInitialSortCol(tab);
-  $: setInitialSortDirection(tab);
+  let columns;
+  let filters;
+  let docType;
+  let indicateSort;
+  $: initNewTab(tab);
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
   $: tab, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
-  $: tab, reset();
-  $: tab, searchInputRef?.focusSearchInput();
-  $: activeFilters, calculateNumberOfPages();
-  $: searchTerm, calculateNumberOfPages();
-  $: sortBy, sortReverse, (currentPage = 0);
-  $: indicateSort = columns.map((col) => {
-    if (col.key === sortBy) {
-      return sortReverse ? "up" : "down";
-    } else {
-      return "";
-    }
-  });
+  $: sortBy, sortReverse, searchTerm, activeFilters, goToFirstPage();
 </script>
 
 <svelte:window bind:innerHeight />
 
 <SearchFilterBar
   filterOptions={Object.keys(filters.filters).map((filter) => ({ value: filter, label: filter }))}
-  bind:activeFilters
+  {activeFilters}
   bind:searchTerm
+  on:filtersChanged={(event) => {
+    if (JSON.stringify(event.detail) !== JSON.stringify(activeFilters)) {
+      activeFilters = event.detail;
+    }
+  }}
   bind:this={searchInputRef}
 />
 
