@@ -111,13 +111,13 @@ context("items", () => {
 
     it("sorts items by name", () => {
       cy.get("thead").contains("Gegenstand").click();
-      expectDisplaysItemsSortedBy(itemsNotDeleted, "item_name");
+      expectDisplaysItemsSortedBy(itemsNotDeleted, "name");
     });
 
     it("sorts items by name reverse", () => {
       cy.get("thead").contains("Gegenstand").click();
       cy.get("thead").contains("Gegenstand").click();
-      expectDisplaysItemsSortedBy(itemsNotDeleted, "item_name", true);
+      expectDisplaysItemsSortedBy(itemsNotDeleted, "name", true);
     });
 
     it("sorts items by type", () => {
@@ -180,7 +180,7 @@ context("items", () => {
     beforeEach(clearFilter);
 
     it("finds a item by search for 'name type'", () => {
-      cy.get(".searchInput").type(items[14].item_name + " " + items[14].itype, { force: true });
+      cy.get(".searchInput").type(items[14].name + " " + items[14].itype, { force: true });
       expectDisplaysOnlyItemsWithIds([items[14]._id]);
     });
 
@@ -298,9 +298,9 @@ context("items", () => {
     };
 
     it("Displays correct data in Edit Popup", () => {
-      cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
+      cy.get("table").contains(itemsNotDeleted[3].name).click({ force: true });
       cy.get("#item_id").should("have.value", itemsNotDeleted[3]._id);
-      cy.get("#item_name").should("have.value", itemsNotDeleted[3].item_name);
+      cy.get("#name").should("have.value", itemsNotDeleted[3].name);
       cy.get("#brand").should("have.value", itemsNotDeleted[3].brand);
       cy.get("#itype").should("have.value", itemsNotDeleted[3].itype);
       cy.get(":nth-child(3) > .group > :nth-child(2) > .col-input > .selectContainer").contains(
@@ -319,16 +319,16 @@ context("items", () => {
     });
 
     it("Saves changes", () => {
-      cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
-      cy.get("#item_name").clear().type("NewName");
+      cy.get("table").contains(itemsNotDeleted[3].name).click({ force: true });
+      cy.get("#name").clear().type("NewName");
       cy.contains("Speichern").click();
       waitForPopupToClose();
-      itemsNotDeleted[3].item_name = "NewName";
+      itemsNotDeleted[3].name = "NewName";
       expectDisplaysItemsSortedBy(itemsNotDeleted);
     });
 
     it("Deletes item", () => {
-      cy.get("table").contains(itemsNotDeleted[3].item_name).click({ force: true });
+      cy.get("table").contains(itemsNotDeleted[3].name).click({ force: true });
       cy.contains("Löschen").click();
       waitForPopupToClose();
       expectDisplaysOnlyItemsWithIds(
@@ -341,7 +341,7 @@ context("items", () => {
     it("Creates item", () => {
       const newItem = {
         _id: String(items.length + 1),
-        item_name: "name",
+        name: "name",
         brand: "brand",
         itype: "itype",
         category: "Haushalt",
@@ -360,7 +360,7 @@ context("items", () => {
         dateToString(new Date())
       );
 
-      cy.get("#item_name").type(newItem.item_name);
+      cy.get("#name").type(newItem.name);
       cy.get("#brand").type(newItem.brand);
       cy.get("#itype").type(newItem.itype);
       cy.get(":nth-child(3) > .group > :nth-child(2) > .col-input > .selectContainer")

@@ -7,7 +7,7 @@
   import CONFIG from "./TableEditorConfig";
   import Database from "../Database/ENV_DATABASE";
   import { keyValueStore } from "../../utils/stores";
-  import { getContext } from "svelte";
+  import { getContext, setContext } from "svelte";
   import { fade } from "svelte/transition";
 
   export let tab;
@@ -47,6 +47,7 @@
       filters = CONFIG[tab].filters;
       docType = CONFIG[tab].docType;
       activeFilters = filters.activeByDefault;
+      searchTerm = "";
       setInitialSortCol();
       setInitialSortDirection();
       searchInputRef?.focusSearchInput();
@@ -78,7 +79,7 @@
 
   let searchInputRef;
   let loadData = () => new Promise(() => {});
-  let searchTerm = "";
+  let searchTerm;
   let currentPage = 0;
   let rowHeight = 40;
   let innerHeight = window.innerHeight;

@@ -1,4 +1,4 @@
-import { isToday, isBeforeToday, isBeforeDay } from "../../utils/utils";
+import { millisAtStartOfToday } from "../../utils/utils";
 import COLORS from "../Input/ColorDefs";
 import Database from "../Database/ENV_DATABASE";
 
@@ -14,13 +14,14 @@ import RentalPopupFormular from "./Rentals/RentalPopupFormular.svelte";
 import rentalColumns from "./Rentals/Columns.js";
 import rentalFilters from "./Rentals/Filters.js";
 
-const hasBeenReturnedToday = (rental) => rental.returned_on && isToday(rental.returned_on);
+const hasBeenReturnedToday = (rental) =>
+  rental.returned_on && rental.returned_on === millisAtStartOfToday();
 const shouldBeReturnedToday = (rental) =>
-  rental.to_return_on && isToday(rental.to_return_on) && !rental.returned_on;
+  rental.to_return_on && rental.to_return_on === millisAtStartOfToday() && !rental.returned_on;
 const shouldHaveBeenReturnedBeforeToday = (rental) =>
   rental.to_return_on &&
-  ((!rental.returned_on && isBeforeToday(rental.to_return_on)) ||
-    (rental.returned_on && isBeforeDay(rental.to_return_on, rental.returned_on)));
+  ((!rental.returned_on && rental.to_return_on < millisAtStartOfToday()) ||
+    (rental.returned_on && rental.to_return_on < rental.returned_on));
 
 export default {
   customers: {
@@ -74,7 +75,7 @@ export default {
       return rentalColumns.map((col) => {
         if (item.highlight && ["item_id", "item_name"].includes(col.key)) {
           return item.highlight;
-        } else if (customer.highlight && ["customer_id", "name"].includes(col.key)) {
+        } else if (customer.highlight && ["customer_id", "customer_name"].includes(col.key)) {
           return customer.highlight;
         } else if (hasBeenReturnedToday(rental)) {
           return COLORS.RENTAL_RETURNED_TODAY_GREEN;

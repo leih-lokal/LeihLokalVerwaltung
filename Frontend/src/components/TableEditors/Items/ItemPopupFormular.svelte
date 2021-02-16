@@ -4,6 +4,7 @@
   import ColorDefs from "../../Input/ColorDefs";
   import PopupFormular from "../../Input/PopupFormular.svelte";
   import { keyValueStore } from "../../../utils/stores";
+  import { millisAtStartOfToday } from "../../../utils/utils";
   import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import WoocommerceClient from "ENV_WC_CLIENT";
@@ -18,9 +19,24 @@
 
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
-      added: new Date().getTime(),
+      added: millisAtStartOfToday(),
       status: "instock",
       type: "item",
+      name: "",
+      brand: "",
+      itype: "",
+      category: "",
+      deposit: 0,
+      parts: "",
+      exists_more_than_once: false,
+      manual: "",
+      package: "",
+      wc_url: "",
+      wc_id: "",
+      image: "",
+      highlight: "",
+      synonyms: "",
+      description: "",
     });
     Database.nextUnusedId("item").then((id) =>
       keyValueStore.setValue("currentDoc", {
@@ -51,12 +67,12 @@
         bindTo: { keyValueStoreKey: "currentDoc", attr: "id" },
       },
       {
-        id: "item_name",
+        id: "name",
         disabled: docIsDeleted,
         label: "Gegenstand Name",
         group: "Bezeichnung",
         type: InputTypes.TEXT,
-        bindTo: { keyValueStoreKey: "currentDoc", attr: "item_name" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "name" },
       },
       {
         id: "brand",
@@ -159,10 +175,21 @@
           { value: "instock", label: "verfügbar" },
           { value: "outofstock", label: "verliehen" },
           { value: "onbackorder", label: "nicht verleihbar" },
+          { value: "reserved", label: "reserviert" },
         ],
         isCreatable: false,
         isMulti: false,
         isClearable: false,
+      },
+      {
+        id: "exists_more_than_once",
+        label: "Mehrmals vorhanden",
+        group: "Status",
+        type: InputTypes.CHECKBOX,
+        bindTo: {
+          keyValueStoreKey: "currentDoc",
+          attr: "exists_more_than_once",
+        },
       },
       {
         id: "highlight",

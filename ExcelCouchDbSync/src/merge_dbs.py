@@ -34,14 +34,18 @@ def parse_int_or_zero(obj, key):
     except ValueError:
         return 0
 
+def millis_at_start_of_day(millis):
+    msPerDay = 86400 * 1000
+    return millis - (millis % msPerDay)
+
 for customer in client["customers"]:
     if is_design_doc(customer): continue
     leihlokal_db.create_document({
         "id": parse_int_or_zero(customer, "_id"),
         "lastname": get_or_empty_string(customer, "lastname"),
         "firstname": get_or_empty_string(customer, "firstname"),
-        "registration_date": parse_int_or_zero(customer, "registration_date"),
-        "renewed_on": parse_int_or_zero(customer, "renewed_on"),
+        "registration_date": millis_at_start_of_day(parse_int_or_zero(customer, "registration_date")),
+        "renewed_on": millis_at_start_of_day(parse_int_or_zero(customer, "renewed_on")),
         "remark": get_or_empty_string(customer, "remark"),
         "subscribed_to_newsletter": get_or_false(customer, "subscribed_to_newsletter"),
         "email": get_or_empty_string(customer, "email"),
@@ -59,7 +63,7 @@ for item in client["items"]:
     if is_design_doc(item): continue
     leihlokal_db.create_document({
         "id": parse_int_or_zero(item, "_id"),
-        "item_name": get_or_empty_string(item, "item_name"),
+        "name": get_or_empty_string(item, "item_name"),
         "brand": get_or_empty_string(item, "brand"),
         "itype": get_or_empty_string(item, "itype"),
         "category": get_or_empty_string(item, "category"),
@@ -67,7 +71,7 @@ for item in client["items"]:
         "parts": get_or_empty_string(item, "parts"),
         "manual": get_or_empty_string(item, "manual"),
         "package": get_or_empty_string(item, "package"),
-        "added": parse_int_or_zero(item, "added"),
+        "added": millis_at_start_of_day(parse_int_or_zero(item, "added")),
         "status": get_or_empty_string(item, "status_on_website"),
         "wc_url": get_or_empty_string(item, "wc_url"),
         "wc_id": get_or_empty_string(item, "wc_id"),
@@ -75,6 +79,7 @@ for item in client["items"]:
         "highlight": get_or_empty_string(item, "highlight"),
         "synonyms": get_or_empty_string(item, "synonyms"),
         "description": get_or_empty_string(item, "description"),
+        "exists_more_than_once": get_or_false(item, "exists_more_than_once"),
         "type": "item",
     })
 
@@ -87,10 +92,10 @@ for rental in client["rentals"]:
         "item_name": get_or_empty_string(rental, "item_name"),
         "customer_id": parse_int_or_zero(rental, "customer_id"),
         "customer_name": get_or_empty_string(rental, "name"),
-        "rented_on": parse_int_or_zero(rental, "rented_on"),
-        "extended_on": parse_int_or_zero(rental, "extended_on"),
-        "to_return_on": parse_int_or_zero(rental, "to_return_on"),
-        "returned_on": parse_int_or_zero(rental, "returned_on"),
+        "rented_on": millis_at_start_of_day(parse_int_or_zero(rental, "rented_on")),
+        "extended_on": millis_at_start_of_day(parse_int_or_zero(rental, "extended_on")),
+        "to_return_on": millis_at_start_of_day(parse_int_or_zero(rental, "to_return_on")),
+        "returned_on": millis_at_start_of_day(parse_int_or_zero(rental, "returned_on")),
         "passing_out_employee": get_or_empty_string(rental, "passing_out_employee"),
         "receiving_employee": get_or_empty_string(rental, "receiving_employee"),
         "deposit": parse_int_or_zero(rental, "deposit"),

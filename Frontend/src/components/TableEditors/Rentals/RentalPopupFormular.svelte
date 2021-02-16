@@ -3,6 +3,7 @@
   import InputTypes from "../../Input/InputTypes";
   import PopupFormular from "../../Input/PopupFormular.svelte";
   import { keyValueStore } from "../../../utils/stores";
+  import { millisAtStartOfToday, millisAtStartOfDay } from "../../../utils/utils";
   import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { getContext } from "svelte";
@@ -16,11 +17,21 @@
 
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
-      rented_on: new Date().getTime(),
-      to_return_on: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).getTime(),
+      rented_on: millisAtStartOfToday(),
+      to_return_on: millisAtStartOfDay(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
       returned_on: 0,
       extended_on: 0,
       type: "rental",
+      image: "",
+      item_id: "",
+      item_name: "",
+      customer_id: "",
+      customer_name: "",
+      passing_out_employee: "",
+      receiving_employee: "",
+      deposit: 0,
+      deposit_returned: 0,
+      remark: "",
     });
   }
   keyValueStore.setValue("options", {
@@ -29,15 +40,15 @@
 
   const customerIdStartsWithSelector = (searchValue) =>
     Database.selectorBuilder()
-      .withField("_id")
-      .startsWithIgnoreCase(searchValue)
+      .withField("id")
+      .numericFieldStartsWith(searchValue)
       .withDocType("customer")
       .build();
 
   const itemIdStartsWithAndNotDeletedSelector = (searchValue) =>
     Database.selectorBuilder()
-      .withField("_id")
-      .startsWithIgnoreCaseAndLeadingZeros(searchValue)
+      .withField("id")
+      .numericFieldStartsWith(searchValue)
       .withDocType("item")
       .withField("status")
       .isNotEqualTo("deleted")
@@ -74,18 +85,18 @@
         onChange: (selectedItem) => {
           keyValueStore.setValue("currentDoc", {
             ...$keyValueStore["currentDoc"],
-            item_id: selectedItem._id,
-            item_name: selectedItem.item_name,
+            item_id: selectedItem.id,
+            item_name: selectedItem.name,
             deposit: selectedItem.deposit,
           });
         },
         searchFunction: (searchTerm) =>
           Database.fetchDocsBySelector(itemIdStartsWithAndNotDeletedSelector(searchTerm), [
-            "_id",
-            "item_name",
+            "id",
+            "name",
             "deposit",
           ]),
-        suggestionFormat: (id, item_name) => `${id}: ${item_name}`,
+        suggestionFormat: (id, item_name) => `${String(id).padStart(4, "0")}: ${item_name}`,
         noResultsText: "Kein Gegenstand mit dieser Id",
       },
       {
@@ -97,17 +108,17 @@
         onChange: (selectedItem) => {
           keyValueStore.setValue("currentDoc", {
             ...$keyValueStore["currentDoc"],
-            item_id: selectedItem._id,
-            item_name: selectedItem.item_name,
+            item_id: selectedItem.id,
+            item_name: selectedItem.name,
             deposit: selectedItem.deposit,
           });
         },
         searchFunction: (searchTerm) =>
           Database.fetchDocsBySelector(
-            itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector("item_name", searchTerm),
-            ["_id", "item_name", "deposit"]
+            itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector("name", searchTerm),
+            ["id", "name", "deposit"]
           ),
-        suggestionFormat: (id, item_name) => `${id}: ${item_name}`,
+        suggestionFormat: (id, item_name) => `${String(id).padStart(4, "0")}: ${item_name}`,
         noResultsText: "Kein Gegenstand mit diesem Name",
       },
       {
@@ -169,12 +180,12 @@
           keyValueStore.setValue("currentDoc", {
             ...$keyValueStore["currentDoc"],
             name: selectedCustomer.lastname,
-            customer_id: selectedCustomer._id,
+            customer_id: selectedCustomer.id,
           });
         },
         searchFunction: (searchTerm) =>
           Database.fetchDocsBySelector(customerIdStartsWithSelector(searchTerm), [
-            "_id",
+            "id",
             "firstname",
             "lastname",
           ]),
@@ -183,7 +194,7 @@
       },
       {
         id: "customer_name",
-        label: "Name",
+        label: "Nachname",
         group: "Kunde",
         type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "name" },
@@ -191,13 +202,13 @@
           keyValueStore.setValue("currentDoc", {
             ...$keyValueStore["currentDoc"],
             name: selectedCustomer.lastname,
-            customer_id: selectedCustomer._id,
+            customer_id: selectedCustomer.id,
           });
         },
         searchFunction: (searchTerm) =>
           Database.fetchDocsBySelector(
             customerAttributeStartsWithIgnoreCaseSelector("lastname", searchTerm),
-            ["_id", "firstname", "lastname"]
+            ["id", "firstname", "lastname"]
           ),
         suggestionFormat: (id, firstname, lastname) => `${id}: ${firstname} ${lastname}`,
         noResultsText: "Kein Kunde mit diesem Name",
@@ -274,13 +285,11 @@
           woocommerceClient
             .updateItem(item)
             .then(() => {
-              notifier.success(
-                `'${item.item_name}' wurde auf der Webseite als verfügbar markiert.`
-              );
+              notifier.success(`'${item.name}' wurde auf der Webseite als verfügbar markiert.`);
             })
             .catch((error) => {
               notifier.warning(
-                `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
+                `Status von '${item.name}' konnte auf der der Webseite nicht aktualisiert werden!`,
                 6000
               );
               console.error(error);
@@ -291,13 +300,11 @@
           woocommerceClient
             .updateItem(item)
             .then(() => {
-              notifier.success(
-                `'${item.item_name}' wurde auf der Webseite als verliehen markiert.`
-              );
+              notifier.success(`'${item.name}' wurde auf der Webseite als verliehen markiert.`);
             })
             .catch((error) => {
               notifier.warning(
-                `Status von '${item.item_name}' konnte auf der der Webseite nicht aktualisiert werden!`,
+                `Status von '${item.name}' konnte auf der der Webseite nicht aktualisiert werden!`,
                 6000
               );
               console.error(error);

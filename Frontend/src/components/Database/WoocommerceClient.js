@@ -47,11 +47,13 @@ class WoocommerceClient {
   }
 
   _translateItemAttributesForWc(item) {
+    const translateStatus = (status) => (status === "reserved" ? outofstock : status);
+
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
     return {
-      name: item.item_name,
+      name: item.name,
       sku: item._id,
-      ...(item.status && { stock_status: item.status }),
+      stock_status: translateStatus(item.status),
       attributes: [
         {
           id: 1,

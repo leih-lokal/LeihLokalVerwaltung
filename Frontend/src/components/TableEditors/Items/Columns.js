@@ -5,6 +5,7 @@ export default [
     title: "Id",
     key: "id",
     numeric: true,
+    display: (value) => String(value).padStart(4, "0"),
     search: "from_beginning",
   },
   {
@@ -15,7 +16,7 @@ export default [
   },
   {
     title: "Gegenstand",
-    key: "item_name",
+    key: "name",
   },
   {
     title: "Marke",

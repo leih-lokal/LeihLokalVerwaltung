@@ -62,13 +62,13 @@ class Database {
   fetchItemById(id) {
     return this.findCached({
       selector: this.selectorBuilder().withDocType("item").withField("id").equals(id).build(),
-    });
+    }).then((result) => (result.docs && result.docs.length > 0 ? result.docs[0] : {}));
   }
 
   fetchCustomerById(id) {
     return this.findCached({
-      selector: this.selectorBuilder().withDocType("item").withField("id").equals(id).build(),
-    });
+      selector: this.selectorBuilder().withDocType("customer").withField("id").equals(id).build(),
+    }).then((result) => (result.docs && result.docs.length > 0 ? result.docs[0] : {}));
   }
 
   async nextUnusedId(docType) {
@@ -136,6 +136,7 @@ class Database {
   }
 
   async query(options) {
+    console.log("query");
     const cacheKey = JSON.stringify(options);
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -153,7 +154,7 @@ class Database {
 
     // filter by searchTerm
     if (searchTerm && searchTerm.length > 0) {
-      selectors.push(this.selectorsForSearchTerm(searchTerm, docType));
+      selectors.push(new SelectorBuilder().searchTerm(searchTerm, COLUMNS[docType]).build());
     }
 
     await this.createAllViews();
@@ -170,6 +171,7 @@ class Database {
   }
 
   fetchDocsBySelector(selector, fields) {
+    console.log(selector);
     return this.findCached({
       limit: 10,
       fields: fields,
@@ -200,40 +202,12 @@ class Database {
     return Array.from(new Set(fieldValues));
   }
 
-  selectorsForSearchTerm(searchTerm, docType) {
-    const formattedSearchTerm = searchTerm.toLowerCase();
-    const searchTermWords = formattedSearchTerm
-      .split(" ")
-      .map((searchTerm) => searchTerm.trim())
-      .filter((searchTerm) => searchTerm !== "");
-
-    const selectorsForSearchWord = (searchWord) => {
-      return columnsToSearch(!isNaN(searchWord)).map((column) => ({
-        [column.key]: {
-          $regex: "(?i)" + (column?.search === "from_beginning" ? "^(0+?)?" : "") + searchWord,
-        },
-      }));
-    };
-
-    const columnsToSearch = (numericSearchTerm = false) => {
-      return COLUMNS[docType]
-        .filter(
-          (column) =>
-            (!numericSearchTerm && !column.numeric) || (numericSearchTerm && column.numeric)
-        )
-        .filter((column) => !column.search || column.search !== "exclude");
-    };
-
-    return {
-      $and: searchTermWords.map((searchTermWord) => ({
-        $or: selectorsForSearchWord(searchTermWord),
-      })),
-    };
-  }
-
   async createAllViews() {
     let createDesignDocPromises = [];
-    [...customerColumns, ...itemColumns, ...rentalColumns].forEach((column) => {
+    const allColumns = [...customerColumns, ...itemColumns, ...rentalColumns];
+
+    // create index for each column for sorting
+    allColumns.forEach((column) => {
       createDesignDocPromises.push(
         this.database.createIndex({
           index: {
@@ -242,6 +216,7 @@ class Database {
         })
       );
     });
+
     await Promise.all(createDesignDocPromises);
   }
 }

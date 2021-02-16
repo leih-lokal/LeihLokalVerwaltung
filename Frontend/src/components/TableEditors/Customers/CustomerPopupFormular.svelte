@@ -6,6 +6,7 @@
   import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { keyValueStore } from "../../../utils/stores";
+  import { millisAtStartOfToday } from "../../../utils/utils";
   import { getContext } from "svelte";
 
   const { close } = getContext("simple-modal");
@@ -15,8 +16,21 @@
 
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
-      registration_date: new Date().getTime(),
+      registration_date: millisAtStartOfToday(),
       type: "customer",
+      lastname: "",
+      firstname: "",
+      renewed_on: 0,
+      remark: "",
+      subscribed_to_newsletter: false,
+      email: "",
+      street: "",
+      house_number: "",
+      postal_code: "",
+      city: "",
+      telephone_number: "",
+      heard: "",
+      highlight: "",
     });
     Database.nextUnusedId("customer").then((id) =>
       keyValueStore.setValue("currentDoc", {
@@ -73,7 +87,6 @@
         id: "postal_code",
         label: "Postleitzahl",
         group: "Adresse",
-        inputType: "number",
         type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "postal_code" },
         onChange: (selectedItem) => {
@@ -161,7 +174,6 @@
         inputType: "number",
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "id" },
-        readonly: true,
         bindValueToObjectAttr: "id",
       },
       {
