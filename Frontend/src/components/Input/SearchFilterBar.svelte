@@ -39,7 +39,12 @@
   $: selectedValuesString, activeFiltersFromSelectedValuesString();
 </script>
 
-<div class="container">
+<div
+  class="container"
+  on:keydown={(event) => {
+    if (event.key == "ArrowLeft" || event.key == "ArrowRight") event.stopPropagation();
+  }}
+>
   <div class="searchFilterBar">
     <input
       class="searchInput"

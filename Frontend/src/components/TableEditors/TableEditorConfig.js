@@ -14,14 +14,16 @@ import RentalPopupFormular from "./Rentals/RentalPopupFormular.svelte";
 import rentalColumns from "./Rentals/Columns.js";
 import rentalFilters from "./Rentals/Filters.js";
 
+const hasReturnDate = (rental) => rental.returned_on && rental.returned_on > 0;
+
 const hasBeenReturnedToday = (rental) =>
-  rental.returned_on && rental.returned_on === millisAtStartOfToday();
+  hasReturnDate(rental) && rental.returned_on === millisAtStartOfToday();
 const shouldBeReturnedToday = (rental) =>
-  rental.to_return_on && rental.to_return_on === millisAtStartOfToday() && !rental.returned_on;
+  rental.to_return_on && rental.to_return_on === millisAtStartOfToday() && !hasReturnDate(rental);
 const shouldHaveBeenReturnedBeforeToday = (rental) =>
   rental.to_return_on &&
-  ((!rental.returned_on && rental.to_return_on < millisAtStartOfToday()) ||
-    (rental.returned_on && rental.to_return_on < rental.returned_on));
+  ((!hasReturnDate(rental) && rental.to_return_on < millisAtStartOfToday()) ||
+    (hasReturnDate(rental) && rental.to_return_on < rental.returned_on));
 
 export default {
   customers: {

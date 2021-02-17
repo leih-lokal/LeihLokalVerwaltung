@@ -34,15 +34,7 @@ export default [
     key: "to_return_on",
     search: "exclude",
     display: (value) => saveParseTimestampToString(value),
-    sort: function (doc) {
-      var to_return_on_day = doc.to_return_on - (doc.to_return_on % 86400000);
-      if (doc.returned_on && doc.returned_on !== 0) {
-        // display returned rentals before not returned rentals
-        return [0, to_return_on_day, doc.name];
-      } else {
-        return [1, to_return_on_day, doc.name];
-      }
-    },
+    sort: ["returned_on", "to_return_on", "customer_name"],
     initialSort: "asc",
   },
   {

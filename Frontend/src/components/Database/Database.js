@@ -162,7 +162,7 @@ class Database {
     // query with selectors and sort
     const result = await this.docsMatchingAllSelectorsSortedBy({
       selectors,
-      sortBy: [{ [sortBy]: sortReverse ? "desc" : "asc" }],
+      sortBy: sortBy.map((field) => ({ [field]: sortReverse ? "desc" : "asc" })),
       rowsPerPage,
       skip: rowsPerPage * currentPage,
     });
@@ -171,7 +171,6 @@ class Database {
   }
 
   fetchDocsBySelector(selector, fields) {
-    console.log(selector);
     return this.findCached({
       limit: 10,
       fields: fields,
@@ -216,6 +215,14 @@ class Database {
         })
       );
     });
+
+    createDesignDocPromises.push(
+      this.database.createIndex({
+        index: {
+          fields: ["returned_on", "to_return_on", "customer_name"],
+        },
+      })
+    );
 
     await Promise.all(createDesignDocPromises);
   }

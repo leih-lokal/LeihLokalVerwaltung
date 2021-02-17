@@ -29,10 +29,11 @@
         searchTerm,
         currentPage,
         rowsPerPage,
-        sortBy,
+        sortBy: sort,
         sortReverse,
         docType,
       }).then((data) => {
+        searchInputRef?.focusSearchInput();
         const rowsOnLastPage = data.count % rowsPerPage;
         numberOfPages = (data.count - rowsOnLastPage) / rowsPerPage;
         if (rowsOnLastPage > 0) numberOfPages += 1;
@@ -50,21 +51,16 @@
       searchTerm = "";
       setInitialSortCol();
       setInitialSortDirection();
-      searchInputRef?.focusSearchInput();
-      indicateSort = columns.map((col) => {
-        if (col.key === sortBy) {
-          return sortReverse ? "up" : "down";
-        } else {
-          return "";
-        }
-      });
     }
   };
 
-  const setInitialSortCol = () =>
-    (sortBy = columns.some(shouldBeSortedByInitially)
+  const setInitialSortCol = () => {
+    sortByColKey = columns.some(shouldBeSortedByInitially)
       ? columns.find(shouldBeSortedByInitially).key
-      : "id");
+      : "id";
+    const col = columns.find((col) => col.key === sortByColKey);
+    sort = col.sort ? col.sort : [sortByColKey];
+  };
 
   const setInitialSortDirection = () =>
     (sortReverse = columns.some(shouldBeSortedByInitially)
@@ -85,16 +81,24 @@
   let innerHeight = window.innerHeight;
   let numberOfPages = 1;
   let activeFilters = [];
-  let sortBy;
+  let sortByColKey;
   let sortReverse;
+  let sort;
   let columns;
   let filters;
   let docType;
   let indicateSort;
   $: initNewTab(tab);
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
-  $: tab, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
-  $: sortBy, sortReverse, searchTerm, activeFilters, goToFirstPage();
+  $: tab, currentPage, sortByColKey, sortReverse, searchTerm, activeFilters, refresh();
+  $: sortByColKey, sortReverse, searchTerm, activeFilters, goToFirstPage();
+  $: indicateSort = columns.map((col) => {
+    if (col.key === sortByColKey) {
+      return sortReverse ? "up" : "down";
+    } else {
+      return "";
+    }
+  });
 </script>
 
 <svelte:window bind:innerHeight />
@@ -126,9 +130,11 @@
         openPopupFormular(false);
       }}
       on:colHeaderClicked={(event) => {
-        if (sortBy == event.detail.key) sortReverse = !sortReverse;
+        if (sortByColKey == event.detail.key) sortReverse = !sortReverse;
         else sortReverse = false;
-        sortBy = event.detail.key;
+        sortByColKey = event.detail.key;
+        const col = columns.find((col) => col.key === sortByColKey);
+        sort = col.sort ? col.sort : [sortByColKey];
       }}
     />
   </div>

@@ -277,6 +277,7 @@
     if (doc.item_id) {
       const item = await Database.fetchItemById(doc.item_id);
       doc.image = item.image;
+      console.log(item);
 
       if ($keyValueStore["options"]["updateStatusOnWebsite"]) {
         if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
