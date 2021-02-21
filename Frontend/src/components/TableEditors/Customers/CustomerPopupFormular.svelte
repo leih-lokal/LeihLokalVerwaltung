@@ -88,6 +88,7 @@
         label: "Postleitzahl",
         group: "Adresse",
         type: InputTypes.AUTOCOMPLETE,
+        inputType: "number",
         bindTo: { keyValueStoreKey: "currentDoc", attr: "postal_code" },
         onChange: (selectedItem) => {
           keyValueStore.setValue("currentDoc", {
@@ -96,7 +97,7 @@
           });
         },
         searchFunction: (searchTerm) =>
-          Database.fetchUniqueCustomerFieldValues("postal_code", searchTerm),
+          Database.fetchUniqueCustomerFieldValues("postal_code", searchTerm, true),
         suggestionFormat: (postal_code) => `${postal_code}`,
         noResultsText: "PLZ noch nicht in Datenbank",
       },

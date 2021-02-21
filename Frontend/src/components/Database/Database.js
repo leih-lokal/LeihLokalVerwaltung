@@ -188,17 +188,33 @@ class Database {
     return result;
   }
 
-  async fetchUniqueCustomerFieldValues(field, startsWith) {
-    const fieldValues = await this.findCached({
+  async fetchUniqueCustomerFieldValues(field, startsWith, isNumeric = false) {
+    let selector = this.selectorBuilder().withDocType("customer").withField(field);
+
+    if (isNumeric) {
+      selector = selector.numericFieldStartsWith(startsWith).build();
+    } else {
+      selector = selector.startsWithIgnoreCase(startsWith).build();
+    }
+
+    const docs = await this.findCached({
       limit: 100,
       fields: [field],
-      selector: this.selectorBuilder()
-        .withDocType("customer")
-        .withField(field)
-        .startsWithIgnoreCase(startsWith)
-        .build(),
-    }).then((result) => result.docs.map((doc) => doc[field].trim().replace("ß", "ss")));
-    return Array.from(new Set(fieldValues));
+      selector,
+    })
+      .then((result) => result.docs)
+      .then((docs) => {
+        if (isNumeric) {
+          return docs;
+        } else {
+          return docs.map((doc) => ({ [field]: doc[field].trim().replace("ß", "ss") }));
+        }
+      });
+    const uniqueValues = new Set();
+    docs.forEach((doc) => {
+      uniqueValues.add(doc[field]);
+    });
+    return Array.from(uniqueValues).map((uniqueValue) => ({ [field]: uniqueValue }));
   }
 
   async createAllViews() {
