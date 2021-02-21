@@ -36,6 +36,7 @@
   }
   keyValueStore.setValue("options", {
     updateStatusOnWebsite: true,
+    disableToggleStatusOnWebsite: false,
   });
 
   const customerIdStartsWithSelector = (searchValue) =>
@@ -70,6 +71,27 @@
       .withDocType("item")
       .build();
 
+  const setItem = (selectedItem) => {
+    if (selectedItem.exists_more_than_once) {
+      keyValueStore.setValue("options", {
+        ...$keyValueStore["options"],
+        updateStatusOnWebsite: false,
+        disableToggleStatusOnWebsite: true,
+      });
+    } else {
+      keyValueStore.setValue("options", {
+        ...$keyValueStore["options"],
+        disableToggleStatusOnWebsite: false,
+      });
+    }
+    keyValueStore.setValue("currentDoc", {
+      ...$keyValueStore["currentDoc"],
+      item_id: selectedItem.id,
+      item_name: selectedItem.name,
+      deposit: selectedItem.deposit,
+    });
+  };
+
   const popupFormularConfiguration = new PopupFormularConfiguration()
     .setTitle(`Leihvorgang ${createNew ? "anlegen" : "bearbeiten"}`)
     .setDisplayDeleteButton(!createNew)
@@ -82,19 +104,13 @@
         type: InputTypes.AUTOCOMPLETE,
         inputType: "number",
         bindTo: { keyValueStoreKey: "currentDoc", attr: "item_id" },
-        onChange: (selectedItem) => {
-          keyValueStore.setValue("currentDoc", {
-            ...$keyValueStore["currentDoc"],
-            item_id: selectedItem.id,
-            item_name: selectedItem.name,
-            deposit: selectedItem.deposit,
-          });
-        },
+        onChange: setItem,
         searchFunction: (searchTerm) =>
           Database.fetchDocsBySelector(itemIdStartsWithAndNotDeletedSelector(searchTerm), [
             "id",
             "name",
             "deposit",
+            "exists_more_than_once",
           ]),
         suggestionFormat: (id, item_name) => `${String(id).padStart(4, "0")}: ${item_name}`,
         noResultsText: "Kein Gegenstand mit dieser Id",
@@ -105,18 +121,11 @@
         group: "Gegenstand",
         type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "item_name" },
-        onChange: (selectedItem) => {
-          keyValueStore.setValue("currentDoc", {
-            ...$keyValueStore["currentDoc"],
-            item_id: selectedItem.id,
-            item_name: selectedItem.name,
-            deposit: selectedItem.deposit,
-          });
-        },
+        onChange: setItem,
         searchFunction: (searchTerm) =>
           Database.fetchDocsBySelector(
             itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector("name", searchTerm),
-            ["id", "name", "deposit"]
+            ["id", "name", "deposit", "exists_more_than_once"]
           ),
         suggestionFormat: (id, item_name) => `${String(id).padStart(4, "0")}: ${item_name}`,
         noResultsText: "Kein Gegenstand mit diesem Name",
@@ -129,6 +138,7 @@
           keyValueStoreKey: "options",
           attr: "updateStatusOnWebsite",
         },
+        hidden: () => $keyValueStore["options"]["disableToggleStatusOnWebsite"],
         type: InputTypes.CHECKBOX,
       },
 
@@ -143,7 +153,7 @@
         id: "extended_on",
         label: "Verlängert",
         group: "Zeitraum",
-        hidden: createNew,
+        hidden: () => createNew,
         quickset: { 0: "Heute" },
         type: InputTypes.DATE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "extended_on" },
@@ -163,7 +173,7 @@
         id: "returned_on",
         label: "Zurückgegeben",
         group: "Zeitraum",
-        hidden: createNew,
+        hidden: () => createNew,
         quickset: { 0: "Heute" },
         type: InputTypes.DATE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "returned_on" },
@@ -226,7 +236,7 @@
         id: "deposit_returned",
         label: "Pfand zurück",
         group: "Pfand",
-        hidden: createNew,
+        hidden: () => createNew,
         inputType: "number",
         type: InputTypes.TEXT,
         bindTo: {
@@ -249,7 +259,7 @@
         id: "receiving_employee",
         label: "Rücknahme",
         group: "Mitarbeiter",
-        hidden: createNew,
+        hidden: () => createNew,
         type: InputTypes.TEXT,
         bindTo: {
           keyValueStoreKey: "currentDoc",
@@ -260,7 +270,7 @@
         id: "remark",
         label: "Bemerkung",
         group: "Mitarbeiter",
-        hidden: createNew,
+        hidden: () => createNew,
         type: InputTypes.TEXT,
         bindTo: {
           keyValueStoreKey: "currentDoc",
@@ -277,7 +287,6 @@
     if (doc.item_id) {
       const item = await Database.fetchItemById(doc.item_id);
       doc.image = item.image;
-      console.log(item);
 
       if ($keyValueStore["options"]["updateStatusOnWebsite"]) {
         if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {

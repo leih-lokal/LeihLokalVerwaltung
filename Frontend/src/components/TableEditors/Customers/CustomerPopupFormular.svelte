@@ -152,7 +152,7 @@
         id: "renewed_on",
         label: "Verlängert am",
         group: "Mitgliedschaft",
-        hidden: createNew,
+        hidden: () => createNew,
         quickset: { 0: "Heute" },
         type: InputTypes.DATE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "renewed_on" },

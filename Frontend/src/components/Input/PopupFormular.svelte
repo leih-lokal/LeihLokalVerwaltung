@@ -28,7 +28,7 @@
             <h3>{group}</h3>
           </row>
           {#each popupFormularConfiguration.inputs
-            .filter((input) => !input.hidden)
+            .filter((input) => !input.hidden || !input.hidden())
             .filter((input) => input.group === group) as input}
             <row>
               <div class="col-label">
