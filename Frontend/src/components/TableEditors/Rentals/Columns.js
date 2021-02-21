@@ -6,6 +6,7 @@ export default [
     key: "image",
     search: "exclude",
     isImageUrl: true,
+    disableSort: true,
   },
   {
     title: "Gegenstand Nr",
@@ -77,5 +78,6 @@ export default [
     title: "Bemerkung",
     key: "remark",
     search: "exclude",
+    disableSort: true,
   },
 ];

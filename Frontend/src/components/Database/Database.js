@@ -206,15 +206,17 @@ class Database {
     const allColumns = [...customerColumns, ...itemColumns, ...rentalColumns];
 
     // create index for each column for sorting
-    allColumns.forEach((column) => {
-      createDesignDocPromises.push(
-        this.database.createIndex({
-          index: {
-            fields: [column.key],
-          },
-        })
-      );
-    });
+    allColumns
+      .filter((column) => !column.disableSort)
+      .forEach((column) => {
+        createDesignDocPromises.push(
+          this.database.createIndex({
+            index: {
+              fields: [column.key],
+            },
+          })
+        );
+      });
 
     createDesignDocPromises.push(
       this.database.createIndex({

@@ -24,6 +24,7 @@ export default [
     title: "Hausnummer",
     key: "house_number",
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "Postleitzahl",
@@ -51,16 +52,19 @@ export default [
     title: "Bemerkung",
     key: "remark",
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "E-Mail",
     key: "email",
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "Telefonnummer",
     key: "telephone_number",
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "Newsletter",

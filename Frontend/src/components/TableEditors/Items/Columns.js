@@ -13,6 +13,7 @@ export default [
     key: "image",
     isImageUrl: true,
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "Gegenstand",
@@ -51,10 +52,12 @@ export default [
     title: "Beschreibung",
     key: "description",
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "Synonyme",
     key: "synonyms",
+    disableSort: true,
   },
   {
     title: "Status",
