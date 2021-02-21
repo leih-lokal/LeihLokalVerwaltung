@@ -49,6 +49,7 @@
                   />
                 {:else if input.type === InputTypes.AUTOCOMPLETE}
                   <AutocompleteInput
+                    inputType={input.inputType}
                     inputId={input.id}
                     disabled={input.disabled}
                     noResultsText={input.noResultsText}

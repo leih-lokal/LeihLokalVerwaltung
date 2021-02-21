@@ -1,6 +1,7 @@
 <script>
   import AutoComplete from "simple-svelte-autocomplete";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
+  import { restrict } from "./InputRestrictor";
 
   const dispatch = createEventDispatcher();
 
@@ -10,6 +11,9 @@
   export let value;
   export let suggestionFormat;
   export let disabled;
+  export let inputType;
+
+  onMount(() => restrict(document.getElementById(inputId), inputType));
 </script>
 
 <form autocomplete="off">
