@@ -7,6 +7,7 @@
   import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { getContext } from "svelte";
+  import columns from "./Columns";
   import WoocommerceClient from "ENV_WC_CLIENT";
 
   const { close } = getContext("simple-modal");
@@ -29,8 +30,8 @@
       customer_name: "",
       passing_out_employee: "",
       receiving_employee: "",
-      deposit: 0,
-      deposit_returned: 0,
+      deposit: "",
+      deposit_returned: "",
       remark: "",
     });
   }
@@ -284,6 +285,13 @@
   {popupFormularConfiguration}
   on:save={async (event) => {
     const doc = $keyValueStore["currentDoc"];
+    Object.keys(doc).forEach((key) => {
+      const colForKey = columns.find((col) => col.key === key);
+      if (colForKey && colForKey.numeric && doc[key] === "") {
+        doc[key] = 0; // default value for numbers
+      }
+    });
+
     if (doc.item_id) {
       const item = await Database.fetchItemById(doc.item_id);
       doc.image = item.image;

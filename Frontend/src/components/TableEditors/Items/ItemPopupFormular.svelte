@@ -9,6 +9,7 @@
   import { notifier } from "@beyonk/svelte-notifications";
   import WoocommerceClient from "ENV_WC_CLIENT";
   import { getContext } from "svelte";
+  import columns from "./Columns";
 
   const { close } = getContext("simple-modal");
 
@@ -26,7 +27,7 @@
       brand: "",
       itype: "",
       category: "",
-      deposit: 0,
+      deposit: "",
       parts: "",
       exists_more_than_once: false,
       manual: "",
@@ -239,6 +240,12 @@
   }}
   on:save={async (event) => {
     const doc = $keyValueStore["currentDoc"];
+    Object.keys(doc).forEach((key) => {
+      const colForKey = columns.find((col) => col.key === key);
+      if (colForKey && colForKey.numeric && doc[key] === "") {
+        doc[key] = 0; // default value for numbers
+      }
+    });
     const savePromise = createNew ? Database.createDoc(doc) : Database.updateDoc(doc);
     await savePromise
       .then((result) => notifier.success("Gegenstand gespeichert!"))
