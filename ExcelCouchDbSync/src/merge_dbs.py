@@ -51,7 +51,7 @@ for customer in client["customers"]:
         "email": get_or_empty_string(customer, "email"),
         "street": get_or_empty_string(customer, "street"),
         "house_number": get_or_empty_string(customer, "house_number"),
-        "postal_code": get_or_empty_string(customer, "postal_code"),
+        "postal_code": parse_int_or_zero(customer, "postal_code"),
         "city": get_or_empty_string(customer, "city"),
         "telephone_number": get_or_empty_string(customer, "telephone_number"),
         "heard": get_or_empty_string(customer, "heard"),
