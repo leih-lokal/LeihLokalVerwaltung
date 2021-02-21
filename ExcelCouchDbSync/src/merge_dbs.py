@@ -11,7 +11,10 @@ leihlokal_db = client["leihlokal"]
 
 def get_or_empty_string(obj, key):
     if key in obj:
-        return obj[key]
+        val = str(obj[key]).strip()
+        if val == "undefined":
+            val = ""
+        return val
     else:
         return ""
 
