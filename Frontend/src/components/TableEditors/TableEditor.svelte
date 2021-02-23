@@ -7,7 +7,7 @@
   import CONFIG from "./TableEditorConfig";
   import Database from "../Database/ENV_DATABASE";
   import { keyValueStore } from "../../utils/stores";
-  import { getContext, setContext } from "svelte";
+  import { getContext } from "svelte";
   import { fade } from "svelte/transition";
 
   export let tab;
@@ -32,13 +32,15 @@
         sortBy: sort,
         sortReverse,
         docType,
-      }).then((data) => {
-        searchInputRef?.focusSearchInput();
-        const rowsOnLastPage = data.count % rowsPerPage;
-        numberOfPages = (data.count - rowsOnLastPage) / rowsPerPage;
-        if (rowsOnLastPage > 0) numberOfPages += 1;
-        return data;
-      });
+      })
+        .then((data) => {
+          searchInputRef?.focusSearchInput();
+          const rowsOnLastPage = data.count % rowsPerPage;
+          numberOfPages = (data.count - rowsOnLastPage) / rowsPerPage;
+          if (rowsOnLastPage > 0) numberOfPages += 1;
+          return data;
+        })
+        .catch((error) => console.error(error));
     });
 
   const initNewTab = (tab) => {

@@ -32,6 +32,14 @@ export default {
         },
       },
     },
+    reserviert: {
+      required_fields: ["status"],
+      selectors: {
+        status: {
+          $eq: "reserved",
+        },
+      },
+    },
     "nicht verleihbar": {
       required_fields: ["status"],
       selectors: {

@@ -1,4 +1,4 @@
-import items from "../../../spec/Database/DummyData/items";
+import items from "../../../spec/Database/testdata";
 
 class WoocommerceClientMock {
   constructor() {}

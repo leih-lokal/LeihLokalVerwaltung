@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import data from "../../spec/Database/DummyData/rentals";
+import testdata from "../../spec/Database/testdata";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
 import { dateToString, waitForPopupToClose, clearFilter, isAtSameDay } from "./utils";
 import COLORS from "../../src/components/Input/ColorDefs";
@@ -19,16 +19,20 @@ const expectedDisplayValue = (rental, column) => {
       expectedValue = dateToString(date);
     }
   }
-  return expectedValue ?? "";
+  if (expectedValue === 0) {
+    return "0";
+  } else {
+    return expectedValue ?? "";
+  }
 };
 
 const expectedDisplayedTableDataSortedBy = (key, rentals) => {
   if (key === "to_return_on") {
     let sorted = rentals.sort(function (a, b) {
-      if (a.returned_on && !b.returned_on) return -1;
-      if (b.returned_on && !a.returned_on) return 1;
-      var x = parseInt(a.to_return_on) + String(a.name).localeCompare(b.name);
-      var y = parseInt(b.to_return_on) + String(b.name).localeCompare(a.name);
+      if (a.returned_on && !b.returned_on) return 1;
+      if (b.returned_on && !a.returned_on) return -1;
+      var x = parseInt(a.to_return_on) + String(a.customer_name).localeCompare(b.customer_name);
+      var y = parseInt(b.to_return_on) + String(b.customer_name).localeCompare(a.customer_name);
       return x < y ? -1 : x > y ? 1 : 0;
     });
 
@@ -52,9 +56,7 @@ const expectDisplaysRentalsSortedBy = (rentals, sortKey = "to_return_on", revers
 };
 
 const expectDisplaysOnlyRentalsWithIds = (ids) => {
-  const rentalsWithIds = ids.map((id) =>
-    rentals.find((rental) => parseInt(rental._id) === parseInt(id))
-  );
+  const rentalsWithIds = ids.map((id) => rentals.find((rental) => rental._id === id));
   expectDisplaysRentals(rentalsWithIds);
 };
 
@@ -90,7 +92,9 @@ const expectDisplaysRentals = (rentals) =>
               .wrap(cell)
               .should(
                 "have.text",
-                rentals[i][columns[x].key] ? expectedDisplayValue(rentals[i], columns[x]) : ""
+                rentals[i].hasOwnProperty(columns[x].key)
+                  ? expectedDisplayValue(rentals[i], columns[x])
+                  : ""
               );
           }
         })
@@ -99,14 +103,11 @@ const expectDisplaysRentals = (rentals) =>
 context("rentals", () => {
   beforeEach(() => {
     cy.clock(TODAY, ["Date"]);
-    rentals = data(TODAY);
+    rentals = testdata(TODAY).filter((entry) => entry.type === "rental");
     currentRentals = rentals.filter(
       (rental) => rental.returned_on === 0 || rental.returned_on > Date.UTC(2019, 11, 31)
     );
-    window.indexedDB
-      .databases()
-      .then((dbs) => dbs.forEach((db) => window.indexedDB.deleteDatabase(db.name)));
-    cy.visit("../../public/index.html").get("nav").contains("Leihvorgänge").click();
+    cy.visit("../../public/index.html#/rentals");
   });
 
   it("displays correct number of rentals", () => {
@@ -142,14 +143,14 @@ context("rentals", () => {
         .then(() => expectDisplaysRentalsSortedBy(currentRentals, "item_id", true));
     });
 
-    it("sorts rentals by name", () => {
+    it("sorts rentals by item_name", () => {
       cy.get("thead")
         .contains("Gegenstand Name")
         .click()
         .then(() => expectDisplaysRentalsSortedBy(currentRentals, "item_name"));
     });
 
-    it("sorts rentals by name reverse", () => {
+    it("sorts rentals by item_name reverse", () => {
       cy.get("thead")
         .contains("Gegenstand Name")
         .click()
@@ -157,23 +158,6 @@ context("rentals", () => {
         .contains("Gegenstand Name")
         .click()
         .then(() => expectDisplaysRentalsSortedBy(currentRentals, "item_name", true));
-    });
-
-    it("sorts rentals by rented on", () => {
-      cy.get("thead")
-        .contains("Ausgegeben")
-        .click()
-        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "rented_on"));
-    });
-
-    it("sorts rentals by rented on reverse", () => {
-      cy.get("thead")
-        .contains("Ausgegeben")
-        .click()
-        .get("thead")
-        .contains("Ausgegeben")
-        .click()
-        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "rented_on", true));
     });
 
     it("sorts rentals by customer_id", () => {
@@ -193,21 +177,21 @@ context("rentals", () => {
         .then(() => expectDisplaysRentalsSortedBy(currentRentals, "customer_id", true));
     });
 
-    it("sorts rentals by customer name", () => {
+    it("sorts rentals by customer_name", () => {
       cy.get("thead")
         .contains("Kunde Name")
         .click()
-        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "name"));
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "customer_name"));
     });
 
-    it("sorts rentals by customer name reverse", () => {
+    it("sorts rentals by customer_name reverse", () => {
       cy.get("thead")
         .contains("Kunde Name")
         .click()
         .get("thead")
         .contains("Kunde Name")
         .click()
-        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "name", true));
+        .then(() => expectDisplaysRentalsSortedBy(currentRentals, "customer_name", true));
     });
   });
 
@@ -216,8 +200,13 @@ context("rentals", () => {
 
     it("finds a rental by search for item_id", () => {
       cy.get(".searchInput")
-        .type(rentals[3].item_id, { force: true })
-        .then(() => expectDisplaysOnlyRentalsWithIds([rentals[3]._id]));
+        .type(10, { force: true })
+        .then(() =>
+          expectDisplaysOnlyRentalsWithIds([
+            "00b2e7344faa8300caa973a712445c01",
+            "00a8d5c18c7377bf6e3802faaac1a089",
+          ])
+        );
     });
 
     it("finds a rental by search for item_name", () => {
@@ -226,9 +215,9 @@ context("rentals", () => {
         .then(() => expectDisplaysOnlyRentalsWithIds([rentals[4]._id]));
     });
 
-    it("finds a rental by search for customer name", () => {
+    it("finds a rental by search for customer_name", () => {
       cy.get(".searchInput")
-        .type(rentals[4].name, { force: true })
+        .type(rentals[4].customer_name, { force: true })
         .then(() => expectDisplaysOnlyRentalsWithIds([rentals[4]._id]));
     });
   });
@@ -313,7 +302,7 @@ context("rentals", () => {
       );
 
       cy.get("#customer_id").should("have.value", rentals[4].customer_id);
-      cy.get("#customer_name").should("have.value", rentals[4].name);
+      cy.get("#customer_name").should("have.value", rentals[4].customer_name);
       cy.get("#deposit").should("have.value", rentals[4].deposit);
       cy.get("#deposit_returned").should("have.value", rentals[4].deposit_returned);
 
@@ -339,15 +328,16 @@ context("rentals", () => {
     it("Creates rental", () => {
       const newRental = {
         _id: "000eb2bf4e2402858e0e8174d16ec522",
-        item_id: "0001",
+        item_id: 1,
         item_name: "Dekupiersäge",
         rented_on: Date.UTC(2020, 0, 1),
         to_return_on: Date.UTC(2020, 0, 8),
         passing_out_employee: "MM",
-        customer_id: "5",
+        customer_id: 5,
         returned_on: 0,
-        name: "Viviana",
+        customer_name: "Viviana",
         deposit: 15,
+        deposit_returned: 0,
         image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/005.jpg",
         expectedCellBackgroundColors: columns.map((col) => {
           if (col.key === "item_id" || col.key === "item_name") return COLORS.HIGHLIGHT_BLUE;
@@ -371,9 +361,9 @@ context("rentals", () => {
       cy.get("#item_name").clear().type(newRental.item_name);
       cy.get(".autocomplete-list-item").contains(newRental.item_name).click();
       cy.get("#customer_id").clear().type(newRental.customer_id);
-      cy.get(".autocomplete-list-item").contains(newRental.name).click();
-      cy.get("#customer_name").clear().type(newRental.name);
-      cy.get(".autocomplete-list-item").contains(newRental.name).click();
+      cy.get(".autocomplete-list-item").contains(newRental.customer_name).click();
+      cy.get("#customer_name").clear().type(newRental.customer_name);
+      cy.get(".autocomplete-list-item").contains(newRental.customer_name).click();
       cy.get("#deposit").clear().type(newRental.deposit);
       cy.get("#passing_out_employee").type(newRental.passing_out_employee);
 

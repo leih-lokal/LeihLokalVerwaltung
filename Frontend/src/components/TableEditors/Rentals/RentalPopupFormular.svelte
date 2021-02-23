@@ -190,7 +190,7 @@
         onChange: (selectedCustomer) => {
           keyValueStore.setValue("currentDoc", {
             ...$keyValueStore["currentDoc"],
-            name: selectedCustomer.lastname,
+            customer_name: selectedCustomer.lastname,
             customer_id: selectedCustomer.id,
           });
         },
@@ -208,11 +208,11 @@
         label: "Nachname",
         group: "Kunde",
         type: InputTypes.AUTOCOMPLETE,
-        bindTo: { keyValueStoreKey: "currentDoc", attr: "name" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "customer_name" },
         onChange: (selectedCustomer) => {
           keyValueStore.setValue("currentDoc", {
             ...$keyValueStore["currentDoc"],
-            name: selectedCustomer.lastname,
+            customer_name: selectedCustomer.lastname,
             customer_id: selectedCustomer.id,
           });
         },

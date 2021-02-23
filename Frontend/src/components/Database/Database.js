@@ -136,7 +136,6 @@ class Database {
   }
 
   async query(options) {
-    console.log("query");
     const cacheKey = JSON.stringify(options);
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -154,7 +153,7 @@ class Database {
 
     // filter by searchTerm
     if (searchTerm && searchTerm.length > 0) {
-      selectors.push(new SelectorBuilder().searchTerm(searchTerm, COLUMNS[docType]).build());
+      selectors.push(this.selectorBuilder().searchTerm(searchTerm, COLUMNS[docType]).build());
     }
 
     await this.createAllViews();
