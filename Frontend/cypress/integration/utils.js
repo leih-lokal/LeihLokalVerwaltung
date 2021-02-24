@@ -34,4 +34,5 @@ export default {
   clearFilter,
   isAtSameDay,
   millisAtStartOfToday,
+  millisAtStartOfDay,
 };
