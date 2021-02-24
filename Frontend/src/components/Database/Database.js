@@ -22,6 +22,7 @@ class Database {
     this.existingDesignDocIds = new Set();
     this.cache = new Cache(50);
     this.connect();
+    this.createAllViews();
   }
 
   connect() {
@@ -155,8 +156,6 @@ class Database {
     if (searchTerm && searchTerm.length > 0) {
       selectors.push(this.selectorBuilder().searchTerm(searchTerm, COLUMNS[docType]).build());
     }
-
-    await this.createAllViews();
 
     // query with selectors and sort
     const result = await this.docsMatchingAllSelectorsSortedBy({
