@@ -123,6 +123,15 @@ class WoocommerceClient {
     }
     return await response.json();
   }
+
+  async deleteItem(item) {
+    var response = await fetch(this._productUrl(item.wc_id), {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error("Failed to delete wc product, http response code " + response.status);
+    }
+  }
 }
 
 export default WoocommerceClient;

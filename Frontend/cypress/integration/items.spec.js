@@ -296,6 +296,7 @@ context("items", () => {
     it("Deletes item", () => {
       cy.get("table").contains(itemsNotDeleted[3].name).click({ force: true });
       cy.contains("Löschen").click();
+      itemsNotDeleted[3].status_on_website = "deleted";
       waitForPopupToClose();
       expectDisplaysOnlyItemsWithIds(
         itemsNotDeleted.filter((item) => item.id !== itemsNotDeleted[3].id).map((item) => item.id)
