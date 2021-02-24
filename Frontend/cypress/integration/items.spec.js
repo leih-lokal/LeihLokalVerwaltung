@@ -2,10 +2,12 @@
 import testdata from "../../spec/Database/testdata";
 import ColorDefs from "../../src/components/Input/ColorDefs";
 import columns from "../../src/components/TableEditors/Items/Columns";
+import Database from "../../src/components/Database/MockDatabase";
 import {
   dateToString,
   statusOnWebsiteDisplayValue,
-  waitForPopupToClose,
+  millisAtStartOfToday,
+  millisAtStartOfDay,
   clearFilter,
 } from "./utils";
 
@@ -287,25 +289,29 @@ context("items", () => {
     it("Saves changes", () => {
       cy.get("table").contains(itemsNotDeleted[3].name).click({ force: true });
       cy.get("#name").clear().type("NewName");
-      cy.contains("Speichern").click();
-      waitForPopupToClose();
-      itemsNotDeleted[3].name = "NewName";
-      expectDisplaysItemsSortedBy(itemsNotDeleted);
+      cy.contains("Speichern")
+        .click()
+        .then(() => {
+          cy.wrap(Database.fetchItemById(itemsNotDeleted[3].id))
+            .its("name")
+            .should("eq", "NewName");
+        });
     });
 
     it("Deletes item", () => {
-      cy.get("table").contains(itemsNotDeleted[3].name).click({ force: true });
-      cy.contains("Löschen").click();
-      itemsNotDeleted[3].status_on_website = "deleted";
-      waitForPopupToClose();
-      expectDisplaysOnlyItemsWithIds(
-        itemsNotDeleted.filter((item) => item.id !== itemsNotDeleted[3].id).map((item) => item.id)
-      );
+      cy.get("table").contains(itemsNotDeleted[3].name).click();
+      cy.contains("Löschen")
+        .click()
+        .then(() => {
+          cy.wrap(Database.fetchItemById(itemsNotDeleted[3].id))
+            .its("status")
+            .should("eq", "deleted");
+        });
     });
 
     it("Creates item", () => {
       const newItem = {
-        id: String(items.length + 1),
+        id: items.length + 1,
         name: "name",
         brand: "brand",
         itype: "itype",
@@ -340,12 +346,57 @@ context("items", () => {
         .contains("verfügbar")
         .click({ force: true });
 
-      cy.contains("Speichern").click();
-      waitForPopupToClose();
-      clearFilter();
+      cy.contains("Speichern")
+        .click()
+        .then(() => cy.wrap(Database.fetchItemById(newItem.id)))
+        .then((item) => {
+          expect(item.id).to.equal(newItem.id);
+          expect(item.name).to.equal(newItem.name);
+          expect(item.brand).to.equal(newItem.brand);
+          expect(item.itype).to.equal(newItem.itype);
+          expect(item.category).to.equal(newItem.category);
+          expect(item.deposit).to.equal(newItem.deposit);
+          expect(item.parts).to.equal(newItem.parts);
+          expect(item.added).to.equal(millisAtStartOfDay(newItem.added));
+          expect(item.description).to.equal(newItem.description);
+          expect(item.status).to.equal(newItem.status);
+        });
+    });
 
-      items.push(newItem);
-      expectDisplaysItems(items);
+    it("Creates item with default values", () => {
+      const defaultItem = {
+        added: millisAtStartOfToday(),
+        brand: "",
+        category: "",
+        deposit: 0,
+        description: "",
+        exists_more_than_once: false,
+        highlight: "",
+        id: 16,
+        image: "",
+        itype: "",
+        manual: "",
+        name: "",
+        package: "",
+        parts: 0,
+        status: "instock",
+        synonyms: "",
+        type: "item",
+        wc_id: "",
+        wc_url: "",
+      };
+
+      cy.contains("+").click();
+
+      cy.contains("Speichern")
+        .click()
+        .then(() => cy.wrap(Database.fetchItemById(defaultItem.id)))
+        .then((item) => {
+          for (let key of Object.keys(defaultItem)) {
+            expect(item[key]).to.equal(defaultItem[key]);
+          }
+          expect(item._id).to.have.length.of.at.least(1);
+        });
     });
   });
 });

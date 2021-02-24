@@ -228,9 +228,8 @@
   on:delete={async (event) => {
     const doc = $keyValueStore["currentDoc"];
     if (confirm("Soll dieser Gegenstand wirklich gelöscht werden?")) {
-      doc.status_on_website = "deleted";
-      await Database
-        .updateDoc(doc)
+      doc.status = "deleted";
+      await Database.updateDoc(doc)
         .then(() => notifier.success("Gegenstand als gelöscht markiert!"))
         .then(close)
         .then(onSave)

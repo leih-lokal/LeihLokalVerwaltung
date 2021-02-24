@@ -37,6 +37,10 @@ class WoocommerceClientMock {
     await new Promise((r) => setTimeout(r, 1500));
   }
 
+  async deleteItem(item) {
+    await new Promise((r) => setTimeout(r, 1500));
+  }
+
   async createItem(item) {
     await new Promise((r) => setTimeout(r, 1500));
     return {

@@ -10,9 +10,9 @@ const COLUMNS = {
   rental: rentalColumns,
 };
 
-class LocalDatabase {
+class MockDatabase {
   constructor() {
-    this.data = testdata();
+    this.writeData(testdata());
   }
 
   async connect() {}
@@ -59,12 +59,12 @@ class LocalDatabase {
   }
 
   async fetchItemById(id) {
-    let docs = this.data.filter((doc) => doc.type === "item" && doc.id === id);
+    let docs = this.getData().filter((doc) => doc.type === "item" && doc.id === id);
     return docs.length > 0 ? docs[0] : {};
   }
 
   async fetchCustomerById(id) {
-    let docs = this.data.filter((doc) => doc.type === "customer" && doc.id === id);
+    let docs = this.getData().filter((doc) => doc.type === "customer" && doc.id === id);
     return docs.length > 0 ? docs[0] : {};
   }
 
@@ -81,7 +81,7 @@ class LocalDatabase {
     });
 
     // filter
-    let dataMatchingFilter = this.data.filter((doc) =>
+    let dataMatchingFilter = this.getData().filter((doc) =>
       this.matchesSelector(doc, { $and: selectors })
     );
     searchTerm = searchTerm.trim().toLowerCase();
@@ -125,25 +125,40 @@ class LocalDatabase {
   }
 
   async updateDoc(updatedDoc) {
-    this.removeDoc(updatedDoc);
-    this.createDoc(updatedDoc);
+    await this.removeDoc(updatedDoc);
+    await this.createDoc(updatedDoc);
   }
 
   async removeDoc(docToRemove) {
-    this.data = this.data.filter((doc) => doc._id !== docToRemove._id);
+    this.writeData(this.getData().filter((doc) => doc._id !== docToRemove._id));
   }
 
   async createDoc(doc) {
-    this.data.push(doc);
+    const makeId = () => {
+      var result = "";
+      var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var charactersLength = characters.length;
+      for (var i = 0; i < 10; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+    };
+
+    if (!doc.hasOwnProperty("_id")) {
+      doc["_id"] = makeId();
+    }
+    this.writeData([...this.getData(), doc]);
   }
 
   async nextUnusedId(docType) {
-    let usedIds = this.data.filter((doc) => doc.type === docType).map((doc) => doc.id);
+    let usedIds = this.getData()
+      .filter((doc) => doc.type === docType)
+      .map((doc) => doc.id);
     return Math.max(...usedIds) + 1;
   }
 
   async fetchDocsBySelector(selector, fields) {
-    return this.data
+    return this.getData()
       .filter((doc) => this.matchesSelector(doc, selector))
       .map((doc) => {
         let docWithFields = {};
@@ -152,9 +167,21 @@ class LocalDatabase {
       });
   }
 
+  getData() {
+    if (localStorage.hasOwnProperty("data")) {
+      return JSON.parse(localStorage.getItem("data"));
+    } else {
+      return [];
+    }
+  }
+
+  writeData(data) {
+    localStorage.setItem("data", JSON.stringify(data));
+  }
+
   selectorBuilder() {
     return new SelectorBuilder();
   }
 }
 
-export default new LocalDatabase();
+export default new MockDatabase();

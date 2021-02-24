@@ -294,7 +294,7 @@
 
     if (doc.item_id) {
       let itemIsUpdatable = true;
-      const item = await $itemDb.fetchById(doc.item_id).catch((error) => {
+      const item = await Database.fetchById(doc.item_id).catch((error) => {
         notifier.warning(`Gegenstand '${doc.item_id}' konnte nicht geladen werden!`, 6000);
         console.error(error);
         itemIsUpdatable = false;
@@ -304,9 +304,8 @@
         doc.image = item.image;
         if ($keyValueStore["options"]["updateStatusOnWebsite"]) {
           if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
-            item.status_on_website = "instock";
-            await Database
-              .updateDoc(item)
+            item.status = "instock";
+            await Database.updateDoc(item)
               .then(() => woocommerceClient.updateItem(item))
               .then(() => {
                 notifier.success(`'${item.item_name}' wurde auf als verfügbar markiert.`);
@@ -319,9 +318,8 @@
                 console.error(error);
               });
           } else if (createNew) {
-            item.status_on_website = "outofstock";
-            await Database
-              .updateDoc(item)
+            item.status = "outofstock";
+            await Database.updateDoc(item)
               .then(() => woocommerceClient.updateItem(item))
               .then(() => {
                 notifier.success(`'${item.item_name}' wurde als verliehen markiert.`);

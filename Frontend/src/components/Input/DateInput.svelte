@@ -44,7 +44,6 @@
     let date = new Date();
     date.setDate(date.getDate() + days);
     timeMillis = millisAtStartOfDay(date.getTime());
-    console.log(timeMillis);
   }
 </script>
 
