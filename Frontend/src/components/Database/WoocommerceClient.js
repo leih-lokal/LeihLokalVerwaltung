@@ -52,7 +52,7 @@ class WoocommerceClient {
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
     return {
       name: item.name,
-      sku: item._id,
+      sku: String(item.id),
       stock_status: translateStatus(item.status),
       attributes: [
         {
@@ -68,7 +68,7 @@ class WoocommerceClient {
         .split(", ")
         .filter((category) => category in WC_CATEGORIES)
         .map((category) => WC_CATEGORIES[category]),
-      short_description: `<div class="hidden">Art.Nr.: ${item._id}</div>${
+      short_description: `<div class="hidden">Art.Nr.: ${item.id}</div>${
         item.description ?? ""
       }<br /> ${hasSynonyms ? `<small>(Synonyme: ${item.synonyms})</small>` : ""}`,
       meta_data: [

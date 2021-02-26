@@ -56,6 +56,10 @@ class Database {
     return this.database.remove(doc._id, doc._rev);
   }
 
+  fetchById(id) {
+    return this.database.get(id);
+  }
+
   fetchItemById(id) {
     return this.findCached({
       selector: this.selectorBuilder().withDocType("item").withField("id").equals(id).build(),
