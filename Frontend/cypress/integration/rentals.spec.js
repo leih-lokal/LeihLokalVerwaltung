@@ -3,11 +3,14 @@ import testdata from "../../spec/Database/testdata";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
 import { dateToString, waitForPopupToClose, clearFilter, isAtSameDay } from "./utils";
 import COLORS from "../../src/components/Input/ColorDefs";
+import Database from "../../src/components/Database/MockDatabase";
+import { millisAtStartOfDay } from "../../src/utils/utils";
 
 let rentals;
 let currentRentals;
 
 const TODAY = Date.UTC(2020, 0, 1);
+const IN_ONE_WEEK = Date.UTC(2020, 0, 8);
 
 const expectedDisplayValue = (rental, column) => {
   let expectedValue = rental[column.key];
@@ -312,22 +315,37 @@ context("rentals", () => {
     });
 
     it("Saves changes", () => {
-      cy.get("table").contains(rentals[4].item_name).click({ force: true });
-      cy.contains("Speichern").click();
-      waitForPopupToClose();
-      expectDisplaysRentalsSortedBy(rentals);
+      cy.get("table")
+        .contains(rentals[4].item_name)
+        .click({ force: true })
+        .get("#deposit")
+        .clear()
+        .type(3);
+      cy.contains("Speichern")
+        .click()
+        .then(() => waitForPopupToClose())
+        .then(() => {
+          cy.wrap(
+            Database.fetchRentalByItemAndCustomerIds(rentals[4].item_id, rentals[4].customer_id)
+          )
+            .its("deposit")
+            .should("eq", 3);
+        });
     });
 
     it("Deletes rental", () => {
       cy.get("table").contains(rentals[4].item_name).click({ force: true });
-      cy.contains("Löschen").click();
-      waitForPopupToClose();
-      expectDisplaysRentalsSortedBy(rentals.filter((rental) => rental._id != rentals[4]._id));
+      cy.contains("Löschen")
+        .click()
+        .then(() => {
+          cy.wrap(
+            Database.fetchRentalByItemAndCustomerIds(rentals[4].item_id, rentals[4].customer_id)
+          ).should("deep.equal", {});
+        });
     });
 
     it("Creates rental", () => {
       const newRental = {
-        _id: "000eb2bf4e2402858e0e8174d16ec522",
         item_id: 1,
         item_name: "Dekupiersäge",
         rented_on: Date.UTC(2020, 0, 1),
@@ -338,7 +356,6 @@ context("rentals", () => {
         customer_name: "Viviana",
         deposit: 15,
         deposit_returned: 0,
-        image: "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/005.jpg",
         expectedCellBackgroundColors: columns.map((col) => {
           if (col.key === "item_id" || col.key === "item_name") return COLORS.HIGHLIGHT_BLUE;
           else return COLORS.DEFAULT_ROW_BACKGROUND_ODD;
@@ -367,11 +384,63 @@ context("rentals", () => {
       cy.get("#deposit").clear().type(newRental.deposit);
       cy.get("#passing_out_employee").type(newRental.passing_out_employee);
 
-      cy.contains("Speichern").click();
-      waitForPopupToClose();
+      cy.contains("Speichern")
+        .click()
+        .then(() => waitForPopupToClose())
+        .then(() =>
+          cy.wrap(
+            Database.fetchRentalByItemAndCustomerIds(newRental.item_id, newRental.customer_id)
+          )
+        )
+        .then((rental) => {
+          expect(rental.image).to.equal(
+            "https://www.buergerstiftung-karlsruhe.de/wp-content/uploads/2020/01/005.jpg"
+          );
+          for (let key of Object.keys(newRental).filter(
+            (key) => key !== "expectedCellBackgroundColors"
+          )) {
+            expect(rental[key]).to.equal(newRental[key]);
+          }
+        });
+    });
 
-      rentals.push(newRental);
-      expectDisplaysRentalsSortedBy(rentals);
+    it("Creates rental with default values", () => {
+      const defaultRental = {
+        item_id: 0,
+        item_name: "",
+        rented_on: millisAtStartOfDay(TODAY),
+        to_return_on: millisAtStartOfDay(IN_ONE_WEEK),
+        passing_out_employee: "",
+        receiving_employee: "",
+        customer_id: 0,
+        returned_on: 0,
+        extended_on: 0,
+        customer_name: "",
+        deposit: 0,
+        deposit_returned: 0,
+        image: "",
+        remark: "",
+        type: "rental",
+      };
+
+      cy.contains("+").click();
+
+      cy.contains("Speichern")
+        .click()
+        .then(() => waitForPopupToClose())
+        .then(() =>
+          cy.wrap(
+            Database.fetchRentalByItemAndCustomerIds(
+              defaultRental.item_id,
+              defaultRental.customer_id
+            )
+          )
+        )
+        .then((rental) => {
+          for (let key of Object.keys(defaultRental)) {
+            expect(rental[key]).to.equal(defaultRental[key]);
+          }
+        });
     });
   });
 });

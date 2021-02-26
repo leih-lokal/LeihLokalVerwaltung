@@ -294,7 +294,7 @@
 
     if (doc.item_id) {
       let itemIsUpdatable = true;
-      const item = await Database.fetchById(doc.item_id).catch((error) => {
+      const item = await Database.fetchItemById(doc.item_id).catch((error) => {
         notifier.warning(`Gegenstand '${doc.item_id}' konnte nicht geladen werden!`, 6000);
         console.error(error);
         itemIsUpdatable = false;
@@ -308,11 +308,11 @@
             await Database.updateDoc(item)
               .then(() => woocommerceClient.updateItem(item))
               .then(() => {
-                notifier.success(`'${item.item_name}' wurde auf als verfügbar markiert.`);
+                notifier.success(`'${item.name}' wurde auf als verfügbar markiert.`);
               })
               .catch((error) => {
                 notifier.warning(
-                  `Status von '${item.item_name}' konnte nicht aktualisiert werden!`,
+                  `Status von '${item.name}' konnte nicht aktualisiert werden!`,
                   6000
                 );
                 console.error(error);
@@ -322,11 +322,11 @@
             await Database.updateDoc(item)
               .then(() => woocommerceClient.updateItem(item))
               .then(() => {
-                notifier.success(`'${item.item_name}' wurde als verliehen markiert.`);
+                notifier.success(`'${item.name}' wurde als verliehen markiert.`);
               })
               .catch((error) => {
                 notifier.warning(
-                  `Status von '${item.item_name}' konnte nicht aktualisiert werden!`,
+                  `Status von '${item.name}' konnte nicht aktualisiert werden!`,
                   6000
                 );
                 console.error(error);
@@ -336,7 +336,7 @@
       }
     }
 
-    (createNew ? Database.createDoc(doc) : Database.updateDoc(doc))
+    await (createNew ? Database.createDoc(doc) : Database.updateDoc(doc))
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
       .then(close)
       .then(onSave)

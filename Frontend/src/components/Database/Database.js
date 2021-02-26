@@ -38,10 +38,6 @@ class Database {
     return new SelectorBuilder();
   }
 
-  fetchById(id) {
-    return this.database.get(id);
-  }
-
   updateDoc(updatedDoc) {
     this.cache.reset();
     return this.fetchById(updatedDoc._id).then((doc) => {

@@ -68,6 +68,13 @@ class MockDatabase {
     return docs.length > 0 ? docs[0] : {};
   }
 
+  async fetchRentalByItemAndCustomerIds(itemId, customerId) {
+    let docs = this.getData().filter(
+      (doc) => doc.type === "rental" && doc.item_id === itemId && doc.customer_id === customerId
+    );
+    return docs.length > 0 ? docs[0] : {};
+  }
+
   async query(options) {
     let { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm, docType } = options;
 
