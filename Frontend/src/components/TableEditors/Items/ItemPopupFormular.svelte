@@ -248,6 +248,7 @@
     }
   }}
   on:save={async (event) => {
+    close();
     const doc = $keyValueStore["currentDoc"];
     Object.keys(doc).forEach((key) => {
       const colForKey = columns.find((col) => col.key === key);
@@ -258,7 +259,6 @@
     const savePromise = createNew ? Database.createDoc(doc) : Database.updateDoc(doc);
     await savePromise
       .then((result) => notifier.success("Gegenstand gespeichert!"))
-      .then(close)
       .then(onSave)
       .catch((error) => {
         notifier.danger("Gegenstand konnte nicht gespeichert werden!", 6000);

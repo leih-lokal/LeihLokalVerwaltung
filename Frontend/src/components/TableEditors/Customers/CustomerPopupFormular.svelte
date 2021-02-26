@@ -231,17 +231,16 @@
     }
   }}
   on:save={(event) => {
+    close();
     const doc = $keyValueStore["currentDoc"];
     const savePromise = createNew ? Database.createDoc(doc) : Database.updateDoc(doc);
 
     savePromise
       .then((result) => notifier.success("Kunde gespeichert!"))
-      .then(close)
       .then(onSave)
       .catch((error) => {
         notifier.danger("Kunde konnte nicht gespeichert werden!", 6000);
         console.error(error);
-        close();
       });
   }}
   on:cancel={close}

@@ -321,16 +321,14 @@ context("rentals", () => {
         .get("#deposit")
         .clear()
         .type(3);
-      cy.contains("Speichern")
-        .click()
-        .then(() => waitForPopupToClose())
-        .then(() => {
-          cy.wrap(
-            Database.fetchRentalByItemAndCustomerIds(rentals[4].item_id, rentals[4].customer_id)
-          )
-            .its("deposit")
-            .should("eq", 3);
-        });
+      cy.contains("Speichern").click();
+      cy.contains("Leihvorgang gespeichert").then(() => {
+        cy.wrap(
+          Database.fetchRentalByItemAndCustomerIds(rentals[4].item_id, rentals[4].customer_id)
+        )
+          .its("deposit")
+          .should("eq", 3);
+      });
     });
 
     it("Deletes rental", () => {
@@ -384,9 +382,8 @@ context("rentals", () => {
       cy.get("#deposit").clear().type(newRental.deposit);
       cy.get("#passing_out_employee").type(newRental.passing_out_employee);
 
-      cy.contains("Speichern")
-        .click()
-        .then(() => waitForPopupToClose())
+      cy.contains("Speichern").click();
+      cy.contains("Leihvorgang gespeichert")
         .then(() =>
           cy.wrap(
             Database.fetchRentalByItemAndCustomerIds(newRental.item_id, newRental.customer_id)
@@ -425,9 +422,8 @@ context("rentals", () => {
 
       cy.contains("+").click();
 
-      cy.contains("Speichern")
-        .click()
-        .then(() => waitForPopupToClose())
+      cy.contains("Speichern").click();
+      cy.contains("Leihvorgang gespeichert")
         .then(() =>
           cy.wrap(
             Database.fetchRentalByItemAndCustomerIds(

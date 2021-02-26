@@ -284,6 +284,7 @@
 <PopupFormular
   {popupFormularConfiguration}
   on:save={async (event) => {
+    close();
     const doc = $keyValueStore["currentDoc"];
     Object.keys(doc).forEach((key) => {
       const colForKey = columns.find((col) => col.key === key);
@@ -338,7 +339,6 @@
 
     await (createNew ? Database.createDoc(doc) : Database.updateDoc(doc))
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
-      .then(close)
       .then(onSave)
       .catch((error) => {
         notifier.danger("Leihvorgang konnte nicht gespeichert werden!", 6000);
