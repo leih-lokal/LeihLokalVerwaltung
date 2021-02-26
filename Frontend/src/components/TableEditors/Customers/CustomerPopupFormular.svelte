@@ -170,7 +170,7 @@
       },
       {
         id: "id",
-        label: "Id",
+        label: "Kundennummer",
         group: "Sonstiges",
         inputType: "number",
         type: InputTypes.TEXT,
