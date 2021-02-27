@@ -2,9 +2,12 @@
   import PopupFormularConfiguration from "../../Input/PopupFormularConfiguration";
   import InputTypes from "../../Input/InputTypes";
   import PopupFormular from "../../Input/PopupFormular.svelte";
-  import { itemDb, rentalDb, customerDb, keyValueStore } from "../../../utils/stores";
+  import { keyValueStore } from "../../../utils/stores";
+  import { millisAtStartOfToday, millisAtStartOfDay } from "../../../utils/utils";
+  import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { getContext } from "svelte";
+  import columns from "./Columns";
   import WoocommerceClient from "ENV_WC_CLIENT";
 
   const { close } = getContext("simple-modal");
@@ -15,39 +18,80 @@
 
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
-      rented_on: new Date().getTime(),
-      to_return_on: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).getTime(),
+      rented_on: millisAtStartOfToday(),
+      to_return_on: millisAtStartOfDay(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
       returned_on: 0,
       extended_on: 0,
+      type: "rental",
+      image: "",
+      item_id: "",
+      item_name: "",
+      customer_id: "",
+      customer_name: "",
+      passing_out_employee: "",
+      receiving_employee: "",
+      deposit: "",
+      deposit_returned: "",
+      remark: "",
     });
   }
   keyValueStore.setValue("options", {
     updateStatusOnWebsite: true,
+    disableToggleStatusOnWebsite: false,
   });
 
-  const idStartsWithSelector = (searchValue) =>
-    $rentalDb.selectorBuilder().withField("_id").startsWithIgnoreCase(searchValue).build();
+  const customerIdStartsWithSelector = (searchValue) =>
+    Database.selectorBuilder()
+      .withField("id")
+      .numericFieldStartsWith(searchValue)
+      .withDocType("customer")
+      .build();
 
-  const idStartsWithAndNotDeletedSelector = (searchValue) =>
-    $rentalDb
-      .selectorBuilder()
-      .withField("_id")
-      .startsWithIgnoreCaseAndLeadingZeros(searchValue)
-      .withField("status_on_website")
+  const itemIdStartsWithAndNotDeletedSelector = (searchValue) =>
+    Database.selectorBuilder()
+      .withField("id")
+      .numericFieldStartsWith(searchValue)
+      .withDocType("item")
+      .withField("status")
       .isNotEqualTo("deleted")
       .build();
 
-  const attributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
-    $rentalDb.selectorBuilder().withField(field).startsWithIgnoreCase(searchValue).build();
-
-  const attributeStartsWithIgnoreCaseAndNotDeletedSelector = (field, searchValue) =>
-    $rentalDb
-      .selectorBuilder()
+  const customerAttributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
+    Database.selectorBuilder()
       .withField(field)
       .startsWithIgnoreCase(searchValue)
-      .withField("status_on_website")
-      .isNotEqualTo("deleted")
+      .withDocType("customer")
       .build();
+
+  const itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector = (field, searchValue) =>
+    Database.selectorBuilder()
+      .withField(field)
+      .startsWithIgnoreCase(searchValue)
+      .withField("status")
+      .isNotEqualTo("deleted")
+      .withDocType("item")
+      .build();
+
+  const setItem = (selectedItem) => {
+    if (selectedItem.exists_more_than_once) {
+      keyValueStore.setValue("options", {
+        ...$keyValueStore["options"],
+        updateStatusOnWebsite: false,
+        disableToggleStatusOnWebsite: true,
+      });
+    } else {
+      keyValueStore.setValue("options", {
+        ...$keyValueStore["options"],
+        disableToggleStatusOnWebsite: false,
+      });
+    }
+    keyValueStore.setValue("currentDoc", {
+      ...$keyValueStore["currentDoc"],
+      item_id: selectedItem.id,
+      item_name: selectedItem.name,
+      deposit: selectedItem.deposit,
+    });
+  };
 
   const popupFormularConfiguration = new PopupFormularConfiguration()
     .setTitle(`Leihvorgang ${createNew ? "anlegen" : "bearbeiten"}`)
@@ -59,22 +103,17 @@
         label: "Nr",
         group: "Gegenstand",
         type: InputTypes.AUTOCOMPLETE,
+        inputType: "number",
         bindTo: { keyValueStoreKey: "currentDoc", attr: "item_id" },
-        onChange: (selectedItem) => {
-          keyValueStore.setValue("currentDoc", {
-            ...$keyValueStore["currentDoc"],
-            item_id: selectedItem._id,
-            item_name: selectedItem.item_name,
-            deposit: selectedItem.deposit,
-          });
-        },
+        onChange: setItem,
         searchFunction: (searchTerm) =>
-          $itemDb.fetchDocsBySelector(idStartsWithAndNotDeletedSelector(searchTerm), [
-            "_id",
-            "item_name",
+          Database.fetchDocsBySelector(itemIdStartsWithAndNotDeletedSelector(searchTerm), [
+            "id",
+            "name",
             "deposit",
+            "exists_more_than_once",
           ]),
-        suggestionFormat: (id, item_name) => `${id}: ${item_name}`,
+        suggestionFormat: (id, item_name) => `${String(id).padStart(4, "0")}: ${item_name}`,
         noResultsText: "Kein Gegenstand mit dieser Id",
       },
       {
@@ -83,30 +122,24 @@
         group: "Gegenstand",
         type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "item_name" },
-        onChange: (selectedItem) => {
-          keyValueStore.setValue("currentDoc", {
-            ...$keyValueStore["currentDoc"],
-            item_id: selectedItem._id,
-            item_name: selectedItem.item_name,
-            deposit: selectedItem.deposit,
-          });
-        },
+        onChange: setItem,
         searchFunction: (searchTerm) =>
-          $itemDb.fetchDocsBySelector(
-            attributeStartsWithIgnoreCaseAndNotDeletedSelector("item_name", searchTerm),
-            ["_id", "item_name", "deposit"]
+          Database.fetchDocsBySelector(
+            itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector("name", searchTerm),
+            ["id", "name", "deposit", "exists_more_than_once"]
           ),
-        suggestionFormat: (id, item_name) => `${id}: ${item_name}`,
+        suggestionFormat: (id, item_name) => `${String(id).padStart(4, "0")}: ${item_name}`,
         noResultsText: "Kein Gegenstand mit diesem Name",
       },
       {
-        id: "update_status_on_website",
+        id: "update_status",
         label: "Status auf Webseite aktualisieren",
         group: "Gegenstand",
         bindTo: {
           keyValueStoreKey: "options",
           attr: "updateStatusOnWebsite",
         },
+        hidden: () => $keyValueStore["options"]["disableToggleStatusOnWebsite"],
         type: InputTypes.CHECKBOX,
       },
 
@@ -121,7 +154,7 @@
         id: "extended_on",
         label: "Verlängert",
         group: "Zeitraum",
-        hidden: createNew,
+        hidden: () => createNew,
         quickset: { 0: "Heute" },
         type: InputTypes.DATE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "extended_on" },
@@ -141,7 +174,7 @@
         id: "returned_on",
         label: "Zurückgegeben",
         group: "Zeitraum",
-        hidden: createNew,
+        hidden: () => createNew,
         quickset: { 0: "Heute" },
         type: InputTypes.DATE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "returned_on" },
@@ -151,18 +184,19 @@
         id: "customer_id",
         label: "Nr",
         group: "Kunde",
+        inputType: "number",
         type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "customer_id" },
         onChange: (selectedCustomer) => {
           keyValueStore.setValue("currentDoc", {
             ...$keyValueStore["currentDoc"],
-            name: selectedCustomer.lastname,
-            customer_id: selectedCustomer._id,
+            customer_name: selectedCustomer.lastname,
+            customer_id: selectedCustomer.id,
           });
         },
         searchFunction: (searchTerm) =>
-          $customerDb.fetchDocsBySelector(idStartsWithSelector(searchTerm), [
-            "_id",
+          Database.fetchDocsBySelector(customerIdStartsWithSelector(searchTerm), [
+            "id",
             "firstname",
             "lastname",
           ]),
@@ -171,21 +205,21 @@
       },
       {
         id: "customer_name",
-        label: "Name",
+        label: "Nachname",
         group: "Kunde",
         type: InputTypes.AUTOCOMPLETE,
-        bindTo: { keyValueStoreKey: "currentDoc", attr: "name" },
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "customer_name" },
         onChange: (selectedCustomer) => {
           keyValueStore.setValue("currentDoc", {
             ...$keyValueStore["currentDoc"],
-            name: selectedCustomer.lastname,
-            customer_id: selectedCustomer._id,
+            customer_name: selectedCustomer.lastname,
+            customer_id: selectedCustomer.id,
           });
         },
         searchFunction: (searchTerm) =>
-          $customerDb.fetchDocsBySelector(
-            attributeStartsWithIgnoreCaseSelector("lastname", searchTerm),
-            ["_id", "firstname", "lastname"]
+          Database.fetchDocsBySelector(
+            customerAttributeStartsWithIgnoreCaseSelector("lastname", searchTerm),
+            ["id", "firstname", "lastname"]
           ),
         suggestionFormat: (id, firstname, lastname) => `${id}: ${firstname} ${lastname}`,
         noResultsText: "Kein Kunde mit diesem Name",
@@ -195,6 +229,7 @@
         id: "deposit",
         label: "Pfand",
         group: "Pfand",
+        inputType: "number",
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "deposit" },
       },
@@ -202,7 +237,8 @@
         id: "deposit_returned",
         label: "Pfand zurück",
         group: "Pfand",
-        hidden: createNew,
+        hidden: () => createNew,
+        inputType: "number",
         type: InputTypes.TEXT,
         bindTo: {
           keyValueStoreKey: "currentDoc",
@@ -224,7 +260,7 @@
         id: "receiving_employee",
         label: "Rücknahme",
         group: "Mitarbeiter",
-        hidden: createNew,
+        hidden: () => createNew,
         type: InputTypes.TEXT,
         bindTo: {
           keyValueStoreKey: "currentDoc",
@@ -235,6 +271,7 @@
         id: "remark",
         label: "Bemerkung",
         group: "Mitarbeiter",
+        hidden: () => createNew,
         type: InputTypes.TEXT,
         bindTo: {
           keyValueStoreKey: "currentDoc",
@@ -247,10 +284,18 @@
 <PopupFormular
   {popupFormularConfiguration}
   on:save={async (event) => {
+    close();
     const doc = $keyValueStore["currentDoc"];
+    Object.keys(doc).forEach((key) => {
+      const colForKey = columns.find((col) => col.key === key);
+      if (colForKey && colForKey.numeric && doc[key] === "") {
+        doc[key] = 0; // default value for numbers
+      }
+    });
+
     if (doc.item_id) {
       let itemIsUpdatable = true;
-      const item = await $itemDb.fetchById(doc.item_id).catch((error) => {
+      const item = await Database.fetchItemById(doc.item_id).catch((error) => {
         notifier.warning(`Gegenstand '${doc.item_id}' konnte nicht geladen werden!`, 6000);
         console.error(error);
         itemIsUpdatable = false;
@@ -260,31 +305,29 @@
         doc.image = item.image;
         if ($keyValueStore["options"]["updateStatusOnWebsite"]) {
           if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
-            item.status_on_website = "instock";
-            await $itemDb
-              .updateDoc(item)
+            item.status = "instock";
+            await Database.updateDoc(item)
               .then(() => woocommerceClient.updateItem(item))
               .then(() => {
-                notifier.success(`'${item.item_name}' wurde auf als verfügbar markiert.`);
+                notifier.success(`'${item.name}' wurde auf als verfügbar markiert.`);
               })
               .catch((error) => {
                 notifier.warning(
-                  `Status von '${item.item_name}' konnte nicht aktualisiert werden!`,
+                  `Status von '${item.name}' konnte nicht aktualisiert werden!`,
                   6000
                 );
                 console.error(error);
               });
           } else if (createNew) {
-            item.status_on_website = "outofstock";
-            await $itemDb
-              .updateDoc(item)
+            item.status = "outofstock";
+            await Database.updateDoc(item)
               .then(() => woocommerceClient.updateItem(item))
               .then(() => {
-                notifier.success(`'${item.item_name}' wurde als verliehen markiert.`);
+                notifier.success(`'${item.name}' wurde als verliehen markiert.`);
               })
               .catch((error) => {
                 notifier.warning(
-                  `Status von '${item.item_name}' konnte nicht aktualisiert werden!`,
+                  `Status von '${item.name}' konnte nicht aktualisiert werden!`,
                   6000
                 );
                 console.error(error);
@@ -294,9 +337,8 @@
       }
     }
 
-    (createNew ? $rentalDb.createDocWithoutId(doc) : $rentalDb.updateDoc(doc))
+    await (createNew ? Database.createDoc(doc) : Database.updateDoc(doc))
       .then((result) => notifier.success("Leihvorgang gespeichert!"))
-      .then(close)
       .then(onSave)
       .catch((error) => {
         notifier.danger("Leihvorgang konnte nicht gespeichert werden!", 6000);
@@ -305,8 +347,7 @@
   }}
   on:delete={(event) => {
     if (confirm("Soll dieser Leihvorgang wirklich gelöscht werden?")) {
-      $rentalDb
-        .removeDoc($keyValueStore["currentDoc"])
+      Database.removeDoc($keyValueStore["currentDoc"])
         .then(() => notifier.success("Leihvorgang gelöscht!"))
         .then(close)
         .then(onSave)

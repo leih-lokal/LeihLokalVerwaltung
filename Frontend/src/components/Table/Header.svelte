@@ -16,28 +16,38 @@
 <thead>
   <tr>
     {#each columns as col, i}
-      <th
-        on:mouseout={() => (mouseOverColHeader = {})}
-        on:mouseover={() => {
-          mouseOverColHeader = {};
-          mouseOverColHeader[col.key] = true;
-        }}
-        on:click={() => dispatch("colHeaderClicked", col)}>
-        {col.title}
-        <span class="sort-indicator" class:visible={mouseOverColHeader[col.key]}>
-          <Icon icon={faSort} />
-        </span>
-        <span
-          class="sort-indicator-up"
-          class:visible={indicateSort[i] === "up" && !mouseOverColHeader[col.key]}>
-          <Icon icon={faSortUp} />
-        </span>
-        <span
-          class="sort-indicator-down"
-          class:visible={indicateSort[i] === "down" && !mouseOverColHeader[col.key]}>
-          <Icon icon={faSortDown} />
-        </span>
-      </th>
+      {#if col.disableSort}
+        <th>
+          {col.title}
+        </th>
+      {:else}
+        <th
+          on:mouseout={() => (mouseOverColHeader = {})}
+          on:mouseover={() => {
+            mouseOverColHeader = {};
+            mouseOverColHeader[col.key] = true;
+          }}
+          on:click={() => dispatch("colHeaderClicked", col)}
+          class="clickable"
+        >
+          {col.title}
+          <span class="sort-indicator" class:visible={mouseOverColHeader[col.key]}>
+            <Icon icon={faSort} />
+          </span>
+          <span
+            class="sort-indicator-up"
+            class:visible={indicateSort[i] === "up" && !mouseOverColHeader[col.key]}
+          >
+            <Icon icon={faSortUp} />
+          </span>
+          <span
+            class="sort-indicator-down"
+            class:visible={indicateSort[i] === "down" && !mouseOverColHeader[col.key]}
+          >
+            <Icon icon={faSortDown} />
+          </span>
+        </th>
+      {/if}
     {/each}
   </tr>
 </thead>
@@ -54,7 +64,7 @@
     height: 40px;
   }
 
-  th {
+  th.clickable {
     cursor: pointer;
   }
 

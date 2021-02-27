@@ -55,10 +55,12 @@
     display: block;
   }
 
-  img:hover {
-    height: 200px;
+  td:hover > img {
+    height: 50vh;
     position: absolute;
-    margin-top: -100px;
+    left: 25vw;
+    top: 25vh;
+    z-index: 1;
   }
 
   td {

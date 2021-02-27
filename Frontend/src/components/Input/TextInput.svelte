@@ -1,11 +1,13 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import { restrict } from "./InputRestrictor";
 
   export let id = "";
   export let readonly = false;
   export let value = "";
   export let disabled = false;
   export let multiline = false;
+  export let inputType = false;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -24,6 +26,7 @@
     />
   {:else}
     <input
+      use:restrict={inputType}
       type="text"
       bind:value
       {id}

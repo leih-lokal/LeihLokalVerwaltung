@@ -3,11 +3,8 @@ import { saveParseStringToBoolean, saveParseTimestampToString } from "../../../u
 export default [
   {
     title: "Id",
-    key: "_id",
+    key: "id",
     numeric: true,
-    sort: function (doc) {
-      return parseInt(doc._id, 10);
-    },
     search: "from_beginning",
   },
   {
@@ -26,10 +23,8 @@ export default [
   {
     title: "Hausnummer",
     key: "house_number",
-    sort: function (doc) {
-      return parseInt(doc.house_number, 10);
-    },
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "Postleitzahl",
@@ -57,16 +52,19 @@ export default [
     title: "Bemerkung",
     key: "remark",
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "E-Mail",
     key: "email",
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "Telefonnummer",
     key: "telephone_number",
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "Newsletter",

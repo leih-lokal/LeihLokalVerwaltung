@@ -13,7 +13,7 @@
 <div class="tablecontainer">
   <table>
     <Header {columns} {indicateSort} on:colHeaderClicked />
-    {#each data.rows as row, i (row._id)}
+    {#each data as row, i (row._id)}
       <Row
         {cellBackgroundColorsFunction}
         {columns}

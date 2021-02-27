@@ -19,6 +19,10 @@ function millisAtStartOfDay(millis) {
   return millis - (millis % msPerDay);
 }
 
+function millisAtStartOfToday() {
+  return millisAtStartOfDay(new Date().getTime());
+}
+
 function isAtSameDay(millis1, millis2) {
   return millisAtStartOfDay(millis1) === millisAtStartOfDay(millis2);
 }
@@ -29,4 +33,6 @@ export default {
   waitForPopupToClose,
   clearFilter,
   isAtSameDay,
+  millisAtStartOfToday,
+  millisAtStartOfDay,
 };

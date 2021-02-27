@@ -3,9 +3,10 @@
   import InputTypes from "../../Input/InputTypes";
   import ColorDefs from "../../Input/ColorDefs";
   import PopupFormular from "../../Input/PopupFormular.svelte";
-  import { customerDb } from "../../../utils/stores";
+  import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { keyValueStore } from "../../../utils/stores";
+  import { millisAtStartOfToday } from "../../../utils/utils";
   import { getContext } from "svelte";
 
   const { close } = getContext("simple-modal");
@@ -15,18 +16,29 @@
 
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
-      registration_date: new Date().getTime(),
+      registration_date: millisAtStartOfToday(),
+      type: "customer",
+      lastname: "",
+      firstname: "",
+      renewed_on: 0,
+      remark: "",
+      subscribed_to_newsletter: false,
+      email: "",
+      street: "",
+      house_number: "",
+      postal_code: "",
+      city: "",
+      telephone_number: "",
+      heard: "",
+      highlight: "",
     });
-    $customerDb.nextUnusedId().then((id) =>
+    Database.nextUnusedId("customer").then((id) =>
       keyValueStore.setValue("currentDoc", {
         ...$keyValueStore["currentDoc"],
-        _id: String(id),
+        id: id,
       })
     );
   }
-
-  const attributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
-    $customerDb.selectorBuilder().withField(field).startsWithIgnoreCase(searchValue).build();
 
   const popupFormularConfiguration = new PopupFormularConfiguration()
     .setTitle(`Kunde ${createNew ? "anlegen" : "bearbeiten"}`)
@@ -60,10 +72,7 @@
           });
         },
         searchFunction: (searchTerm) =>
-          $customerDb.fetchUniqueDocsBySelector(
-            attributeStartsWithIgnoreCaseSelector("street", searchTerm),
-            ["street"]
-          ),
+          Database.fetchUniqueCustomerFieldValues("street", searchTerm),
         suggestionFormat: (street) => `${street}`,
         noResultsText: "Straße noch nicht in Datenbank",
       },
@@ -79,6 +88,7 @@
         label: "Postleitzahl",
         group: "Adresse",
         type: InputTypes.AUTOCOMPLETE,
+        inputType: "number",
         bindTo: { keyValueStoreKey: "currentDoc", attr: "postal_code" },
         onChange: (selectedItem) => {
           keyValueStore.setValue("currentDoc", {
@@ -87,10 +97,7 @@
           });
         },
         searchFunction: (searchTerm) =>
-          $customerDb.fetchUniqueDocsBySelector(
-            attributeStartsWithIgnoreCaseSelector("postal_code", searchTerm),
-            ["postal_code"]
-          ),
+          Database.fetchUniqueCustomerFieldValues("postal_code", searchTerm, true),
         suggestionFormat: (postal_code) => `${postal_code}`,
         noResultsText: "PLZ noch nicht in Datenbank",
       },
@@ -106,11 +113,7 @@
             city: selectedItem.city,
           });
         },
-        searchFunction: (searchTerm) =>
-          $customerDb.fetchUniqueDocsBySelector(
-            attributeStartsWithIgnoreCaseSelector("city", searchTerm),
-            ["city"]
-          ),
+        searchFunction: (searchTerm) => Database.fetchUniqueCustomerFieldValues("city", searchTerm),
         suggestionFormat: (city) => `${city}`,
         noResultsText: "Stadt noch nicht in Datenbank",
       },
@@ -149,7 +152,7 @@
         id: "renewed_on",
         label: "Verlängert am",
         group: "Mitgliedschaft",
-        hidden: createNew,
+        hidden: () => createNew,
         quickset: { 0: "Heute" },
         type: InputTypes.DATE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "renewed_on" },
@@ -167,12 +170,12 @@
       },
       {
         id: "id",
-        label: "Id",
+        label: "Kundennummer",
         group: "Sonstiges",
+        inputType: "number",
         type: InputTypes.TEXT,
-        bindTo: { keyValueStoreKey: "currentDoc", attr: "_id" },
-        readonly: true,
-        bindValueToObjectAttr: "_id",
+        bindTo: { keyValueStoreKey: "currentDoc", attr: "id" },
+        bindValueToObjectAttr: "id",
       },
       {
         id: "remark",
@@ -217,8 +220,7 @@
   on:delete={(event) => {
     const doc = $keyValueStore["currentDoc"];
     if (confirm("Soll dieser Kunde wirklich gelöscht werden?")) {
-      $customerDb
-        .removeDoc(doc)
+      Database.removeDoc(doc)
         .then(() => notifier.success("Kunde gelöscht!"))
         .then(close)
         .then(onSave)
@@ -229,17 +231,16 @@
     }
   }}
   on:save={(event) => {
+    close();
     const doc = $keyValueStore["currentDoc"];
-    const savePromise = createNew ? $customerDb.createDoc(doc) : $customerDb.updateDoc(doc);
+    const savePromise = createNew ? Database.createDoc(doc) : Database.updateDoc(doc);
 
     savePromise
       .then((result) => notifier.success("Kunde gespeichert!"))
-      .then(close)
       .then(onSave)
       .catch((error) => {
         notifier.danger("Kunde konnte nicht gespeichert werden!", 6000);
         console.error(error);
-        close();
       });
   }}
   on:cancel={close}

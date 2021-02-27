@@ -1,7 +1,6 @@
-import { get } from "svelte/store";
-import { customerDb, rentalDb, itemDb } from "../../utils/stores";
-import { isToday, isBeforeToday, isBeforeDay } from "../../utils/utils";
+import { millisAtStartOfToday } from "../../utils/utils";
 import COLORS from "../Input/ColorDefs";
+import Database from "../Database/ENV_DATABASE";
 
 import CustomerPopupFormular from "./Customers/CustomerPopupFormular.svelte";
 import customerColumns from "./Customers/Columns.js";
@@ -15,19 +14,22 @@ import RentalPopupFormular from "./Rentals/RentalPopupFormular.svelte";
 import rentalColumns from "./Rentals/Columns.js";
 import rentalFilters from "./Rentals/Filters.js";
 
-const hasBeenReturnedToday = (rental) => rental.returned_on && isToday(rental.returned_on);
+const hasReturnDate = (rental) => rental.returned_on && rental.returned_on > 0;
+
+const hasBeenReturnedToday = (rental) =>
+  hasReturnDate(rental) && rental.returned_on === millisAtStartOfToday();
 const shouldBeReturnedToday = (rental) =>
-  rental.to_return_on && isToday(rental.to_return_on) && !rental.returned_on;
+  rental.to_return_on && rental.to_return_on === millisAtStartOfToday() && !hasReturnDate(rental);
 const shouldHaveBeenReturnedBeforeToday = (rental) =>
   rental.to_return_on &&
-  ((!rental.returned_on && isBeforeToday(rental.to_return_on)) ||
-    (rental.returned_on && isBeforeDay(rental.to_return_on, rental.returned_on)));
+  ((!hasReturnDate(rental) && rental.to_return_on < millisAtStartOfToday()) ||
+    (hasReturnDate(rental) && rental.to_return_on < rental.returned_on));
 
 export default {
   customers: {
+    docType: "customer",
     columns: customerColumns,
     filters: customerFilters,
-    getDatabase: () => get(customerDb),
     popupFormularComponent: CustomerPopupFormular,
     cellBackgroundColorsFunction: async (customer, isEven) => {
       if (customer.highlight) {
@@ -40,9 +42,9 @@ export default {
     },
   },
   items: {
+    docType: "item",
     columns: itemColumns,
     filters: itemFilters,
-    getDatabase: () => get(itemDb),
     popupFormularComponent: ItemPopupFormular,
     cellBackgroundColorsFunction: async (item, isEven) => {
       if (item.highlight) {
@@ -55,27 +57,27 @@ export default {
     },
   },
   rentals: {
+    docType: "rental",
     columns: rentalColumns,
     filters: rentalFilters,
-    getDatabase: () => get(rentalDb),
     popupFormularComponent: RentalPopupFormular,
     cellBackgroundColorsFunction: async (rental, isEven) => {
       let item = {};
       let customer = {};
       try {
-        item = await get(itemDb).fetchById(rental.item_id);
+        item = await Database.fetchItemById(rental.item_id);
       } catch (e) {
         console.warn(e);
       }
       try {
-        customer = await get(customerDb).fetchById(rental.customer_id);
+        customer = await Database.fetchCustomerById(rental.customer_id);
       } catch (e) {
         console.warn(e);
       }
       return rentalColumns.map((col) => {
         if (item.highlight && ["item_id", "item_name"].includes(col.key)) {
           return item.highlight;
-        } else if (customer.highlight && ["customer_id", "name"].includes(col.key)) {
+        } else if (customer.highlight && ["customer_id", "customer_name"].includes(col.key)) {
           return customer.highlight;
         } else if (hasBeenReturnedToday(rental)) {
           return COLORS.RENTAL_RETURNED_TODAY_GREEN;

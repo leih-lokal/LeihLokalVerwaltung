@@ -47,11 +47,13 @@ class WoocommerceClient {
   }
 
   _translateItemAttributesForWc(item) {
+    const translateStatus = (status) => (status === "reserved" ? outofstock : status);
+
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
     return {
-      name: item.item_name,
-      sku: item._id,
-      ...(item.status_on_website && { stock_status: item.status_on_website }),
+      name: item.name,
+      sku: String(item.id),
+      stock_status: translateStatus(item.status),
       attributes: [
         {
           id: 1,
@@ -66,7 +68,7 @@ class WoocommerceClient {
         .split(", ")
         .filter((category) => category in WC_CATEGORIES)
         .map((category) => WC_CATEGORIES[category]),
-      short_description: `<div class="hidden">Art.Nr.: ${item._id}</div>${
+      short_description: `<div class="hidden">Art.Nr.: ${item.id}</div>${
         item.description ?? ""
       }<br /> ${hasSynonyms ? `<small>(Synonyme: ${item.synonyms})</small>` : ""}`,
       meta_data: [

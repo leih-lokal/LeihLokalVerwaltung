@@ -1,41 +1,49 @@
 export default {
   filters: {
     "nicht gelöscht": {
-      required_fields: ["status_on_website"],
+      required_fields: ["status"],
       selectors: {
-        status_on_website: {
+        status: {
           $ne: "deleted",
         },
       },
     },
     gelöscht: {
-      required_fields: ["status_on_website"],
+      required_fields: ["status"],
       selectors: {
-        status_on_website: {
+        status: {
           $eq: "deleted",
         },
       },
     },
     verfügbar: {
-      required_fields: ["status_on_website"],
+      required_fields: ["status"],
       selectors: {
-        status_on_website: {
+        status: {
           $eq: "instock",
         },
       },
     },
     ausgeliehen: {
-      required_fields: ["status_on_website"],
+      required_fields: ["status"],
       selectors: {
-        status_on_website: {
+        status: {
           $eq: "outofstock",
         },
       },
     },
-    "nicht verleihbar": {
-      required_fields: ["status_on_website"],
+    reserviert: {
+      required_fields: ["status"],
       selectors: {
-        status_on_website: {
+        status: {
+          $eq: "reserved",
+        },
+      },
+    },
+    "nicht verleihbar": {
+      required_fields: ["status"],
+      selectors: {
+        status: {
           $eq: "onbackorder",
         },
       },

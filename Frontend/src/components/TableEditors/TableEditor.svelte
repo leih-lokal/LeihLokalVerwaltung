@@ -5,6 +5,7 @@
   import Pagination from "../Table/Pagination.svelte";
   import Table from "../Table/Table.svelte";
   import CONFIG from "./TableEditorConfig";
+  import Database from "../Database/ENV_DATABASE";
   import { keyValueStore } from "../../utils/stores";
   import { getContext } from "svelte";
   import { fade } from "svelte/transition";
@@ -20,66 +21,81 @@
   };
   const shouldBeSortedByInitially = (col) => "initialSort" in col;
 
-  async function calculateNumberOfPages() {
-    const data = await loadData();
-    const rowsOnLastPage = data.count % rowsPerPage;
-    numberOfPages = (data.count - rowsOnLastPage) / rowsPerPage;
-    if (rowsOnLastPage > 0) numberOfPages += 1;
-    currentPage = 0;
-  }
-
   const refresh = () =>
-    (loadData = () =>
-      database.query({
+    (loadData = () => {
+      return Database.query({
         filters: activeFilters.map((filterName) => filters.filters[filterName]),
-        columns: columns,
-        searchTerm: searchTerm,
-        currentPage: currentPage,
-        rowsPerPage: rowsPerPage,
-        sortBy: sortBy,
-        sortReverse: sortReverse,
-      }));
+        columns,
+        searchTerm,
+        currentPage,
+        rowsPerPage,
+        sortBy: sort,
+        sortReverse,
+        docType,
+      })
+        .then((data) => {
+          searchInputRef?.focusSearchInput();
+          const rowsOnLastPage = data.count % rowsPerPage;
+          numberOfPages = (data.count - rowsOnLastPage) / rowsPerPage;
+          if (rowsOnLastPage > 0) numberOfPages += 1;
+          return data;
+        })
+        .catch((error) => console.error(error));
+    });
 
-  const reset = () => {
-    searchTerm = "";
-    activeFilters = filters.activeByDefault;
-    calculateNumberOfPages();
+  const initNewTab = (tab) => {
+    if (tab) {
+      if (searchTerm !== "") searchTerm = "";
+      columns = CONFIG[tab].columns;
+      filters = CONFIG[tab].filters;
+      docType = CONFIG[tab].docType;
+      activeFilters = filters.activeByDefault;
+      searchTerm = "";
+      setInitialSortCol();
+      setInitialSortDirection();
+    }
   };
 
-  const setInitialSortCol = (type) =>
-    (sortBy = columns.some(shouldBeSortedByInitially)
+  const setInitialSortCol = () => {
+    sortByColKey = columns.some(shouldBeSortedByInitially)
       ? columns.find(shouldBeSortedByInitially).key
-      : "_id");
+      : "id";
+    const col = columns.find((col) => col.key === sortByColKey);
+    sort = col.sort ? col.sort : [sortByColKey];
+  };
 
-  const setInitialSortDirection = (type) =>
+  const setInitialSortDirection = () =>
     (sortReverse = columns.some(shouldBeSortedByInitially)
       ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
       : false);
 
+  const goToFirstPage = () => {
+    if (currentPage !== 0) {
+      currentPage = 0;
+    }
+  };
+
   let searchInputRef;
-  let loadData = new Promise(() => {});
-  let searchTerm = "";
+  let loadData = () => new Promise(() => {});
+  let searchTerm;
   let currentPage = 0;
   let rowHeight = 40;
   let innerHeight = window.innerHeight;
   let numberOfPages = 1;
   let activeFilters = [];
-  let sortBy;
+  let sortByColKey;
   let sortReverse;
-  $: columns = CONFIG[tab].columns;
-  $: filters = CONFIG[tab].filters;
-  $: database = CONFIG[tab].getDatabase();
-  $: setInitialSortCol(tab);
-  $: setInitialSortDirection(tab);
+  let sort;
+  let columns;
+  let filters;
+  let docType;
+  let indicateSort;
+  $: initNewTab(tab);
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
-  $: tab, currentPage, sortBy, sortReverse, searchTerm, activeFilters, refresh();
-  $: tab, reset();
-  $: tab, searchInputRef?.focusSearchInput();
-  $: activeFilters, calculateNumberOfPages();
-  $: searchTerm, calculateNumberOfPages();
-  $: sortBy, sortReverse, (currentPage = 0);
+  $: tab, currentPage, sortByColKey, sortReverse, searchTerm, activeFilters, refresh();
+  $: sortByColKey, sortReverse, searchTerm, activeFilters, goToFirstPage();
   $: indicateSort = columns.map((col) => {
-    if (col.key === sortBy) {
+    if (col.key === sortByColKey) {
       return sortReverse ? "up" : "down";
     } else {
       return "";
@@ -91,8 +107,13 @@
 
 <SearchFilterBar
   filterOptions={Object.keys(filters.filters).map((filter) => ({ value: filter, label: filter }))}
-  bind:activeFilters
+  {activeFilters}
   bind:searchTerm
+  on:filtersChanged={(event) => {
+    if (JSON.stringify(event.detail) !== JSON.stringify(activeFilters)) {
+      activeFilters = event.detail;
+    }
+  }}
   bind:this={searchInputRef}
 />
 
@@ -103,7 +124,7 @@
     <Table
       {rowHeight}
       {columns}
-      {data}
+      data={data.docs}
       cellBackgroundColorsFunction={CONFIG[tab].cellBackgroundColorsFunction}
       {indicateSort}
       on:rowClicked={(event) => {
@@ -111,9 +132,11 @@
         openPopupFormular(false);
       }}
       on:colHeaderClicked={(event) => {
-        if (sortBy == event.detail.key) sortReverse = !sortReverse;
+        if (sortByColKey == event.detail.key) sortReverse = !sortReverse;
         else sortReverse = false;
-        sortBy = event.detail.key;
+        sortByColKey = event.detail.key;
+        const col = columns.find((col) => col.key === sortByColKey);
+        sort = col.sort ? col.sort : [sortByColKey];
       }}
     />
   </div>

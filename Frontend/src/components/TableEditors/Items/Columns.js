@@ -3,22 +3,21 @@ import { saveParseTimestampToString } from "../../../utils/utils.js";
 export default [
   {
     title: "Id",
-    key: "_id",
+    key: "id",
     numeric: true,
+    display: (value) => String(value).padStart(4, "0"),
     search: "from_beginning",
-    sort: function (doc) {
-      return parseInt(doc._id, 10);
-    },
   },
   {
     title: "Bild",
     key: "image",
     isImageUrl: true,
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "Gegenstand",
-    key: "item_name",
+    key: "name",
   },
   {
     title: "Marke",
@@ -53,14 +52,16 @@ export default [
     title: "Beschreibung",
     key: "description",
     search: "exclude",
+    disableSort: true,
   },
   {
     title: "Synonyme",
     key: "synonyms",
+    disableSort: true,
   },
   {
-    title: "Status Webseite",
-    key: "status_on_website",
+    title: "Status",
+    key: "status",
     search: "exclude",
     display: (value) => {
       if (value === "deleted") return "gelöscht";

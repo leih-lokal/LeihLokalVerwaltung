@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import data from "../../spec/Database/DummyData/customers";
+import testdata from "../../spec/Database/testdata";
 import ColorDefs from "../../src/components/Input/ColorDefs";
 import columns from "../../src/components/TableEditors/Customers/Columns";
 import { dateToString } from "./utils";
@@ -24,7 +24,7 @@ const expectedDisplayValue = (customer, customerKey) => {
 
 const expectedDisplayedTableDataSortedBy = (key, customers) => {
   let transformBeforeSort = (value) => value;
-  if (key === "_id" || key === "registration_date") transformBeforeSort = parseInt;
+  if (key === "id" || key === "registration_date") transformBeforeSort = parseInt;
   return customers.sort(function (a, b) {
     var x = transformBeforeSort(a[key]);
     var y = transformBeforeSort(b[key]);
@@ -40,7 +40,7 @@ const expectDisplaysAllCustomersSortedBy = (sortKey, reverse = false) => {
 
 const expectDisplaysOnlyCustomersWithIds = (ids) => {
   const customersWithIds = [];
-  ids.forEach((id) => customersWithIds.push(customers.find((customer) => customer._id === id)));
+  ids.forEach((id) => customersWithIds.push(customers.find((customer) => customer.id === id)));
   expectDisplaysCustomers(customersWithIds);
 };
 
@@ -81,15 +81,8 @@ const expectDisplaysCustomers = (customers) =>
 
 context("Customers", () => {
   beforeEach(() => {
-    customers = JSON.parse(JSON.stringify(data));
-    window.indexedDB
-      .databases()
-      .then((dbs) => dbs.forEach((db) => window.indexedDB.deleteDatabase(db.name)));
-    cy.clock(Date.UTC(2020, 0, 1), ["Date"])
-      .visit("../../public/index.html")
-      .get("nav")
-      .contains("Kunden")
-      .click();
+    customers = testdata().filter((doc) => doc.type === "customer");
+    cy.clock(Date.UTC(2020, 0, 1), ["Date"]).visit("../../public/index.html#/customers");
   });
 
   it("displays correct number of customers", () => {
@@ -98,14 +91,14 @@ context("Customers", () => {
 
   context("Sorting", () => {
     it("sorts customers by id", () => {
-      expectDisplaysAllCustomersSortedBy("_id");
+      expectDisplaysAllCustomersSortedBy("id");
     });
 
     it("sorts customers by id reverse", () => {
       cy.get("thead")
         .contains("Id")
         .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("_id", true));
+        .then(() => expectDisplaysAllCustomersSortedBy("id", true));
     });
 
     it("sorts customers by lastname", () => {
@@ -181,19 +174,19 @@ context("Customers", () => {
     it("finds a customer by search for 'firstname lastname'", () => {
       cy.get(".searchInput")
         .type(customers[5].firstname + " " + customers[5].lastname)
-        .then(() => expectDisplaysOnlyCustomersWithIds([customers[5]._id]));
+        .then(() => expectDisplaysOnlyCustomersWithIds([customers[5].id]));
     });
 
     it("finds two customers when seaching for first id digit", () => {
       cy.get(".searchInput")
         .type("1")
-        .then(() => expectDisplaysOnlyCustomersWithIds(["1", "10"]));
+        .then(() => expectDisplaysOnlyCustomersWithIds([1, 10]));
     });
 
     it("finds one customer when seaching for unique id", () => {
       cy.get(".searchInput")
         .type("2")
-        .then(() => expectDisplaysOnlyCustomersWithIds(["2"]));
+        .then(() => expectDisplaysOnlyCustomersWithIds([2]));
     });
   });
 
@@ -204,10 +197,10 @@ context("Customers", () => {
         .get(".listContainer")
         .contains("Newsletter: Ja")
         .click()
-        .then(() => expectDisplaysOnlyCustomersWithIds(["2", "6", "7"]))
+        .then(() => expectDisplaysOnlyCustomersWithIds([2, 6, 7]))
         .get(".multiSelectItem_clear")
         .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("_id"));
+        .then(() => expectDisplaysAllCustomersSortedBy("id"));
     });
 
     it("finds customers by filtering for 'Newsletter: Ja'", () => {
@@ -216,7 +209,7 @@ context("Customers", () => {
         .get(".listContainer")
         .contains("Newsletter: Ja")
         .click()
-        .then(() => expectDisplaysOnlyCustomersWithIds(["2", "6", "7"]));
+        .then(() => expectDisplaysOnlyCustomersWithIds([2, 6, 7]));
     });
 
     it("finds customers by filtering for 'Beitritt vor > 1 Jahr'", () => {
@@ -225,7 +218,7 @@ context("Customers", () => {
         .get(".listContainer")
         .contains("Beitritt vor > 1 Jahr")
         .click()
-        .then(() => expectDisplaysOnlyCustomersWithIds(["1", "2", "3", "4", "5"]));
+        .then(() => expectDisplaysOnlyCustomersWithIds([1, 2, 3, 4, 5]));
     });
 
     it("finds customers by filtering for 'Beitritt vor < 1 Jahr'", () => {
@@ -234,7 +227,7 @@ context("Customers", () => {
         .get(".listContainer")
         .contains("Beitritt vor < 1 Jahr")
         .click()
-        .then(() => expectDisplaysOnlyCustomersWithIds(["6", "7", "8", "9", "10"]));
+        .then(() => expectDisplaysOnlyCustomersWithIds([6, 7, 8, 9, 10]));
     });
   });
 
@@ -273,7 +266,7 @@ context("Customers", () => {
           cy.get(".group row:nth-child(4) .selectContainer").should("contain.text", heard)
         );
 
-      cy.get("#id").should("have.value", customers[3]._id);
+      cy.get("#id").should("have.value", customers[3].id);
       cy.get("#remark").should("have.value", customers[3].remark);
     });
 
@@ -282,18 +275,18 @@ context("Customers", () => {
       cy.get("#firstname").clear().type("NewFirstname");
       cy.contains("Speichern").click();
       customers[3].firstname = "NewFirstname";
-      expectDisplaysAllCustomersSortedBy("_id");
+      expectDisplaysAllCustomersSortedBy("id");
     });
 
     it("Deletes customer", () => {
       cy.get("table").contains(customers[3].firstname).click({ force: true });
       cy.contains("Löschen").click();
-      expectDisplaysOnlyCustomersWithIds(["1", "2", "3", "5", "6", "7", "8", "9", "10"]);
+      expectDisplaysOnlyCustomersWithIds([1, 2, 3, 5, 6, 7, 8, 9, 10]);
     });
 
     it("Creates customer", () => {
       const newCustomer = {
-        _id: customers.length + 1 + "",
+        id: customers.length + 1 + "",
         lastname: "lastname",
         firstname: "firstname",
         registration_date: new Date(2020, 0, 1).getTime(),

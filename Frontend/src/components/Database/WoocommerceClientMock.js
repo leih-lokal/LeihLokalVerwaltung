@@ -1,4 +1,4 @@
-import items from "../../../spec/Database/DummyData/items";
+import items from "../../../spec/Database/testdata";
 
 class WoocommerceClientMock {
   constructor() {}
@@ -8,7 +8,7 @@ class WoocommerceClientMock {
     const item = items.find((item) => item.wc_id == wcItemId);
     if (wcItemId && item) {
       return {
-        stock_status: item.status_on_website,
+        stock_status: item.status,
         attributes: [
           {
             options: [item.deposit + " €"],
@@ -34,6 +34,10 @@ class WoocommerceClientMock {
   }
 
   async updateItem(item) {
+    await new Promise((r) => setTimeout(r, 1500));
+  }
+
+  async deleteItem(item) {
     await new Promise((r) => setTimeout(r, 1500));
   }
 
