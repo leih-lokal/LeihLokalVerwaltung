@@ -35,9 +35,12 @@
       })
         .then((data) => {
           searchInputRef?.focusSearchInput();
-          const rowsOnLastPage = data.count % rowsPerPage;
-          numberOfPages = (data.count - rowsOnLastPage) / rowsPerPage;
-          if (rowsOnLastPage > 0) numberOfPages += 1;
+          numberOfPagesPromise = data.count.then((count) => {
+            const rowsOnLastPage = count % rowsPerPage;
+            let numberOfPages = (count - rowsOnLastPage) / rowsPerPage;
+            if (rowsOnLastPage > 0) numberOfPages += 1;
+            return numberOfPages;
+          });
           return data;
         })
         .catch((error) => console.error(error));
@@ -77,11 +80,11 @@
 
   let searchInputRef;
   let loadData = () => new Promise(() => {});
+  let numberOfPagesPromise = new Promise(() => {});
   let searchTerm;
   let currentPage = 0;
   let rowHeight = 40;
   let innerHeight = window.innerHeight;
-  let numberOfPages = 1;
   let activeFilters = [];
   let sortByColKey;
   let sortReverse;
@@ -154,7 +157,8 @@
     </p>
   {/if}
 {/await}
-<Pagination {numberOfPages} bind:currentPage />
+
+<Pagination {numberOfPagesPromise} bind:currentPage />
 
 <AddNewItemButton
   on:click={() => {

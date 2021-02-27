@@ -1,8 +1,11 @@
 <script>
-  export let numberOfPages;
+  import { Diamonds } from "svelte-loading-spinners";
+  export let numberOfPagesPromise;
   export let currentPage;
 
   let pageButtons = [];
+  let numberOfPages = 1;
+  $: numberOfPagesPromise.then((n) => (numberOfPages = n));
 
   function calculatePageButtons(numberOfPages) {
     if (numberOfPages === 0) {
@@ -50,25 +53,33 @@
     }
   }}
 />
-{#if numberOfPages > 1}
+{#await numberOfPagesPromise}
   <div class="container">
     <div class="pagination">
-      <a href="#/" on:click|preventDefault={() => setPage(currentPage - 1)}>&laquo;</a>
-      {#each pageButtons as pageButton}
-        {#if typeof pageButton === "number"}
-          <a
-            href="#/"
-            on:click|preventDefault={() => setPage(pageButton)}
-            class={pageButton === currentPage ? "active" : ""}
-          >
-            {pageButton + 1}
-          </a>
-        {:else}<a href="#/" class="disabled" on:click|preventDefault>{pageButton}</a>{/if}
-      {/each}
-      <a href="#/" on:click|preventDefault={() => setPage(currentPage + 1)}>&raquo;</a>
+      <Diamonds size="100" color="#fc03a9" unit="px" />
     </div>
   </div>
-{/if}
+{:then numberOfPages}
+  {#if numberOfPages > 1}
+    <div class="container">
+      <div class="pagination">
+        <a href="#/" on:click|preventDefault={() => setPage(currentPage - 1)}>&laquo;</a>
+        {#each pageButtons as pageButton}
+          {#if typeof pageButton === "number"}
+            <a
+              href="#/"
+              on:click|preventDefault={() => setPage(pageButton)}
+              class={pageButton === currentPage ? "active" : ""}
+            >
+              {pageButton + 1}
+            </a>
+          {:else}<a href="#/" class="disabled" on:click|preventDefault>{pageButton}</a>{/if}
+        {/each}
+        <a href="#/" on:click|preventDefault={() => setPage(currentPage + 1)}>&raquo;</a>
+      </div>
+    </div>
+  {/if}
+{/await}
 
 <style>
   .container {

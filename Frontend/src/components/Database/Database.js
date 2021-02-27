@@ -105,35 +105,31 @@ class Database {
 
   async docsMatchingAllSelectorsSortedBy(options) {
     const { selectors, sortBy, rowsPerPage, skip } = options;
-    const cacheKey = JSON.stringify(options);
-    if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey);
-    } else {
-      // first get all ids to know the count (for pagination)
-      const allIds = await this.findCached({
-        sort: sortBy,
-        limit: 9999999,
-        fields: ["_id"],
-        selector: {
-          $and: selectors,
-        },
-      }).then((result) => result.docs.map((doc) => doc._id));
 
-      // then get all docs of current page
-      const docsForPage = await this.database
-        .allDocs({
-          include_docs: true,
-          keys: allIds.slice(skip, skip + rowsPerPage),
-        })
-        .then((result) => result.rows.map((entry) => entry.doc));
+    // get docs of page
+    const docsOfPage = await this.findCached({
+      sort: sortBy,
+      limit: rowsPerPage,
+      skip: skip,
+      selector: {
+        $and: selectors,
+      },
+    }).then((result) => result.docs);
 
-      const result = {
-        docs: docsForPage,
-        count: allIds.length,
-      };
-      this.cache.set(cacheKey, result);
-      return result;
-    }
+    // lazy count (for pagination)
+    const countPromise = this.findCached({
+      sort: sortBy,
+      limit: 99999999,
+      fields: ["_id"],
+      selector: {
+        $and: selectors,
+      },
+    }).then((result) => result.docs.length);
+
+    return {
+      docs: docsOfPage,
+      count: countPromise,
+    };
   }
 
   async query(options) {

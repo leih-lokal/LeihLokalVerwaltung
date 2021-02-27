@@ -5,11 +5,16 @@ import html from "svelte-htm";
 import { writable, get } from "svelte/store";
 
 describe("Table Pagination", () => {
-  const renderPagination = (numberOfPages, currentPage = 0) => {
+  const renderPagination = async (numberOfPages, currentPage = 0) => {
+    const numberOfPagesPromise = Promise.resolve(numberOfPages);
     const currentPageStore = writable(currentPage);
     const { container, getByText } = render(
-      html`<${Pagination} bind:currentPage=${currentPageStore} numberOfPages=${numberOfPages} />`
+      html`<${Pagination}
+        bind:currentPage=${currentPageStore}
+        numberOfPagesPromise=${numberOfPagesPromise}
+      />`
     );
+    await numberOfPagesPromise;
     return {
       buttonWithText: (text) => getByText(text),
       buttons: Array.from(container.querySelectorAll("a")),
@@ -42,7 +47,7 @@ describe("Table Pagination", () => {
   `(
     "displays buttons $expectedButtons for $pages pages when on page $currentPage",
     async ({ pages, currentPage, expectedButtons }) => {
-      const { buttons } = renderPagination(pages, currentPage);
+      const { buttons } = await renderPagination(pages, currentPage);
       if (pages <= 1) {
         expect(buttons.map((el) => el.textContent)).toMatchObject([]);
       } else {
@@ -53,7 +58,7 @@ describe("Table Pagination", () => {
 
   it("should disable left or right button when on first or last page", async () => {
     const NUMBER_OF_TEST_PAGES = 50;
-    const { clickButton, currentPageStore } = renderPagination(NUMBER_OF_TEST_PAGES);
+    const { clickButton, currentPageStore } = await renderPagination(NUMBER_OF_TEST_PAGES);
 
     for (let i = 0; i < NUMBER_OF_TEST_PAGES + 10; i++) await clickButton("«");
     expect(get(currentPageStore)).toBe(0);
@@ -64,7 +69,7 @@ describe("Table Pagination", () => {
 
   it("should change current page on arrow click", async () => {
     const NUMBER_OF_TEST_PAGES = 50;
-    const { clickButton, currentPageStore } = renderPagination(NUMBER_OF_TEST_PAGES);
+    const { clickButton, currentPageStore } = await renderPagination(NUMBER_OF_TEST_PAGES);
 
     expect(get(currentPageStore)).toBe(0);
     await clickButton("»");
@@ -76,7 +81,7 @@ describe("Table Pagination", () => {
   it("should change current page on button click", async () => {
     const NUMBER_OF_TEST_PAGES = 50;
 
-    const { clickButton, currentPageStore } = renderPagination(NUMBER_OF_TEST_PAGES);
+    const { clickButton, currentPageStore } = await renderPagination(NUMBER_OF_TEST_PAGES);
 
     // click button for last page
     await clickButton(NUMBER_OF_TEST_PAGES + "");
