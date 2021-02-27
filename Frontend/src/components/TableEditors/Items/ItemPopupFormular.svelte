@@ -148,7 +148,6 @@
         disabled: docIsDeleted,
         label: "Anzahl Teile",
         group: "Eigenschaften",
-        inputType: "number",
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "parts" },
       },
