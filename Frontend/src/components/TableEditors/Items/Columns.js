@@ -67,6 +67,7 @@ export default [
       if (value === "deleted") return "gelöscht";
       if (value === "instock") return "verfügbar";
       if (value === "outofstock") return "verliehen";
+      if (value === "reserved") return "reserviert";
       if (value === "onbackorder") return "nicht verleihbar";
     },
   },
