@@ -248,7 +248,7 @@
   }}
   on:save={async (event) => {
     close();
-    const doc = $keyValueStore["currentDoc"];
+    let doc = $keyValueStore["currentDoc"];
     Object.keys(doc).forEach((key) => {
       const colForKey = columns.find((col) => col.key === key);
       if (colForKey && colForKey.numeric && doc[key] === "") {
@@ -263,6 +263,9 @@
         notifier.danger("Gegenstand konnte nicht gespeichert werden!", 6000);
         console.error(error);
       });
+
+    // get _id
+    doc = await Database.fetchItemById(doc.id);
 
     if (createNew) {
       woocommerceClient
