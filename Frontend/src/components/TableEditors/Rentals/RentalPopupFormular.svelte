@@ -271,7 +271,6 @@
         id: "remark",
         label: "Bemerkung",
         group: "Mitarbeiter",
-        hidden: () => createNew,
         type: InputTypes.TEXT,
         bindTo: {
           keyValueStoreKey: "currentDoc",
