@@ -13,6 +13,7 @@ export default [
     key: "item_id",
     numeric: true,
     search: "from_beginning",
+    display: (value) => String(value).padStart(4, "0"),
   },
   {
     title: "Gegenstand Name",

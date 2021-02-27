@@ -21,6 +21,8 @@ const expectedDisplayValue = (rental, column) => {
       const date = new Date(expectedValue);
       expectedValue = dateToString(date);
     }
+  } else if (column.key === "item_id") {
+    expectedValue = String(expectedValue).padStart(4, "0");
   }
   if (expectedValue === 0) {
     return "0";
