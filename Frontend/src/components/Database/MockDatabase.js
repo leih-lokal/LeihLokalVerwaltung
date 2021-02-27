@@ -128,7 +128,7 @@ class MockDatabase {
       rowsPerPage * currentPage + rowsPerPage
     );
 
-    return { docs: paginatedData, count: dataMatchingFilter.length };
+    return { docs: paginatedData, count: Promise.resolve(dataMatchingFilter.length) };
   }
 
   async updateDoc(updatedDoc) {
