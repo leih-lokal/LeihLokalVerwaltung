@@ -6,7 +6,7 @@
   import { millisAtStartOfToday, millisAtStartOfDay } from "../../../utils/utils";
   import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   import columns from "./Columns";
   import WoocommerceClient from "ENV_WC_CLIENT";
 
@@ -35,6 +35,15 @@
       remark: "",
     });
   }
+
+  onMount(() => {
+    if ($keyValueStore["currentDoc"].item_id) {
+      Database.fetchItemById($keyValueStore["currentDoc"].item_id).then(
+        hideToggleStatusOnWebsiteIfExistsMoreThanOnce
+      );
+    }
+  });
+
   keyValueStore.setValue("options", {
     updateStatusOnWebsite: true,
     disableToggleStatusOnWebsite: false,
@@ -72,11 +81,10 @@
       .withDocType("item")
       .build();
 
-  const setItem = (selectedItem) => {
+  const hideToggleStatusOnWebsiteIfExistsMoreThanOnce = (selectedItem) => {
     if (selectedItem.exists_more_than_once) {
       keyValueStore.setValue("options", {
         ...$keyValueStore["options"],
-        updateStatusOnWebsite: false,
         disableToggleStatusOnWebsite: true,
       });
     } else {
@@ -85,6 +93,10 @@
         disableToggleStatusOnWebsite: false,
       });
     }
+  };
+
+  const setItem = (selectedItem) => {
+    hideToggleStatusOnWebsiteIfExistsMoreThanOnce(selectedItem);
     keyValueStore.setValue("currentDoc", {
       ...$keyValueStore["currentDoc"],
       item_id: selectedItem.id,
@@ -299,9 +311,9 @@
         console.error(error);
         itemIsUpdatable = false;
       });
+      doc.image = item.image;
 
-      if (itemIsUpdatable) {
-        doc.image = item.image;
+      if (itemIsUpdatable && !item.exists_more_than_once) {
         if ($keyValueStore["options"]["updateStatusOnWebsite"]) {
           if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
             item.status = "instock";
