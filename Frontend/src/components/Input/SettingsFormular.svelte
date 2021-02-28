@@ -1,5 +1,6 @@
 <script>
-  import { onMount, onDestroy, getContext } from "svelte";
+  import { onMount, onDestroy } from "svelte";
+  import Database from "../Database/ENV_DATABASE";
 
   let defaultSettings = {
     wcUrl: "https://www.buergerstiftung-karlsruhe.de/wp-json/wc/v3",
@@ -38,11 +39,11 @@
       localStorage.getItem("couchdbPort") !== settings.couchdbPort ||
       localStorage.getItem("couchdbUser") !== settings.couchdbUser ||
       localStorage.getItem("couchdbPassword") !== settings.couchdbPassword;
-    Object.keys(settings).map((key, i) => {
+    Object.keys(settings).map((key) => {
       localStorage.setItem(key, settings[key]);
     });
     if (dbSettingsChanged) {
-      getContext("getDatabase")().connect();
+      Database.connect();
     }
   };
 
