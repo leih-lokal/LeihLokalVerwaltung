@@ -82,6 +82,7 @@
         group: "Bezeichnung",
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "brand" },
+        required: false,
       },
       {
         id: "itype",
@@ -90,6 +91,7 @@
         group: "Bezeichnung",
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "itype" },
+        required: false,
       },
 
       {
@@ -141,6 +143,7 @@
         isMulti: true,
         isClearable: true,
         placeholder: "Synonyme anlegen",
+        required: false,
       },
 
       {
@@ -150,6 +153,7 @@
         group: "Eigenschaften",
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "parts" },
+        required: false,
       },
 
       {
@@ -159,6 +163,7 @@
         group: "Bild",
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "image" },
+        required: false,
       },
 
       {
@@ -218,6 +223,7 @@
         bindTo: { keyValueStoreKey: "currentDoc", attr: "highlight" },
         isClearable: true,
         isMulti: false,
+        required: false,
       },
     ]);
 </script>
@@ -245,6 +251,9 @@
           console.error(error);
         });
     }
+  }}
+  on:error={(event) => {
+    notifier.danger("Fehler beim Anlegen des Gegenstands: " + event.detail.emptyInputLabels.join(", ") + " sind leer", 6000);
   }}
   on:save={async (event) => {
     close();

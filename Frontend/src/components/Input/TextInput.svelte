@@ -8,6 +8,7 @@
   export let disabled = false;
   export let multiline = false;
   export let inputType = false;
+  export let required = false;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -21,6 +22,7 @@
       name={id}
       {readonly}
       {disabled}
+      {required}
       on:input={(event) => dispatch("change", event.target.value)}
       rows="4"
     />
@@ -31,6 +33,7 @@
       bind:value
       {id}
       name={id}
+      {required}
       {readonly}
       {disabled}
       on:keydown={(event) => (event.key === "Enter" ? event.preventDefault() : event)}
