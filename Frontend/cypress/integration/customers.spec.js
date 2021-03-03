@@ -137,17 +137,17 @@ context("Customers", () => {
 
     it("sorts customers by street", () => {
       cy.get("thead")
-        .contains("Strasse")
+        .contains("Straße")
         .click()
         .then(() => expectDisplaysAllCustomersSortedBy("street"));
     });
 
     it("sorts customers by street reverse", () => {
       cy.get("thead")
-        .contains("Strasse")
+        .contains("Straße")
         .click()
         .get("thead")
-        .contains("Strasse")
+        .contains("Straße")
         .click()
         .then(() => expectDisplaysAllCustomersSortedBy("street", true));
     });

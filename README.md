@@ -33,6 +33,6 @@ or the real build
 
     cd Frontend && npm run build && npm run start
 
-or the dev build
+or auto rebuild on changes
 
     cd Frontend && npm run dev
