@@ -16,7 +16,7 @@ export default [
     key: "firstname",
   },
   {
-    title: "Strasse",
+    title: "Straße",
     key: "street",
     search: "exclude",
   },

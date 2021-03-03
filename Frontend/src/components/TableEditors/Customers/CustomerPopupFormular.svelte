@@ -61,7 +61,7 @@
       },
       {
         id: "street",
-        label: "Strasse",
+        label: "Straße",
         group: "Adresse",
         type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "street" },
