@@ -402,43 +402,5 @@ context("rentals", () => {
           }
         });
     });
-
-    it("Creates rental with default values", () => {
-      const defaultRental = {
-        item_id: 0,
-        item_name: "",
-        rented_on: millisAtStartOfDay(TODAY),
-        to_return_on: millisAtStartOfDay(IN_ONE_WEEK),
-        passing_out_employee: "",
-        receiving_employee: "",
-        customer_id: 0,
-        returned_on: 0,
-        extended_on: 0,
-        customer_name: "",
-        deposit: 0,
-        deposit_returned: 0,
-        image: "",
-        remark: "",
-        type: "rental",
-      };
-
-      cy.contains("+").click();
-
-      cy.contains("Speichern").click();
-      cy.contains("Leihvorgang gespeichert")
-        .then(() =>
-          cy.wrap(
-            Database.fetchRentalByItemAndCustomerIds(
-              defaultRental.item_id,
-              defaultRental.customer_id
-            )
-          )
-        )
-        .then((rental) => {
-          for (let key of Object.keys(defaultRental)) {
-            expect(rental[key]).to.equal(defaultRental[key]);
-          }
-        });
-    });
   });
 });
