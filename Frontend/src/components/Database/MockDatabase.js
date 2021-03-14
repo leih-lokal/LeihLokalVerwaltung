@@ -63,6 +63,11 @@ class MockDatabase {
     return docs.length > 0 ? docs[0] : {};
   }
 
+  async itemWithIdExists(id) {
+    let docs = this.getData().filter((doc) => doc.type === "item" && doc.id === id);
+    return docs.length > 0;
+  }
+
   async fetchCustomerById(id) {
     let docs = this.getData().filter((doc) => doc.type === "customer" && doc.id === id);
     return docs.length > 0 ? docs[0] : {};
