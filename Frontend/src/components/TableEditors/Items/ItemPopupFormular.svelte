@@ -248,7 +248,7 @@
   }}
   on:save={async (event) => {
     let doc = $keyValueStore["currentDoc"];
-    if (await Database.itemWithIdExists(doc.id)) {
+    if (createNew && (await Database.itemWithIdExists(doc.id))) {
       notifier.danger("Ein Gegenstand mit dieser Nummer existiert bereits!", 6000);
       return;
     }
