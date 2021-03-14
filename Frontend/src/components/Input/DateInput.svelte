@@ -29,7 +29,10 @@
     ["November", "Nov"],
     ["Dezember", "Dez"],
   ];
-  const TIMEZONE_OFFSET_MS = new Date().getTimezoneOffset() * 60000;
+
+  const getTimeZoneOffsetMs = (millis = new Date().getTime()) => {
+    return new Date(millis).getTimezoneOffset() * 60000;
+  };
 
   function inTwoMonths() {
     const date = new Date();
@@ -58,7 +61,7 @@
     selected={timeMillis === 0 ? new Date() : new Date(timeMillis)}
     on:dateSelected={(event) => {
       const date = event.detail.date;
-      const newTimeMillis = date.getTime() - TIMEZONE_OFFSET_MS;
+      const newTimeMillis = date.getTime() - getTimeZoneOffsetMs(date.getTime());
       if (millisAtStartOfDay(timeMillis) !== millisAtStartOfDay(newTimeMillis)) {
         timeMillis = millisAtStartOfDay(newTimeMillis);
         dispatch("change", date);
