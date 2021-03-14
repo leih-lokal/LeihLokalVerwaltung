@@ -247,8 +247,12 @@
     }
   }}
   on:save={async (event) => {
-    close();
     let doc = $keyValueStore["currentDoc"];
+    if (await Database.itemWithIdExists(doc.id)) {
+      notifier.danger("Ein Gegenstand mit dieser Nummer existiert bereits!", 6000);
+      return;
+    }
+    close();
     Object.keys(doc).forEach((key) => {
       const colForKey = columns.find((col) => col.key === key);
       if (colForKey && colForKey.numeric && doc[key] === "") {

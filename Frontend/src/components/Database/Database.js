@@ -66,6 +66,12 @@ class Database {
     }).then((result) => (result.docs && result.docs.length > 0 ? result.docs[0] : {}));
   }
 
+  itemWithIdExists(id) {
+    return this.findCached({
+      selector: this.selectorBuilder().withDocType("item").withField("id").equals(id).build(),
+    }).then((result) => result.docs && result.docs.length > 0);
+  }
+
   fetchCustomerById(id) {
     return this.findCached({
       selector: this.selectorBuilder().withDocType("customer").withField("id").equals(id).build(),
