@@ -45,6 +45,16 @@
         id: id,
       })
     );
+  } else {
+    async function countRentals() {
+      const selectors = [
+        {
+          item_id: $keyValueStore["currentDoc"]["id"],
+        },
+      ];
+      return await Database.countDocs(selectors);
+    }
+    countRentals().then((data) => ($keyValueStore["currentDoc"]["number_of_rentals"] = data));
   }
 
   const docIsDeleted = $keyValueStore["currentDoc"].status === "deleted";
@@ -120,6 +130,18 @@
         group: "Eigenschaften",
         type: InputTypes.DATE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "added" },
+      },
+      {
+        id: "number_of_rentals",
+        disabled: createNew,
+        label: "Anzahl Ausleihen",
+        group: "Eigenschaften",
+        type: InputTypes.TEXT,
+        readonly: true,
+        bindTo: {
+          keyValueStoreKey: "currentDoc",
+          attr: "number_of_rentals",
+        },
       },
       {
         id: "description",

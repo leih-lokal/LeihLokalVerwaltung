@@ -38,6 +38,16 @@
         id: id,
       })
     );
+  } else {
+    async function countRentals() {
+      const selectors = [
+        {
+          customer_id: $keyValueStore["currentDoc"]["id"],
+        },
+      ];
+      return await Database.countDocs(selectors);
+    }
+    countRentals().then((data) => ($keyValueStore["currentDoc"]["number_of_rentals"] = data));
   }
 
   const popupFormularConfiguration = new PopupFormularConfiguration()
@@ -183,6 +193,18 @@
         group: "Sonstiges",
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "remark" },
+      },
+      {
+        id: "number_of_rentals",
+        disabled: createNew,
+        label: "Gegenstände geliehen",
+        group: "Sonstiges",
+        type: InputTypes.TEXT,
+        readonly: true,
+        bindTo: {
+          keyValueStoreKey: "currentDoc",
+          attr: "number_of_rentals",
+        },
       },
       {
         id: "highlight",

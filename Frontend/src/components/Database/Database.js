@@ -109,6 +109,18 @@ class Database {
     }
   }
 
+  async countDocs(selectors) {
+    console.log(selectors)
+    const countPromise = this.findCached({
+      limit: 99999999,
+      fields: ["_id"],
+      selector: {
+        $and: selectors,
+      },
+    }).then((result) => result.docs.length);
+    return countPromise
+  }
+
   async docsMatchingAllSelectorsSortedBy(options) {
     const { selectors, sortBy, rowsPerPage, skip } = options;
 
