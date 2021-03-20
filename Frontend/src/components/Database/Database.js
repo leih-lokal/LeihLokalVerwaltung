@@ -42,12 +42,14 @@ class Database {
     this.cache.reset();
     return this.fetchById(updatedDoc._id).then((doc) => {
       updatedDoc._rev = doc._rev;
+      updatedDoc["last_update"] = new Date().getTime();
       return this.database.put(updatedDoc);
     });
   }
 
   createDoc(doc) {
     this.cache.reset();
+    doc["last_update"] = new Date().getTime();
     return this.database.post(doc);
   }
 
