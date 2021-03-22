@@ -362,41 +362,5 @@ context("items", () => {
           expect(item.status).to.equal(newItem.status);
         });
     });
-
-    it("Creates item with default values", () => {
-      const defaultItem = {
-        added: millisAtStartOfToday(),
-        brand: "",
-        category: "",
-        deposit: 0,
-        description: "",
-        exists_more_than_once: false,
-        highlight: "",
-        id: 16,
-        image: "",
-        itype: "",
-        manual: "",
-        name: "",
-        package: "",
-        parts: "",
-        status: "instock",
-        synonyms: "",
-        type: "item",
-        wc_id: "",
-        wc_url: "",
-      };
-
-      cy.contains("+").click();
-
-      cy.contains("Speichern")
-        .click()
-        .then(() => cy.wrap(Database.fetchItemById(defaultItem.id)))
-        .then((item) => {
-          for (let key of Object.keys(defaultItem)) {
-            expect(item[key]).to.equal(defaultItem[key]);
-          }
-          expect(item._id).to.have.length.of.at.least(1);
-        });
-    });
   });
 });

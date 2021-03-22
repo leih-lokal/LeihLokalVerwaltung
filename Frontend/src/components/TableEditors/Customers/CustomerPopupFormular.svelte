@@ -167,6 +167,7 @@
         isCreatable: true,
         isMulti: true,
         isClearable: true,
+        required: false,
       },
       {
         id: "id",
@@ -183,6 +184,7 @@
         group: "Sonstiges",
         type: InputTypes.TEXT,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "remark" },
+        required: false,
       },
       {
         id: "highlight",
@@ -211,6 +213,7 @@
         bindTo: { keyValueStoreKey: "currentDoc", attr: "highlight" },
         isClearable: true,
         isMulti: false,
+        required: false,
       },
     ]);
 </script>
@@ -229,6 +232,9 @@
           notifier.danger("Kunde konnte nicht gelöscht werden!", 6000);
         });
     }
+  }}
+  on:error={(event) => {
+    notifier.danger("Fehler beim Anlegen des Kunden: " + event.detail.emptyInputLabels.join(", ") + " sind leer", 6000);
   }}
   on:save={(event) => {
     close();

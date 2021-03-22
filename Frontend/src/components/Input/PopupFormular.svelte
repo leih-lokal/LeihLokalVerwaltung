@@ -32,7 +32,8 @@
             .filter((input) => input.group === group) as input}
             <row>
               <div class="col-label">
-                <label for={input.id}>{input.label}</label>
+                <label for={input.id}>{input.label}
+                  <span class="required-star">{input.required ?? true ? "*" : ""}</span></label>
               </div>
               <div class="col-input">
                 {#if input.type === InputTypes.TEXT}
@@ -46,6 +47,7 @@
                     on:change={(event) => {
                       if (input.onChange) input.onChange(event.detail);
                     }}
+                    required={(input.required ?? true) && !input.disabled}
                   />
                 {:else if input.type === InputTypes.AUTOCOMPLETE}
                   <AutocompleteInput
@@ -80,7 +82,7 @@
                     on:change={(event) => {
                       if (input.onChange) input.onChange(event.detail);
                     }}
-                  />
+                 />
                 {:else if input.type === InputTypes.SELECTION}
                   <SelectInput
                     bind:selectedValuesString={$keyValueStore[input.bindTo.keyValueStoreKey][
@@ -92,7 +94,7 @@
                     isCreatable={input.isCreatable}
                     isClearable={input.isClearable}
                     placeholder={input.placeholder}
-                  />
+                 />
                 {/if}
               </div>
             </row>
@@ -124,7 +126,18 @@
               );
             }
           });
-        dispatch("save");
+          let emptyInputs = popupFormularConfiguration.inputs.filter((input) => {
+            const value = String(
+              $keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]
+            ).trim();
+            return value.length === 0 && input.required !== false;
+          });
+          if (emptyInputs.length > 0){
+            console.log(emptyInputs);
+            dispatch("error", {"emptyInputs": emptyInputs, "emptyInputLabels": emptyInputs.map((input) => input.label)});
+          } else {
+            dispatch("save");
+          }
       }}>Speichern</button
     >
   </div>
@@ -193,5 +206,9 @@
 
   .button-delete {
     color: darkred;
+  }
+
+  .required-star {
+    color: grey;
   }
 </style>

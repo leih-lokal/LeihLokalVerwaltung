@@ -161,6 +161,7 @@
         group: "Zeitraum",
         type: InputTypes.DATE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "rented_on" },
+        required: false,
       },
       {
         id: "extended_on",
@@ -170,6 +171,7 @@
         quickset: { 0: "Heute" },
         type: InputTypes.DATE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "extended_on" },
+        required: false,
       },
       {
         id: "to_return_on",
@@ -181,6 +183,7 @@
           keyValueStoreKey: "currentDoc",
           attr: "to_return_on",
         },
+        required: false,
       },
       {
         id: "returned_on",
@@ -190,6 +193,7 @@
         quickset: { 0: "Heute" },
         type: InputTypes.DATE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "returned_on" },
+        required: false,
       },
 
       {
@@ -256,6 +260,7 @@
           keyValueStoreKey: "currentDoc",
           attr: "deposit_returned",
         },
+        required: false,
       },
 
       {
@@ -278,6 +283,7 @@
           keyValueStoreKey: "currentDoc",
           attr: "receiving_employee",
         },
+        required: false,
       },
       {
         id: "remark",
@@ -288,12 +294,16 @@
           keyValueStoreKey: "currentDoc",
           attr: "remark",
         },
+        required: false,
       },
     ]);
 </script>
 
 <PopupFormular
   {popupFormularConfiguration}
+  on:error={(event) => {
+    notifier.danger("Fehler beim Anlegen des Leihvorgangs: " + event.detail.emptyInputLabels.join(", ") + " sind leer", 6000);
+  }}
   on:save={async (event) => {
     close();
     const doc = $keyValueStore["currentDoc"];
