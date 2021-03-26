@@ -179,6 +179,10 @@ class MockDatabase {
       });
   }
 
+  fetchAllDocsBySelector(selector, fields) {
+    return this.fetchDocsBySelector(selector, fields);
+  }
+
   getData() {
     if (localStorage.hasOwnProperty("data")) {
       return JSON.parse(localStorage.getItem("data"));
