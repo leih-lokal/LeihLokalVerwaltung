@@ -172,6 +172,16 @@ class Database {
     return result;
   }
 
+  fetchAllDocsBySelector(selector, fields) {
+    return this.database
+      .find({
+        limit: 100000,
+        fields: fields,
+        selector: selector,
+      })
+      .then((result) => result.docs);
+  }
+
   fetchDocsBySelector(selector, fields) {
     return this.findCached({
       limit: 10,
