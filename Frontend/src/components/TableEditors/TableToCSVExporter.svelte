@@ -43,8 +43,9 @@
 
         // remove csv delimiters and line breaks from data
         value = String(value).replaceAll(delimiter, "");
-        value = String(value).replaceAll("\r", "");
-        value = String(value).replaceAll("\n", "");
+        value = String(value).replaceAll("\r", " ");
+        value = String(value).replaceAll("\n", " ");
+        value = String(value).replaceAll("  ", " ");
 
         csvValues.push(value);
       }
