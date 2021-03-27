@@ -2,21 +2,25 @@
   import { link } from "svelte-spa-router";
   import active from "svelte-spa-router/active";
   import SettingsButton from "../Input/SettingsButton.svelte";
+  import TableToCSVExporter from "../TableEditors/TableToCSVExporter.svelte";
 </script>
 
 <nav>
   <ul>
-    <li>
+    <li class="left">
       <a use:active={"/customers"} href="/customers" use:link> Kunden </a>
     </li>
-    <li>
+    <li class="left">
       <a use:active={"/items"} href="/items" use:link> Gegenstände </a>
     </li>
-    <li>
+    <li class="left">
       <a use:active={"/rentals"} href="/rentals" use:link> Leihvorgänge </a>
     </li>
-    <li>
+    <li class="right">
       <SettingsButton />
+    </li>
+    <li class="right">
+      <TableToCSVExporter />
     </li>
   </ul>
 </nav>
@@ -36,9 +40,11 @@
     font-size: 30px;
   }
 
-  li:last-child {
-    position: absolute;
-    right: 0;
+  li.left {
+    float: left;
+  }
+  li.right {
+    float: right;
   }
 
   /* Style for "active" links; need to mark this :global because the router adds the class directly */
@@ -61,6 +67,6 @@
   ul {
     margin: 0;
     padding: 0;
-    display: flex;
+    list-style: none;
   }
 </style>
