@@ -1,5 +1,5 @@
 <script>
-  import { clickOutside } from "../Input/clickOutside.js";
+  import { clickOutside } from "../Input/ClickOutside.js";
 
   export let menuItems = [];
 
