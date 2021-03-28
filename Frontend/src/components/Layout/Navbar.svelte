@@ -1,8 +1,10 @@
 <script>
-  import { link } from "svelte-spa-router";
+  import { link, replace } from "svelte-spa-router";
   import active from "svelte-spa-router/active";
-  import SettingsButton from "../Input/SettingsButton.svelte";
   import TableToCSVExporter from "../TableEditors/TableToCSVExporter.svelte";
+  import DropDownMenu from "./DropDownMenu.svelte";
+
+  let tableToCSVExporterRef;
 </script>
 
 <nav>
@@ -17,10 +19,19 @@
       <a use:active={"/rentals"} href="/rentals" use:link> Leihvorgänge </a>
     </li>
     <li class="right">
-      <SettingsButton />
-    </li>
-    <li class="right">
-      <TableToCSVExporter />
+      <TableToCSVExporter bind:this={tableToCSVExporterRef} />
+      <DropDownMenu
+        menuItems={[
+          {
+            title: "Tabelle -> CSV",
+            onClick: () => tableToCSVExporterRef.exportCSVFile(),
+          },
+          {
+            title: "Einstellungen",
+            onClick: () => replace("/settings"),
+          },
+        ]}
+      />
     </li>
   </ul>
 </nav>
@@ -32,6 +43,7 @@
     width: 100vw;
     height: 50px;
     background-color: rgb(0, 140, 186);
+    z-index: 1;
   }
 
   li {
@@ -45,6 +57,7 @@
   }
   li.right {
     float: right;
+    margin-right: 10px;
   }
 
   /* Style for "active" links; need to mark this :global because the router adds the class directly */
@@ -53,7 +66,7 @@
     color: rgb(255, 208, 0) !important;
   }
 
-  li:hover {
+  .left:hover {
     transition: 0.25s all;
     transform: scale(1.05);
   }
