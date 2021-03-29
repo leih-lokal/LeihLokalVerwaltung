@@ -17,8 +17,8 @@ jobs:
         working-directory: Frontend
         run: npm ci && npm test
 
-      - name: Run integration tests
+      - name: Start selenoid
         uses: Xotabu4/selenoid-github-action@v1
-        with:
-          working-directory: "./Frontend"
-          command: npm run integration_test
+      - name: Run integration tests
+        working-directory: Frontend
+        run: npm run integration_test
