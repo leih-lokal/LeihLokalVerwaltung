@@ -8,7 +8,13 @@ describe("Navigation", function () {
   const getElementByText = (text) => driver.findElement(By.linkText(text));
 
   before(async () => {
-    driver = new Builder().forBrowser("chrome").build();
+    driver = new Builder()
+      .usingServer("http://localhost:4444/wd/hub")
+      .withCapabilities({
+        maxInstances: 5, // 5 parallel threads
+        browserName: "chrome",
+      })
+      .build();
     await driver.manage().setTimeouts({ implicit: TIMEOUT, pageLoad: TIMEOUT, script: TIMEOUT });
   });
 

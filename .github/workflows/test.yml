@@ -17,23 +17,8 @@ jobs:
         working-directory: Frontend
         run: npm ci && npm test
 
-      - name: Integration Test
-        uses: cypress-io/github-action@v2
+      - name: Run integration tests
+        uses: Xotabu4/selenoid-github-action@v1
         with:
           working-directory: "./Frontend"
-          command: npm run cy:run
-          browser: chrome
-
-      - name: Upload Screenshots
-        uses: actions/upload-artifact@v1
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: Frontend/cypress/screenshots
-
-      - name: Upload Videos
-        uses: actions/upload-artifact@v1
-        if: always()
-        with:
-          name: cypress-videos
-          path: Frontend/cypress/videos
+          command: npm run integration_test
