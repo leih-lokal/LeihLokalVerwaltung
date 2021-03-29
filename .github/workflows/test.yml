@@ -18,7 +18,7 @@ jobs:
         run: npm ci && npm test
 
       - name: Start selenoid
-        uses: Xotabu4/selenoid-github-action@v1
+        uses: ajinx/selenoid@v2
       - name: Run integration tests
         working-directory: Frontend
         run: npm run integration_test
