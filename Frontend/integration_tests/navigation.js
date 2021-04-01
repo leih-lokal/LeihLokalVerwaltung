@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const { By, Builder, webdriver, Capabilities } = require("selenium-webdriver");
+const { By, Builder } = require("selenium-webdriver");
 const { Options } = require("selenium-webdriver/chrome");
 
 const TIMEOUT = 30000; // 30s
@@ -10,21 +10,7 @@ describe("Navigation", function () {
   const getElementByText = (text) => driver.findElement(By.linkText(text));
 
   before(async () => {
-    var chromeCapabilities = Capabilities.chrome();
-    var chromeOptions = {
-      args: ["--headless"],
-    };
-    chromeCapabilities.set("chromeOptions", chromeOptions);
-
-    driver = new Builder()
-      .forBrowser("chrome")
-      //.usingServer("http://localhost:4444/wd/hub")
-      .withCapabilities({
-        maxInstances: 5, // 5 parallel threads
-        browserName: "chrome",
-      })
-      .setChromeOptions(new Options().headless())
-      .build();
+    driver = new Builder().forBrowser("chrome").setChromeOptions(new Options().headless()).build();
     await driver.manage().setTimeouts({ implicit: TIMEOUT, pageLoad: TIMEOUT, script: TIMEOUT });
   });
 
