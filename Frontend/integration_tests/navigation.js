@@ -10,7 +10,11 @@ describe("Navigation", function () {
   const getElementByText = (text) => driver.findElement(By.linkText(text));
 
   before(async () => {
-    driver = new Builder().forBrowser("chrome").setChromeOptions(new Options().headless()).build();
+    driver = new Builder()
+      .forBrowser("chrome")
+      // run headless only when executed by github actions
+      .setChromeOptions(process.env.CI && new Options().headless())
+      .build();
     await driver.manage().setTimeouts({ implicit: TIMEOUT, pageLoad: TIMEOUT, script: TIMEOUT });
   });
 
