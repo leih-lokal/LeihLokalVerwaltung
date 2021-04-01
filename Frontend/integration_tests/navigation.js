@@ -9,7 +9,7 @@ describe("Navigation", function () {
 
   before(async () => {
     driver = new Builder()
-      .usingServer("http://localhost:4444/wd/hub")
+      //.usingServer("http://localhost:4444/wd/hub")
       .withCapabilities({
         maxInstances: 5, // 5 parallel threads
         browserName: "chrome",
@@ -19,7 +19,7 @@ describe("Navigation", function () {
   });
 
   it("redirects to /rentals", async () => {
-    await driver.get("http://127.0.0.1:5000");
+    await driver.get("http://localhost:5000");
     expect(await driver.getCurrentUrl()).to.equal("http://localhost:5000/#/rentals");
   });
 
