@@ -7,7 +7,7 @@
     "build:demo": "cross-env NODE_ENV=test rollup -c",
     "build:dev": "rollup -c",
     "build:clean": "rm -rf public/*",
-    "build:all": "npm run build:clean && npm run build && OUTPUT_DIR=public/test npm run build:test && OUTPUT_DIR=public/demo npm run build:demo",
+    "build:all": "npm run build:clean && npm run build && OUTPUT_DIR=public/demo npm run build:demo",
     "dev": "cross-env NODE_ENV=test rollup -c -w",
     "dev:db": "rollup -c -w",
     "demo": "npm run build:demo && npm run start",
