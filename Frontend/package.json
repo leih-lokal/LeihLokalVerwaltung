@@ -2,19 +2,20 @@
   "name": "leihlokal_verwaltung",
   "version": "1.0.0",
   "scripts": {
-    "build": "cross-env rollup -c",
+    "build": "rollup -c",
     "build:test": "cross-env NODE_ENV=test rollup -c",
     "build:demo": "cross-env NODE_ENV=test rollup -c",
-    "build:dev": "cross-env rollup -c",
-    "build:all": "npm run-script build:demo && rm -rf public/demo && cp -r public demo/ && mv demo public/demo && npm run-script build",
+    "build:dev": "rollup -c",
+    "build:clean": "rm -rf public/*",
+    "build:all": "npm run build:clean && npm run build && OUTPUT_DIR=public/test npm run build:test && OUTPUT_DIR=public/demo npm run build:demo",
     "dev": "cross-env NODE_ENV=test rollup -c -w",
-    "dev:db": "cross-env rollup -c -w",
-    "demo": "npm run-script build:demo && npm run start",
+    "dev:db": "rollup -c -w",
+    "demo": "npm run build:demo && npm run start",
     "start": "sirv public --port 5000",
     "test": "jest",
     "test:watch": "npm run test -- --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
-    "integration_test": "concurrently -k --success first \"npm run demo > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && node ./node_modules/mocha/bin/mocha ./integration_tests)\""
+    "integration_test": "concurrently -k --success first \"npm run demo > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && sleep 3 && node ./node_modules/mocha/bin/mocha --timeout 15000 ./integration_tests)\""
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
