@@ -17,8 +17,8 @@ jobs:
         working-directory: Frontend
         run: npm ci && npm test
 
-      - name: Starting Selenoid Server (aerokube/selenoid) within actions
-        uses: ajinx/selenoid@2.0
+      - name: Install Chrome
+        run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb
 
       - name: Run integration tests
         working-directory: Frontend
