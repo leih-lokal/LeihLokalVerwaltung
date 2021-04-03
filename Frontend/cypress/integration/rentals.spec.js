@@ -1,7 +1,12 @@
 /// <reference types="cypress" />
 import testdata from "../../spec/Database/testdata";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
-import { saveParseTimestampToHumanReadableString, clearFilter, isAtSameDay } from "./utils";
+import {
+  saveParseTimestampToHumanReadableString,
+  clearFilter,
+  isAtSameDay,
+  dateToString,
+} from "./utils";
 import COLORS from "../../src/components/Input/ColorDefs";
 import Database from "../../src/components/Database/MockDatabase";
 import { millisAtStartOfDay } from "../../src/utils/utils";
@@ -282,7 +287,7 @@ context("rentals", () => {
 
     const expectedDateInputValue = (millis) => {
       if (millis === 0) return "-";
-      else return saveParseTimestampToHumanReadableString(new Date(millis), TODAY);
+      else return dateToString(new Date(millis));
     };
 
     it("Displays correct data in Edit Popup", () => {
