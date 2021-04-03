@@ -1,8 +1,7 @@
 Frontend/coverage
 Frontend/cypress/videos
 Frontend/cypress/screenshots
-Frontend/public/build
-Frontend/public/demo
 .DS_Store
 venv
 .idea
+Frontend/public
