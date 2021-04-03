@@ -25,7 +25,7 @@ function saveParseTimestampToHumanReadableString(millis) {
     }
   }
   else if (dayDiff>=-7 & dayDiff <0){
-    return `Vor ${Math.abs(dayDiff)}  Tagen`;
+    return `Vor ${Math.abs(dayDiff)} Tagen`;
   }
   else if (dayDiff<=7 & dayDiff >0){
     return `In ${dayDiff} Tagen`;
