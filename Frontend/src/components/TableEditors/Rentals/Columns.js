@@ -1,4 +1,4 @@
-import { saveParseTimestampToString, saveParseTimestampToHumanReadableString } from "../../../utils/utils.js";
+import { saveParseTimestampToHumanReadableString } from "../../../utils/utils.js";
 
 export default [
   {
@@ -68,7 +68,7 @@ export default [
     title: "Zurückgegeben",
     key: "returned_on",
     search: "exclude",
-    display: (value) => saveParseTimestampToString(value),
+    display: (value) => saveParseTimestampToHumanReadableString(value),
   },
   {
     title: "Mitarbeiter",
