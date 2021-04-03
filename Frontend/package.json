@@ -15,7 +15,7 @@
     "test": "jest",
     "test:watch": "npm run test -- --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
-    "integration_test": "concurrently -k --success first \"npm run demo > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && sleep 3 && node ./node_modules/mocha/bin/mocha --timeout 15000 ./integration_tests)\""
+    "integration_test": "concurrently -k --success first \"npm run demo > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && sleep 3 && node ./node_modules/mocha/bin/mocha --timeout 15000  --require @babel/register ./integration_tests)\""
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",

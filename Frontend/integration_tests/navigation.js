@@ -1,8 +1,6 @@
 const { expect } = require("chai");
-const { By, Builder } = require("selenium-webdriver");
-const { Options } = require("selenium-webdriver/chrome");
-
-const TIMEOUT = 30000; // 30s
+const { By } = require("selenium-webdriver");
+const { setupDriver } = require("./util.js");
 
 describe("Navigation", function () {
   var driver;
@@ -10,12 +8,7 @@ describe("Navigation", function () {
   const getElementByText = (text) => driver.findElement(By.linkText(text));
 
   before(async () => {
-    driver = new Builder()
-      .forBrowser("chrome")
-      // run headless only when executed by github actions
-      .setChromeOptions(process.env.CI && new Options().headless())
-      .build();
-    await driver.manage().setTimeouts({ implicit: TIMEOUT, pageLoad: TIMEOUT, script: TIMEOUT });
+    driver = await setupDriver();
   });
 
   it("redirects to /rentals", async () => {
