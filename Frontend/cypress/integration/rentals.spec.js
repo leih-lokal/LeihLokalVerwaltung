@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import testdata from "../../spec/Database/testdata";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
-import { dateToString, waitForPopupToClose, clearFilter, isAtSameDay } from "./utils";
+import { saveParseTimestampToHumanReadableString, clearFilter, isAtSameDay } from "./utils";
 import COLORS from "../../src/components/Input/ColorDefs";
 import Database from "../../src/components/Database/MockDatabase";
 import { millisAtStartOfDay } from "../../src/utils/utils";
@@ -19,7 +19,7 @@ const expectedDisplayValue = (rental, column) => {
       expectedValue = "";
     } else {
       const date = new Date(expectedValue);
-      expectedValue = dateToString(date);
+      expectedValue = saveParseTimestampToHumanReadableString(date, TODAY);
     }
   } else if (column.key === "item_id") {
     expectedValue = String(expectedValue).padStart(4, "0");
@@ -282,7 +282,7 @@ context("rentals", () => {
 
     const expectedDateInputValue = (millis) => {
       if (millis === 0) return "-";
-      else return dateToString(new Date(millis));
+      else return saveParseTimestampToHumanReadableString(new Date(millis), TODAY);
     };
 
     it("Displays correct data in Edit Popup", () => {
