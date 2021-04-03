@@ -71,7 +71,7 @@ describe("Navigation", function () {
     );
   });
 
-  after(function () {
-    driver.quit();
+  after(async () => {
+    await driver.quit();
   });
 });
