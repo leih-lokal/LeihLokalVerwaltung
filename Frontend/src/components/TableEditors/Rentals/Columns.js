@@ -1,4 +1,4 @@
-import { saveParseTimestampToString } from "../../../utils/utils.js";
+import { saveParseTimestampToString, saveParseTimestampToHumanReadableString } from "../../../utils/utils.js";
 
 export default [
   {
@@ -23,19 +23,19 @@ export default [
     title: "Ausgegeben",
     key: "rented_on",
     search: "exclude",
-    display: (value) => saveParseTimestampToString(value),
+    display: (value) => saveParseTimestampToHumanReadableString(value),
   },
   {
     title: "Verlängert",
     key: "extended_on",
     search: "exclude",
-    display: (value) => saveParseTimestampToString(value),
+    display: (value) => saveParseTimestampToHumanReadableString(value),
   },
   {
     title: "Zurückerwartet",
     key: "to_return_on",
     search: "exclude",
-    display: (value) => saveParseTimestampToString(value),
+    display: (value) => saveParseTimestampToHumanReadableString(value),
     sort: ["returned_on", "to_return_on", "customer_name"],
     initialSort: "asc",
   },
