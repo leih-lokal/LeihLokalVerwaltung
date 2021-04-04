@@ -15,7 +15,7 @@ function saveParseTimestampToHumanReadableString(millis) {
   let dayDiff = daysBetween(millis, millisAtStartOfToday());
 
   if (isNaN(date) || date.getTime() === 0) return "";
-  else if (dayDiff>=-2 & dayDiff<=2){
+  else if (dayDiff>=-2 && dayDiff<=2){
     switch(dayDiff){
       case -2: return "Vorgestern"
       case -1: return "Gestern"
