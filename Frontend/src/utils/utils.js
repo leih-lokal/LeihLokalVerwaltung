@@ -24,7 +24,7 @@ function saveParseTimestampToHumanReadableString(millis) {
       case 2: return "Übermorgen"
     }
   }
-  else if (dayDiff>=-7 & dayDiff <0){
+  else if (dayDiff>=-7 && dayDiff <0){
     return `Vor ${Math.abs(dayDiff)} Tagen`;
   }
   else if (dayDiff<=7 && dayDiff >0){
