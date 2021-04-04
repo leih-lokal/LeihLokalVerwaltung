@@ -1,7 +1,12 @@
 /// <reference types="cypress" />
 import testdata from "../../spec/Database/testdata";
 import columns from "../../src/components/TableEditors/Rentals/Columns";
-import { dateToString, waitForPopupToClose, clearFilter, isAtSameDay } from "./utils";
+import {
+  saveParseTimestampToHumanReadableString,
+  clearFilter,
+  isAtSameDay,
+  dateToString,
+} from "./utils";
 import COLORS from "../../src/components/Input/ColorDefs";
 import Database from "../../src/components/Database/MockDatabase";
 import { millisAtStartOfDay } from "../../src/utils/utils";
@@ -19,7 +24,7 @@ const expectedDisplayValue = (rental, column) => {
       expectedValue = "";
     } else {
       const date = new Date(expectedValue);
-      expectedValue = dateToString(date);
+      expectedValue = saveParseTimestampToHumanReadableString(date, TODAY);
     }
   } else if (column.key === "item_id") {
     expectedValue = String(expectedValue).padStart(4, "0");
