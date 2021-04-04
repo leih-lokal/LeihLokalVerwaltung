@@ -12,7 +12,7 @@ function saveParseTimestampToString(millis) {
 
 function saveParseTimestampToHumanReadableString(millis) {
   const date = new Date(millis);
-  let dayDiff = daysBetween(date, new Date().getTime());
+  let dayDiff = daysBetween(millis, millisAtStartOfToday());
 
   if (isNaN(date) || date.getTime() === 0) return "";
   else if (dayDiff>=-2 & dayDiff<=2){
