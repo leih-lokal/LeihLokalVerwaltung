@@ -8,6 +8,7 @@ import nodePolyfills from "rollup-plugin-node-polyfills";
 import replace from "@rollup/plugin-replace";
 import css from "rollup-plugin-css-only";
 import dotenv from "dotenv-flow";
+import json from "@rollup/plugin-json";
 
 dotenv.config();
 
@@ -62,6 +63,8 @@ export default {
     // If we're building for production (npm run build
     // instead of npm run dev), minify
     production && terser(),
+
+    json(),
   ],
   watch: {
     clearScreen: false,
