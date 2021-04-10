@@ -21,7 +21,7 @@ jobs:
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb
 
       - name: Start CouchDB
-        run: docker-compose up
+        run: docker-compose up -d
 
       - name: Wait for CouchDB
         uses: MaximeGoyette/wait-for-it-action@master
