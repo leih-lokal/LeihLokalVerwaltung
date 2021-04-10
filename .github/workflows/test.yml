@@ -2,7 +2,7 @@ name: Test
 
 on:
   push:
-    branches: [master]
+    branches: [integration_tests]
   pull_request:
     branches: [master]
 
@@ -19,6 +19,16 @@ jobs:
 
       - name: Install Chrome
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb
+
+      - name: Start CouchDB
+        working-directory: CouchDb
+        run: docker run -p 5984:5984 -p 6984:6984 -e COUCHDB_USER=user -e COUCHDB_PASSWORD=password -v ./couchdb_config:/opt/couchdb/etc/local.d -v ./couchdb_ssl:/opt/couchdb/ssl -d couchdb:3.1.1
+
+      - name: Wait for CouchDB
+        uses: MaximeGoyette/wait-for-it-action@master
+        with:
+          host: 127.0.0.1
+          port: 5984
 
       - name: Run integration tests
         working-directory: Frontend
