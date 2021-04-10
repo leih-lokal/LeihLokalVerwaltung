@@ -12,7 +12,7 @@ import json from "@rollup/plugin-json";
 
 dotenv.config();
 
-const production = !process.env.ROLLUP_WATCH;
+const production = process.env.NODE_ENV !== "test";
 const outputDir = process.env.OUTPUT_DIR || "public";
 
 export default {
@@ -64,7 +64,7 @@ export default {
     // instead of npm run dev), minify
     production && terser(),
 
-    json(),
+    !production && json(),
   ],
   watch: {
     clearScreen: false,
