@@ -24,11 +24,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Wait for CouchDB
-        uses: MaximeGoyette/wait-for-it-action@master
-        with:
-          host: localhost
-          port: 5984
-          timeout: 60
+        run: wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && chmod +x ./wait-for-it.sh && ./wait-for-it.sh -t 30 localhost:5984
 
       - name: Run integration tests
         working-directory: Frontend
