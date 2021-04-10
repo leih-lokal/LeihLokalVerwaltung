@@ -23,8 +23,9 @@ jobs:
       - name: Start CouchDB
         run: docker-compose up -d
 
-      - name: Wait for CouchDB
-        run: wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && chmod +x ./wait-for-it.sh && ./wait-for-it.sh -t 30 localhost:5984
+      - name: Wait for CouchDB with test data
+        working-directory: TestDataGenerator
+        run: ./wait_for_testdata.sh
 
       - name: Run integration tests
         working-directory: Frontend
