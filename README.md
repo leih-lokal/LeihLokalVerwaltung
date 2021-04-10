@@ -18,7 +18,7 @@ Easy management of products, rentals and customers
 
 ### Setup
 
-- Run `docker-compose up`. This will start a local instance of [CouchDb](https://couchdb.apache.org/) with some test data.
+- Run `docker-compose up`. This will start a local instance of [CouchDb](https://couchdb.apache.org/) with some test data. Not required for demo mode.
 - Run `cd Frontend && npm install`
 
 ### Run
