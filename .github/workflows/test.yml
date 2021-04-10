@@ -27,7 +27,7 @@ jobs:
       - name: Wait for CouchDB
         uses: MaximeGoyette/wait-for-it-action@master
         with:
-          host: 127.0.0.1
+          host: localhost
           port: 5984
           timeout: 60
 
