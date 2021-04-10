@@ -12,7 +12,7 @@ import json from "@rollup/plugin-json";
 
 dotenv.config();
 
-const production = process.env.NODE_ENV !== "test";
+const production = process.env.NODE_ENV === "prod";
 const outputDir = process.env.OUTPUT_DIR || "public";
 
 export default {

@@ -18,21 +18,22 @@ Easy management of products, rentals and customers
 
 ### Setup
 
+- Run `docker-compose up`. This will start a local instance of [CouchDb](https://couchdb.apache.org/) with some test data.
 - Run `cd Frontend && npm install`
-- For running the application other than in the demo mode, proceed additionally with 
-	1. In `docker-compose.yml`, add the path to your local excel file (replace `<LOCAL_EXCEL_FILE>` with the absolute path) and insert your WooCommerce key and secret
-	2. Run `docker-compose up` and wait for the excel_to_couchdb container to terminate
 
 ### Run
 
-Just the demo
+    cd Frontend && npm run build && npm run start
+
+dev mode
+
+    cd Frontend && npm run dev
+
+- auto rebuilds on file changes
+- does not connect to WooCommerce
+
+demo mode
 
     cd Frontend && npm run demo
 
-or the real build
-
-    cd Frontend && npm run build && npm run start
-
-or auto rebuild on changes
-
-    cd Frontend && npm run dev
+- does not connect to WooCommerce or CouchDB
