@@ -1,4 +1,4 @@
-const { Builder } = require("selenium-webdriver");
+const { Builder, Options } = require("selenium-webdriver");
 
 const TIMEOUT = 30000; // 30s
 
