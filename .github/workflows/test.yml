@@ -29,6 +29,7 @@ jobs:
         with:
           host: 127.0.0.1
           port: 5984
+          timeout: 60
 
       - name: Run integration tests
         working-directory: Frontend
