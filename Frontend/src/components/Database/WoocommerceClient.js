@@ -1,3 +1,6 @@
+import { get } from "svelte/store";
+import { settingsStore } from "../../utils/settingsStore";
+
 const WC_CATEGORIES = {
   Küche: {
     id: 73,
@@ -32,18 +35,20 @@ const WC_CATEGORIES = {
 };
 
 class WoocommerceClient {
-  constructor() {
-    this.baseUrl = localStorage.getItem("wcUrl");
-    this.consumerKey = localStorage.getItem("wcKey");
-    this.consumerSecret = localStorage.getItem("wcSecret");
+  _settings() {
+    return get(settingsStore);
   }
 
   _productsUrl() {
-    return `${this.baseUrl}/products?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`;
+    return `${get(settingsStore).baseUrl}/products?consumer_key=${
+      get(settingsStore).consumerKey
+    }&consumer_secret=${get(settingsStore).consumerSecret}`;
   }
 
   _productUrl(productId) {
-    return `${this.baseUrl}/products/${productId}?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`;
+    return `${get(settingsStore).baseUrl}/products/${productId}?consumer_key=${
+      get(settingsStore).consumerKey
+    }&consumer_secret=${get(settingsStore).consumerSecret}`;
   }
 
   _translateItemAttributesForWc(item) {
