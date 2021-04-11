@@ -1,54 +1,32 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
+  import { settingsStore } from "../../utils/settingsStore";
   import Database from "../Database/ENV_DATABASE";
+  import { notifier } from "@beyonk/svelte-notifications";
+  import { onDestroy } from "svelte";
 
-  let defaultSettings = {
-    wcUrl: "https://www.buergerstiftung-karlsruhe.de/wp-json/wc/v3",
-    couchdbHost: "127.0.0.1",
-    couchdbPort: "6984",
-    couchdbUser: "user",
-    couchdbPassword: "password",
+  let prevValue;
+  let timer;
+
+  const debounce = (functionAfterDebounce) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      functionAfterDebounce();
+    }, 750);
   };
 
-  let settings = {
-    couchdbHost: "",
-    couchdbPort: "",
-    couchdbUser: "",
-    couchdbPassword: "",
-    wcUrl: "",
-    wcKey: "",
-    wcSecret: "",
+  const onSettingsChanged = () => {
+    Database.connect();
+    notifier.success("Einstellungen gespeichert!");
   };
 
-  const loadSettingsFromLocalStorage = () => {
-    Object.keys(settings).map((key, i) => {
-      if (
-        (!localStorage.hasOwnProperty(key) || localStorage.getItem(key).trim().length === 0) &&
-        defaultSettings.hasOwnProperty(key)
-      ) {
-        settings[key] = defaultSettings[key];
-      } else {
-        settings[key] = localStorage.hasOwnProperty(key) ? localStorage.getItem(key) : "";
-      }
-    });
-  };
-
-  const writeSettingsToLocalStorage = () => {
-    const dbSettingsChanged =
-      localStorage.getItem("couchdbHost") !== settings.couchdbHost ||
-      localStorage.getItem("couchdbPort") !== settings.couchdbPort ||
-      localStorage.getItem("couchdbUser") !== settings.couchdbUser ||
-      localStorage.getItem("couchdbPassword") !== settings.couchdbPassword;
-    Object.keys(settings).map((key) => {
-      localStorage.setItem(key, settings[key]);
-    });
-    if (dbSettingsChanged) {
-      Database.connect();
+  const unsubscribe = settingsStore.subscribe((value) => {
+    if (prevValue && JSON.stringify(value) !== JSON.stringify(prevValue)) {
+      debounce(onSettingsChanged);
     }
-  };
+    prevValue = JSON.parse(JSON.stringify(value));
+  });
 
-  onMount(loadSettingsFromLocalStorage);
-  onDestroy(writeSettingsToLocalStorage);
+  onDestroy(unsubscribe);
 </script>
 
 <div class="container">
@@ -64,7 +42,7 @@
       </div>
       <div class="col-75">
         <input
-          bind:value={settings.couchdbHost}
+          bind:value={$settingsStore.couchdbHost}
           id="couchdbhost"
           type="text"
           placeholder="127.0.0.1"
@@ -76,7 +54,12 @@
         <label for="couchdbport">Port</label>
       </div>
       <div class="col-75">
-        <input bind:value={settings.couchdbPort} id="couchdbport" type="text" placeholder="6984" />
+        <input
+          bind:value={$settingsStore.couchdbPort}
+          id="couchdbport"
+          type="text"
+          placeholder="6984"
+        />
       </div>
     </div>
     <div class="row">
@@ -85,7 +68,7 @@
       </div>
       <div class="col-75">
         <input
-          bind:value={settings.couchdbUser}
+          bind:value={$settingsStore.couchdbUser}
           id="couchdbuser"
           type="text"
           placeholder="Nutzer"
@@ -98,7 +81,7 @@
       </div>
       <div class="col-75">
         <input
-          bind:value={settings.couchdbPassword}
+          bind:value={$settingsStore.couchdbPassword}
           id="couchdbpassword"
           type="password"
           placeholder="Passwort"
@@ -117,7 +100,7 @@
         <label for="wcurl">URL</label>
       </div>
       <div class="col-75">
-        <input bind:value={settings.wcUrl} id="wcurl" type="text" placeholder="https://" />
+        <input bind:value={$settingsStore.wcUrl} id="wcurl" type="text" placeholder="https://" />
       </div>
     </div>
     <div class="row">
@@ -125,7 +108,7 @@
         <label for="wckey">API Key</label>
       </div>
       <div class="col-75">
-        <input bind:value={settings.wcKey} id="wckey" type="text" placeholder="API Key" />
+        <input bind:value={$settingsStore.wcKey} id="wckey" type="text" placeholder="API Key" />
       </div>
     </div>
     <div class="row">
@@ -133,7 +116,12 @@
         <label for="wcsecret">Secret</label>
       </div>
       <div class="col-75">
-        <input bind:value={settings.wcSecret} id="wcsecret" type="password" placeholder="Secret" />
+        <input
+          bind:value={$settingsStore.wcSecret}
+          id="wcsecret"
+          type="password"
+          placeholder="Secret"
+        />
       </div>
     </div>
   </div>
