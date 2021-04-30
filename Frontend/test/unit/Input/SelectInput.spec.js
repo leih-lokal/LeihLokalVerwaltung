@@ -1,4 +1,4 @@
-import SelectInput from "../../src/components/Input/SelectInput";
+import SelectInput from "../../../src/components/Input/SelectInput";
 import { render, fireEvent } from "@testing-library/svelte";
 import html from "svelte-htm";
 import { writable, get } from "svelte/store";

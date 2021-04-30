@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent } from "@testing-library/svelte";
-import Pagination from "../../src/components/Table/Pagination.svelte";
+import Pagination from "../../../src/components/Table/Pagination.svelte";
 import html from "svelte-htm";
 import { writable, get } from "svelte/store";
 

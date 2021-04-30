@@ -1,4 +1,4 @@
-import Header from "../../src/components/Table/Header.svelte";
+import Header from "../../../src/components/Table/Header.svelte";
 import { render, fireEvent } from "@testing-library/svelte";
 import html from "svelte-htm";
 

@@ -3,6 +3,10 @@
   import { Pulse } from "svelte-loading-spinners";
 </script>
 
+<div in:fade={{ duration: 800 }}>
+  <Pulse size="120" color="#fc03a9" unit="px" />
+</div>
+
 <style>
   div {
     position: absolute;
@@ -12,7 +16,3 @@
     margin-top: -60px;
   }
 </style>
-
-<div in:fade={{ duration: 800 }}>
-  <Pulse size="120" color="#fc03a9" unit="px" />
-</div>

@@ -1,4 +1,4 @@
-import DateInput from "../../src/components/Input/DateInput";
+import DateInput from "../../../src/components/Input/DateInput";
 import { render, fireEvent } from "@testing-library/svelte";
 import html from "svelte-htm";
 import { writable, get } from "svelte/store";

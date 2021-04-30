@@ -27,6 +27,7 @@ export default {
     replace({
       ENV_WC_CLIENT: process.env.WC_CLIENT,
       ENV_DATABASE: process.env.DATABASE,
+      ENV_SMALL_DATASET: process.env.SMALL_DATASET,
     }),
     svelte({
       emitCss: true,
@@ -52,13 +53,9 @@ export default {
     commonjs(),
     nodePolyfills(),
 
-    // In dev mode, call `npm run start` once
-    // the bundle has been generated
-    !production && serve(),
-
     // Watch the `public` directory and refresh the
     // browser on changes when not in production
-    !production && livereload(outputDir),
+    //!production && livereload(outputDir),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify

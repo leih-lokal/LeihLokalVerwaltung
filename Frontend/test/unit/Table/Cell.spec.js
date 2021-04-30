@@ -1,4 +1,4 @@
-import Cell from "../../src/components/Table/Cell.svelte";
+import Cell from "../../../src/components/Table/Cell.svelte";
 import { render } from "@testing-library/svelte";
 
 describe(Cell.name, () => {

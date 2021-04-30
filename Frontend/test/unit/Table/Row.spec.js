@@ -1,4 +1,4 @@
-jest.mock("../../src/components/Table/Cell.svelte", () => {
+jest.mock("../../../src/components/Table/Cell.svelte", () => {
   const html = require("svelte-htm");
   const component = html`<div>Mocked Cell</div>`;
   const mock = require("svelte-jester-mock").mockComponent(component);
@@ -6,8 +6,8 @@ jest.mock("../../src/components/Table/Cell.svelte", () => {
   return mock;
 });
 
-import Row from "../../src/components/Table/Row.svelte";
-import Cell from "../../src/components/Table/Cell.svelte";
+import Row from "../../../src/components/Table/Row.svelte";
+import Cell from "../../../src/components/Table/Cell.svelte";
 import { render, fireEvent } from "@testing-library/svelte";
 
 describe(Row.name, () => {

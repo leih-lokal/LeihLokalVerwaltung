@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom/extend-expect";
-import { render, fireEvent } from "@testing-library/svelte";
+import { render } from "@testing-library/svelte";
 import html from "svelte-htm";
 import { writable, get } from "svelte/store";
-import SearchFilterBar from "../../src/components/Input/SearchFilterBar.svelte";
+import SearchFilterBar from "../../../src/components/Input/SearchFilterBar.svelte";
 import userEvent from "@testing-library/user-event";
 
 function sleep(milliseconds) {

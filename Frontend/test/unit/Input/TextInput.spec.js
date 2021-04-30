@@ -1,4 +1,4 @@
-import TextInput from "../../src/components/Input/TextInput";
+import TextInput from "../../../src/components/Input/TextInput";
 import { render } from "@testing-library/svelte";
 import html from "svelte-htm";
 import { writable, get } from "svelte/store";

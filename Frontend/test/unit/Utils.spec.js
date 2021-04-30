@@ -1,4 +1,4 @@
-import { saveParseTimestampToString, saveParseStringToBoolean } from "../src/utils/utils.js";
+import { saveParseTimestampToString, saveParseStringToBoolean } from "../../src/utils/utils.js";
 
 describe("saveParseTimestampToString", () => {
   it("returns a date string for a valid input", () => {

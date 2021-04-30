@@ -1,7 +1,5 @@
 host="couchdb"
 
-echo "hallo"
-
 # delete database
 curl -X DELETE http://user:password@${host}:5984/leihlokal
 

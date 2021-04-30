@@ -5,6 +5,7 @@
     "build": "cross-env NODE_ENV=prod rollup -c",
     "build:test": "cross-env NODE_ENV=test rollup -c",
     "build:demo": "cross-env NODE_ENV=demo rollup -c",
+    "build:cypress": "cross-env NODE_ENV=cypress rollup -c",
     "build:clean": "rm -rf public/*",
     "build:all": "npm run build:clean && npm run build && OUTPUT_DIR=public/demo npm run build:demo",
     "dev": "cross-env NODE_ENV=test rollup -c -w",
@@ -14,7 +15,9 @@
     "unit_test": "jest",
     "unit_test:watch": "npm run unit_test -- --watch",
     "unit_test:debug": "node --inspect node_modules/.bin/jest --runInBand",
-    "integration_test": "concurrently -k --success first \"npm run test > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && node ./node_modules/mocha/bin/mocha --timeout 15000 ./integration_tests)\""
+    "integration_test_selenium": "concurrently -k --success first \"npm run test > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && node ./node_modules/mocha/bin/mocha --timeout 15000 ./integration_tests)\"",
+    "integration_test_cypress:run": "npm run build:cypress && cypress run --config-file ./test/integration_cypress/config.json",
+    "integration_test_cypress:open": "npm run build:cypress && cypress open --config-file ./test/integration_cypress/config.json"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
@@ -37,6 +40,7 @@
     "chai": "^4.3.4",
     "concurrently": "^6.0.0",
     "cross-env": "^7.0.3",
+    "cypress": "^7.2.0",
     "dotenv-flow": "^3.2.0",
     "esm": "^3.2.25",
     "fa-svelte": "^3.1.0",
