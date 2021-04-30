@@ -61,10 +61,6 @@ function daysBetween(date1, date2) {
   const ONE_DAY = 1000 * 60 * 60 * 24;
   // Calculate the difference in milliseconds
   const differenceMs = date1 - date2;
-
-  if (Math.round(differenceMs / ONE_DAY) == 0) {
-    console.log(differenceMs / ONE_DAY);
-  }
   // Convert back to days and return
   return Math.round(differenceMs / ONE_DAY);
 }

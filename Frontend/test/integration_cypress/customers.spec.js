@@ -81,7 +81,6 @@ const expectDisplaysCustomers = (customers) =>
 
 context("Customers", () => {
   beforeEach(() => {
-    console.log(testdata());
     customers = testdata().filter((doc) => doc.type === "customer");
     cy.clock(Date.UTC(2020, 0, 1), ["Date"]).visit("../../public/index.html#/customers");
   });
