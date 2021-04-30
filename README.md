@@ -13,27 +13,34 @@ Easy management of products, rentals and customers
 ### Requirements
 
 - [npm](https://github.com/npm/cli)
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Docker](https://www.docker.com/) (required only when testing with real database)
+- [Docker Compose](https://docs.docker.com/compose/install/) (required only when testing with real database)
 
 ### Setup
 
-- Run `docker-compose up`. This will start a local instance of [CouchDb](https://couchdb.apache.org/) with some test data. Not required for demo mode.
 - Run `cd Frontend && npm install`
+- Optional: Run `docker-compose up`. This will start a local instance of [CouchDb](https://couchdb.apache.org/) and insert some test data. Not required for demo mode.
 
-### Run
+### Running the demo
 
-    cd Frontend && npm run build && npm run start
+This will build and start the application in demo mode. This does not require a database and displays test data.
 
-dev mode
+    cd Frontend && npm run build && npm run demo
 
-    cd Frontend && npm run dev
+### Running in dev mode
 
-- auto rebuilds on file changes
-- does not connect to WooCommerce
+In dev mode, the application rebuilds automatically on file changes.
 
-demo mode
+    npm run dev
 
-    cd Frontend && npm run demo
+To run without a database connection use:
 
-- does not connect to WooCommerce or CouchDB
+    npm run dev:mock_db
+
+To run without a WooCommerce connection use:
+
+    npm run dev:mock_wc
+
+To run without a WooCommerce and Database connection use:
+
+    npm run dev:mock_all
