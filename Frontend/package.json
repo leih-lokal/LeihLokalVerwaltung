@@ -18,7 +18,7 @@
     "unit_test": "jest",
     "unit_test:watch": "npm run unit_test -- --watch",
     "unit_test:debug": "node --inspect node_modules/.bin/jest --runInBand",
-    "integration_test_selenium": "concurrently -k --success first \"npm run test > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && node ./node_modules/mocha/bin/mocha --timeout 15000 ./integration_tests)\"",
+    "integration_test_selenium": "concurrently -k --success first \"npm run test > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && node ./node_modules/mocha/bin/mocha --timeout 15000 ./test/integration_selenium)\"",
     "integration_test_cypress:run": "npm run build:cypress && cypress run --config-file ./test/integration_cypress/config.json",
     "integration_test_cypress:open": "npm run build:cypress && cypress open --config-file ./test/integration_cypress/config.json"
   },
