@@ -25,9 +25,10 @@ export default {
   },
   plugins: [
     replace({
+      preventAssignment: true,
       ENV_WC_CLIENT: process.env.WC_CLIENT,
       ENV_DATABASE: process.env.DATABASE,
-      ENV_SMALL_DATASET: process.env.SMALL_DATASET,
+      ENV_LARGE_DATASET: process.env.LARGE_DATASET,
     }),
     svelte({
       emitCss: true,
@@ -53,9 +54,13 @@ export default {
     commonjs(),
     nodePolyfills(),
 
+    // In dev mode, call `npm run start` once
+    // the bundle has been generated
+    process.env.NODE_ENV.startsWith("dev") && serve(),
+
     // Watch the `public` directory and refresh the
     // browser on changes when not in production
-    //!production && livereload(outputDir),
+    process.env.NODE_ENV.startsWith("dev") && livereload(outputDir),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify
