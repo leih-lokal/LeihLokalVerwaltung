@@ -13,9 +13,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: Frontend/node_modules
+          key: node-modules-${{ hashFiles('Frontend/package-lock.json') }}
+
+      - name: Install Dependencies
+        working-directory: Frontend
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
       - name: Unit Test
         working-directory: Frontend
-        run: npm ci && npm run unit_test
+        run: npm run unit_test
 
       - name: Run cypress integration tests
         uses: cypress-io/github-action@v2
