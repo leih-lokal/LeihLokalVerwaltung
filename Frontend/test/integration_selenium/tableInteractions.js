@@ -7,13 +7,11 @@ describe("Table Interactions", function () {
 
   const getElementByCss = (css) => driver.findElement(By.css(css));
   const gotoSecondPage = async () => {
-    const secondPageButton = await getElementByCss(".pagination > a:nth-child(3)");
-    await secondPageButton.click();
+    await getElementByCss(".pagination > a:nth-child(3)").click();
     await expectToBeOnPage(2);
   };
   const expectToBeOnPage = async (page) => {
-    const currentPage = await getElementByCss(".pagination > .active");
-    expect(await currentPage.getText()).to.equal(String(page));
+    expect(await getElementByCss(".pagination > .active").getText()).to.equal(String(page));
   };
 
   before(async () => {
