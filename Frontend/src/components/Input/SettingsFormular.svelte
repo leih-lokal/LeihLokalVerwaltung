@@ -17,7 +17,7 @@
 
   const onSettingsChanged = () => {
     Database.connect();
-    notifier.success("Einstellungen gespeichert!");
+    notifier.success("Einstellungen gespeichert!", 1500);
   };
 
   const unsubscribe = settingsStore.subscribe((value) => {
@@ -94,6 +94,19 @@
           id="couchdbpassword"
           type="password"
           placeholder="Passwort"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="couchdbhost">Datenbank</label>
+      </div>
+      <div class="col-75">
+        <input
+          bind:value={$settingsStore.couchdbName}
+          id="couchdbname"
+          type="text"
+          placeholder="Datenbank Name"
         />
       </div>
     </div>

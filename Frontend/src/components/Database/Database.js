@@ -33,7 +33,7 @@ class Database {
     this.database = new PouchDB(
       `http${settings.couchdbHTTPS ? "s" : ""}://${settings.couchdbUser}:${
         settings.couchdbPassword
-      }@${settings.couchdbHost}:${settings.couchdbPort}/leihlokal`
+      }@${settings.couchdbHost}:${settings.couchdbPort}/${settings.couchdbName}`
     );
   }
 
