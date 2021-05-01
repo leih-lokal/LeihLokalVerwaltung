@@ -3,7 +3,7 @@ import { writable } from "svelte/store";
 const defaultSettings = {
   wcUrl: "https://www.buergerstiftung-karlsruhe.de/wp-json/wc/v3",
   couchdbHost: "127.0.0.1",
-  couchdbPort: "6984",
+  couchdbPort: "5984",
   couchdbUser: "user",
   couchdbPassword: "password",
   wcUrl: "",
