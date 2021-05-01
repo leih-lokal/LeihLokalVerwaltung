@@ -7,6 +7,7 @@ const defaultSettings = {
   couchdbPort: "5984",
   couchdbUser: "user",
   couchdbPassword: "password",
+  couchdbName: "leihlokal",
   wcUrl: "",
   wcKey: "",
   wcSecret: "",
@@ -18,7 +19,13 @@ const readFromLocalStorage = () => {
   let settings = defaultSettings;
   settingsKeys.forEach((key) => {
     if (localStorage.hasOwnProperty(key)) {
-      settings[key] = localStorage.getItem(key);
+      if (localStorage.getItem(key) === "true") {
+        settings[key] = true;
+      } else if (localStorage.getItem(key) === "false") {
+        settings[key] = false;
+      } else {
+        settings[key] = localStorage.getItem(key);
+      }
     }
   });
   return settings;
