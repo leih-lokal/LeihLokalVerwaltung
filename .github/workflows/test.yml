@@ -22,7 +22,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: Frontend
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Unit Test
