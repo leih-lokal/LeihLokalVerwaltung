@@ -15,3 +15,13 @@ exports.setupDriver = async () => {
 };
 
 exports.sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+exports.configureDbConnection = (driver) =>
+  driver.executeScript(() => {
+    localStorage.setItem("couchdbHost", "127.0.0.1");
+    localStorage.setItem("couchdbHTTPS", "false");
+    localStorage.setItem("couchdbPort", "5984");
+    localStorage.setItem("couchdbUser", "user");
+    localStorage.setItem("couchdbPassword", "password");
+    localStorage.setItem("couchdbName", "leihlokal_test");
+  });
