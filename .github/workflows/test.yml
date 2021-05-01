@@ -39,6 +39,11 @@ jobs:
       - name: Install Chrome
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb
 
+      - name: Cache docker images
+        uses: whoan/docker-build-with-cache-action@v5
+        with:
+          compose_file: docker-compose.yml
+
       - name: Start CouchDB
         run: docker-compose up -d
 
