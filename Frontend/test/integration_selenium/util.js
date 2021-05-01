@@ -13,3 +13,5 @@ exports.setupDriver = async () => {
   await driver.manage().setTimeouts({ implicit: TIMEOUT, pageLoad: TIMEOUT, script: TIMEOUT });
   return driver;
 };
+
+exports.sleep = (ms) => new Promise((r) => setTimeout(r, ms));
