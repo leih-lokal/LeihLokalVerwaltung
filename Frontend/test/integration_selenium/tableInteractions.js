@@ -33,7 +33,7 @@ describe("Table Interactions", function () {
     await driver.get("http://localhost:5000/#/items");
     await gotoSecondPage();
     await getElementByCss(".selectContainer input").click();
-    await getElementByCss(".selectContainer .listItem:nth-child(1)").click();
+    await getElementByCss(".selectContainer .listItem:nth-child(2)").click();
     await expectToBeOnPage(1);
   });
 
