@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const { By } = require("selenium-webdriver");
+const { By, until } = require("selenium-webdriver");
 const { setupDriver, sleep } = require("./util.js");
 
 describe("Table Interactions", function () {
@@ -7,12 +7,15 @@ describe("Table Interactions", function () {
 
   const getElementByCss = (css) => driver.findElement(By.css(css));
   const gotoSecondPage = async () => {
+    await waitForDataToLoad();
     await getElementByCss(".pagination > a:nth-child(3)").click();
     await expectToBeOnPage(2);
   };
   const expectToBeOnPage = async (page) => {
+    await waitForDataToLoad();
     expect(await getElementByCss(".pagination > .active").getText()).to.equal(String(page));
   };
+  const waitForDataToLoad = () => driver.wait(until.elementLocated(By.css("table")));
 
   before(async () => {
     driver = await setupDriver();
