@@ -1,5 +1,6 @@
 <script>
   import { settingsStore } from "../../utils/settingsStore";
+  import Checkbox from "svelte-checkbox";
   import Database from "../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { onDestroy } from "svelte";
@@ -47,6 +48,14 @@
           type="text"
           placeholder="127.0.0.1"
         />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="couchdbhost">HTTPS</label>
+      </div>
+      <div class="col-75">
+        <Checkbox size="2rem" bind:checked={$settingsStore.couchdbHTTPS} />
       </div>
     </div>
     <div class="row">

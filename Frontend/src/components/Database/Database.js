@@ -31,7 +31,9 @@ class Database {
     this.cache.reset();
     const settings = get(settingsStore);
     this.database = new PouchDB(
-      `https://${settings.couchdbUser}:${settings.couchdbPassword}@${settings.couchdbHost}:${settings.couchdbPort}/leihlokal`
+      `http${settings.couchdbHTTPS ? "s" : ""}://${settings.couchdbUser}:${
+        settings.couchdbPassword
+      }@${settings.couchdbHost}:${settings.couchdbPort}/leihlokal`
     );
   }
 
