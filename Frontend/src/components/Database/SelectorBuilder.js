@@ -114,25 +114,48 @@ class SelectorBuilder {
       .filter((searchTerm) => searchTerm !== "");
 
     // e.g. 12 => 120 - 129, 1200 - 1299
-    const selectorsForNumbersStartingWith = (number, column, factor = 10, selectors = []) => {
-      selectors.push({
-        $and: [
+    const selectorsForNumbersStartingWith = (searchWord, column, factor = 10, selectors = []) => {
+      const number = Math.abs(parseInt(searchWord, 10));
+      if (number === 0) {
+        // 000 -> 0001 - 0009
+        // 00 -> 0010 - 0099
+        // 0 -> 0001 - 0009
+        return [
           {
-            [column.key]: {
-              $gte: number * factor,
-            },
+            $and: [
+              {
+                [column.key]: {
+                  $gte: 1000 / Math.pow(10, searchWord.length),
+                },
+              },
+              {
+                [column.key]: {
+                  $lt: 1000 / Math.pow(10, searchWord.length - 1),
+                },
+              },
+            ],
           },
-          {
-            [column.key]: {
-              $lt: number * factor + factor,
+        ];
+      } else {
+        selectors.push({
+          $and: [
+            {
+              [column.key]: {
+                $gte: number * factor,
+              },
             },
-          },
-        ],
-      });
+            {
+              [column.key]: {
+                $lt: number * factor + factor,
+              },
+            },
+          ],
+        });
+      }
       if (number * factor * 10 > 10000) {
         return selectors;
       } else {
-        return selectorsForNumbersStartingWith(number, column, factor * 10, selectors);
+        return selectorsForNumbersStartingWith(searchWord, column, factor * 10, selectors);
       }
     };
 
@@ -140,14 +163,13 @@ class SelectorBuilder {
       if (!isNaN(searchWord)) {
         // is number
         let selectors = [];
-        const numericSearchWord = parseInt(searchWord, 10);
         columnsToSearch(true).forEach((column) => {
           selectors.push({
             [column.key]: {
-              $eq: numericSearchWord,
+              $eq: parseInt(searchWord, 10),
             },
           });
-          selectors = [...selectors, ...selectorsForNumbersStartingWith(numericSearchWord, column)];
+          selectors = [...selectors, ...selectorsForNumbersStartingWith(searchWord, column)];
         });
         return selectors;
       } else {
