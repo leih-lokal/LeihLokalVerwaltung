@@ -10,6 +10,11 @@ import Row from "../../../src/components/Table/Row.svelte";
 import Cell from "../../../src/components/Table/Cell.svelte";
 import { render, fireEvent } from "@testing-library/svelte";
 
+const getMockedComponentProps = (component) => {
+  const lastCall = component.default.mock.calls.length - 1;
+  return component.default.mock.calls[lastCall][0]["props"];
+};
+
 describe(Row.name, () => {
   const renderRowWithItemsAndCols = (item, cols) => {
     const cellBackgroundColorsMock = jest.fn(() => Promise.resolve("background color"));
@@ -30,7 +35,7 @@ describe(Row.name, () => {
     };
   };
 
-  it("passes item value to cell", () => {
+  it("passes item value to cell", async () => {
     renderRowWithItemsAndCols({ firstname: "firstname" }, [
       {
         title: "Vorname",
@@ -38,19 +43,18 @@ describe(Row.name, () => {
       },
     ]);
 
-    expect(Cell).toHaveSvelteProp("value", "firstname");
+    expect(await getMockedComponentProps(Cell)["valueFunction"]()).toEqual("firstname");
   });
 
-  it("transforms value before passing it to a cell", () => {
+  it("transforms value before passing it to a cell", async () => {
     renderRowWithItemsAndCols({ firstname: "firstname" }, [
       {
         title: "Vorname",
         key: "firstname",
-        display: (value) => "transformed value",
+        display: async (value) => "transformed value",
       },
     ]);
-
-    expect(Cell).toHaveSvelteProp("value", "transformed value");
+    expect(await getMockedComponentProps(Cell)["valueFunction"]()).toEqual("transformed value");
   });
 
   it("forwards prop rowHeight to cell", () => {
