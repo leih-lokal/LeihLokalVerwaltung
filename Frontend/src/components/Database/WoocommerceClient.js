@@ -1,3 +1,6 @@
+import { get } from "svelte/store";
+import { settingsStore } from "../../utils/settingsStore";
+
 const WC_CATEGORIES = {
   Küche: {
     id: 73,
@@ -32,18 +35,20 @@ const WC_CATEGORIES = {
 };
 
 class WoocommerceClient {
-  constructor() {
-    this.baseUrl = localStorage.getItem("wcUrl");
-    this.consumerKey = localStorage.getItem("wcKey");
-    this.consumerSecret = localStorage.getItem("wcSecret");
+  _settings() {
+    return get(settingsStore);
   }
 
   _productsUrl() {
-    return `${this.baseUrl}/products?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`;
+    return `${this._settings().wcUrl}/products?consumer_key=${
+      this._settings().wcKey
+    }&consumer_secret=${this._settings().wcSecret}`;
   }
 
   _productUrl(productId) {
-    return `${this.baseUrl}/products/${productId}?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`;
+    return `${this._settings().wcUrl}/products/${productId}?consumer_key=${
+      this._settings().wcKey
+    }&consumer_secret=${this._settings().wcSecret}`;
   }
 
   _translateItemAttributesForWc(item) {
@@ -89,8 +94,26 @@ class WoocommerceClient {
     };
   }
 
+  async fetchWithRetry(url, body = {}, retries = 0) {
+    try {
+      let response = await fetch(url, body);
+      if (response.ok) {
+        return response;
+      } else {
+        throw new Error(`Failed to fetch '${url}', response code ${response.status}`);
+      }
+    } catch (e) {
+      if (retries < 3) {
+        console.warn(e);
+        return await this.fetchWithRetry(url, body, retries + 1);
+      } else {
+        throw e;
+      }
+    }
+  }
+
   async fetchItem(wcItemId) {
-    var response = await fetch(this._productUrl(wcItemId));
+    var response = await this.fetchWithRetry(this._productUrl(wcItemId));
     if (!response.ok) {
       throw new Error("Failed to load wc product, http response code " + response.status);
     }
@@ -99,7 +122,7 @@ class WoocommerceClient {
   }
 
   async updateItem(item) {
-    var response = await fetch(this._productUrl(item.wc_id), {
+    var response = await this.fetchWithRetry(this._productUrl(item.wc_id), {
       method: "PUT",
       headers: {
         "Content-type": "application/json",
@@ -112,7 +135,7 @@ class WoocommerceClient {
   }
 
   async createItem(item) {
-    var response = await fetch(this._productsUrl(), {
+    var response = await this.fetchWithRetry(this._productsUrl(), {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -126,7 +149,7 @@ class WoocommerceClient {
   }
 
   async deleteItem(item) {
-    var response = await fetch(this._productUrl(item.wc_id), {
+    var response = await this.fetchWithRetry(this._productUrl(item.wc_id), {
       method: "DELETE",
     });
     if (!response.ok) {

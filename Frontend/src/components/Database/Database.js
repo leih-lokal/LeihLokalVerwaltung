@@ -5,6 +5,8 @@ import SelectorBuilder from "./SelectorBuilder";
 import customerColumns from "../TableEditors/Customers/Columns";
 import itemColumns from "../TableEditors/Items/Columns";
 import rentalColumns from "../TableEditors/Rentals/Columns";
+import { get } from "svelte/store";
+import { settingsStore } from "../../utils/settingsStore";
 PouchDB.plugin(PouchDBFind);
 
 const COLUMNS = {
@@ -27,10 +29,11 @@ class Database {
 
   connect() {
     this.cache.reset();
+    const settings = get(settingsStore);
     this.database = new PouchDB(
-      `https://${localStorage.getItem("couchdbUser")}:${localStorage.getItem(
-        "couchdbPassword"
-      )}@${localStorage.getItem("couchdbHost")}:${localStorage.getItem("couchdbPort")}/leihlokal`
+      `http${settings.couchdbHTTPS ? "s" : ""}://${settings.couchdbUser}:${
+        settings.couchdbPassword
+      }@${settings.couchdbHost}:${settings.couchdbPort}/${settings.couchdbName}`
     );
   }
 

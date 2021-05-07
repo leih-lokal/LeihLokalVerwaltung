@@ -13,7 +13,7 @@ jobs:
 
       - name: Build 🔧
         working-directory: Frontend
-        run: npm ci && npm run-script build:all
+        run: npm ci && npm run build:all
 
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v2

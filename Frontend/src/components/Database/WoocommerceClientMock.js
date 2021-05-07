@@ -1,11 +1,11 @@
-import items from "../../../spec/Database/testdata";
+import testdata from "../../../../TestDataGenerator/testdata.json";
 
 class WoocommerceClientMock {
   constructor() {}
 
   async fetchItem(wcItemId) {
     await new Promise((r) => setTimeout(r, 1500));
-    const item = items.find((item) => item.wc_id == wcItemId);
+    const item = testdata.docs.find((item) => item.wc_id == wcItemId);
     if (wcItemId && item) {
       return {
         stock_status: item.status,
