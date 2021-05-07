@@ -80,7 +80,7 @@ export default [
     search: "exclude",
   },
   {
-    title: "Anzahl Ausleihen",
+    title: "Aktive Ausleihen",
     key: "id",
     search: "exclude",
     disableSort: true,
