@@ -65,7 +65,7 @@ function daysBetween(date1, date2) {
   return Math.round(differenceMs / ONE_DAY);
 }
 
-export default {
+export {
   dateToString,
   statusOnWebsiteDisplayValue,
   waitForPopupToClose,

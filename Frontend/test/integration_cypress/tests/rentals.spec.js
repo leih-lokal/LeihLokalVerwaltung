@@ -1,15 +1,15 @@
 /// <reference types="cypress" />
-import testdata from "./testdata";
-import columns from "../../src/components/TableEditors/Rentals/Columns";
+import testdata from "../testdata";
+import columns from "../../../src/components/TableEditors/Rentals/Columns";
 import {
   saveParseTimestampToHumanReadableString,
   clearFilter,
   isAtSameDay,
   dateToString,
   millisAtStartOfDay,
-} from "./utils";
-import COLORS from "../../src/components/Input/ColorDefs";
-import Database from "../../src/components/Database/MockDatabase";
+} from "../utils";
+import COLORS from "../../../src/components/Input/ColorDefs";
+import Database from "../../../src/components/Database/MockDatabase";
 
 let rentals;
 let currentRentals;

@@ -19,12 +19,13 @@
     "unit_test:watch": "npm run unit_test -- --watch",
     "unit_test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "integration_test_selenium": "concurrently -k --success first \"npm run test > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && node ./node_modules/mocha/bin/mocha --timeout 15000 ./test/integration_selenium)\"",
-    "integration_test_cypress:run": "npm run build:cypress && cypress run --config-file ./test/integration_cypress/config.json",
-    "integration_test_cypress:open": "npm run build:cypress && cypress open --config-file ./test/integration_cypress/config.json"
+    "integration_test_cypress:run": "cypress run --config-file ./test/integration_cypress/config/config.json",
+    "integration_test_cypress:open": "cypress open --config-file ./test/integration_cypress/config/config.json"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
     "@babel/preset-env": "^7.13.15",
+    "@bahmutov/cy-rollup": "^2.0.0",
     "@beyonk/svelte-notifications": "^3.1.0",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@rollup/plugin-babel": "^5.3.0",

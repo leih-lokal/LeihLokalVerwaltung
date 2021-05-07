@@ -1,15 +1,15 @@
 /// <reference types="cypress" />
-import testdata from "./testdata";
-import ColorDefs from "../../src/components/Input/ColorDefs";
-import columns from "../../src/components/TableEditors/Items/Columns";
-import Database from "../../src/components/Database/MockDatabase";
+import testdata from "../testdata";
+import ColorDefs from "../../../src/components/Input/ColorDefs";
+import columns from "../../../src/components/TableEditors/Items/Columns";
+import Database from "../../../src/components/Database/MockDatabase";
 import {
   dateToString,
   statusOnWebsiteDisplayValue,
   millisAtStartOfToday,
   millisAtStartOfDay,
   clearFilter,
-} from "./utils";
+} from "../utils";
 
 let items;
 let itemsNotDeleted;
