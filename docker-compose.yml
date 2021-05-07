@@ -11,15 +11,10 @@ services:
       - ./CouchDb/couchdb_config:/opt/couchdb/etc/local.d
       - ./CouchDb/couchdb_ssl:/opt/couchdb/ssl
 
-  excel_to_couchdb:
+  testdata_generator:
     build:
-      context: ./ExcelCouchDbSync
+      context: ./TestDataGenerator
       dockerfile: Dockerfile
     restart: on-failure
-    volumes:
-      - <LOCAL_EXCEL_FILE>:/Leihgegenständeliste.ods
-    environment:
-      EXCEL_FILE: /Leihgegenständeliste.ods
-      COUCHDB_HOST: http://couchdb:5984
-      WC_CONSUMER_KEY: <WC_CONSUMER_KEY>
-      WC_CONSUMER_SECRET: <WC_CONSUMER_SECRET>
+    depends_on:
+      - "couchdb"

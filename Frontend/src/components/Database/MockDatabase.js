@@ -1,4 +1,5 @@
-import testdata from "../../../spec/Database/testdata";
+import testdataLarge from "../../../../TestDataGenerator/testdata.json";
+import testdataSmall from "../../../test/integration_cypress/testdata.js";
 import customerColumns from "../TableEditors/Customers/Columns";
 import rentalColumns from "../TableEditors/Rentals/Columns";
 import itemColumns from "../TableEditors/Items/Columns";
@@ -12,7 +13,12 @@ const COLUMNS = {
 
 class MockDatabase {
   constructor() {
-    this.writeData(testdata());
+    if (typeof ENV_LARGE_DATASET === "undefined") {
+      this.data = testdataSmall();
+    } else {
+      this.data = testdataLarge.docs;
+    }
+    this.writeData(this.data);
   }
 
   async connect() {}
@@ -177,6 +183,18 @@ class MockDatabase {
         fields.forEach((field) => (docWithFields[field] = doc[field]));
         return docWithFields;
       });
+  }
+
+  async fetchUniqueCustomerFieldValues(field, startsWith, isNumeric = false) {
+    let customers = this.getData().filter(
+      (doc) =>
+        doc.type === "customer" && doc[field] && String(doc[field]).startsWith(String(startsWith))
+    );
+    const uniqueValues = new Set();
+    customers.forEach((customer) => {
+      uniqueValues.add(customer[field]);
+    });
+    return Array.from(uniqueValues).map((uniqueValue) => ({ [field]: uniqueValue }));
   }
 
   fetchAllDocsBySelector(selector, fields) {
