@@ -5,7 +5,7 @@ export default [
     title: "Id",
     key: "id",
     numeric: true,
-    display: (value) => String(value).padStart(4, "0"),
+    display: async (value) => String(value).padStart(4, "0"),
     search: "from_beginning",
   },
   {
@@ -45,7 +45,7 @@ export default [
   {
     title: "Erfasst am",
     key: "added",
-    display: (value) => saveParseTimestampToString(value),
+    display: async (value) => saveParseTimestampToString(value),
     search: "exclude",
   },
   {
@@ -63,7 +63,7 @@ export default [
     title: "Status",
     key: "status",
     search: "exclude",
-    display: (value) => {
+    display: async (value) => {
       if (value === "deleted") return "gelöscht";
       if (value === "instock") return "verfügbar";
       if (value === "outofstock") return "verliehen";

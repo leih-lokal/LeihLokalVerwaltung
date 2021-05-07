@@ -7,11 +7,11 @@
   export let cellBackgroundColorsFunction;
   export let evenRowNumber = false;
 
-  const displayValue = (col, item) => {
+  const displayValue = async (col, item) => {
     if (!(col.key in item)) {
       return "";
     } else {
-      return col.display ? col.display(item[col.key]) : item[col.key];
+      return col.display ? await col.display(item[col.key]) : item[col.key];
     }
   };
 
@@ -26,7 +26,7 @@
     <Cell
       {rowHeight}
       isImage={col.isImageUrl}
-      value={displayValue(col, item)}
+      valueFunction={() => displayValue(col, item)}
       backgroundColor={cellBackgroundColors[i]}
     />
   {/each}
