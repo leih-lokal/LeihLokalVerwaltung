@@ -114,24 +114,18 @@ class WoocommerceClient {
 
   async fetchItem(wcItemId) {
     var response = await this.fetchWithRetry(this._productUrl(wcItemId));
-    if (!response.ok) {
-      throw new Error("Failed to load wc product, http response code " + response.status);
-    }
     response = await response.json();
     return response;
   }
 
   async updateItem(item) {
-    var response = await this.fetchWithRetry(this._productUrl(item.wc_id), {
+    await this.fetchWithRetry(this._productUrl(item.wc_id), {
       method: "PUT",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify(this._translateItemAttributesForWc(item)),
     });
-    if (!response.ok) {
-      throw new Error("Failed to update wc product, http response code " + response.status);
-    }
   }
 
   async createItem(item) {
@@ -142,19 +136,13 @@ class WoocommerceClient {
       },
       body: JSON.stringify(this._translateItemAttributesForWc(item)),
     });
-    if (!response.ok) {
-      throw new Error("Failed to create wc product, http response code " + response.status);
-    }
     return await response.json();
   }
 
   async deleteItem(item) {
-    var response = await this.fetchWithRetry(this._productUrl(item.wc_id), {
+    await this.fetchWithRetry(this._productUrl(item.wc_id), {
       method: "DELETE",
     });
-    if (!response.ok) {
-      throw new Error("Failed to delete wc product, http response code " + response.status);
-    }
   }
 }
 
