@@ -8,10 +8,12 @@ import nodePolyfills from "rollup-plugin-node-polyfills";
 import replace from "@rollup/plugin-replace";
 import css from "rollup-plugin-css-only";
 import dotenv from "dotenv-flow";
+import json from "@rollup/plugin-json";
 
 dotenv.config();
 
-const production = !process.env.ROLLUP_WATCH;
+const production = process.env.NODE_ENV === "prod";
+const outputDir = process.env.OUTPUT_DIR || "public";
 
 export default {
   input: "src/main.js",
@@ -19,19 +21,25 @@ export default {
     sourcemap: true,
     format: "iife",
     name: "app",
-    file: "public/build/bundle.js",
+    file: `${outputDir}/build/bundle.js`,
   },
   plugins: [
     replace({
+      preventAssignment: true,
       ENV_WC_CLIENT: process.env.WC_CLIENT,
       ENV_DATABASE: process.env.DATABASE,
+      ENV_LARGE_DATASET: process.env.LARGE_DATASET,
+      ENV_NODE_ENV: process.env.NODE_ENV,
     }),
     svelte({
       emitCss: true,
     }),
     css({ output: "bundle.css" }),
     copy({
-      targets: [{ src: "src/icons", dest: "public/build" }],
+      targets: [
+        { src: "src/icons", dest: `${outputDir}/build` },
+        { src: "static_files/*", dest: outputDir },
+      ],
     }),
 
     // If you have external dependencies installed from
@@ -49,15 +57,17 @@ export default {
 
     // In dev mode, call `npm run start` once
     // the bundle has been generated
-    !production && serve(),
+    process.env.NODE_ENV.startsWith("dev") && serve(),
 
     // Watch the `public` directory and refresh the
     // browser on changes when not in production
-    !production && livereload("public"),
+    process.env.NODE_ENV.startsWith("dev") && livereload(outputDir),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify
     production && terser(),
+
+    !production && json(),
   ],
   watch: {
     clearScreen: false,

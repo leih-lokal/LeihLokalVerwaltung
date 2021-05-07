@@ -13,26 +13,34 @@ Easy management of products, rentals and customers
 ### Requirements
 
 - [npm](https://github.com/npm/cli)
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Docker](https://www.docker.com/) (required only when testing with real database)
+- [Docker Compose](https://docs.docker.com/compose/install/) (required only when testing with real database)
 
 ### Setup
 
 - Run `cd Frontend && npm install`
-- For running the application other than in the demo mode, proceed additionally with 
-	1. In `docker-compose.yml`, add the path to your local excel file (replace `<LOCAL_EXCEL_FILE>` with the absolute path) and insert your WooCommerce key and secret
-	2. Run `docker-compose up` and wait for the excel_to_couchdb container to terminate
+- Optional: Run `docker-compose up`. This will start a local instance of [CouchDb](https://couchdb.apache.org/) and insert some test data. Not required for demo mode.
 
-### Run
+### Running the demo
 
-Just the demo
+This will build and start the application in demo mode. This does not require a database and displays test data.
 
-    cd Frontend && npm run demo
+    cd Frontend && npm run build && npm run demo
 
-or the real build
+### Running in dev mode
 
-    cd Frontend && npm run build && npm run start
+In dev mode, the application rebuilds automatically on file changes.
 
-or auto rebuild on changes
+    npm run dev
 
-    cd Frontend && npm run dev
+To run without a database connection use:
+
+    npm run dev:mock_db
+
+To run without a WooCommerce connection use:
+
+    npm run dev:mock_wc
+
+To run without a WooCommerce and Database connection use:
+
+    npm run dev:mock_all

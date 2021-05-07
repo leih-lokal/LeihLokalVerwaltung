@@ -13,27 +13,41 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: Frontend/node_modules
+          key: node-modules-${{ hashFiles('Frontend/package-lock.json') }}
+
+      - name: Install Dependencies
+        working-directory: Frontend
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
       - name: Unit Test
         working-directory: Frontend
-        run: npm ci && npm test
+        run: npm run unit_test
 
-      - name: Integration Test
+      - name: Run cypress integration tests
         uses: cypress-io/github-action@v2
         with:
           working-directory: "./Frontend"
-          command: npm run cy:run
+          command: npm run integration_test_cypress:run
           browser: chrome
+          record: false
+          parallel: true
 
-      - name: Upload Screenshots
-        uses: actions/upload-artifact@v1
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: Frontend/cypress/screenshots
+      - name: Install Chrome
+        run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb
 
-      - name: Upload Videos
-        uses: actions/upload-artifact@v1
-        if: always()
-        with:
-          name: cypress-videos
-          path: Frontend/cypress/videos
+      - name: Start CouchDB
+        run: docker-compose up -d
+
+      - name: Wait for CouchDB with test data
+        working-directory: TestDataGenerator
+        run: ./wait_for_testdata.sh
+
+      - name: Run selenium integration tests
+        working-directory: Frontend
+        run: npm run integration_test_selenium

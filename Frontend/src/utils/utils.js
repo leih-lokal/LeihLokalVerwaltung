@@ -8,34 +8,33 @@ function saveParseTimestampToString(millis) {
     )}.${date.getFullYear()}`;
 }
 
-
-
 function saveParseTimestampToHumanReadableString(millis) {
   const date = new Date(millis);
   let dayDiff = daysBetween(millis, millisAtStartOfToday());
 
   if (isNaN(date) || date.getTime() === 0) return "";
-  else if (dayDiff>=-2 && dayDiff<=2){
-    switch(dayDiff){
-      case -2: return "Vorgestern"
-      case -1: return "Gestern"
-      case 0: return "Heute"
-      case 1: return "Morgen"
-      case 2: return "Übermorgen"
+  else if (dayDiff >= -2 && dayDiff <= 2) {
+    switch (dayDiff) {
+      case -2:
+        return "Vorgestern";
+      case -1:
+        return "Gestern";
+      case 0:
+        return "Heute";
+      case 1:
+        return "Morgen";
+      case 2:
+        return "Übermorgen";
     }
-  }
-  else if (dayDiff>=-7 && dayDiff <0){
+  } else if (dayDiff >= -7 && dayDiff < 0) {
     return `Vor ${Math.abs(dayDiff)} Tagen`;
-  }
-  else if (dayDiff<=7 && dayDiff >0){
+  } else if (dayDiff <= 7 && dayDiff > 0) {
     return `In ${dayDiff} Tagen`;
-  }
-  else
+  } else
     return `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(
       2,
       0
     )}.${date.getFullYear()}`;
-
 }
 
 function saveParseStringToBoolean(maybeBoolean) {
