@@ -1,4 +1,6 @@
 import { saveParseStringToBoolean, saveParseTimestampToString } from "../../../utils/utils.js";
+import Database from "../../Database/ENV_DATABASE";
+import { activeRentalsForCustomerSelector } from "../Rentals/Selectors";
 
 export default [
   {
@@ -39,13 +41,13 @@ export default [
   {
     title: "Beitritt",
     key: "registration_date",
-    display: (value) => saveParseTimestampToString(value),
+    display: async (value) => saveParseTimestampToString(value),
     search: "exclude",
   },
   {
     title: "Verlängert am",
     key: "renewed_on",
-    display: (value) => saveParseTimestampToString(value),
+    display: async (value) => saveParseTimestampToString(value),
     search: "exclude",
   },
   {
@@ -69,12 +71,25 @@ export default [
   {
     title: "Newsletter",
     key: "subscribed_to_newsletter",
-    display: (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
+    display: async (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
     search: "exclude",
   },
   {
     title: "Aufmerksam geworden",
     key: "heard",
     search: "exclude",
+  },
+  {
+    title: "Aktive Ausleihen",
+    key: "id",
+    search: "exclude",
+    disableSort: true,
+    display: async (customer_id) => {
+      let activeRentalIds = await Database.fetchAllDocsBySelector(
+        activeRentalsForCustomerSelector(customer_id),
+        ["_id"]
+      );
+      return activeRentalIds.length;
+    },
   },
 ];

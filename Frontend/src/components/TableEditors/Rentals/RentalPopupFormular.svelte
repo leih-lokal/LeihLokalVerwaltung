@@ -9,6 +9,13 @@
   import { getContext, onMount } from "svelte";
   import columns from "./Columns";
   import WoocommerceClient from "ENV_WC_CLIENT";
+  import {
+    customerIdStartsWithSelector,
+    itemIdStartsWithAndNotDeletedSelector,
+    customerAttributeStartsWithIgnoreCaseSelector,
+    itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
+    activeRentalsForCustomerSelector,
+  } from "./Selectors";
 
   const { close } = getContext("simple-modal");
   const woocommerceClient = new WoocommerceClient();
@@ -49,38 +56,6 @@
     disableToggleStatusOnWebsite: false,
   });
 
-  const customerIdStartsWithSelector = (searchValue) =>
-    Database.selectorBuilder()
-      .withField("id")
-      .numericFieldStartsWith(searchValue)
-      .withDocType("customer")
-      .build();
-
-  const itemIdStartsWithAndNotDeletedSelector = (searchValue) =>
-    Database.selectorBuilder()
-      .withField("id")
-      .numericFieldStartsWith(searchValue)
-      .withDocType("item")
-      .withField("status")
-      .isNotEqualTo("deleted")
-      .build();
-
-  const customerAttributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
-    Database.selectorBuilder()
-      .withField(field)
-      .startsWithIgnoreCase(searchValue)
-      .withDocType("customer")
-      .build();
-
-  const itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector = (field, searchValue) =>
-    Database.selectorBuilder()
-      .withField(field)
-      .startsWithIgnoreCase(searchValue)
-      .withField("status")
-      .isNotEqualTo("deleted")
-      .withDocType("item")
-      .build();
-
   const hideToggleStatusOnWebsiteIfExistsMoreThanOnce = (selectedItem) => {
     if (selectedItem.exists_more_than_once) {
       keyValueStore.setValue("options", {
@@ -103,6 +78,31 @@
       item_name: selectedItem.name,
       deposit: selectedItem.deposit,
     });
+  };
+
+  const setCustomer = async (customer) => {
+    keyValueStore.setValue("currentDoc", {
+      ...$keyValueStore["currentDoc"],
+      customer_name: customer.lastname,
+      customer_id: customer.id,
+    });
+
+    const activeRentals = await Database.fetchAllDocsBySelector(
+      activeRentalsForCustomerSelector(customer.id),
+      ["item_name"]
+    ).then((results) => results.map((doc) => doc["item_name"]));
+
+    if (activeRentals.length > 0 && activeRentals.length < 3) {
+      notifier.warning(
+        `Kunde hat schon diese Gegenstände ausgeliehen: ${activeRentals.join(", ")}`,
+        6000
+      );
+    } else if (activeRentals.length >= 3) {
+      notifier.danger(
+        `Kunde hat schon mehr als 2 Gegenstände ausgeliehen: ${activeRentals.join(", ")}`,
+        6000
+      );
+    }
   };
 
   const popupFormularConfiguration = new PopupFormularConfiguration()
@@ -199,13 +199,7 @@
         inputType: "number",
         type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "customer_id" },
-        onChange: (selectedCustomer) => {
-          keyValueStore.setValue("currentDoc", {
-            ...$keyValueStore["currentDoc"],
-            customer_name: selectedCustomer.lastname,
-            customer_id: selectedCustomer.id,
-          });
-        },
+        onChange: setCustomer,
         searchFunction: (searchTerm) =>
           Database.fetchDocsBySelector(customerIdStartsWithSelector(searchTerm), [
             "id",
@@ -221,13 +215,7 @@
         group: "Kunde",
         type: InputTypes.AUTOCOMPLETE,
         bindTo: { keyValueStoreKey: "currentDoc", attr: "customer_name" },
-        onChange: (selectedCustomer) => {
-          keyValueStore.setValue("currentDoc", {
-            ...$keyValueStore["currentDoc"],
-            customer_name: selectedCustomer.lastname,
-            customer_id: selectedCustomer.id,
-          });
-        },
+        onChange: setCustomer,
         searchFunction: (searchTerm) =>
           Database.fetchDocsBySelector(
             customerAttributeStartsWithIgnoreCaseSelector("lastname", searchTerm),

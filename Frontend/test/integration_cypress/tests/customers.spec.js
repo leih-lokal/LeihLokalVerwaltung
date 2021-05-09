@@ -1,10 +1,11 @@
 /// <reference types="cypress" />
-import testdata from "./testdata";
-import ColorDefs from "../../src/components/Input/ColorDefs";
-import columns from "../../src/components/TableEditors/Customers/Columns";
-import { dateToString } from "./utils";
+import testdata from "../testdata";
+import ColorDefs from "../../../src/components/Input/ColorDefs";
+import columns from "../../../src/components/TableEditors/Customers/Columns";
+import { dateToString } from "../utils";
 
 let customers;
+const IGNORE_COL_INDEX = 14; // active_rental_count
 
 const expectedDisplayValue = (customer, customerKey) => {
   let expectedValue = customer[customerKey];
@@ -62,20 +63,22 @@ const expectDisplaysCustomers = (customers) =>
       cy
         .wrap(row)
         .children("td")
-        .each((cell, colIndex) =>
-          cy
-            .wrap(cell)
-            .should(
-              "have.text",
-              customers[rowIndex].hasOwnProperty([columns[colIndex].key])
-                ? expectedDisplayValue(customers[rowIndex], columns[colIndex].key)
-                : ""
-            )
-            .should(
-              "have.css",
-              "background-color",
-              expectedBackgroundColorForRow(customers, rowIndex)
-            )
+        .each(
+          (cell, colIndex) =>
+            IGNORE_COL_INDEX != colIndex &&
+            cy
+              .wrap(cell)
+              .should(
+                "have.text",
+                customers[rowIndex].hasOwnProperty([columns[colIndex].key])
+                  ? expectedDisplayValue(customers[rowIndex], columns[colIndex].key)
+                  : ""
+              )
+              .should(
+                "have.css",
+                "background-color",
+                expectedBackgroundColorForRow(customers, rowIndex)
+              )
         )
     );
 

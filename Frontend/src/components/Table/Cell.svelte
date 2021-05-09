@@ -1,7 +1,7 @@
 <script>
   export let backgroundColor = "white";
   export let isImage = false;
-  export let value = "";
+  export let valueFunction = async () => "";
   export let rowHeight = 40;
 
   let fontColor = "black";
@@ -33,15 +33,17 @@
 </script>
 
 <td style={`background-color: ${backgroundColor}; color: ${fontColor}; height: ${rowHeight}px;`}>
-  {#if isImage}
-    {#if value && value !== ""}
-      <img src={value} alt="item" />
+  {#await valueFunction() then value}
+    {#if isImage}
+      {#if value && value !== ""}
+        <img src={value} alt="item" />
+      {/if}
+    {:else}
+      <div class="cell" style={`max-height: ${rowHeight}px;`}>
+        {value}
+      </div>
     {/if}
-  {:else}
-    <div class="cell" style={`max-height: ${rowHeight}px;`}>
-      {value}
-    </div>
-  {/if}
+  {/await}
 </td>
 
 <style>

@@ -1,7 +1,0 @@
-{
-  "viewportWidth": 1500,
-  "viewportHeight": 900,
-  "ignoreTestFiles": ["utils.js", "config.json", "testdata.js"],
-  "integrationFolder": "./test/integration_cypress",
-  "video": false
-}

@@ -1,0 +1,7 @@
+{
+  "viewportWidth": 1500,
+  "viewportHeight": 900,
+  "integrationFolder": "./test/integration_cypress/tests",
+  "pluginsFile": "./test/integration_cypress/config/plugins.js",
+  "video": false
+}
