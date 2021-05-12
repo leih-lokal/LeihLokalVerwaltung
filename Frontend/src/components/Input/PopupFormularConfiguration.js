@@ -1,5 +1,7 @@
 class PopupFormularConfiguration {
-  constructor() {}
+  constructor() {
+    this.displaySaveButton = true;
+  }
 
   setDocName(docName) {
     this.docName = docName;
@@ -18,6 +20,11 @@ class PopupFormularConfiguration {
 
   setDisplayDeleteButton(displayDeleteButton) {
     this.displayDeleteButton = displayDeleteButton;
+    return this;
+  }
+
+  setDisplaySaveButton(displaySaveButton) {
+    this.displaySaveButton = displaySaveButton;
     return this;
   }
 
