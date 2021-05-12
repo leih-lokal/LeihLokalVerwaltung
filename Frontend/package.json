@@ -51,7 +51,7 @@
     "jest": "^26.6.3",
     "jest-svelte-events": "^1.0.5",
     "lru-cache": "^6.0.0",
-    "mocha": "^8.3.2",
+    "mocha": "^8.4.0",
     "pouchdb-browser": "^7.2.1",
     "pouchdb-find": "^7.2.2",
     "rewire": "^5.0.0",
