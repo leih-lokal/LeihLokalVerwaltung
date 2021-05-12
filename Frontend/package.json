@@ -42,7 +42,7 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-register": "^6.26.0",
     "chai": "^4.3.4",
-    "concurrently": "^6.0.2",
+    "concurrently": "^6.1.0",
     "cross-env": "^7.0.3",
     "cypress": "^7.3.0",
     "dotenv-flow": "^3.2.0",
