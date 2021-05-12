@@ -50,7 +50,7 @@ export default {
     resolve({
       browser: true,
       dedupe: ["svelte", "svelte/transition", "svelte/internal"],
-      preferBuiltins: true,
+      preferBuiltins: false,
     }),
     commonjs(),
     nodePolyfills(),
