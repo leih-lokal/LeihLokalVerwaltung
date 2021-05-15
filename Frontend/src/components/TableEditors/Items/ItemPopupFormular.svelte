@@ -49,15 +49,58 @@
 
   const docIsDeleted = $keyValueStore["currentDoc"].status === "deleted";
 
+  const createOnWooCommerceAndUpdateInDb = (doc) =>
+    woocommerceClient
+      .createItem(doc)
+      .then((wcDoc) => {
+        doc.wc_url = wcDoc.permalink;
+        doc.wc_id = wcDoc.id;
+        Database.updateDoc(doc);
+        notifier.success("Gegenstand auf der Webseite erstellt!", 3000);
+      })
+      .catch((error) => {
+        notifier.warning("Gegenstand konnte auf der Webseite nicht erstellt werden!", 6000);
+        console.error(error);
+      });
+
   keyValueStore.setValue("mock", {
     status: "gelöscht",
   });
 
   const popupFormularConfiguration = new PopupFormularConfiguration()
     .setTitle(`Gegenstand ${createNew ? "anlegen" : "bearbeiten"}`)
-    .setDisplayDeleteButton(!createNew)
-    .setInputGroups(["Bezeichnung", "Beschreibung", "Eigenschaften", "Bild", "Status"])
+    .setDisplayDeleteButton(!createNew && !docIsDeleted)
+    .setDisplaySaveButton(!docIsDeleted)
+    .setInputGroups([
+      ...(docIsDeleted ? ["Wie­der­her­stel­len"] : []),
+      "Bezeichnung",
+      "Beschreibung",
+      "Eigenschaften",
+      "Bild",
+      "Status",
+    ])
     .setInputs([
+      ...(docIsDeleted
+        ? [
+            {
+              type: InputTypes.BUTTON,
+              group: "Wie­der­her­stel­len",
+              text: "Gelöschten Gegenstand wie­der­her­stel­len",
+              onClick: async () => {
+                if (
+                  confirm(
+                    "Soll dieser Gegenstand wiederhergestellt werden?"
+                  )
+                ) {
+                  let doc = await Database.fetchItemById($keyValueStore["currentDoc"].id);
+                  doc.status = "instock";
+                  createOnWooCommerceAndUpdateInDb(doc).then(close).then(onSave);
+                }
+              },
+              label: "",
+            },
+          ]
+        : []),
       {
         id: "item_id",
         disabled: docIsDeleted,
@@ -272,18 +315,7 @@
     doc = await Database.fetchItemById(doc.id);
 
     if (createNew) {
-      woocommerceClient
-        .createItem(doc)
-        .then((wcDoc) => {
-          doc.wc_url = wcDoc.permalink;
-          doc.wc_id = wcDoc.id;
-          Database.updateDoc(doc);
-          notifier.success("Gegenstand auf der Webseite erstellt!", 3000);
-        })
-        .catch((error) => {
-          notifier.warning("Gegenstand konnte auf der Webseite nicht erstellt werden!", 6000);
-          console.error(error);
-        });
+      createOnWooCommerceAndUpdateInDb(doc);
     } else {
       woocommerceClient
         .updateItem(doc)

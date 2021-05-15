@@ -93,6 +93,8 @@
                     isClearable={input.isClearable}
                     placeholder={input.placeholder}
                   />
+                {:else if input.type === InputTypes.BUTTON}
+                  <button on:click={input.onClick}>{input.text}</button>
                 {/if}
               </div>
             </row>
@@ -106,27 +108,29 @@
     {#if popupFormularConfiguration.displayDeleteButton}
       <button class="button-delete" on:click|once={() => dispatch("delete")}>Löschen</button>
     {/if}
-    <button
-      class="button-save"
-      on:click|once={() => {
-        popupFormularConfiguration.inputs
-          .filter((input) => input.inputType && input.inputType === "number")
-          .forEach((input) => {
-            const value = String(
-              $keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]
-            ).trim();
-            if (value.length === 0) {
-              $keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr] = 0;
-            } else {
-              $keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr] = parseInt(
-                value,
-                10
-              );
-            }
-          });
-        dispatch("save");
-      }}>Speichern</button
-    >
+    {#if popupFormularConfiguration.displaySaveButton}
+      <button
+        class="button-save"
+        on:click|once={() => {
+          popupFormularConfiguration.inputs
+            .filter((input) => input.inputType && input.inputType === "number")
+            .forEach((input) => {
+              const value = String(
+                $keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]
+              ).trim();
+              if (value.length === 0) {
+                $keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr] = 0;
+              } else {
+                $keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr] = parseInt(
+                  value,
+                  10
+                );
+              }
+            });
+          dispatch("save");
+        }}>Speichern</button
+      >
+    {/if}
   </div>
 </div>
 

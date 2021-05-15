@@ -4,4 +4,5 @@ export default Object.freeze({
   DATE: 4,
   CHECKBOX: 5,
   SELECTION: 6,
+  BUTTON: 7,
 });
