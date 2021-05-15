@@ -89,7 +89,7 @@
               onClick: async () => {
                 if (
                   confirm(
-                    "Soll dieser Gegenstand in der Datenbank und auf der Webseite wiederhergestellt werden?"
+                    "Soll dieser Gegenstand wiederhergestellt werden?"
                   )
                 ) {
                   let doc = await Database.fetchItemById($keyValueStore["currentDoc"].id);
