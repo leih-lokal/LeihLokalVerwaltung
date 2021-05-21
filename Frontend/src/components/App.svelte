@@ -5,49 +5,46 @@
   import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import Navbar from "./Layout/Navbar.svelte";
   import TableEditor from "./TableEditors/TableEditor.svelte";
-  import Modal from "./Layout/Modal.svelte";
   import Settings from "./Input/SettingsFormular.svelte";
 </script>
 
 <NotificationDisplay />
 <div class="container">
   <Navbar />
-  <Modal>
-    <Router
-      routes={{
-        "/rentals": wrap({
-          component: TableEditor,
-          props: {
-            tab: "rentals",
+  <Router
+    routes={{
+      "/rentals": wrap({
+        component: TableEditor,
+        props: {
+          tab: "rentals",
+        },
+      }),
+      "/items": wrap({
+        component: TableEditor,
+        props: {
+          tab: "items",
+        },
+      }),
+      "/customers": wrap({
+        component: TableEditor,
+        props: {
+          tab: "customers",
+        },
+      }),
+      "/settings": wrap({
+        component: Settings,
+      }),
+      "*": wrap({
+        component: {},
+        conditions: [
+          (detail) => {
+            replace("/rentals");
+            return false;
           },
-        }),
-        "/items": wrap({
-          component: TableEditor,
-          props: {
-            tab: "items",
-          },
-        }),
-        "/customers": wrap({
-          component: TableEditor,
-          props: {
-            tab: "customers",
-          },
-        }),
-        "/settings": wrap({
-          component: Settings,
-        }),
-        "*": wrap({
-          component: {},
-          conditions: [
-            (detail) => {
-              replace("/rentals");
-              return false;
-            },
-          ],
-        }),
-      }}
-    />
-  </Modal>
+        ],
+      }),
+    }}
+  />
 </div>
 
 <style>

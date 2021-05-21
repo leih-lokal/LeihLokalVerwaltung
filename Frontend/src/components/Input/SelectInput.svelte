@@ -1,7 +1,7 @@
 <script>
   import Select from "svelte-select/src/Select.svelte";
 
-  export let selectedValuesString = "";
+  export let value = "";
   export let selectionOptions = [];
   export let isMulti = true;
   export let isCreatable = true;
@@ -27,7 +27,7 @@
     return selectedValues;
   };
 
-  $: selectedValuesArray = selectedValuesFromString(selectedValuesString);
+  $: selectedValuesArray = selectedValuesFromString(value);
 </script>
 
 <Select
@@ -38,12 +38,12 @@
     let selection = event.detail;
     if (selection) {
       if (!Array.isArray(selection)) selection = [selection];
-      selectedValuesString = selection.map((item) => item.value).join(", ");
+      value = selection.map((item) => item.value).join(", ");
     } else {
-      selectedValuesString = "";
+      value = "";
     }
   }}
-  on:clear={(event) => (selectedValuesString = "")}
+  on:clear={(event) => (value = "")}
   isDisabled={disabled}
   {isMulti}
   {isCreatable}

@@ -1,7 +1,7 @@
 <script>
   import PopupFormularConfiguration from "../../Input/PopupFormularConfiguration";
   import InputTypes from "../../Input/InputTypes";
-  import PopupFormular from "../../Input/PopupFormular.svelte";
+  import PopupFormular from "../../Input/PopupFormular/PopupFormular.svelte";
   import { keyValueStore } from "../../../utils/stores";
   import { millisAtStartOfToday, millisAtStartOfDay } from "../../../utils/utils";
   import Database from "../../Database/ENV_DATABASE";

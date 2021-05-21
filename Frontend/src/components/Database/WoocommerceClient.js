@@ -146,4 +146,4 @@ class WoocommerceClient {
   }
 }
 
-export default WoocommerceClient;
+export default new WoocommerceClient();

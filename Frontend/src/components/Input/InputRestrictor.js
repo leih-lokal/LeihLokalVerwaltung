@@ -1,3 +1,5 @@
+import InputTypes from "./InputTypes.js";
+
 export function restrict(node, allowInputType) {
   const onKeyPress = (event) => {
     const keys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -7,14 +9,11 @@ export function restrict(node, allowInputType) {
     }
   };
 
-  if (allowInputType === "number") {
+  if (allowInputType === InputTypes.NUMBER) {
     node.addEventListener("keypress", onKeyPress);
   }
 
   return {
-    update(newRegex) {
-      regex = newRegex;
-    },
     destroy() {
       node.removeEventListener("keypress", onKeyPress);
     },

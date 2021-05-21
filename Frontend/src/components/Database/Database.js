@@ -17,11 +17,10 @@ const COLUMNS = {
 
 class Database {
   database;
-  existingDesignDocIds;
-  cache;
+  changeListener;
 
   constructor() {
-    this.existingDesignDocIds = new Set();
+    this.queryPaginatedDocsCache = new Cache(50);
     this.cache = new Cache(50);
     this.connect();
     this.createAllViews();
@@ -29,6 +28,7 @@ class Database {
 
   connect() {
     this.cache.reset();
+    this.queryPaginatedDocsCache.reset();
     const settings = get(settingsStore);
     this.database = new PouchDB(
       `http${settings.couchdbHTTPS ? "s" : ""}://${settings.couchdbUser}:${
@@ -52,6 +52,7 @@ class Database {
 
   createDoc(doc) {
     this.cache.reset();
+    this.queryPaginatedDocsCache.reset();
     doc["last_update"] = new Date().getTime();
     return this.database.post(doc);
   }
@@ -143,10 +144,32 @@ class Database {
     };
   }
 
-  async query(options) {
+  _listenForChanges(docIds, onDocsChanged) {
+    if (this.changeListener) {
+      this.changeListener.cancel();
+    }
+    this.changeListener = this.database
+      .changes({
+        since: "now",
+        live: true,
+        include_docs: true,
+        doc_ids: docIds,
+      })
+      .on("change", function (changes) {
+        onDocsChanged(changes.doc);
+      })
+      .on("complete", function (info) {
+        console.debug(`CouchDb changeListener completed: ${JSON.stringify(info)}`);
+      })
+      .on("error", function (err) {
+        console.error(err);
+      });
+  }
+
+  async query(options, onDocsInQueryResultUpdated, onDocsInQueryResultDeleted) {
     const cacheKey = JSON.stringify(options);
-    if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey);
+    if (this.queryPaginatedDocsCache.has(cacheKey)) {
+      return this.queryPaginatedDocsCache.get(cacheKey);
     }
 
     const { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm, docType } = options;
@@ -171,7 +194,27 @@ class Database {
       rowsPerPage,
       skip: rowsPerPage * currentPage,
     });
-    this.cache.set(cacheKey, result);
+    this.queryPaginatedDocsCache.set(cacheKey, result);
+
+    // callback if doc in query result changes
+    let ids = result.docs.map((doc) => doc._id);
+    this._listenForChanges(ids, (changedDoc) => {
+      if (changedDoc._deleted) {
+        this.queryPaginatedDocsCache.del(cacheKey);
+        onDocsInQueryResultDeleted();
+      } else {
+        result.docs = result.docs.map((doc) => {
+          if (doc._id === changedDoc._id) {
+            return changedDoc;
+          } else {
+            return doc;
+          }
+        });
+        this.queryPaginatedDocsCache.set(cacheKey, result);
+        onDocsInQueryResultUpdated(result);
+      }
+    });
+
     return result;
   }
 

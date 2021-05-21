@@ -50,4 +50,4 @@ class WoocommerceClientMock {
   }
 }
 
-export default WoocommerceClientMock;
+export default new WoocommerceClientMock();

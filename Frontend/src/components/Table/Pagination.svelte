@@ -44,15 +44,6 @@
   $: currentPage, calculatePageButtons(numberOfPages);
 </script>
 
-<svelte:window
-  on:keydown={(event) => {
-    if (event.key == "ArrowLeft") {
-      setPage(currentPage - 1);
-    } else if (event.key == "ArrowRight") {
-      setPage(currentPage + 1);
-    }
-  }}
-/>
 {#await numberOfPagesPromise}
   <div class="container">
     <div class="pagination">

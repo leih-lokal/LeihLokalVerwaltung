@@ -2,7 +2,7 @@ import { millisAtStartOfToday } from "../../utils/utils";
 import COLORS from "../Input/ColorDefs";
 import Database from "../Database/ENV_DATABASE";
 
-import CustomerPopupFormular from "./Customers/CustomerPopupFormular.svelte";
+import CustomerPopupFormular from "./Customers/CustomerFormularContent.svelte";
 import customerColumns from "./Customers/Columns.js";
 import customerFilters from "./Customers/Filters.js";
 

@@ -2,21 +2,28 @@
   import PopupFormularConfiguration from "../../Input/PopupFormularConfiguration";
   import InputTypes from "../../Input/InputTypes";
   import ColorDefs from "../../Input/ColorDefs";
-  import PopupFormular from "../../Input/PopupFormular.svelte";
+  import PopupFormular from "../../Input/PopupFormular/PopupFormular.svelte";
   import { keyValueStore } from "../../../utils/stores";
   import { millisAtStartOfToday } from "../../../utils/utils";
   import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
+  import { createOnWooCommerceAndUpdateInDb } from "./Utils";
   import WoocommerceClient from "ENV_WC_CLIENT";
   import { getContext } from "svelte";
   import columns from "./Columns";
+  import InputGroup from "../../Input/PopupFormular/InputGroup.svelte";
+  import InputRow from "../../Input/PopupFormular/InputRow.svelte";
+  import SelectInput from "../../Input/SelectInput.svelte";
+  import TextInput from "../../Input/TextInput.svelte";
+  import DateInput from "../../Input/DateInput.svelte";
 
   const { close } = getContext("simple-modal");
 
-  const woocommerceClient = new WoocommerceClient();
-
   export let createNew;
-  export let onSave;
+  export let itemDoc = {};
+  export let closePopup = () => {};
+
+  $: isDeleted = itemDoc.status === "deleted";
 
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
@@ -47,26 +54,6 @@
     );
   }
 
-  const docIsDeleted = $keyValueStore["currentDoc"].status === "deleted";
-
-  const createOnWooCommerceAndUpdateInDb = (doc) =>
-    woocommerceClient
-      .createItem(doc)
-      .then((wcDoc) => {
-        doc.wc_url = wcDoc.permalink;
-        doc.wc_id = wcDoc.id;
-        Database.updateDoc(doc);
-        notifier.success("Gegenstand auf der Webseite erstellt!", 3000);
-      })
-      .catch((error) => {
-        notifier.warning("Gegenstand konnte auf der Webseite nicht erstellt werden!", 6000);
-        console.error(error);
-      });
-
-  keyValueStore.setValue("mock", {
-    status: "gelöscht",
-  });
-
   const popupFormularConfiguration = new PopupFormularConfiguration()
     .setTitle(`Gegenstand ${createNew ? "anlegen" : "bearbeiten"}`)
     .setDisplayDeleteButton(!createNew && !docIsDeleted)
@@ -87,11 +74,7 @@
               group: "Wie­der­her­stel­len",
               text: "Gelöschten Gegenstand wie­der­her­stel­len",
               onClick: async () => {
-                if (
-                  confirm(
-                    "Soll dieser Gegenstand wiederhergestellt werden?"
-                  )
-                ) {
+                if (confirm("Soll dieser Gegenstand wiederhergestellt werden?")) {
                   let doc = await Database.fetchItemById($keyValueStore["currentDoc"].id);
                   doc.status = "instock";
                   createOnWooCommerceAndUpdateInDb(doc).then(close).then(onSave);
@@ -265,6 +248,90 @@
     ]);
 </script>
 
+<div class="content">
+  <h1>{`Gegenstand ${createNew ? "anlegen" : "bearbeiten"}`}</h1>
+  {#if isDeleted}
+    <InputGroup title={"Wie­der­her­stel­len"}>
+      <InputRow id={"restore"}>
+        <button
+          on:click={async () => {
+            if (confirm("Soll dieser Gegenstand wiederhergestellt werden?")) {
+              itemDoc.status = "instock";
+              createOnWooCommerceAndUpdateInDb(itemDoc).then(closePopup);
+            }
+          }}>Gelöschten Gegenstand wie­der­her­stel­len</button
+        >
+      </InputRow>
+    </InputGroup>
+  {/if}
+  <InputGroup title={"Bezeichnung"}>
+    <InputRow label={"Gegenstand Nr"} id={"item_id"}>
+      <TextInput
+        id={"item_id"}
+        disabled={isDeleted}
+        bind:value={itemDoc.id}
+        inputType={InputTypes.NUMBER}
+      />
+    </InputRow>
+    <InputRow label={"Gegenstand Name"} id={"name"}>
+      <TextInput id={"name"} disabled={isDeleted} bind:value={itemDoc.name} />
+    </InputRow>
+    <InputRow label={"Marke"} id={"brand"}>
+      <TextInput id={"brand"} disabled={isDeleted} bind:value={itemDoc.brand} />
+    </InputRow>
+    <InputRow label={"Typbezeichnung"} id={"itype"}>
+      <TextInput id={"itype"} disabled={isDeleted} bind:value={itemDoc.itype} />
+    </InputRow>
+  </InputGroup>
+
+  <InputGroup title={"Eigenschaften"}>
+    <InputRow label={"Kategorie"} id={"category"}>
+      <SelectInput
+        bind:selectedValuesString={itemDoc.category}
+        selectionOptions={["Küche", "Haushalt", "Garten", "Kinder", "Freizeit", "Heimwerker"]}
+        isMulti={true}
+        isCreatable={false}
+        isClearable={true}
+        disabled={isDeleted}
+      />
+    </InputRow>
+    <InputRow label={"Pfand"} id={"deposit"}>
+      <TextInput
+        id={"deposit"}
+        disabled={isDeleted}
+        bind:value={itemDoc.itype}
+        inputType={InputTypes.NUMBER}
+      />
+    </InputRow>
+    <InputRow label={"Erfasst am"} id={"added"}>
+      <DateInput disabled={isDeleted} bind:timeMillis={itemDoc.added} />
+    </InputRow>
+    <InputRow label={"Anzahl Teile"} id={"parts"}>
+      <TextInput id={"itype"} disabled={isDeleted} bind:value={itemDoc.itype} />
+    </InputRow>
+  </InputGroup>
+
+  <InputGroup title={"Beschreibung"}>
+    <InputRow label={"Beschreibung"} id={"description"}>
+      <TextInput
+        id={"description"}
+        multiline={true}
+        disabled={isDeleted}
+        bind:value={itemDoc.description}
+      />
+    </InputRow>
+    <InputRow label={"Synonyme"} id={"synonyms"}>
+      <SelectInput
+        bind:selectedValuesString={itemDoc.synonyms}
+        isMulti={true}
+        isCreatable={true}
+        isClearable={true}
+        disabled={isDeleted}
+        placeholder={"Synonyme anlegen"}
+      />
+    </InputRow>
+  </InputGroup>
+</div>
 <PopupFormular
   {popupFormularConfiguration}
   on:delete={async (event) => {
@@ -280,8 +347,7 @@
           notifier.danger("Gegenstand konnte nicht gelöscht werden!", 6000);
         });
 
-      await woocommerceClient
-        .deleteItem(doc)
+      await WoocommerceClient.deleteItem(doc)
         .then(() => notifier.success("Gegenstand von der Webseite gelöscht!", 3000))
         .catch((error) => {
           notifier.warning("Gegenstand konnte nicht von der Webseite gelöscht werden!", 6000);
@@ -317,8 +383,7 @@
     if (createNew) {
       createOnWooCommerceAndUpdateInDb(doc);
     } else {
-      woocommerceClient
-        .updateItem(doc)
+      WoocommerceClient.updateItem(doc)
         .then(() => notifier.success("Status auf der Webseite aktualisiert!", 3000))
         .catch((error) => {
           notifier.warning("Status auf der Webseite konnte nicht aktualisiert werden!", 6000);

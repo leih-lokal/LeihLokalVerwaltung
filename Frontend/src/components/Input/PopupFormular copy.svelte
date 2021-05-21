@@ -74,18 +74,14 @@
                   <DateInput
                     disabled={input.disabled}
                     quickset={input.quickset ?? {}}
-                    bind:timeMillis={$keyValueStore[input.bindTo.keyValueStoreKey][
-                      input.bindTo.attr
-                    ]}
+                    bind:value={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                     on:change={(event) => {
                       if (input.onChange) input.onChange(event.detail);
                     }}
                   />
                 {:else if input.type === InputTypes.SELECTION}
                   <SelectInput
-                    bind:selectedValuesString={$keyValueStore[input.bindTo.keyValueStoreKey][
-                      input.bindTo.attr
-                    ]}
+                    bind:value={$keyValueStore[input.bindTo.keyValueStoreKey][input.bindTo.attr]}
                     selectionOptions={input.selectionOptions}
                     disabled={input.disabled}
                     isMulti={input.isMulti}
@@ -184,15 +180,6 @@
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-  }
-
-  .footer {
-    height: 2rem;
-    padding: 0.5rem;
-    margin: 0;
-    flex-shrink: 0;
-    display: flex;
-    justify-content: space-between;
   }
 
   .button-delete {

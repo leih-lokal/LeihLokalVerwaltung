@@ -40,30 +40,30 @@
     return date;
   }
   export let quickset = {};
-  export let timeMillis = 0;
+  export let value = 0;
   export let disabled = false;
 
   function addDays(days) {
     let date = new Date();
     date.setDate(date.getDate() + days);
-    timeMillis = millisAtStartOfDay(date.getTime());
+    value = millisAtStartOfDay(date.getTime());
   }
 </script>
 
 {#if disabled}
   <input
     type="text"
-    value={timeMillis === 0 ? "-" : saveParseTimestampToString(timeMillis)}
+    value={value === 0 ? "-" : saveParseTimestampToString(value)}
     disabled={true}
   />
 {:else}
   <Datepicker
-    selected={timeMillis === 0 ? new Date() : new Date(timeMillis)}
+    selected={value === 0 ? new Date() : new Date(value)}
     on:dateSelected={(event) => {
       const date = event.detail.date;
       const newTimeMillis = date.getTime() - getTimeZoneOffsetMs(date.getTime());
-      if (millisAtStartOfDay(timeMillis) !== millisAtStartOfDay(newTimeMillis)) {
-        timeMillis = millisAtStartOfDay(newTimeMillis);
+      if (millisAtStartOfDay(value) !== millisAtStartOfDay(newTimeMillis)) {
+        value = millisAtStartOfDay(newTimeMillis);
         dispatch("change", date);
       }
     }}
@@ -74,13 +74,13 @@
     start={new Date(2018, 1, 1)}
     end={inTwoMonths()}
   >
-    <input type="text" value={timeMillis === 0 ? "-" : saveParseTimestampToString(timeMillis)} />
+    <input type="text" value={value === 0 ? "-" : saveParseTimestampToString(value)} />
     <ClearInputButton
       on:click={() => {
-        timeMillis = 0;
+        value = 0;
         dispatch("change", undefined);
       }}
-      visible={timeMillis !== 0}
+      visible={value !== 0}
     />
   </Datepicker>
 {/if}

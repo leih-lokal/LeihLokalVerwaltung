@@ -1,3 +1,14 @@
+<script>
+  export let title = "";
+</script>
+
+<div class="outerbox">
+  <div class="group">
+    <h3>{title}</h3>
+    <slot />
+  </div>
+</div>
+
 <style>
   .outerbox {
     padding: 0.6rem;
@@ -11,10 +22,9 @@
     display: flex;
     flex-direction: column;
   }
-</style>
 
-<div class="outerbox">
-  <div class="group">
-    <slot />
-  </div>
-</div>
+  h3 {
+    margin: 0;
+    padding: 0;
+  }
+</style>

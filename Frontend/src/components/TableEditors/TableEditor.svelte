@@ -6,24 +6,20 @@
   import Table from "../Table/Table.svelte";
   import CONFIG from "./TableEditorConfig";
   import Database from "../Database/ENV_DATABASE";
-  import { keyValueStore } from "../../utils/stores";
-  import { getContext } from "svelte";
   import { fade } from "svelte/transition";
+  import PopupFormular from "../Input/PopupFormular/PopupFormular.svelte";
+  import CustomerFormularContent from "./Customers/CustomerFormularContent.svelte";
+  import customerInputConfig from "../../model/customer/inputs";
 
   export let tab;
 
-  const openStyledModal = getContext("openStyledModal");
-  const openPopupFormular = (createNew) => {
-    openStyledModal(CONFIG[tab].popupFormularComponent, {
-      createNew: createNew,
-      onSave: refresh,
-    });
-  };
+  let popupFormular;
+
   const shouldBeSortedByInitially = (col) => "initialSort" in col;
 
   const refresh = () =>
-    (loadData = () => {
-      return Database.query({
+    (loadData = Database.query(
+      {
         filters: activeFilters.map((filterName) => filters.filters[filterName]),
         columns,
         searchTerm,
@@ -32,19 +28,25 @@
         sortBy: sort,
         sortReverse,
         docType,
+      },
+
+      // update table if a doc returned by this query was updated
+      (updatedDocs) => (loadData = Promise.resolve(updatedDocs)),
+
+      // query again if a doc returned by this query was deleted
+      refresh
+    )
+      .then((data) => {
+        searchInputRef?.focusSearchInput();
+        numberOfPagesPromise = data.count.then((count) => {
+          const rowsOnLastPage = count % rowsPerPage;
+          let numberOfPages = (count - rowsOnLastPage) / rowsPerPage;
+          if (rowsOnLastPage > 0) numberOfPages += 1;
+          return numberOfPages;
+        });
+        return data;
       })
-        .then((data) => {
-          searchInputRef?.focusSearchInput();
-          numberOfPagesPromise = data.count.then((count) => {
-            const rowsOnLastPage = count % rowsPerPage;
-            let numberOfPages = (count - rowsOnLastPage) / rowsPerPage;
-            if (rowsOnLastPage > 0) numberOfPages += 1;
-            return numberOfPages;
-          });
-          return data;
-        })
-        .catch((error) => console.error(error));
-    });
+      .catch((error) => console.error(error)));
 
   const initNewTab = (tab) => {
     if (tab) {
@@ -79,7 +81,7 @@
   };
 
   let searchInputRef;
-  let loadData = () => new Promise(() => {});
+  let loadData = Promise.resolve();
   let numberOfPagesPromise = new Promise(() => {});
   let searchTerm;
   let currentPage = 0;
@@ -108,6 +110,8 @@
 
 <svelte:window bind:innerHeight />
 
+<PopupFormular bind:this={popupFormular} />
+
 <SearchFilterBar
   filterOptions={Object.keys(filters.filters).map((filter) => ({ value: filter, label: filter }))}
   {activeFilters}
@@ -120,7 +124,7 @@
   bind:this={searchInputRef}
 />
 
-{#await loadData()}
+{#await loadData}
   <LoadingAnimation />
 {:then data}
   <div in:fade class="animatecontainer">
@@ -131,8 +135,11 @@
       cellBackgroundColorsFunction={CONFIG[tab].cellBackgroundColorsFunction}
       {indicateSort}
       on:rowClicked={(event) => {
-        keyValueStore.setValue("currentDoc", event.detail);
-        openPopupFormular(false);
+        popupFormular.show({
+          doc: event.detail,
+          createNew: false,
+          config: customerInputConfig,
+        });
       }}
       on:colHeaderClicked={(event) => {
         if (sortByColKey == event.detail.key) sortReverse = !sortReverse;
@@ -151,9 +158,7 @@
     </p>
   {:else}
     <p class="error">
-      Keine Verbindung mit der Datenbank. <br />{error.hasOwnProperty("message")
-        ? error.message
-        : ""}
+      Keine Verbindung zur Datenbank. <br />{error.hasOwnProperty("message") ? error.message : ""}
     </p>
   {/if}
 {/await}
@@ -162,8 +167,9 @@
 
 <AddNewItemButton
   on:click={() => {
-    keyValueStore.removeValue("currentDoc");
-    openPopupFormular(true);
+    popupFormular.show(CustomerFormularContent, {
+      createNew: true,
+    });
   }}
 />
 

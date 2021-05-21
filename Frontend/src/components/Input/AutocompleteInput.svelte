@@ -1,38 +1,44 @@
 <script>
   import AutoComplete from "simple-svelte-autocomplete";
-  import { createEventDispatcher, onMount } from "svelte";
+  import { onMount } from "svelte";
   import { restrict } from "./InputRestrictor";
 
-  const dispatch = createEventDispatcher();
+  const valueFromSelected = (selected) => {
+    if (typeof selected === "object") {
+      return selected[Object.keys(selected)[0]];
+    } else {
+      return selected;
+    }
+  };
 
   export let noResultsText;
-  export let inputId;
+  export let id;
   export let searchFunction;
   export let value;
-  export let suggestionFormat;
+  export let suggestionFormat = valueFromSelected;
   export let disabled;
   export let inputType;
 
-  onMount(() => restrict(document.getElementById(inputId), inputType));
+  onMount(() => restrict(document.getElementById(id), inputType));
 </script>
 
 <form autocomplete="off">
   <AutoComplete
+    delay={200}
     textCleanFunction={(text) => (value = text)}
     {searchFunction}
-    beforeChange={(prevSelectedValue, newSelectedValue) => {
-      dispatch("change", newSelectedValue);
-    }}
     labelFunction={(item) => {
       const values = Object.values(item);
       if (values.length === 0) return "";
-      else if (values.length === 1 && Object.keys(item)[0] === "attr") return item.attr;
       else return suggestionFormat(...values);
     }}
-    {inputId}
+    beforeChange={(prevSelectedValue, selectedValue) => (value = valueFromSelected(selectedValue))}
+    inputId={id}
     {noResultsText}
     {disabled}
     hideArrow={true}
+    localSearch={false}
+    localFiltering={false}
     selectedItem={{ attr: value }}
   />
 </form>

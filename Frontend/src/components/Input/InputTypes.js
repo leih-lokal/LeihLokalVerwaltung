@@ -5,4 +5,5 @@ export default Object.freeze({
   CHECKBOX: 5,
   SELECTION: 6,
   BUTTON: 7,
+  NUMBER: 8,
 });
