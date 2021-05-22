@@ -7,14 +7,18 @@
   import TableEditor from "./TableEditors/TableEditor.svelte";
   import Modal from "./Layout/Modal.svelte";
   import Settings from "./Input/SettingsFormular.svelte";
+  import Logger from "./Logging/Logger.svelte";
+  import LogView from "./Logging/LogView.svelte";
 </script>
 
+<Logger />
 <NotificationDisplay />
 <div class="container">
   <Navbar />
   <Modal>
     <Router
       routes={{
+        "/logs": LogView,
         "/rentals": wrap({
           component: TableEditor,
           props: {

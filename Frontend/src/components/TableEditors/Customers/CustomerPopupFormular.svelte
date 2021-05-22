@@ -8,6 +8,7 @@
   import { keyValueStore } from "../../../utils/stores";
   import { millisAtStartOfToday } from "../../../utils/utils";
   import { getContext } from "svelte";
+  import Logger from "js-logger";
 
   const { close } = getContext("simple-modal");
 
@@ -225,7 +226,7 @@
         .then(close)
         .then(onSave)
         .catch((error) => {
-          console.error(error);
+          Logger.error(error);
           notifier.danger("Kunde konnte nicht gelöscht werden!", 6000);
         });
     }
@@ -240,7 +241,7 @@
       .then(onSave)
       .catch((error) => {
         notifier.danger("Kunde konnte nicht gespeichert werden!", 6000);
-        console.error(error);
+        Logger.error(error);
       });
   }}
   on:cancel={close}

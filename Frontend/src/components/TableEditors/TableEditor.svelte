@@ -9,6 +9,7 @@
   import { keyValueStore } from "../../utils/stores";
   import { getContext } from "svelte";
   import { fade } from "svelte/transition";
+  import Logger from "js-logger";
 
   export let tab;
 
@@ -43,7 +44,11 @@
           });
           return data;
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          Logger.error(error.message);
+          // catch again in html
+          throw error;
+        });
     });
 
   const initNewTab = (tab) => {
@@ -146,8 +151,8 @@
 {:catch error}
   {#if error.status === 401}
     <p class="error">
-      Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den Einstellungen (Zahnrad
-      rechts oben) überprüfen.
+      Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den Einstellungen (Über
+      Menü rechts oben) überprüfen.
     </p>
   {:else}
     <p class="error">

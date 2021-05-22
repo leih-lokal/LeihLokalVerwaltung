@@ -7,6 +7,7 @@ import itemColumns from "../TableEditors/Items/Columns";
 import rentalColumns from "../TableEditors/Rentals/Columns";
 import { get } from "svelte/store";
 import { settingsStore } from "../../utils/settingsStore";
+import Logger from "js-logger";
 PouchDB.plugin(PouchDBFind);
 
 const COLUMNS = {
@@ -46,6 +47,7 @@ class Database {
     return this.fetchById(updatedDoc._id).then((doc) => {
       updatedDoc._rev = doc._rev;
       updatedDoc["last_update"] = new Date().getTime();
+      Logger.debug(`Updated doc from ${JSON.stringify(doc)} to ${JSON.stringify(updatedDoc)}`);
       return this.database.put(updatedDoc);
     });
   }
@@ -53,11 +55,13 @@ class Database {
   createDoc(doc) {
     this.cache.reset();
     doc["last_update"] = new Date().getTime();
+    Logger.debug(`Created doc: ${JSON.stringify(doc)}`);
     return this.database.post(doc);
   }
 
   removeDoc(doc) {
     this.cache.reset();
+    Logger.debug(`Removed doc: ${JSON.stringify(doc)}`);
     return this.database.remove(doc._id, doc._rev);
   }
 
