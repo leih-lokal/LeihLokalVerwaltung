@@ -16,6 +16,7 @@
     itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
     activeRentalsForCustomerSelector,
   } from "./Selectors";
+  import Logger from "js-logger";
 
   const { close } = getContext("simple-modal");
   const woocommerceClient = new WoocommerceClient();
@@ -296,7 +297,7 @@
       let itemIsUpdatable = true;
       const item = await Database.fetchItemById(doc.item_id).catch((error) => {
         notifier.warning(`Gegenstand '${doc.item_id}' konnte nicht geladen werden!`, 6000);
-        console.error(error);
+        Logger.error(error.message);
         itemIsUpdatable = false;
       });
       doc.image = item.image;
@@ -315,7 +316,7 @@
                   `Status von '${item.name}' konnte nicht aktualisiert werden!`,
                   6000
                 );
-                console.error(error);
+                Logger.error(error.message);
               });
           } else if (createNew) {
             item.status = "outofstock";
@@ -329,7 +330,7 @@
                   `Status von '${item.name}' konnte nicht aktualisiert werden!`,
                   6000
                 );
-                console.error(error);
+                Logger.error(error.message);
               });
           }
         }
@@ -341,7 +342,7 @@
       .then(onSave)
       .catch((error) => {
         notifier.danger("Leihvorgang konnte nicht gespeichert werden!", 6000);
-        console.error(error);
+        Logger.error(error.message);
       });
   }}
   on:delete={(event) => {
@@ -351,7 +352,7 @@
         .then(close)
         .then(onSave)
         .catch((error) => {
-          console.error(error);
+          Logger.error(error.message);
           notifier.danger("Leihvorgang konnte nicht gelöscht werden!", 6000);
         });
     }

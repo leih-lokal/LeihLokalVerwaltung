@@ -1,5 +1,6 @@
 import { get } from "svelte/store";
 import { settingsStore } from "../../utils/settingsStore";
+import Logger from "js-logger";
 
 const WC_CATEGORIES = {
   Küche: {
@@ -104,7 +105,7 @@ class WoocommerceClient {
       }
     } catch (e) {
       if (retries < 3) {
-        console.warn(e);
+        Logger.warn(e);
         return await this.fetchWithRetry(url, body, retries + 1);
       } else {
         throw e;

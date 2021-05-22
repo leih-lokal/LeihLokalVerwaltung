@@ -1,6 +1,7 @@
 import { millisAtStartOfToday } from "../../utils/utils";
 import COLORS from "../Input/ColorDefs";
 import Database from "../Database/ENV_DATABASE";
+import Logger from "js-logger";
 
 import CustomerPopupFormular from "./Customers/CustomerPopupFormular.svelte";
 import customerColumns from "./Customers/Columns.js";
@@ -67,12 +68,12 @@ export default {
       try {
         item = await Database.fetchItemById(rental.item_id);
       } catch (e) {
-        console.warn(e);
+        Logger.warn(e);
       }
       try {
         customer = await Database.fetchCustomerById(rental.customer_id);
       } catch (e) {
-        console.warn(e);
+        Logger.warn(e);
       }
       return rentalColumns.map((col) => {
         if (item.highlight && ["item_id", "item_name"].includes(col.key)) {

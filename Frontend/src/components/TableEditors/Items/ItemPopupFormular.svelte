@@ -10,6 +10,7 @@
   import WoocommerceClient from "ENV_WC_CLIENT";
   import { getContext } from "svelte";
   import columns from "./Columns";
+  import Logger from "js-logger";
 
   const { close } = getContext("simple-modal");
 
@@ -60,7 +61,7 @@
       })
       .catch((error) => {
         notifier.warning("Gegenstand konnte auf der Webseite nicht erstellt werden!", 6000);
-        console.error(error);
+        Logger.error(error.message);
       });
 
   keyValueStore.setValue("mock", {
@@ -87,11 +88,7 @@
               group: "Wie­der­her­stel­len",
               text: "Gelöschten Gegenstand wie­der­her­stel­len",
               onClick: async () => {
-                if (
-                  confirm(
-                    "Soll dieser Gegenstand wiederhergestellt werden?"
-                  )
-                ) {
+                if (confirm("Soll dieser Gegenstand wiederhergestellt werden?")) {
                   let doc = await Database.fetchItemById($keyValueStore["currentDoc"].id);
                   doc.status = "instock";
                   createOnWooCommerceAndUpdateInDb(doc).then(close).then(onSave);
@@ -276,7 +273,7 @@
         .then(close)
         .then(onSave)
         .catch((error) => {
-          console.error(error);
+          Logger.error(error.message);
           notifier.danger("Gegenstand konnte nicht gelöscht werden!", 6000);
         });
 
@@ -285,7 +282,7 @@
         .then(() => notifier.success("Gegenstand von der Webseite gelöscht!", 3000))
         .catch((error) => {
           notifier.warning("Gegenstand konnte nicht von der Webseite gelöscht werden!", 6000);
-          console.error(error);
+          Logger.error(error.message);
         });
     }
   }}
@@ -308,7 +305,7 @@
       .then(onSave)
       .catch((error) => {
         notifier.danger("Gegenstand konnte nicht gespeichert werden!", 6000);
-        console.error(error);
+        Logger.error(error.message);
       });
 
     // get _id
@@ -322,7 +319,7 @@
         .then(() => notifier.success("Status auf der Webseite aktualisiert!", 3000))
         .catch((error) => {
           notifier.warning("Status auf der Webseite konnte nicht aktualisiert werden!", 6000);
-          console.error(error);
+          Logger.error(error.message);
         });
     }
   }}
