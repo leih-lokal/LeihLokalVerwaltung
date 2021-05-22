@@ -226,7 +226,7 @@
         .then(close)
         .then(onSave)
         .catch((error) => {
-          Logger.error(error);
+          Logger.error(error.message);
           notifier.danger("Kunde konnte nicht gelöscht werden!", 6000);
         });
     }
@@ -241,7 +241,7 @@
       .then(onSave)
       .catch((error) => {
         notifier.danger("Kunde konnte nicht gespeichert werden!", 6000);
-        Logger.error(error);
+        Logger.error(error.message);
       });
   }}
   on:cancel={close}
