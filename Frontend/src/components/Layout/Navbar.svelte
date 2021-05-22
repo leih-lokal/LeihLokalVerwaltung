@@ -27,6 +27,10 @@
             onClick: () => tableToCSVExporterRef.exportCSVFile(),
           },
           {
+            title: "Logs",
+            onClick: () => replace("/logs"),
+          },
+          {
             title: "Einstellungen",
             onClick: () => replace("/settings"),
           },
