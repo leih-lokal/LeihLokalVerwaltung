@@ -1,5 +1,5 @@
 import COLORS from "../../src/components/Input/ColorDefs";
-import rentalColumns from "../../src/components/TableEditors/Rentals/Columns";
+import rentalColumns from "../../src/config/rental/columns";
 
 export default (time = new Date().getTime()) => {
   const ONE_DAY = 86400000;

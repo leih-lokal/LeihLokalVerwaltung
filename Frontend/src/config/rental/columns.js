@@ -1,4 +1,4 @@
-import { saveParseTimestampToHumanReadableString } from "../../../utils/utils.js";
+import { saveParseTimestampToHumanReadableString } from "../../utils/utils.js";
 
 export default [
   {

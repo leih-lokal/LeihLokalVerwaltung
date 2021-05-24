@@ -9,6 +9,7 @@ import { get } from "svelte/store";
 import { settingsStore } from "../../utils/settingsStore";
 PouchDB.plugin(PouchDBFind);
 
+//TODO: remove this dependency
 const COLUMNS = {
   rental: rentalColumns,
   item: itemColumns,

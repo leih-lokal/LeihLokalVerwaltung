@@ -22,7 +22,7 @@
   onMount(() => restrict(document.getElementById(id), inputType));
 </script>
 
-<form autocomplete="off">
+<div class="container">
   <AutoComplete
     delay={200}
     textCleanFunction={(text) => (value = text)}
@@ -40,5 +40,18 @@
     localSearch={false}
     localFiltering={false}
     selectedItem={{ attr: value }}
+    html5autocomplete={false}
   />
-</form>
+</div>
+
+<style>
+  .container :global(.autocomplete) {
+    width: 100%;
+  }
+
+  .container :global(.autocomplete-input) {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 2.5rem;
+  }
+</style>

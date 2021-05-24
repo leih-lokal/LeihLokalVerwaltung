@@ -6,16 +6,28 @@ import Checkbox from "../../components/Input/Checkbox.svelte";
 import Database from "../../components/Database/ENV_DATABASE";
 import InputTypes from "../../components/Input/InputTypes";
 import ColorDefs from "../../components/Input/ColorDefs";
+import onCreate from "./onCreate";
+import onDelete from "./onDelete";
+import onUpdate from "./onUpdate";
+import initialValues from "./initialValues";
 
 export default {
   title: (context) => `Kunde ${context.createNew ? "anlegen" : "bearbeiten"}`,
-  footer: {
-    confirmDeletionMessage: "Soll dieser Kunde wirklich gelöscht werden?",
-    onDeletedMessage: "Kunde gelöscht!",
-    onSavedMessage: "Kunde gespeichert!",
-    onDeleteFailedMessage: "Kunde konnte nicht gelöscht werden!",
-    onSaveFailedMessage: "Kunde konnte nicht gespeichert werden!",
-  },
+  initialValues,
+  footerButtons: (context) => [
+    {
+      text: "Abbrechen",
+      onClick: context.closePopup,
+    },
+    { text: "Löschen", onClick: () => onDelete(context.doc, context.closePopup), color: "red" },
+    {
+      text: "Speichern",
+      onClick: () =>
+        context.createNew
+          ? onCreate(context.doc, context.closePopup)
+          : onUpdate(context.doc, context.closePopup),
+    },
+  ],
   inputs: [
     {
       id: "firstname",
@@ -41,7 +53,7 @@ export default {
       group: "Adresse",
       component: AutocompleteInput,
       props: {
-        searchFunction: (searchTerm) =>
+        searchFunction: (context) => (searchTerm) =>
           Database.fetchUniqueCustomerFieldValues("street", searchTerm),
         noResultsText: "Straße noch nicht in Datenbank",
         id: "street",
@@ -63,7 +75,7 @@ export default {
       component: AutocompleteInput,
       props: {
         inputType: InputTypes.NUMBER,
-        searchFunction: (searchTerm) =>
+        searchFunction: (context) => (searchTerm) =>
           Database.fetchUniqueCustomerFieldValues("postal_code", searchTerm, true),
 
         noResultsText: "PLZ noch nicht in Datenbank",
@@ -76,7 +88,8 @@ export default {
       group: "Adresse",
       component: AutocompleteInput,
       props: {
-        searchFunction: (searchTerm) => Database.fetchUniqueCustomerFieldValues("city", searchTerm),
+        searchFunction: (context) => (searchTerm) =>
+          Database.fetchUniqueCustomerFieldValues("city", searchTerm),
         noResultsText: "Stadt noch nicht in Datenbank",
         id: "city",
       },
@@ -122,8 +135,8 @@ export default {
       label: "Verlängert am",
       group: "Mitgliedschaft",
       component: DateInput,
+      hidden: (context) => context.createNew,
       props: {
-        hidden: (context) => context.createNew,
         quickset: { 0: "Heute" },
         id: "renewed_on",
       },

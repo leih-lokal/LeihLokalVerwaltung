@@ -7,7 +7,7 @@
   import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { getContext, onMount } from "svelte";
-  import columns from "./Columns";
+  import columns from "../../../config/rental/columns";
   import WoocommerceClient from "ENV_WC_CLIENT";
   import {
     customerIdStartsWithSelector,

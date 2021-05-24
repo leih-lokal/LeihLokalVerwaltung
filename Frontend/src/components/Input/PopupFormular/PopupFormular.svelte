@@ -19,5 +19,8 @@
   styleWindow={{ width: "60rem", "max-width": "90%", height: "90%", overflow: "hidden" }}
   styleContent={{
     height: "100%",
+    padding: 0,
+    overflow: "hidden",
+    margin: 0,
   }}
 />

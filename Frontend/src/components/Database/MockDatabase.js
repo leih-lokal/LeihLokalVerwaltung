@@ -1,8 +1,8 @@
 import testdataLarge from "../../../../TestDataGenerator/testdata.json";
 import testdataSmall from "../../../test/integration_cypress/testdata.js";
-import customerColumns from "../TableEditors/Customers/Columns";
-import rentalColumns from "../TableEditors/Rentals/Columns";
-import itemColumns from "../TableEditors/Items/Columns";
+import customerColumns from "../../config/customer/columns";
+import rentalColumns from "../../config/rental/columns";
+import itemColumns from "../../config/item/columns";
 import SelectorBuilder from "./SelectorBuilder";
 
 const COLUMNS = {

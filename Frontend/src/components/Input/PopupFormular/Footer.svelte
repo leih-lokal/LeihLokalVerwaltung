@@ -1,23 +1,13 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  import Button from "../Button.svelte";
 
-  const dispatch = createEventDispatcher();
-
-  export let displaySaveButton = true;
-  export let displayDeleteButton = true;
-  export let displayCancelButton = true;
+  export let buttons = [];
 </script>
 
 <div class="footer">
-  {#if displayCancelButton}
-    <button class="button-cancel" on:click|once={() => dispatch("cancel")}>Abbrechen</button>
-  {/if}
-  {#if displayDeleteButton}
-    <button class="button-delete" on:click|once={() => dispatch("delete")}>Löschen</button>
-  {/if}
-  {#if displaySaveButton}
-    <button class="button-save" on:click|once={() => dispatch("save")}>Speichern</button>
-  {/if}
+  {#each buttons.filter((button) => !button.hidden) as button}
+    <Button on:click|once={button.onClick} text={button.text} color={button.color ?? "blue"} />
+  {/each}
 </div>
 
 <style>
@@ -28,9 +18,5 @@
     flex-shrink: 0;
     display: flex;
     justify-content: space-between;
-  }
-
-  .button-delete {
-    color: darkred;
   }
 </style>

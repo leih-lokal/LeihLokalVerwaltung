@@ -25,6 +25,6 @@
 
   h3 {
     margin: 0;
-    padding: 0;
+    padding: 0 0 0.8em 0;
   }
 </style>

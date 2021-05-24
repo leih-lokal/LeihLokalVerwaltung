@@ -6,45 +6,52 @@
   import Navbar from "./Layout/Navbar.svelte";
   import TableEditor from "./TableEditors/TableEditor.svelte";
   import Settings from "./Input/SettingsFormular.svelte";
+  import config from "../config/config.js";
+
+  const routes = new Map();
+  config.forEach((tableEditorConfig) =>
+    routes.set(
+      tableEditorConfig.route,
+      wrap({
+        component: TableEditor,
+        props: {
+          columns: tableEditorConfig.columns,
+          filters: tableEditorConfig.filters,
+          docType: tableEditorConfig.docType,
+          inputs: tableEditorConfig.inputs,
+        },
+      })
+    )
+  );
+  routes.set(
+    "/settings",
+    wrap({
+      component: Settings,
+    })
+  );
+  routes.set(
+    "*",
+    wrap({
+      component: {},
+      conditions: [
+        (detail) => {
+          replace(config[0].route);
+          return false;
+        },
+      ],
+    })
+  );
 </script>
 
 <NotificationDisplay />
 <div class="container">
-  <Navbar />
-  <Router
-    routes={{
-      "/rentals": wrap({
-        component: TableEditor,
-        props: {
-          tab: "rentals",
-        },
-      }),
-      "/items": wrap({
-        component: TableEditor,
-        props: {
-          tab: "items",
-        },
-      }),
-      "/customers": wrap({
-        component: TableEditor,
-        props: {
-          tab: "customers",
-        },
-      }),
-      "/settings": wrap({
-        component: Settings,
-      }),
-      "*": wrap({
-        component: {},
-        conditions: [
-          (detail) => {
-            replace("/rentals");
-            return false;
-          },
-        ],
-      }),
-    }}
+  <Navbar
+    tabs={config.map((tableEditorConfig) => ({
+      title: tableEditorConfig.title,
+      route: tableEditorConfig.route,
+    }))}
   />
+  <Router {routes} />
 </div>
 
 <style>
@@ -61,5 +68,13 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+  }
+
+  :global(:root) {
+    --red: #ff2c5d;
+    --yellow: #ffcd58;
+    --green: #00d39a;
+    --blue: #008cba;
+    --darkblue: #003b4e;
   }
 </style>

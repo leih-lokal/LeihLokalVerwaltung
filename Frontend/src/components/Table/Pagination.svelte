@@ -96,9 +96,14 @@
     float: left;
     padding: 8px 16px;
     text-decoration: none;
+    border-radius: 4px;
+  }
+
+  a {
+    color: var(--darkblue);
   }
   .pagination a.active {
-    background-color: #0066ff77;
+    background-color: var(--blue);
     color: white;
   }
   .pagination a:hover:not(.active):not(.disabled) {

@@ -10,7 +10,7 @@
   import { createOnWooCommerceAndUpdateInDb } from "./Utils";
   import WoocommerceClient from "ENV_WC_CLIENT";
   import { getContext } from "svelte";
-  import columns from "./Columns";
+  import columns from "../../../config/item/columns";
   import InputGroup from "../../Input/PopupFormular/InputGroup.svelte";
   import InputRow from "../../Input/PopupFormular/InputRow.svelte";
   import SelectInput from "../../Input/SelectInput.svelte";

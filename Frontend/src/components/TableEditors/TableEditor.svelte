@@ -4,18 +4,14 @@
   import SearchFilterBar from "../Input/SearchFilterBar.svelte";
   import Pagination from "../Table/Pagination.svelte";
   import Table from "../Table/Table.svelte";
-  import CONFIG from "./TableEditorConfig";
   import Database from "../Database/ENV_DATABASE";
   import { fade } from "svelte/transition";
   import PopupFormular from "../Input/PopupFormular/PopupFormular.svelte";
-  import CustomerFormularContent from "./Customers/CustomerFormularContent.svelte";
-  import customerInputConfig from "../../model/customer/inputs";
 
-  export let tab;
-
-  let popupFormular;
-
-  const shouldBeSortedByInitially = (col) => "initialSort" in col;
+  export let columns = [];
+  export let filters = [];
+  export let docType = "";
+  export let inputs = [];
 
   const refresh = () =>
     (loadData = Database.query(
@@ -48,56 +44,27 @@
       })
       .catch((error) => console.error(error)));
 
-  const initNewTab = (tab) => {
-    if (tab) {
-      if (searchTerm !== "") searchTerm = "";
-      columns = CONFIG[tab].columns;
-      filters = CONFIG[tab].filters;
-      docType = CONFIG[tab].docType;
-      activeFilters = filters.activeByDefault;
-      searchTerm = "";
-      setInitialSortCol();
-      setInitialSortDirection();
-    }
-  };
-
-  const setInitialSortCol = () => {
-    sortByColKey = columns.some(shouldBeSortedByInitially)
-      ? columns.find(shouldBeSortedByInitially).key
-      : "id";
-    const col = columns.find((col) => col.key === sortByColKey);
-    sort = col.sort ? col.sort : [sortByColKey];
-  };
-
-  const setInitialSortDirection = () =>
-    (sortReverse = columns.some(shouldBeSortedByInitially)
-      ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
-      : false);
-
   const goToFirstPage = () => {
     if (currentPage !== 0) {
       currentPage = 0;
     }
   };
 
+  let popupFormular;
   let searchInputRef;
   let loadData = Promise.resolve();
   let numberOfPagesPromise = new Promise(() => {});
-  let searchTerm;
+  let searchTerm = "";
   let currentPage = 0;
   let rowHeight = 40;
   let innerHeight = window.innerHeight;
   let activeFilters = [];
-  let sortByColKey;
+  let sortByColKey = "id";
   let sortReverse;
   let sort;
-  let columns;
-  let filters;
-  let docType;
   let indicateSort;
-  $: initNewTab(tab);
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
-  $: tab, currentPage, sortByColKey, sortReverse, searchTerm, activeFilters, refresh();
+  $: currentPage, sortByColKey, sortReverse, searchTerm, activeFilters, refresh();
   $: sortByColKey, sortReverse, searchTerm, activeFilters, goToFirstPage();
   $: indicateSort = columns.map((col) => {
     if (col.key === sortByColKey) {
@@ -106,6 +73,25 @@
       return "";
     }
   });
+
+  const shouldBeSortedByInitially = (col) => "initialSort" in col;
+
+  const setInitialSortCol = () => {
+    sortByColKey = columns.find(shouldBeSortedByInitially)
+      ? columns.find(shouldBeSortedByInitially).key
+      : sortByColKey;
+    const col = columns.find((col) => col.key === sortByColKey);
+    sort = col.sort ? col.sort : [sortByColKey];
+  };
+
+  const setInitialSortDirection = () =>
+    (sortReverse = columns.some(shouldBeSortedByInitially)
+      ? columns.find(shouldBeSortedByInitially).initialSort === "desc"
+      : false);
+  activeFilters = filters.activeByDefault;
+
+  setInitialSortCol();
+  setInitialSortDirection();
 </script>
 
 <svelte:window bind:innerHeight />
@@ -132,13 +118,14 @@
       {rowHeight}
       {columns}
       data={data.docs}
-      cellBackgroundColorsFunction={CONFIG[tab].cellBackgroundColorsFunction}
+      cellBackgroundColorsFunction={(customer) =>
+        Promise.all(columns.map(async (column) => await column.backgroundColor(customer)))}
       {indicateSort}
       on:rowClicked={(event) => {
         popupFormular.show({
           doc: event.detail,
           createNew: false,
-          config: customerInputConfig,
+          config: inputs,
         });
       }}
       on:colHeaderClicked={(event) => {
@@ -146,7 +133,7 @@
         else sortReverse = false;
         sortByColKey = event.detail.key;
         const col = columns.find((col) => col.key === sortByColKey);
-        sort = col.sort ? col.sort : [sortByColKey];
+        sort = col.sort ?? [sortByColKey];
       }}
     />
   </div>
@@ -167,8 +154,9 @@
 
 <AddNewItemButton
   on:click={() => {
-    popupFormular.show(CustomerFormularContent, {
+    popupFormular.show({
       createNew: true,
+      config: inputs,
     });
   }}
 />

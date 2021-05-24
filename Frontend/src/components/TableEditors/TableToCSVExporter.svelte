@@ -1,9 +1,9 @@
 <script>
   import Database from "../Database/ENV_DATABASE";
   import { location } from "svelte-spa-router";
-  import itemColumns from "./Items/Columns";
-  import customerColumns from "./Customers/Columns";
-  import rentalColumns from "./Rentals/Columns";
+  import itemColumns from "../../config/item/columns";
+  import customerColumns from "../../config/customer/columns";
+  import rentalColumns from "../../config/rental/columns";
 
   const columns = {
     rental: rentalColumns,

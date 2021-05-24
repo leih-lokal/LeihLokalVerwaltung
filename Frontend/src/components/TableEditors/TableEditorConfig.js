@@ -4,15 +4,15 @@ import Database from "../Database/ENV_DATABASE";
 
 import CustomerPopupFormular from "./Customers/CustomerFormularContent.svelte";
 import customerColumns from "./Customers/Columns.js";
-import customerFilters from "./Customers/Filters.js";
+import customerFilters from "../../model/customer/Filters.jsilters.js";
 
 import ItemPopupFormular from "./Items/ItemPopupFormular.svelte";
-import itemColumns from "./Items/Columns.js";
-import itemFilters from "./Items/Filters.js";
+import itemColumns from "../../config/item/columns.js";
+import itemFilters from "../../config/item/Filters.jsFilters.js";
 
 import RentalPopupFormular from "./Rentals/RentalPopupFormular.svelte";
-import rentalColumns from "./Rentals/Columns.js";
-import rentalFilters from "./Rentals/Filters.js";
+import rentalColumns from "../../config/rental/columns.js";
+import rentalFilters from "../../config/rental/filters.js";
 
 const hasReturnDate = (rental) => rental.returned_on && rental.returned_on > 0;
 
