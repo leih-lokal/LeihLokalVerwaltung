@@ -6,7 +6,16 @@
 
 <div class="footer">
   {#each buttons.filter((button) => !button.hidden) as button}
-    <Button on:click|once={button.onClick} text={button.text} color={button.color ?? "blue"} />
+    <Button
+      disabled={button.disabled ?? false}
+      on:click={async (event) => {
+        button.disabled = true;
+        await button.onClick();
+        button.disabled = false;
+      }}
+      text={button.text}
+      color={button.color ?? "blue"}
+    />
   {/each}
 </div>
 

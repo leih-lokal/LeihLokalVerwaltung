@@ -12,14 +12,19 @@
 
   const valuesToOptions = (values) => {
     return values.map(
-      (value) => selectionOptions.find((item) => item === value || item.value === value) ?? value
+      (value) =>
+        selectionOptions.find(
+          (item) => item === value || item.value === value
+        ) ?? value
     );
   };
 
   const selectedValuesFromString = (valueString) => {
     let selectedValues = [];
     if (valueString !== "") {
-      selectedValues = valuesToOptions(isMulti ? valueString.split(", ") : [valueString]);
+      selectedValues = valuesToOptions(
+        isMulti ? valueString.split(", ") : [valueString]
+      );
     }
     if (!isMulti) {
       selectedValues = selectedValues.length === 0 ? "" : selectedValues[0];
@@ -33,7 +38,9 @@
 <Select
   items={selectionOptions}
   {inputStyles}
-  selectedValue={selectedValuesArray.length !== 0 ? selectedValuesArray : undefined}
+  selectedValue={selectedValuesArray.length !== 0
+    ? selectedValuesArray
+    : undefined}
   on:select={(event) => {
     let selection = event.detail;
     if (selection) {

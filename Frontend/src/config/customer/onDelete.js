@@ -3,7 +3,7 @@ import { notifier } from "@beyonk/svelte-notifications";
 
 export default (customer, closePopup) => {
   if (confirm("Soll dieser Kunde wirklich gelöscht werden?")) {
-    Database.removeDoc(customer)
+    return Database.removeDoc(customer)
       .then(() => notifier.success("Kunde gelöscht!"))
       .then(closePopup)
       .catch((error) => {

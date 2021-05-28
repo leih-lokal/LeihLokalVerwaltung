@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { restrict } from "./InputRestrictor";
+  import InputTypes from "./InputTypes";
 
   export let id = "";
   export let readonly = false;
@@ -10,6 +11,14 @@
   export let inputType = false;
 
   const dispatch = createEventDispatcher();
+
+  $: if (
+    inputType === InputTypes.NUMBER &&
+    typeof value !== "number" &&
+    value !== ""
+  ) {
+    value = parseInt(value);
+  }
 </script>
 
 <form autocomplete="off">
@@ -33,7 +42,8 @@
       name={id}
       {readonly}
       {disabled}
-      on:keydown={(event) => (event.key === "Enter" ? event.preventDefault() : event)}
+      on:keydown={(event) =>
+        event.key === "Enter" ? event.preventDefault() : event}
       on:input={(event) => dispatch("change", event.target.value)}
     />
   {/if}

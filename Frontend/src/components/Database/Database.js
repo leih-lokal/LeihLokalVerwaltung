@@ -2,9 +2,9 @@ import PouchDB from "pouchdb-browser";
 import PouchDBFind from "pouchdb-find";
 import Cache from "lru-cache";
 import SelectorBuilder from "./SelectorBuilder";
-import customerColumns from "../TableEditors/Customers/Columns";
-import itemColumns from "../TableEditors/Items/Columns";
-import rentalColumns from "../TableEditors/Rentals/Columns";
+import customerColumns from "../../config/customer/columns";
+import rentalColumns from "../../config/rental/columns";
+import itemColumns from "../../config/item/columns";
 import { get } from "svelte/store";
 import { settingsStore } from "../../utils/settingsStore";
 PouchDB.plugin(PouchDBFind);
@@ -44,11 +44,18 @@ class Database {
 
   updateDoc(updatedDoc) {
     this.cache.reset();
-    return this.fetchById(updatedDoc._id).then((doc) => {
-      updatedDoc._rev = doc._rev;
-      updatedDoc["last_update"] = new Date().getTime();
-      return this.database.put(updatedDoc);
-    });
+    return this.database
+      .get(updatedDoc._id, {
+        revs_info: true,
+        conflicts: true,
+      })
+      .then((doc) =>
+        this.database.put({
+          _rev: doc._rev,
+          last_update: new Date().getTime(),
+          ...updatedDoc,
+        })
+      );
   }
 
   createDoc(doc) {
@@ -63,26 +70,40 @@ class Database {
     return this.database.remove(doc._id, doc._rev);
   }
 
-  fetchById(id) {
-    return this.database.get(id);
+  fetchByIdAndType(id, type) {
+    return this.findCached({
+      selector: this.selectorBuilder()
+        .withDocType(type)
+        .withField("id")
+        .equals(parseInt(id))
+        .build(),
+    }).then((result) => result.docs ?? []);
   }
 
+  // TODO: remove
   fetchItemById(id) {
     return this.findCached({
-      selector: this.selectorBuilder().withDocType("item").withField("id").equals(id).build(),
-    }).then((result) => (result.docs && result.docs.length > 0 ? result.docs[0] : {}));
+      selector: this.selectorBuilder()
+        .withDocType("item")
+        .withField("id")
+        .equals(id)
+        .build(),
+    }).then((result) =>
+      result.docs && result.docs.length > 0 ? result.docs[0] : {}
+    );
   }
 
-  itemWithIdExists(id) {
-    return this.findCached({
-      selector: this.selectorBuilder().withDocType("item").withField("id").equals(id).build(),
-    }).then((result) => result.docs && result.docs.length > 0);
-  }
-
+  // TODO: remove
   fetchCustomerById(id) {
     return this.findCached({
-      selector: this.selectorBuilder().withDocType("customer").withField("id").equals(id).build(),
-    }).then((result) => (result.docs && result.docs.length > 0 ? result.docs[0] : {}));
+      selector: this.selectorBuilder()
+        .withDocType("customer")
+        .withField("id")
+        .equals(id)
+        .build(),
+    }).then((result) =>
+      result.docs && result.docs.length > 0 ? result.docs[0] : {}
+    );
   }
 
   async nextUnusedId(docType) {
@@ -95,7 +116,9 @@ class Database {
         },
       },
     });
-    return Math.max(...result.docs.map((doc) => doc.id).filter(Number.isInteger)) + 1;
+    return (
+      Math.max(...result.docs.map((doc) => doc.id).filter(Number.isInteger)) + 1
+    );
   }
 
   async createView(name, mapFun) {
@@ -160,7 +183,9 @@ class Database {
         onDocsChanged(changes.doc);
       })
       .on("complete", function (info) {
-        console.debug(`CouchDb changeListener completed: ${JSON.stringify(info)}`);
+        console.debug(
+          `CouchDb changeListener completed: ${JSON.stringify(info)}`
+        );
       })
       .on("error", function (err) {
         console.error(err);
@@ -173,7 +198,15 @@ class Database {
       return this.queryPaginatedDocsCache.get(cacheKey);
     }
 
-    const { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm, docType } = options;
+    const {
+      filters,
+      sortBy,
+      sortReverse,
+      rowsPerPage,
+      currentPage,
+      searchTerm,
+      docType,
+    } = options;
 
     // filter by filters
     let selectors = filters.flatMap((filter) => filter.selectors);
@@ -185,13 +218,17 @@ class Database {
 
     // filter by searchTerm
     if (searchTerm && searchTerm.length > 0) {
-      selectors.push(this.selectorBuilder().searchTerm(searchTerm, COLUMNS[docType]).build());
+      selectors.push(
+        this.selectorBuilder().searchTerm(searchTerm, COLUMNS[docType]).build()
+      );
     }
 
     // query with selectors and sort
     const result = await this.docsMatchingAllSelectorsSortedBy({
       selectors,
-      sortBy: sortBy.map((field) => ({ [field]: sortReverse ? "desc" : "asc" })),
+      sortBy: sortBy.map((field) => ({
+        [field]: sortReverse ? "desc" : "asc",
+      })),
       rowsPerPage,
       skip: rowsPerPage * currentPage,
     });
@@ -248,7 +285,9 @@ class Database {
   }
 
   async fetchUniqueCustomerFieldValues(field, startsWith, isNumeric = false) {
-    let selector = this.selectorBuilder().withDocType("customer").withField(field);
+    let selector = this.selectorBuilder()
+      .withDocType("customer")
+      .withField(field);
 
     if (isNumeric) {
       selector = selector.numericFieldStartsWith(startsWith).build();
@@ -266,14 +305,18 @@ class Database {
         if (isNumeric) {
           return docs;
         } else {
-          return docs.map((doc) => ({ [field]: doc[field].trim().replace("ß", "ss") }));
+          return docs.map((doc) => ({
+            [field]: doc[field].trim().replace("ß", "ss"),
+          }));
         }
       });
     const uniqueValues = new Set();
     docs.forEach((doc) => {
       uniqueValues.add(doc[field]);
     });
-    return Array.from(uniqueValues).map((uniqueValue) => ({ [field]: uniqueValue }));
+    return Array.from(uniqueValues).map((uniqueValue) => ({
+      [field]: uniqueValue,
+    }));
   }
 
   async createAllViews() {

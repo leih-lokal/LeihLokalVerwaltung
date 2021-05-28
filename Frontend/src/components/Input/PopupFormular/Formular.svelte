@@ -25,12 +25,19 @@
   onMount(() => {
     title = injectContext(config.title);
     let inputs = config.inputs.map((input) => ({
-      props: Object.keys(input.props).map((propKey) => injectContext(input.props[propKey])),
       ...input,
+      props: (() => {
+        let props = {};
+        Object.keys(input.props ?? []).forEach(
+          (propKey) => (props[propKey] = injectContext(input.props[propKey]))
+        );
+        return props;
+      })(),
     }));
     groups = [...new Set(inputs.map((input) => input.group))];
     groups.forEach(
-      (group) => (groupedInputs[group] = inputs.filter((input) => input.group === group))
+      (group) =>
+        (groupedInputs[group] = inputs.filter((input) => input.group === group))
     );
 
     if (createNew) {
@@ -58,6 +65,7 @@
               <svelte:component
                 this={input.component}
                 {...input.props}
+                id={input.id}
                 bind:value={doc[input.id]}
               />
             </div>

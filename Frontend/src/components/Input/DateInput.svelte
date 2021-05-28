@@ -1,7 +1,10 @@
 <script>
   import Datepicker from "svelte-calendar/src/Components/Datepicker.svelte";
   import ClearInputButton from "./ClearInputButton.svelte";
-  import { saveParseTimestampToString, millisAtStartOfDay } from "../../utils/utils";
+  import {
+    saveParseTimestampToString,
+    millisAtStartOfDay,
+  } from "../../utils/utils";
   import { createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher();
@@ -61,7 +64,8 @@
     selected={value === 0 ? new Date() : new Date(value)}
     on:dateSelected={(event) => {
       const date = event.detail.date;
-      const newTimeMillis = date.getTime() - getTimeZoneOffsetMs(date.getTime());
+      const newTimeMillis =
+        date.getTime() - getTimeZoneOffsetMs(date.getTime());
       if (millisAtStartOfDay(value) !== millisAtStartOfDay(newTimeMillis)) {
         value = millisAtStartOfDay(newTimeMillis);
         dispatch("change", date);
@@ -74,7 +78,10 @@
     start={new Date(2018, 1, 1)}
     end={inTwoMonths()}
   >
-    <input type="text" value={value === 0 ? "-" : saveParseTimestampToString(value)} />
+    <input
+      type="text"
+      value={value === 0 ? "-" : saveParseTimestampToString(value)}
+    />
     <ClearInputButton
       on:click={() => {
         value = 0;
@@ -86,7 +93,9 @@
 {/if}
 
 {#each Object.entries(quickset) as [days, label]}
-  <button class="button-tight" on:click={() => addDays(parseInt(days))}>{label}</button>
+  <button class="button-tight" on:click={() => addDays(parseInt(days))}
+    >{label}</button
+  >
 {/each}
 
 <style>
@@ -99,6 +108,10 @@
     cursor: pointer;
     background-color: white;
     color: black;
+  }
+  input[disabled] {
+    color: #dcdad1;
+    background-color: rgba(239, 239, 239, 0.3);
   }
   .button-tight {
     height: 1.5rem;

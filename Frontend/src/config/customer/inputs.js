@@ -19,13 +19,16 @@ export default {
       text: "Abbrechen",
       onClick: context.closePopup,
     },
-    { text: "Löschen", onClick: () => onDelete(context.doc, context.closePopup), color: "red" },
+    {
+      text: "Löschen",
+      onClick: () => onDelete(context.doc, context.closePopup),
+      color: "red",
+    },
     {
       text: "Speichern",
-      onClick: () =>
-        context.createNew
-          ? onCreate(context.doc, context.closePopup)
-          : onUpdate(context.doc, context.closePopup),
+      onClick: context.createNew
+        ? () => onCreate(context.doc, context.closePopup)
+        : () => onUpdate(context.doc, context.closePopup),
     },
   ],
   inputs: [
@@ -34,18 +37,12 @@ export default {
       label: "Vorname",
       group: "Name",
       component: TextInput,
-      props: {
-        id: "firstname",
-      },
     },
     {
       id: "lastname",
       label: "Nachname",
       group: "Name",
       component: TextInput,
-      props: {
-        id: "lastname",
-      },
     },
     {
       id: "street",
@@ -56,7 +53,6 @@ export default {
         searchFunction: (context) => (searchTerm) =>
           Database.fetchUniqueCustomerFieldValues("street", searchTerm),
         noResultsText: "Straße noch nicht in Datenbank",
-        id: "street",
       },
     },
     {
@@ -64,9 +60,6 @@ export default {
       label: "Hausnummer",
       group: "Adresse",
       component: TextInput,
-      props: {
-        id: "house_number",
-      },
     },
     {
       id: "postal_code",
@@ -76,10 +69,13 @@ export default {
       props: {
         inputType: InputTypes.NUMBER,
         searchFunction: (context) => (searchTerm) =>
-          Database.fetchUniqueCustomerFieldValues("postal_code", searchTerm, true),
+          Database.fetchUniqueCustomerFieldValues(
+            "postal_code",
+            searchTerm,
+            true
+          ),
 
         noResultsText: "PLZ noch nicht in Datenbank",
-        id: "postal_code",
       },
     },
     {
@@ -91,7 +87,6 @@ export default {
         searchFunction: (context) => (searchTerm) =>
           Database.fetchUniqueCustomerFieldValues("city", searchTerm),
         noResultsText: "Stadt noch nicht in Datenbank",
-        id: "city",
       },
     },
     {
@@ -99,36 +94,24 @@ export default {
       label: "E-Mail",
       group: "Kontakt",
       component: TextInput,
-      props: {
-        id: "email",
-      },
     },
     {
       id: "telephone_number",
       label: "Telefonnummer",
       group: "Kontakt",
       component: TextInput,
-      props: {
-        id: "telephone_number",
-      },
     },
     {
       id: "subscribed_to_newsletter",
       label: "Newsletter",
       group: "Kontakt",
       component: Checkbox,
-      props: {
-        id: "subscribed_to_newsletter",
-      },
     },
     {
       id: "registration_date",
       label: "Beitritt",
       group: "Mitgliedschaft",
       component: DateInput,
-      props: {
-        id: "registration_date",
-      },
     },
     {
       id: "renewed_on",
@@ -138,7 +121,6 @@ export default {
       hidden: (context) => context.createNew,
       props: {
         quickset: { 0: "Heute" },
-        id: "renewed_on",
       },
     },
     {
@@ -147,7 +129,12 @@ export default {
       group: "Mitgliedschaft",
       component: SelectInput,
       props: {
-        selectionOptions: ["Internet", "Freunde & Bekannte", "Zeitung / Medien", "Nachbarschaft"],
+        selectionOptions: [
+          "Internet",
+          "Freunde & Bekannte",
+          "Zeitung / Medien",
+          "Nachbarschaft",
+        ],
         isCreatable: true,
         isMulti: true,
         isClearable: true,
@@ -159,7 +146,6 @@ export default {
       group: "Sonstiges",
       component: TextInput,
       props: {
-        id: "id",
         inputType: InputTypes.NUMBER,
       },
     },
@@ -168,9 +154,6 @@ export default {
       label: "Bemerkung",
       group: "Sonstiges",
       component: TextInput,
-      props: {
-        id: "remark",
-      },
     },
     {
       id: "highlight",
@@ -182,19 +165,23 @@ export default {
           { value: "", label: "Nicht markieren" },
           {
             value: ColorDefs.HIGHLIGHT_GREEN,
-            label: "<a style='color:" + ColorDefs.HIGHLIGHT_GREEN + "'>■</a> Grün",
+            label:
+              "<a style='color:" + ColorDefs.HIGHLIGHT_GREEN + "'>■</a> Grün",
           },
           {
             value: ColorDefs.HIGHLIGHT_BLUE,
-            label: "<a style='color: " + ColorDefs.HIGHLIGHT_BLUE + "'>■</a> Blau",
+            label:
+              "<a style='color: " + ColorDefs.HIGHLIGHT_BLUE + "'>■</a> Blau",
           },
           {
             value: ColorDefs.HIGHLIGHT_YELLOW,
-            label: "<a style='color: " + ColorDefs.HIGHLIGHT_YELLOW + "'>■</a> Gelb",
+            label:
+              "<a style='color: " + ColorDefs.HIGHLIGHT_YELLOW + "'>■</a> Gelb",
           },
           {
             value: ColorDefs.HIGHLIGHT_RED,
-            label: "<a style='color: " + ColorDefs.HIGHLIGHT_RED + "'>■</a> Rot",
+            label:
+              "<a style='color: " + ColorDefs.HIGHLIGHT_RED + "'>■</a> Rot",
           },
         ],
         isClearable: true,
