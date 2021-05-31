@@ -64,7 +64,12 @@
   let sort;
   let indicateSort;
   $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
-  $: currentPage, sortByColKey, sortReverse, searchTerm, activeFilters, refresh();
+  $: currentPage,
+    sortByColKey,
+    sortReverse,
+    searchTerm,
+    activeFilters,
+    refresh();
   $: sortByColKey, sortReverse, searchTerm, activeFilters, goToFirstPage();
   $: indicateSort = columns.map((col) => {
     if (col.key === sortByColKey) {
@@ -99,7 +104,10 @@
 <PopupFormular bind:this={popupFormular} />
 
 <SearchFilterBar
-  filterOptions={Object.keys(filters.filters).map((filter) => ({ value: filter, label: filter }))}
+  filterOptions={Object.keys(filters.filters).map((filter) => ({
+    value: filter,
+    label: filter,
+  }))}
   {activeFilters}
   bind:searchTerm
   on:filtersChanged={(event) => {
@@ -119,7 +127,7 @@
       {columns}
       data={data.docs}
       cellBackgroundColorsFunction={(customer) =>
-        Promise.all(columns.map(async (column) => await column.backgroundColor(customer)))}
+        Promise.all(columns.map((column) => column.backgroundColor(customer)))}
       {indicateSort}
       on:rowClicked={(event) => {
         popupFormular.show({
@@ -140,12 +148,14 @@
 {:catch error}
   {#if error.status === 401}
     <p class="error">
-      Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den Einstellungen (Zahnrad
-      rechts oben) überprüfen.
+      Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den
+      Einstellungen (Zahnrad rechts oben) überprüfen.
     </p>
   {:else}
     <p class="error">
-      Keine Verbindung zur Datenbank. <br />{error.hasOwnProperty("message") ? error.message : ""}
+      Keine Verbindung zur Datenbank. <br />{error.hasOwnProperty("message")
+        ? error.message
+        : ""}
     </p>
   {/if}
 {/await}

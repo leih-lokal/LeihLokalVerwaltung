@@ -29,9 +29,13 @@ class MockDatabase {
         continue;
       }
       if (selectorKey === "$or") {
-        return selectorObj.some((innerSelector) => this.matchesSelector(doc, innerSelector));
+        return selectorObj.some((innerSelector) =>
+          this.matchesSelector(doc, innerSelector)
+        );
       } else if (selectorKey === "$and") {
-        return selectorObj.every((innerSelector) => this.matchesSelector(doc, innerSelector));
+        return selectorObj.every((innerSelector) =>
+          this.matchesSelector(doc, innerSelector)
+        );
       } else {
         let comparator = Object.keys(selectorObj)[0];
         let value = doc[selectorKey];
@@ -53,7 +57,10 @@ class MockDatabase {
           return (typeof value !== "undefined") === compareToValue;
         } else if (comparator === "$regex") {
           if (compareToValue.startsWith("(?i)")) {
-            compareToValue = new RegExp(compareToValue.replaceAll("(?i)", ""), "i");
+            compareToValue = new RegExp(
+              compareToValue.replaceAll("(?i)", ""),
+              "i"
+            );
           }
           return value && value.match(compareToValue);
         } else {
@@ -64,30 +71,33 @@ class MockDatabase {
     }
   }
 
-  async fetchItemById(id) {
-    let docs = this.getData().filter((doc) => doc.type === "item" && doc.id === id);
-    return docs.length > 0 ? docs[0] : {};
-  }
-
   async itemWithIdExists(id) {
-    let docs = this.getData().filter((doc) => doc.type === "item" && doc.id === id);
+    let docs = this.getData().filter(
+      (doc) => doc.type === "item" && doc.id === id
+    );
     return docs.length > 0;
-  }
-
-  async fetchCustomerById(id) {
-    let docs = this.getData().filter((doc) => doc.type === "customer" && doc.id === id);
-    return docs.length > 0 ? docs[0] : {};
   }
 
   async fetchRentalByItemAndCustomerIds(itemId, customerId) {
     let docs = this.getData().filter(
-      (doc) => doc.type === "rental" && doc.item_id === itemId && doc.customer_id === customerId
+      (doc) =>
+        doc.type === "rental" &&
+        doc.item_id === itemId &&
+        doc.customer_id === customerId
     );
     return docs.length > 0 ? docs[0] : {};
   }
 
   async query(options) {
-    let { filters, sortBy, sortReverse, rowsPerPage, currentPage, searchTerm, docType } = options;
+    let {
+      filters,
+      sortBy,
+      sortReverse,
+      rowsPerPage,
+      currentPage,
+      searchTerm,
+      docType,
+    } = options;
 
     let columns = COLUMNS[docType];
 
@@ -108,13 +118,20 @@ class MockDatabase {
         searchTerm.split(" ").every((searchWord) =>
           Object.entries(doc)
             .filter(([key, value]) => columns.find((col) => col.key === key))
-            .filter(([key, value]) => columns.find((col) => col.key === key).search !== "exclude")
             .filter(
               ([key, value]) =>
-                (columns.find((col) => col.key === key).numeric && !isNaN(searchWord)) ||
-                (!columns.find((col) => col.key === key).numeric && isNaN(searchWord))
+                columns.find((col) => col.key === key).search !== "exclude"
             )
-            .some(([key, value]) => String(doc[key]).toLowerCase().includes(searchWord))
+            .filter(
+              ([key, value]) =>
+                (columns.find((col) => col.key === key).numeric &&
+                  !isNaN(searchWord)) ||
+                (!columns.find((col) => col.key === key).numeric &&
+                  isNaN(searchWord))
+            )
+            .some(([key, value]) =>
+              String(doc[key]).toLowerCase().includes(searchWord)
+            )
         )
       );
     }
@@ -124,7 +141,12 @@ class MockDatabase {
       let i = 0;
       let result = 0;
       while (i < sortBy.length && result === 0) {
-        result = a[sortBy[i]] < b[sortBy[i]] ? -1 : a[sortBy[i]] > b[sortBy[i]] ? 1 : 0;
+        result =
+          a[sortBy[i]] < b[sortBy[i]]
+            ? -1
+            : a[sortBy[i]] > b[sortBy[i]]
+            ? 1
+            : 0;
         i++;
       }
       if (sortReverse) {
@@ -139,7 +161,10 @@ class MockDatabase {
       rowsPerPage * currentPage + rowsPerPage
     );
 
-    return { docs: paginatedData, count: Promise.resolve(dataMatchingFilter.length) };
+    return {
+      docs: paginatedData,
+      count: Promise.resolve(dataMatchingFilter.length),
+    };
   }
 
   async updateDoc(updatedDoc) {
@@ -154,10 +179,13 @@ class MockDatabase {
   async createDoc(doc) {
     const makeId = () => {
       var result = "";
-      var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
       var charactersLength = characters.length;
       for (var i = 0; i < 10; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        result += characters.charAt(
+          Math.floor(Math.random() * charactersLength)
+        );
       }
       return result;
     };
@@ -188,13 +216,17 @@ class MockDatabase {
   async fetchUniqueCustomerFieldValues(field, startsWith, isNumeric = false) {
     let customers = this.getData().filter(
       (doc) =>
-        doc.type === "customer" && doc[field] && String(doc[field]).startsWith(String(startsWith))
+        doc.type === "customer" &&
+        doc[field] &&
+        String(doc[field]).startsWith(String(startsWith))
     );
     const uniqueValues = new Set();
     customers.forEach((customer) => {
       uniqueValues.add(customer[field]);
     });
-    return Array.from(uniqueValues).map((uniqueValue) => ({ [field]: uniqueValue }));
+    return Array.from(uniqueValues).map((uniqueValue) => ({
+      [field]: uniqueValue,
+    }));
   }
 
   fetchAllDocsBySelector(selector, fields) {

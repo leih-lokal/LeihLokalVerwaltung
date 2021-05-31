@@ -25,7 +25,7 @@ export default {
       text: "Löschen",
       onClick: () => onDelete(context.doc, context.closePopup),
       color: "red",
-      hidden: context.doc.status === "deleted",
+      hidden: context.doc.status === "deleted" || context.createNew,
     },
     {
       text: "Wiederherstellen",

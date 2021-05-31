@@ -23,6 +23,7 @@ export default {
       text: "Löschen",
       onClick: () => onDelete(context.doc, context.closePopup),
       color: "red",
+      hidden: context.createNew,
     },
     {
       text: "Speichern",

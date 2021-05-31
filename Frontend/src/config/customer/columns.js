@@ -1,6 +1,9 @@
-import { saveParseStringToBoolean, saveParseTimestampToString } from "../../utils/utils.js";
+import {
+  saveParseStringToBoolean,
+  saveParseTimestampToString,
+} from "../../utils/utils.js";
 import Database from "../../components/Database/ENV_DATABASE";
-import { activeRentalsForCustomerSelector } from "../../components/TableEditors/Rentals/Selectors";
+import { activeRentalsForCustomerSelector } from "../rental/selectors";
 
 const backgroundColor = async (customer) => customer.highlight;
 

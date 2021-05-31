@@ -3,7 +3,10 @@
   import InputTypes from "../../Input/InputTypes";
   import PopupFormular from "../../Input/PopupFormular/PopupFormular.svelte";
   import { keyValueStore } from "../../../utils/stores";
-  import { millisAtStartOfToday, millisAtStartOfDay } from "../../../utils/utils";
+  import {
+    millisAtStartOfToday,
+    millisAtStartOfDay,
+  } from "../../../utils/utils";
   import Database from "../../Database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { getContext, onMount } from "svelte";
@@ -15,7 +18,7 @@
     customerAttributeStartsWithIgnoreCaseSelector,
     itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
     activeRentalsForCustomerSelector,
-  } from "./Selectors";
+  } from "../../../config/rental/selectors";
 
   const { close } = getContext("simple-modal");
   const woocommerceClient = new WoocommerceClient();
@@ -26,7 +29,9 @@
   if (createNew) {
     keyValueStore.setValue("currentDoc", {
       rented_on: millisAtStartOfToday(),
-      to_return_on: millisAtStartOfDay(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+      to_return_on: millisAtStartOfDay(
+        new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+      ),
       returned_on: 0,
       extended_on: 0,
       type: "rental",
@@ -94,12 +99,16 @@
 
     if (activeRentals.length > 0 && activeRentals.length < 3) {
       notifier.warning(
-        `Kunde hat schon diese Gegenstände ausgeliehen: ${activeRentals.join(", ")}`,
+        `Kunde hat schon diese Gegenstände ausgeliehen: ${activeRentals.join(
+          ", "
+        )}`,
         6000
       );
     } else if (activeRentals.length >= 3) {
       notifier.danger(
-        `Kunde hat schon mehr als 2 Gegenstände ausgeliehen: ${activeRentals.join(", ")}`,
+        `Kunde hat schon mehr als 2 Gegenstände ausgeliehen: ${activeRentals.join(
+          ", "
+        )}`,
         6000
       );
     }
@@ -119,13 +128,12 @@
         bindTo: { keyValueStoreKey: "currentDoc", attr: "item_id" },
         onChange: setItem,
         searchFunction: (searchTerm) =>
-          Database.fetchDocsBySelector(itemIdStartsWithAndNotDeletedSelector(searchTerm), [
-            "id",
-            "name",
-            "deposit",
-            "exists_more_than_once",
-          ]),
-        suggestionFormat: (id, item_name) => `${String(id).padStart(4, "0")}: ${item_name}`,
+          Database.fetchDocsBySelector(
+            itemIdStartsWithAndNotDeletedSelector(searchTerm),
+            ["id", "name", "deposit", "exists_more_than_once"]
+          ),
+        suggestionFormat: (id, item_name) =>
+          `${String(id).padStart(4, "0")}: ${item_name}`,
         noResultsText: "Kein Gegenstand mit dieser Id",
       },
       {
@@ -137,10 +145,14 @@
         onChange: setItem,
         searchFunction: (searchTerm) =>
           Database.fetchDocsBySelector(
-            itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector("name", searchTerm),
+            itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector(
+              "name",
+              searchTerm
+            ),
             ["id", "name", "deposit", "exists_more_than_once"]
           ),
-        suggestionFormat: (id, item_name) => `${String(id).padStart(4, "0")}: ${item_name}`,
+        suggestionFormat: (id, item_name) =>
+          `${String(id).padStart(4, "0")}: ${item_name}`,
         noResultsText: "Kein Gegenstand mit diesem Name",
       },
       {
@@ -201,12 +213,12 @@
         bindTo: { keyValueStoreKey: "currentDoc", attr: "customer_id" },
         onChange: setCustomer,
         searchFunction: (searchTerm) =>
-          Database.fetchDocsBySelector(customerIdStartsWithSelector(searchTerm), [
-            "id",
-            "firstname",
-            "lastname",
-          ]),
-        suggestionFormat: (id, firstname, lastname) => `${id}: ${firstname} ${lastname}`,
+          Database.fetchDocsBySelector(
+            customerIdStartsWithSelector(searchTerm),
+            ["id", "firstname", "lastname"]
+          ),
+        suggestionFormat: (id, firstname, lastname) =>
+          `${id}: ${firstname} ${lastname}`,
         noResultsText: "Kein Kunde mit dieser Id",
       },
       {
@@ -218,10 +230,14 @@
         onChange: setCustomer,
         searchFunction: (searchTerm) =>
           Database.fetchDocsBySelector(
-            customerAttributeStartsWithIgnoreCaseSelector("lastname", searchTerm),
+            customerAttributeStartsWithIgnoreCaseSelector(
+              "lastname",
+              searchTerm
+            ),
             ["id", "firstname", "lastname"]
           ),
-        suggestionFormat: (id, firstname, lastname) => `${id}: ${firstname} ${lastname}`,
+        suggestionFormat: (id, firstname, lastname) =>
+          `${id}: ${firstname} ${lastname}`,
         noResultsText: "Kein Kunde mit diesem Name",
       },
 
@@ -295,7 +311,10 @@
     if (doc.item_id) {
       let itemIsUpdatable = true;
       const item = await Database.fetchItemById(doc.item_id).catch((error) => {
-        notifier.warning(`Gegenstand '${doc.item_id}' konnte nicht geladen werden!`, 6000);
+        notifier.warning(
+          `Gegenstand '${doc.item_id}' konnte nicht geladen werden!`,
+          6000
+        );
         console.error(error);
         itemIsUpdatable = false;
       });
@@ -303,12 +322,18 @@
 
       if (itemIsUpdatable && !item.exists_more_than_once) {
         if ($keyValueStore["options"]["updateStatusOnWebsite"]) {
-          if (doc.returned_on && doc.returned_on !== 0 && doc.returned_on <= new Date().getTime()) {
+          if (
+            doc.returned_on &&
+            doc.returned_on !== 0 &&
+            doc.returned_on <= new Date().getTime()
+          ) {
             item.status = "instock";
             await Database.updateDoc(item)
               .then(() => woocommerceClient.updateItem(item))
               .then(() => {
-                notifier.success(`'${item.name}' wurde auf als verfügbar markiert.`);
+                notifier.success(
+                  `'${item.name}' wurde auf als verfügbar markiert.`
+                );
               })
               .catch((error) => {
                 notifier.warning(
@@ -322,7 +347,9 @@
             await Database.updateDoc(item)
               .then(() => woocommerceClient.updateItem(item))
               .then(() => {
-                notifier.success(`'${item.name}' wurde als verliehen markiert.`);
+                notifier.success(
+                  `'${item.name}' wurde als verliehen markiert.`
+                );
               })
               .catch((error) => {
                 notifier.warning(

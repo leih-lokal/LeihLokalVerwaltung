@@ -1,10 +1,7 @@
-const MILLIS_PER_DAY = 86400 * 1000;
-const CURRENT_TIME_MILLIS = new Date().getTime();
-const START_OF_TODAY = millisAtStartOfDay(CURRENT_TIME_MILLIS);
+import { millisAtStartOfToday } from "../../utils/utils";
 
-function millisAtStartOfDay(millis) {
-  return millis - (millis % MILLIS_PER_DAY);
-}
+const MILLIS_PER_DAY = 86400 * 1000;
+const START_OF_TODAY = millisAtStartOfToday();
 
 export default {
   filters: {

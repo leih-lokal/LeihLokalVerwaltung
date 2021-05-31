@@ -18,6 +18,7 @@
   export let suggestionFormat = valueFromSelected;
   export let disabled;
   export let inputType;
+  export let onSelected = () => {};
 
   onMount(() => restrict(document.getElementById(id), inputType));
 </script>
@@ -28,11 +29,21 @@
     textCleanFunction={(text) => (value = text)}
     {searchFunction}
     labelFunction={(item) => {
+      console.log(item);
       const values = Object.values(item);
       if (values.length === 0) return "";
+      else if (values.length === 1 && Object.keys(item)[0] === "attr")
+        return item.attr;
       else return suggestionFormat(...values);
     }}
-    beforeChange={(prevSelectedValue, selectedValue) => (value = valueFromSelected(selectedValue))}
+    beforeChange={(prevSelectedValue, selectedValue) => {
+      const newValue = valueFromSelected(selectedValue);
+      if (value !== newValue) {
+        value = newValue;
+        onSelected(value);
+      }
+      return value;
+    }}
     inputId={id}
     {noResultsText}
     {disabled}

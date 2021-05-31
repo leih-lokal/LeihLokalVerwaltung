@@ -14,7 +14,12 @@
 
   const injectContext = (val) => {
     if (typeof val === "function") {
-      return val({ doc, createNew, closePopup });
+      return val({
+        doc,
+        createNew,
+        closePopup,
+        updateDoc: (updatedDoc) => (doc = updatedDoc),
+      });
     } else {
       return val;
     }
@@ -47,6 +52,8 @@
       });
     }
   });
+
+  $: console.log(doc);
 </script>
 
 <div class="container">

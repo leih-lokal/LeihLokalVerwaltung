@@ -1,4 +1,4 @@
-import Database from "../../Database/ENV_DATABASE";
+import Database from "../../components/Database/ENV_DATABASE";
 
 const customerIdStartsWithSelector = (searchValue) =>
   Database.selectorBuilder()
@@ -23,7 +23,10 @@ const customerAttributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
     .withDocType("customer")
     .build();
 
-const itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector = (field, searchValue) =>
+const itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector = (
+  field,
+  searchValue
+) =>
   Database.selectorBuilder()
     .withField(field)
     .startsWithIgnoreCase(searchValue)
@@ -41,10 +44,26 @@ const activeRentalsForCustomerSelector = (customerId) =>
     .equals(0)
     .build();
 
+const customerById = (customerId) =>
+  Database.selectorBuilder()
+    .withDocType("customer")
+    .withField("id")
+    .equals(customerId)
+    .build();
+
+const itemById = (itemId) =>
+  Database.selectorBuilder()
+    .withDocType("item")
+    .withField("id")
+    .equals(itemId)
+    .build();
+
 export {
   customerIdStartsWithSelector,
   itemIdStartsWithAndNotDeletedSelector,
   customerAttributeStartsWithIgnoreCaseSelector,
   itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
   activeRentalsForCustomerSelector,
+  customerById,
+  itemById,
 };

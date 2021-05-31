@@ -80,32 +80,6 @@ class Database {
     }).then((result) => result.docs ?? []);
   }
 
-  // TODO: remove
-  fetchItemById(id) {
-    return this.findCached({
-      selector: this.selectorBuilder()
-        .withDocType("item")
-        .withField("id")
-        .equals(id)
-        .build(),
-    }).then((result) =>
-      result.docs && result.docs.length > 0 ? result.docs[0] : {}
-    );
-  }
-
-  // TODO: remove
-  fetchCustomerById(id) {
-    return this.findCached({
-      selector: this.selectorBuilder()
-        .withDocType("customer")
-        .withField("id")
-        .equals(id)
-        .build(),
-    }).then((result) =>
-      result.docs && result.docs.length > 0 ? result.docs[0] : {}
-    );
-  }
-
   async nextUnusedId(docType) {
     const result = await this.findCached({
       fields: ["id"],
