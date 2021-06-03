@@ -69,12 +69,21 @@
               </div>
             {/if}
             <div class="col-input">
-              <svelte:component
-                this={input.component}
-                {...input.props}
-                id={input.id}
-                bind:value={doc[input.id]}
-              />
+              {#if input.nobind}
+                <svelte:component
+                  this={input.component}
+                  {...input.props}
+                  id={input.id}
+                  value={doc[input.id]}
+                />
+              {:else}
+                <svelte:component
+                  this={input.component}
+                  {...input.props}
+                  id={input.id}
+                  bind:value={doc[input.id]}
+                />
+              {/if}
             </div>
           </row>
         {/each}

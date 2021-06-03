@@ -46,7 +46,10 @@ export default {
       label: "Nr",
       group: "Gegenstand",
       component: AutocompleteInput,
+      nobind: true,
       props: {
+        inputType: InputTypes.NUMBER,
+        valueField: "id",
         searchFunction: (context) => (searchTerm) =>
           Database.fetchDocsBySelector(
             itemIdStartsWithAndNotDeletedSelector(searchTerm),
@@ -80,7 +83,9 @@ export default {
       label: "Name",
       group: "Gegenstand",
       component: AutocompleteInput,
+      nobind: true,
       props: {
+        valueField: "name",
         searchFunction: (context) => (searchTerm) =>
           Database.fetchDocsBySelector(
             itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector(

@@ -5,7 +5,7 @@
 
   const valueFromSelected = (selected) => {
     if (typeof selected === "object") {
-      return selected[Object.keys(selected)[0]];
+      return selected[valueField ?? Object.keys(selected)[0]];
     } else {
       return selected;
     }
@@ -19,6 +19,7 @@
   export let disabled;
   export let inputType;
   export let onSelected = () => {};
+  export let valueField;
 
   onMount(() => restrict(document.getElementById(id), inputType));
 </script>
@@ -29,7 +30,6 @@
     textCleanFunction={(text) => (value = text)}
     {searchFunction}
     labelFunction={(item) => {
-      console.log(item);
       const values = Object.values(item);
       if (values.length === 0) return "";
       else if (values.length === 1 && Object.keys(item)[0] === "attr")
