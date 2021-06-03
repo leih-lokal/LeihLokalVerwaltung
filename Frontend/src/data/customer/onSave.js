@@ -1,0 +1,28 @@
+import Database from "../../database/ENV_DATABASE";
+import { notifier } from "@beyonk/svelte-notifications";
+
+export default async (customer, closePopup, createNew) => {
+  if (
+    await Database.fetchByIdAndType(customer.id, "customer").then((results) => {
+      if (createNew) {
+        return results.length > 0;
+      } else {
+        return results.some((result) => result._id !== customer._id);
+      }
+    })
+  ) {
+    notifier.danger("Ein Kunde mit dieser Nummer existiert bereits!", 6000);
+    return;
+  }
+
+  await (createNew
+    ? Database.createDoc(customer)
+    : Database.updateDoc(customer)
+  )
+    .then((result) => notifier.success("Kunde gespeichert!"))
+    .then(closePopup)
+    .catch((error) => {
+      notifier.danger("Kunde konnte nicht gespeichert werden!", 6000);
+      console.error(error);
+    });
+};

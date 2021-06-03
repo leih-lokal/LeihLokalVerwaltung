@@ -1,22 +1,17 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { restrict } from "./InputRestrictor";
-  import InputTypes from "./InputTypes";
+  import { restrictInputToNumbers } from "../../actions/RestrictInputToNumbers";
 
   export let id = "";
   export let readonly = false;
   export let value = "";
   export let disabled = false;
   export let multiline = false;
-  export let inputType = false;
+  export let onlyNumbers = false;
 
   const dispatch = createEventDispatcher();
 
-  $: if (
-    inputType === InputTypes.NUMBER &&
-    typeof value !== "number" &&
-    value !== ""
-  ) {
+  $: if (onlyNumbers && typeof value !== "number" && value !== "") {
     value = parseInt(value);
   }
 </script>
@@ -35,7 +30,7 @@
     />
   {:else}
     <input
-      use:restrict={inputType}
+      use:restrictInputToNumbers={onlyNumbers}
       type="text"
       bind:value
       {id}

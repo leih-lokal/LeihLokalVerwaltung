@@ -4,9 +4,11 @@
   import { wrap } from "svelte-spa-router/wrap";
   import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import Navbar from "./Layout/Navbar.svelte";
-  import TableEditor from "./TableEditors/TableEditor.svelte";
+  import TableEditor from "./Table/TableEditor.svelte";
   import Settings from "./Input/SettingsFormular.svelte";
-  import config from "../config/config.js";
+  import config from "../data/config.js";
+  import createIndex from "../data/createIndex";
+  import LoadingAnimation from "./LoadingAnimation.svelte";
 
   const routes = new Map();
   config.forEach((tableEditorConfig) =>
@@ -51,7 +53,11 @@
       route: tableEditorConfig.route,
     }))}
   />
-  <Router {routes} />
+  {#await createIndex()}
+    <LoadingAnimation />
+  {:then}
+    <Router {routes} />
+  {/await}
 </div>
 
 <style>

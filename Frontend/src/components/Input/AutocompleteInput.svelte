@@ -1,7 +1,7 @@
 <script>
   import AutoComplete from "simple-svelte-autocomplete";
   import { onMount } from "svelte";
-  import { restrict } from "./InputRestrictor";
+  import { restrictInputToNumbers } from "../../actions/RestrictInputToNumbers";
 
   const valueFromSelected = (selected) => {
     if (typeof selected === "object") {
@@ -17,11 +17,13 @@
   export let value;
   export let suggestionFormat = valueFromSelected;
   export let disabled;
-  export let inputType;
+  export let onlyNumbers = false;
   export let onSelected = () => {};
   export let valueField;
 
-  onMount(() => restrict(document.getElementById(id), inputType));
+  onMount(() =>
+    restrictInputToNumbers(document.getElementById(id), onlyNumbers)
+  );
 </script>
 
 <div class="container">

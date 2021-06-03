@@ -18,7 +18,7 @@
         doc,
         createNew,
         closePopup,
-        updateDoc: (updatedDoc) => (doc = updatedDoc),
+        updateDoc: (updatedDoc) => (doc = { ...doc, ...updatedDoc }),
       });
     } else {
       return val;
@@ -72,9 +72,9 @@
               {#if input.nobind}
                 <svelte:component
                   this={input.component}
+                  value={doc[input.id]}
                   {...input.props}
                   id={input.id}
-                  value={doc[input.id]}
                 />
               {:else}
                 <svelte:component
