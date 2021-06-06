@@ -53,14 +53,14 @@ export default [
   {
     title: "Beitritt",
     key: "registration_date",
-    display: async (value) => saveParseTimestampToString(value),
+    display: (value) => saveParseTimestampToString(value),
     search: "exclude",
     backgroundColor,
   },
   {
     title: "Verlängert am",
     key: "renewed_on",
-    display: async (value) => saveParseTimestampToString(value),
+    display: (value) => saveParseTimestampToString(value),
     search: "exclude",
     backgroundColor,
   },
@@ -88,7 +88,7 @@ export default [
   {
     title: "Newsletter",
     key: "subscribed_to_newsletter",
-    display: async (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
+    display: (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
     search: "exclude",
     backgroundColor,
   },
@@ -103,6 +103,7 @@ export default [
     key: "id",
     search: "exclude",
     disableSort: true,
+    export: "exclude",
     display: async (customer_id) => {
       let activeRentalIds = await Database.fetchAllDocsBySelector(
         activeRentalsForCustomerSelector(customer_id),

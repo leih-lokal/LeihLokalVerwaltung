@@ -1,12 +1,12 @@
 <script>
-  import AddNewItemButton from "../Input/AddNewItemButton.svelte";
+  import AddNewItemButton from "./AddNewItemButton.svelte";
   import LoadingAnimation from "../LoadingAnimation.svelte";
-  import SearchFilterBar from "../Input/SearchFilterBar.svelte";
+  import SearchFilterBar from "./SearchFilterBar.svelte";
   import Pagination from "../Table/Pagination.svelte";
   import Table from "../Table/Table.svelte";
   import Database from "../../database/ENV_DATABASE";
   import { fade } from "svelte/transition";
-  import PopupFormular from "../Input/PopupFormular/PopupFormular.svelte";
+  import PopupFormular from "./PopupFormular/PopupFormular.svelte";
 
   export let columns = [];
   export let filters = {};

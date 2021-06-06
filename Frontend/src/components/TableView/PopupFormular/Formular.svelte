@@ -49,13 +49,11 @@
 
     if (createNew) {
       // load initial values (e.g. first unused id when creating a new customer)
-      Object.keys(config.initialValues).forEach((key) => {
-        config.initialValues[key]().then((result) => (doc[key] = result));
+      Object.keys(config.initialValues).forEach(async (key) => {
+        doc[key] = await config.initialValues[key]();
       });
     }
   });
-
-  $: console.log(doc);
 </script>
 
 <div class="container">

@@ -5,10 +5,13 @@
   import customerColumns from "../../data/customer/columns";
   import rentalColumns from "../../data/rental/columns";
 
+  const columnShouldBeExported = (column) =>
+    !("export" in column && column.export === "exclude");
+
   const columns = {
-    rental: rentalColumns,
-    item: itemColumns,
-    customer: customerColumns,
+    rental: rentalColumns.filter(columnShouldBeExported),
+    item: itemColumns.filter(columnShouldBeExported),
+    customer: customerColumns.filter(columnShouldBeExported),
   };
 
   const filenames = {

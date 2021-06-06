@@ -1,7 +1,7 @@
 <script>
   import { link, replace } from "svelte-spa-router";
   import active from "svelte-spa-router/active";
-  import TableToCSVExporter from "../Table/TableToCSVExporter.svelte";
+  import TableToCSVExporter from "../TableView/TableToCSVExporter.svelte";
   import DropDownMenu from "./DropDownMenu.svelte";
 
   export let tabs = [];

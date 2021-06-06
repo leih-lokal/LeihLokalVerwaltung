@@ -9,11 +9,11 @@ PouchDB.plugin(PouchDBFind);
 class Database {
   database;
   changeListener;
+  onConnectedCallback;
 
   constructor() {
     this.queryPaginatedDocsCache = new Cache(50);
     this.cache = new Cache(50);
-    this.connect();
   }
 
   connect() {
@@ -25,6 +25,11 @@ class Database {
         settings.couchdbPassword
       }@${settings.couchdbHost}:${settings.couchdbPort}/${settings.couchdbName}`
     );
+    if (this.onConnectedCallback) this.onConnectedCallback();
+  }
+
+  onConnected(onConnectedCallback) {
+    this.onConnectedCallback = onConnectedCallback;
   }
 
   selectorBuilder() {

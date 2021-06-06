@@ -1,23 +1,22 @@
 import { millisAtStartOfToday, millisAtStartOfDay } from "../../utils/utils";
 
 // initial values for new customers
-// async functions for lazy loading
 
 export default {
-  rented_on: async () => millisAtStartOfToday(),
-  to_return_on: async () =>
+  rented_on: () => millisAtStartOfToday(),
+  to_return_on: () =>
     millisAtStartOfDay(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
-  returned_on: async () => 0,
-  extended_on: async () => 0,
-  type: async () => "rental",
-  image: async () => "",
-  item_id: async () => "",
-  item_name: async () => "",
-  customer_id: async () => "",
-  customer_name: async () => "",
-  passing_out_employee: async () => "",
-  receiving_employee: async () => "",
-  deposit: async () => "",
-  deposit_returned: async () => "",
-  remark: async () => "",
+  returned_on: () => 0,
+  extended_on: () => 0,
+  type: () => "rental",
+  image: () => "",
+  item_id: () => "",
+  item_name: () => "",
+  customer_id: () => "",
+  customer_name: () => "",
+  passing_out_employee: () => "",
+  receiving_employee: () => "",
+  deposit: () => "",
+  deposit_returned: () => "",
+  remark: () => "",
 };

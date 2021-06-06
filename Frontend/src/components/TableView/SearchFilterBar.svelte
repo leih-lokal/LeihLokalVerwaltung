@@ -1,5 +1,5 @@
 <script>
-  import SelectInput from "./SelectInput.svelte";
+  import SelectInput from "../Input/SelectInput.svelte";
   import { createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher();
@@ -29,7 +29,9 @@
 
   const activeFiltersFromSelectedValuesString = () => {
     if (selectedValuesString !== activeFilters.join(", ")) {
-      activeFilters = selectedValuesString.split(", ").filter((val) => val !== "");
+      activeFilters = selectedValuesString
+        .split(", ")
+        .filter((val) => val !== "");
       dispatch("filtersChanged", activeFilters);
     }
   };
@@ -51,7 +53,7 @@
     />
     <SelectInput
       selectionOptions={filterOptions}
-      bind:selectedValuesString
+      bind:value={selectedValuesString}
       placeholder={"Filter"}
       isMulti={true}
       inputStyles="font-size: 16px; cursor: pointer;"

@@ -1,5 +1,5 @@
 <script>
-  import Button from "../Button.svelte";
+  import Button from "../../Input/Button.svelte";
 
   export let buttons = [];
 </script>

@@ -4,23 +4,23 @@
   import { wrap } from "svelte-spa-router/wrap";
   import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import Navbar from "./Layout/Navbar.svelte";
-  import TableEditor from "./Table/TableEditor.svelte";
+  import TableView from "./TableView/TableView.svelte";
   import Settings from "./Input/SettingsFormular.svelte";
   import config from "../data/config.js";
   import createIndex from "../data/createIndex";
-  import LoadingAnimation from "./LoadingAnimation.svelte";
+  import Database from "../database/ENV_DATABASE";
 
   const routes = new Map();
-  config.forEach((tableEditorConfig) =>
+  config.forEach((tableViewConfig) =>
     routes.set(
-      tableEditorConfig.route,
+      tableViewConfig.route,
       wrap({
-        component: TableEditor,
+        component: TableView,
         props: {
-          columns: tableEditorConfig.columns,
-          filters: tableEditorConfig.filters,
-          docType: tableEditorConfig.docType,
-          inputs: tableEditorConfig.inputs,
+          columns: tableViewConfig.columns,
+          filters: tableViewConfig.filters,
+          docType: tableViewConfig.docType,
+          inputs: tableViewConfig.inputs,
         },
       })
     )
@@ -43,6 +43,9 @@
       ],
     })
   );
+
+  Database.onConnected(createIndex);
+  Database.connect();
 </script>
 
 <NotificationDisplay />
@@ -53,11 +56,7 @@
       route: tableEditorConfig.route,
     }))}
   />
-  {#await createIndex()}
-    <LoadingAnimation />
-  {:then}
-    <Router {routes} />
-  {/await}
+  <Router {routes} />
 </div>
 
 <style>
