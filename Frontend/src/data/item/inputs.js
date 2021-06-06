@@ -114,6 +114,7 @@ export default {
       component: DateInput,
       props: {
         disabled: isDeleted,
+        container: (context) => context.container,
       },
     },
     {

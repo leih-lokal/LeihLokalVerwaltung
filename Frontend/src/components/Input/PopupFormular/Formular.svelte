@@ -11,6 +11,7 @@
   let groupedInputs = [];
   let title = "";
   let groups = [];
+  let inputContainer;
 
   const injectContext = (val) => {
     if (typeof val === "function") {
@@ -19,6 +20,7 @@
         createNew,
         closePopup,
         updateDoc: (updatedDoc) => (doc = { ...doc, ...updatedDoc }),
+        container: inputContainer,
       });
     } else {
       return val;
@@ -58,7 +60,7 @@
 
 <div class="container">
   <h1 class="header">{title}</h1>
-  <div class="content">
+  <div class="content" bind:this={inputContainer}>
     {#each groups.filter( (group) => groupedInputs[group].some((input) => !isHidden(input)) ) as group}
       <InputGroup title={group}>
         {#each groupedInputs[group].filter((input) => !isHidden(input)) as input}

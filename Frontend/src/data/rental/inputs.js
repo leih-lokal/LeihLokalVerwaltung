@@ -79,12 +79,13 @@ export default {
     },
     {
       text: "Speichern",
-      onClick: onSave(
-        context.doc,
-        context.closePopup,
-        updateItemStatus,
-        context.createNew
-      ),
+      onClick: () =>
+        onSave(
+          context.doc,
+          context.closePopup,
+          updateItemStatus,
+          context.createNew
+        ),
     },
   ],
   inputs: [
@@ -182,6 +183,9 @@ export default {
       label: "Ausgeliehen am",
       group: "Zeitraum",
       component: DateInput,
+      props: {
+        container: (context) => context.container,
+      },
     },
     {
       id: "extended_on",
@@ -191,6 +195,7 @@ export default {
       component: DateInput,
       props: {
         quickset: { 0: "Heute" },
+        container: (context) => context.container,
       },
     },
     {
@@ -200,15 +205,18 @@ export default {
       component: DateInput,
       props: {
         quickset: { 7: "1 Woche", 14: "2 Wochen", 21: "3 Wochen" },
+        container: (context) => context.container,
       },
     },
     {
       id: "returned_on",
       label: "Zurückgegeben am",
       group: "Zeitraum",
+      component: DateInput,
       hidden: (context) => context.createNew,
       props: {
         quickset: { 0: "Heute" },
+        container: (context) => context.container,
       },
     },
 

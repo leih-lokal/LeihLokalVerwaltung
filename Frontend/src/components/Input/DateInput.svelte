@@ -46,6 +46,36 @@
   export let value = 0;
   export let disabled = false;
 
+  // make sure popup stays in container
+  export let container;
+  let datepickercontainer;
+  let popupOffsetY = "-50%";
+  const positionInContainer = () => {
+    // only if container is defined
+    if (container) {
+      const minDistanceToContainerTop = 225;
+      const minDistanceToContainerBottom = 190;
+      const inputRow = datepickercontainer.closest("row");
+      const offsetTop = inputRow.offsetTop - container.scrollTop;
+      const offsetBottom =
+        container.offsetHeight - inputRow.offsetTop + container.scrollTop;
+      // popup would be cut off at top
+      if (offsetTop < minDistanceToContainerTop) {
+        popupOffsetY = `calc(-50% + ${
+          minDistanceToContainerTop - offsetTop
+        }px)`;
+      }
+      // popup would be cut off at bottom
+      else if (offsetBottom < minDistanceToContainerBottom) {
+        popupOffsetY = `calc(-50% - ${
+          minDistanceToContainerBottom - offsetBottom
+        }px)`;
+      } else {
+        popupOffsetY = "-50%";
+      }
+    }
+  };
+
   function addDays(days) {
     let date = new Date();
     date.setDate(date.getDate() + days);
@@ -60,36 +90,43 @@
     disabled={true}
   />
 {:else}
-  <Datepicker
-    selected={value === 0 ? new Date() : new Date(value)}
-    on:dateSelected={(event) => {
-      const date = event.detail.date;
-      const newTimeMillis =
-        date.getTime() - getTimeZoneOffsetMs(date.getTime());
-      if (millisAtStartOfDay(value) !== millisAtStartOfDay(newTimeMillis)) {
-        value = millisAtStartOfDay(newTimeMillis);
-        dispatch("change", date);
-      }
-    }}
-    weekStart={1}
-    {daysOfWeek}
-    {monthsOfYear}
-    format={"#{d}.#{m}.#{Y}"}
-    start={new Date(2018, 1, 1)}
-    end={inTwoMonths()}
+  <div
+    class="datepickercontainer"
+    style="--popup-offset-y: {popupOffsetY}"
+    on:click={positionInContainer}
+    bind:this={datepickercontainer}
   >
-    <input
-      type="text"
-      value={value === 0 ? "-" : saveParseTimestampToString(value)}
-    />
-    <ClearInputButton
-      on:click={() => {
-        value = 0;
-        dispatch("change", undefined);
+    <Datepicker
+      selected={value === 0 ? new Date() : new Date(value)}
+      on:dateSelected={(event) => {
+        const date = event.detail.date;
+        const newTimeMillis =
+          date.getTime() - getTimeZoneOffsetMs(date.getTime());
+        if (millisAtStartOfDay(value) !== millisAtStartOfDay(newTimeMillis)) {
+          value = millisAtStartOfDay(newTimeMillis);
+          dispatch("change", date);
+        }
       }}
-      visible={value !== 0}
-    />
-  </Datepicker>
+      weekStart={1}
+      {daysOfWeek}
+      {monthsOfYear}
+      format={"#{d}.#{m}.#{Y}"}
+      start={new Date(2018, 1, 1)}
+      end={inTwoMonths()}
+    >
+      <input
+        type="text"
+        value={value === 0 ? "-" : saveParseTimestampToString(value)}
+      />
+      <ClearInputButton
+        on:click={() => {
+          value = 0;
+          dispatch("change", undefined);
+        }}
+        visible={value !== 0}
+      />
+    </Datepicker>
+  </div>
 {/if}
 
 {#each Object.entries(quickset) as [days, label]}
@@ -119,5 +156,9 @@
     line-height: 0.75rem;
     margin-top: 0.25rem;
     margin-left: 0.1rem;
+  }
+
+  .datepickercontainer :global(.contents-wrapper) {
+    transform: translate(-50%, var(--popup-offset-y)) !important;
   }
 </style>

@@ -25,7 +25,7 @@ export default {
     },
     {
       text: "Speichern",
-      onClick: onSave(context.doc, context.closePopup, context.createNew),
+      onClick: () => onSave(context.doc, context.closePopup, context.createNew),
     },
   ],
   inputs: [
@@ -109,6 +109,9 @@ export default {
       label: "Beitritt",
       group: "Mitgliedschaft",
       component: DateInput,
+      props: {
+        container: (context) => context.container,
+      },
     },
     {
       id: "renewed_on",
@@ -118,6 +121,7 @@ export default {
       hidden: (context) => context.createNew,
       props: {
         quickset: { 0: "Heute" },
+        container: (context) => context.container,
       },
     },
     {
