@@ -21,12 +21,15 @@
   };
 
   let cellBackgroundColors = new Array(columns.length).fill("white");
-  $: cellBackgroundColorsFunction(item).then(
-    (newCellBackgroundColors) =>
-      (cellBackgroundColors = newCellBackgroundColors.map((newColor) =>
-        newColor && newColor != "" ? newColor : defaultBackgroundColor
-      ))
-  );
+  $: cellBackgroundColorsFunction(item).then((newCellBackgroundColors) => {
+    if (!newCellBackgroundColors) newCellBackgroundColors = [];
+    while (newCellBackgroundColors.length < columns.length) {
+      newCellBackgroundColors.push("");
+    }
+    cellBackgroundColors = newCellBackgroundColors.map((newColor) =>
+      newColor && newColor != "" ? newColor : defaultBackgroundColor
+    );
+  });
 </script>
 
 <tr on:click style={`height: ${rowHeight}px;`}>

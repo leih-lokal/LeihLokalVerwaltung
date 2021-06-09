@@ -47,7 +47,7 @@
   export let disabled = false;
 
   // make sure popup stays in container
-  export let container;
+  export let container = false;
   let datepickercontainer;
   let popupOffsetY = "-50%";
   const positionInContainer = () => {

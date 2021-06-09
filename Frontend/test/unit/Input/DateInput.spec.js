@@ -7,7 +7,7 @@ const renderDateInputWithTimeMillis = (timeMillis, quickset = {}) => {
   const timeMillisStore = writable();
   timeMillisStore.set(timeMillis);
   const { container, getByText } = render(
-    html`<${DateInput} bind:timeMillis=${timeMillisStore} quickset=${quickset} />`
+    html`<${DateInput} bind:value=${timeMillisStore} quickset=${quickset} />`
   );
   const textInput = container.querySelector('input[type="text"]');
   return {
@@ -19,10 +19,9 @@ const renderDateInputWithTimeMillis = (timeMillis, quickset = {}) => {
 };
 
 const dateToString = (date) =>
-  `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(
-    2,
-    0
-  )}.${date.getFullYear()}`;
+  `${String(date.getDate()).padStart(2, 0)}.${String(
+    date.getMonth() + 1
+  ).padStart(2, 0)}.${date.getFullYear()}`;
 
 describe("DateInput", () => {
   it("displays formatted date for given time millis", () => {

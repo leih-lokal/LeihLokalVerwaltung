@@ -57,8 +57,6 @@
       placeholder={"Filter"}
       isMulti={true}
       inputStyles="font-size: 16px; cursor: pointer;"
-      listAutoWidth={false}
-      isSearchable={false}
       isCreatable={false}
     />
   </div>

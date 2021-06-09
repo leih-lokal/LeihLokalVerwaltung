@@ -2,7 +2,7 @@
   import AddNewItemButton from "./AddNewItemButton.svelte";
   import LoadingAnimation from "../LoadingAnimation.svelte";
   import SearchFilterBar from "./SearchFilterBar.svelte";
-  import Pagination from "../Table/Pagination.svelte";
+  import Pagination from "./Pagination.svelte";
   import Table from "../Table/Table.svelte";
   import Database from "../../database/ENV_DATABASE";
   import { fade } from "svelte/transition";

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import SelectorBuilder from "../../src/components/Database/SelectorBuilder";
+import SelectorBuilder from "../../src/database/SelectorBuilder";
 
 var selectorBuilder;
 
@@ -24,7 +24,12 @@ describe("SelectorBuilder", () => {
 
     expect(selector).to.deep.equal({
       $and: [
-        { $or: [{ id: { $eq: 0 } }, { $and: [{ id: { $gte: 100 } }, { id: { $lt: 1000 } }] }] },
+        {
+          $or: [
+            { id: { $eq: 0 } },
+            { $and: [{ id: { $gte: 100 } }, { id: { $lt: 1000 } }] },
+          ],
+        },
       ],
     });
   });
@@ -33,7 +38,14 @@ describe("SelectorBuilder", () => {
     let selector = selectorBuilder.searchTerm("00", [numericColumn]).build();
 
     expect(selector).to.deep.equal({
-      $and: [{ $or: [{ id: { $eq: 0 } }, { $and: [{ id: { $gte: 10 } }, { id: { $lt: 100 } }] }] }],
+      $and: [
+        {
+          $or: [
+            { id: { $eq: 0 } },
+            { $and: [{ id: { $gte: 10 } }, { id: { $lt: 100 } }] },
+          ],
+        },
+      ],
     });
   });
 
@@ -41,7 +53,14 @@ describe("SelectorBuilder", () => {
     let selector = selectorBuilder.searchTerm("000", [numericColumn]).build();
 
     expect(selector).to.deep.equal({
-      $and: [{ $or: [{ id: { $eq: 0 } }, { $and: [{ id: { $gte: 1 } }, { id: { $lt: 10 } }] }] }],
+      $and: [
+        {
+          $or: [
+            { id: { $eq: 0 } },
+            { $and: [{ id: { $gte: 1 } }, { id: { $lt: 10 } }] },
+          ],
+        },
+      ],
     });
   });
 
@@ -64,7 +83,9 @@ describe("SelectorBuilder", () => {
   });
 
   it("builds correct selector for one column text search", () => {
-    let selector = selectorBuilder.searchTerm("searchTerm", [textColumn("Column1")]).build();
+    let selector = selectorBuilder
+      .searchTerm("searchTerm", [textColumn("Column1")])
+      .build();
     expect(selector).to.deep.equal({
       $and: [{ $or: [{ column1: { $regex: "(?i)searchterm" } }] }],
     });

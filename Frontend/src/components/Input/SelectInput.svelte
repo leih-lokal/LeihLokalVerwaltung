@@ -15,7 +15,7 @@
       (value) =>
         selectionOptions.find(
           (item) => item === value || item.value === value
-        ) ?? value
+        ) || value
     );
   };
 

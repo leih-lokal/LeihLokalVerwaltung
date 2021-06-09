@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent } from "@testing-library/svelte";
-import Pagination from "../../../src/components/Table/Pagination.svelte";
+import Pagination from "../../../src/components/TableView/Pagination.svelte";
 import html from "svelte-htm";
 import { writable, get } from "svelte/store";
 
@@ -51,14 +51,20 @@ describe("Table Pagination", () => {
       if (pages <= 1) {
         expect(buttons.map((el) => el.textContent)).toMatchObject([]);
       } else {
-        expect(buttons.map((el) => el.textContent)).toMatchObject(["«", ...expectedButtons, "»"]);
+        expect(buttons.map((el) => el.textContent)).toMatchObject([
+          "«",
+          ...expectedButtons,
+          "»",
+        ]);
       }
     }
   );
 
   it("should disable left or right button when on first or last page", async () => {
     const NUMBER_OF_TEST_PAGES = 50;
-    const { clickButton, currentPageStore } = await renderPagination(NUMBER_OF_TEST_PAGES);
+    const { clickButton, currentPageStore } = await renderPagination(
+      NUMBER_OF_TEST_PAGES
+    );
 
     for (let i = 0; i < NUMBER_OF_TEST_PAGES + 10; i++) await clickButton("«");
     expect(get(currentPageStore)).toBe(0);
@@ -69,7 +75,9 @@ describe("Table Pagination", () => {
 
   it("should change current page on arrow click", async () => {
     const NUMBER_OF_TEST_PAGES = 50;
-    const { clickButton, currentPageStore } = await renderPagination(NUMBER_OF_TEST_PAGES);
+    const { clickButton, currentPageStore } = await renderPagination(
+      NUMBER_OF_TEST_PAGES
+    );
 
     expect(get(currentPageStore)).toBe(0);
     await clickButton("»");
@@ -81,7 +89,9 @@ describe("Table Pagination", () => {
   it("should change current page on button click", async () => {
     const NUMBER_OF_TEST_PAGES = 50;
 
-    const { clickButton, currentPageStore } = await renderPagination(NUMBER_OF_TEST_PAGES);
+    const { clickButton, currentPageStore } = await renderPagination(
+      NUMBER_OF_TEST_PAGES
+    );
 
     // click button for last page
     await clickButton(NUMBER_OF_TEST_PAGES + "");
