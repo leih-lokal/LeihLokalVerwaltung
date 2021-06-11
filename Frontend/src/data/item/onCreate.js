@@ -20,6 +20,7 @@ export default async (item, closePopup) => {
   setNumericValuesDefault0(item, columns);
 
   // create item on woocommerce first to store wc_id in db afterwards
+  // await needed here so that a wc_id is created and stored in db before the user can edit the item again
   await WoocommerceClient.createItem(item)
     .then((wcDoc) => {
       item.wc_url = wcDoc.permalink;

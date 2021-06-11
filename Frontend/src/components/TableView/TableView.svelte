@@ -1,5 +1,5 @@
 <script>
-  import AddNewItemButton from "./AddNewItemButton.svelte";
+  import AddNewDocButton from "./AddNewDocButton.svelte";
   import LoadingAnimation from "../LoadingAnimation.svelte";
   import SearchFilterBar from "./SearchFilterBar.svelte";
   import Pagination from "./Pagination.svelte";
@@ -162,7 +162,7 @@
 
 <Pagination {numberOfPagesPromise} bind:currentPage />
 
-<AddNewItemButton
+<AddNewDocButton
   on:click={() => {
     popupFormular.show({
       createNew: true,

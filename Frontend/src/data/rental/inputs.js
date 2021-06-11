@@ -76,6 +76,7 @@ export default {
       onClick: () => onDelete(context.doc, context.closePopup),
       color: "red",
       hidden: context.createNew,
+      loadingText: "Leihvorgang wird gelöscht",
     },
     {
       text: "Speichern",
@@ -86,6 +87,7 @@ export default {
           updateItemStatus,
           context.createNew
         ),
+      loadingText: "Leihvorgang wird gespeichert",
     },
   ],
   inputs: [

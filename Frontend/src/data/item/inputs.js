@@ -25,18 +25,21 @@ export default {
       onClick: () => onDelete(context.doc, context.closePopup),
       color: "red",
       hidden: context.doc.status === "deleted" || context.createNew,
+      loadingText: "Gegenstand wird gelöscht",
     },
     {
       text: "Wiederherstellen",
       onClick: () => onRestore(context.doc, context.closePopup),
       color: "green",
       hidden: context.doc.status !== "deleted",
+      loadingText: "Gegenstand wird wiederhergestellt",
     },
     {
       text: "Speichern",
       onClick: context.createNew
         ? () => onCreate(context.doc, context.closePopup)
         : () => onUpdate(context.doc, context.closePopup),
+      loadingText: "Gegenstand wird gespeichert",
     },
   ],
   inputs: [

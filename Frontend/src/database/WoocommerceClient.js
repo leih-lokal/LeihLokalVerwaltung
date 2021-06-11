@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import { settingsStore } from "../../utils/settingsStore";
+import { settingsStore } from "../utils/settingsStore";
 
 const WC_CATEGORIES = {
   Küche: {
@@ -76,7 +76,9 @@ class WoocommerceClient {
         .map((category) => WC_CATEGORIES[category]),
       short_description: `<div class="hidden">Art.Nr.: ${item.id}</div>${
         item.description ?? ""
-      }<br /> ${hasSynonyms ? `<small>(Synonyme: ${item.synonyms})</small>` : ""}`,
+      }<br /> ${
+        hasSynonyms ? `<small>(Synonyme: ${item.synonyms})</small>` : ""
+      }`,
       meta_data: [
         {
           key: "marke",
@@ -100,7 +102,9 @@ class WoocommerceClient {
       if (response.ok) {
         return response;
       } else {
-        throw new Error(`Failed to fetch '${url}', response code ${response.status}`);
+        throw new Error(
+          `Failed to fetch '${url}', response code ${response.status}`
+        );
       }
     } catch (e) {
       if (retries < 3) {

@@ -1,6 +1,8 @@
 import Database from "../../database/ENV_DATABASE";
 import WoocommerceClient from "../../database/ENV_WC_CLIENT";
 import { notifier } from "@beyonk/svelte-notifications";
+import columns from "./columns";
+import { setNumericValuesDefault0 } from "../utils";
 
 export default async (item, closePopup) => {
   if (
@@ -25,7 +27,8 @@ export default async (item, closePopup) => {
       console.error(error);
     });
 
-  await WoocommerceClient.updateItem(item)
+  // no await to update woocommerce in background
+  WoocommerceClient.updateItem(item)
     .then(() =>
       notifier.success("Gegenstand auf der Webseite aktualisiert!", 3000)
     )

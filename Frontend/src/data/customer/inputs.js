@@ -22,10 +22,12 @@ export default {
       onClick: () => onDelete(context.doc, context.closePopup),
       color: "red",
       hidden: context.createNew,
+      loadingText: "Kunde wird gelöscht",
     },
     {
       text: "Speichern",
       onClick: () => onSave(context.doc, context.closePopup, context.createNew),
+      loadingText: "Kunde wird gespeichert",
     },
   ],
   inputs: [

@@ -1,16 +1,24 @@
 <script>
   import Button from "../../Input/Button.svelte";
+  import LoadingAnimation from "../../LoadingAnimation.svelte";
 
   export let buttons = [];
+
+  let loadingText;
 </script>
 
+{#if loadingText}
+  <LoadingAnimation text={loadingText} color={"white"} fullScreenOverlay />
+{/if}
 <div class="footer">
   {#each buttons.filter((button) => !button.hidden) as button}
     <Button
       disabled={button.disabled ?? false}
       on:click={async (event) => {
         button.disabled = true;
+        loadingText = button.loadingText;
         await button.onClick();
+        loadingText = false;
         button.disabled = false;
       }}
       text={button.text}

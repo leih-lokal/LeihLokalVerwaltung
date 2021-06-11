@@ -1,8 +1,10 @@
 import { millisAtStartOfToday } from "../../utils/utils";
+import Database from "../../database/ENV_DATABASE";
 
 // initial values for new customers
 
 export default {
+  id: () => Database.nextUnusedId("item"),
   added: () => millisAtStartOfToday(),
   status: () => "instock",
   type: () => "item",
