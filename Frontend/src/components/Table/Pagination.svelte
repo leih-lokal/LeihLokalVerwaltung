@@ -63,7 +63,9 @@
   {#if numberOfPages > 1}
     <div class="container">
       <div class="pagination">
-        <a href="#/" on:click|preventDefault={() => setPage(currentPage - 1)}>&laquo;</a>
+        <a href="#/" on:click|preventDefault={() => setPage(currentPage - 1)}
+          >&laquo;</a
+        >
         {#each pageButtons as pageButton}
           {#if typeof pageButton === "number"}
             <a
@@ -73,9 +75,13 @@
             >
               {pageButton + 1}
             </a>
-          {:else}<a href="#/" class="disabled" on:click|preventDefault>{pageButton}</a>{/if}
+          {:else}<a href="#/" class="disabled" on:click|preventDefault
+              >{pageButton}</a
+            >{/if}
         {/each}
-        <a href="#/" on:click|preventDefault={() => setPage(currentPage + 1)}>&raquo;</a>
+        <a href="#/" on:click|preventDefault={() => setPage(currentPage + 1)}
+          >&raquo;</a
+        >
       </div>
     </div>
   {/if}
@@ -98,7 +104,7 @@
     font-size: 18px;
     padding: 10px;
     width: 60%;
-    background-color: white;
+    background-color: transparent;
   }
   .pagination a {
     color: black;
