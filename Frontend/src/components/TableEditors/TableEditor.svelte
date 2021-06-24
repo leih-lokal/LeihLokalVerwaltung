@@ -85,7 +85,6 @@
     }
   };
 
-  let tableElement;
   let rowsPerPage = maxRowsThatMightFitOnPage();
   let searchInputRef;
   let loadData = () => new Promise(() => {});
@@ -137,8 +136,7 @@
         let tableBodyHeight =
           window.innerHeight -
           paginationElement.offsetHeight -
-          tableHeaderElement.getBoundingClientRect().bottom -
-          2; // border spacing 2
+          tableHeaderElement.getBoundingClientRect().bottom;
 
         let rowsFittingInTableBody = Math.floor(
           tableBodyHeight / (tableRowElement.getBoundingClientRect().height + 2) // border spacing 2
@@ -174,7 +172,6 @@
   {:then data}
     <div in:fade class="animatecontainer">
       <Table
-        bind:tableElement
         {rowHeight}
         {columns}
         {data}

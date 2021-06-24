@@ -7,12 +7,11 @@
   export let cellBackgroundColorsFunction;
   export let data;
   export let indicateSort = {};
-  export let tableElement;
   const dispatch = createEventDispatcher();
 </script>
 
 <div class="tablecontainer">
-  <table bind:this={tableElement}>
+  <table>
     <Header {columns} {indicateSort} on:colHeaderClicked />
     {#each data as row, i (row._id)}
       <Row
