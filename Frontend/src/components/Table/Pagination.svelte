@@ -53,16 +53,12 @@
     }
   }}
 />
-{#await numberOfPagesPromise}
-  <div class="container">
-    <div class="pagination">
+<div class="container">
+  <div class="pagination">
+    {#await numberOfPagesPromise}
       <Diamonds size="100" color="#fc03a9" unit="px" />
-    </div>
-  </div>
-{:then numberOfPages}
-  {#if numberOfPages > 1}
-    <div class="container">
-      <div class="pagination">
+    {:then numberOfPages}
+      {#if numberOfPages > 1}
         <a href="#/" on:click|preventDefault={() => setPage(currentPage - 1)}
           >&laquo;</a
         >
@@ -82,15 +78,16 @@
         <a href="#/" on:click|preventDefault={() => setPage(currentPage + 1)}
           >&raquo;</a
         >
-      </div>
-    </div>
-  {/if}
-{/await}
+      {/if}
+    {/await}
+  </div>
+</div>
 
 <style>
   .container {
     position: absolute;
     bottom: 0px;
+    height: 60px;
     width: 100%;
     display: flex;
     justify-content: center;

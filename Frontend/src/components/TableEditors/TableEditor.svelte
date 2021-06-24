@@ -11,13 +11,12 @@
   import { fade } from "svelte/transition";
   import Logger from "js-logger";
   import { afterUpdate } from "svelte";
-  import Cache from "lru-cache";
 
   export let tab;
 
-  const rowHeight = 40;
+  const rowHeight = 44;
   const maxRowsThatMightFitOnPage = () =>
-    Math.round((window.innerHeight - 250) / rowHeight);
+    Math.floor((window.innerHeight - 230) / rowHeight);
   const openStyledModal = getContext("openStyledModal");
   const openPopupFormular = (createNew) => {
     openStyledModal(CONFIG[tab].popupFormularComponent, {
@@ -40,15 +39,6 @@
     })
       .then((data) => {
         searchInputRef?.focusSearchInput();
-        let cacheKey = JSON.stringify(data.docs) + innerHeight;
-        if (rowsPerPageCache.has(cacheKey)) {
-          // number of rows fitting on page already cached
-          shouldAdaptNumberOfRows = false;
-          rowsPerPage = rowsPerPageCache.get(cacheKey);
-        } else if (shouldAdaptNumberOfRows) {
-          // reset rowsPerPage and adapt after update
-          rowsPerPage = maxRowsThatMightFitOnPage();
-        }
         numberOfPagesPromise = data.count.then((count) => {
           const rowsOnLastPage = count % rowsPerPage;
           let numberOfPages = (count - rowsOnLastPage) / rowsPerPage;
@@ -95,27 +85,8 @@
     }
   };
 
-  const elementsOverlap = (topElement, bottomElement) => {
-    let rect1 = topElement.getBoundingClientRect();
-    let rect2 = bottomElement.getBoundingClientRect();
-    return rect1.bottom - rect2.top >= 0;
-  };
-
-  const adaptNumberOfRows = () => {
-    let paginationElement = document.querySelector(".pagination > a");
-    if (
-      tableElement &&
-      paginationElement &&
-      elementsOverlap(tableElement, paginationElement)
-    ) {
-      // prevent readapt after refresh
-      shouldAdaptNumberOfRows = false;
-      rowsPerPage -= 1;
-    }
-  };
-
   let tableElement;
-  let rowsPerPage = maxRowsThatMightFitOnPage() - 1;
+  let rowsPerPage = maxRowsThatMightFitOnPage();
   let searchInputRef;
   let loadData = () => new Promise(() => {});
   let numberOfPagesPromise = new Promise(() => {});
@@ -130,8 +101,6 @@
   let filters;
   let docType;
   let indicateSort;
-  let shouldAdaptNumberOfRows = true;
-  let rowsPerPageCache = new Cache(5);
   $: initNewTab(tab);
   $: tab,
     currentPage,
@@ -139,10 +108,15 @@
     sortReverse,
     searchTerm,
     activeFilters,
-    rowsPerPage,
     innerHeight,
+    rowsPerPage,
     refresh();
-  $: sortByColKey, sortReverse, searchTerm, activeFilters, goToFirstPage();
+  $: rowsPerPage,
+    sortByColKey,
+    sortReverse,
+    searchTerm,
+    activeFilters,
+    goToFirstPage();
   $: indicateSort = columns.map((col) => {
     if (col.key === sortByColKey) {
       return sortReverse ? "up" : "down";
@@ -152,16 +126,28 @@
   });
 
   afterUpdate(async () => {
-    // wait for page buttons to be rendered to detect overlap with table
-    let data = await loadData;
-    let cacheKey = JSON.stringify(data) + innerHeight;
-    await numberOfPagesPromise;
-    if (shouldAdaptNumberOfRows) {
-      setTimeout(adaptNumberOfRows, 10);
-    } else {
-      rowsPerPageCache.set(cacheKey, rowsPerPage);
-      shouldAdaptNumberOfRows = true;
-    }
+    //TODO: render table header while loading and remove this await and setTimeout
+    await loadData; // wait for data so table header is rendered (to get height)
+    setTimeout(() => {
+      let paginationElement = document.querySelector(".pagination");
+      let tableHeaderElement = document.querySelector("thead");
+      let tableRowElement = document.querySelector("table > tr");
+
+      if (paginationElement && tableHeaderElement && tableRowElement) {
+        let tableBodyHeight =
+          window.innerHeight -
+          paginationElement.offsetHeight -
+          tableHeaderElement.getBoundingClientRect().bottom -
+          2; // border spacing 2
+
+        let rowsFittingInTableBody = Math.floor(
+          tableBodyHeight / (tableRowElement.getBoundingClientRect().height + 2) // border spacing 2
+        );
+        if (rowsPerPage !== rowsFittingInTableBody) {
+          rowsPerPage = rowsFittingInTableBody;
+        }
+      }
+    }, 10);
   });
 </script>
 
@@ -182,44 +168,48 @@
   bind:this={searchInputRef}
 />
 
-{#await loadData}
-  <LoadingAnimation />
-{:then data}
-  <div in:fade class="animatecontainer">
-    <Table
-      bind:tableElement
-      {rowHeight}
-      {columns}
-      {data}
-      cellBackgroundColorsFunction={CONFIG[tab].cellBackgroundColorsFunction}
-      {indicateSort}
-      on:rowClicked={(event) => {
-        keyValueStore.setValue("currentDoc", event.detail);
-        openPopupFormular(false);
-      }}
-      on:colHeaderClicked={(event) => {
-        if (sortByColKey == event.detail.key) sortReverse = !sortReverse;
-        else sortReverse = false;
-        sortByColKey = event.detail.key;
-        const col = columns.find((col) => col.key === sortByColKey);
-        sort = col.sort ? col.sort : [sortByColKey];
-      }}
-    />
-  </div>
-{:catch error}
-  {#if error.status === 401}
-    <p class="error">
-      Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den
-      Einstellungen (Über Menü rechts oben) überprüfen.
-    </p>
-  {:else}
-    <p class="error">
-      Keine Verbindung mit der Datenbank. <br />{error.hasOwnProperty("message")
-        ? error.message
-        : ""}
-    </p>
-  {/if}
-{/await}
+<div class="tableContainer">
+  {#await loadData}
+    <LoadingAnimation />
+  {:then data}
+    <div in:fade class="animatecontainer">
+      <Table
+        bind:tableElement
+        {rowHeight}
+        {columns}
+        {data}
+        cellBackgroundColorsFunction={CONFIG[tab].cellBackgroundColorsFunction}
+        {indicateSort}
+        on:rowClicked={(event) => {
+          keyValueStore.setValue("currentDoc", event.detail);
+          openPopupFormular(false);
+        }}
+        on:colHeaderClicked={(event) => {
+          if (sortByColKey == event.detail.key) sortReverse = !sortReverse;
+          else sortReverse = false;
+          sortByColKey = event.detail.key;
+          const col = columns.find((col) => col.key === sortByColKey);
+          sort = col.sort ? col.sort : [sortByColKey];
+        }}
+      />
+    </div>
+  {:catch error}
+    {#if error.status === 401}
+      <p class="error">
+        Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den
+        Einstellungen (Über Menü rechts oben) überprüfen.
+      </p>
+    {:else}
+      <p class="error">
+        Keine Verbindung mit der Datenbank. <br />{error.hasOwnProperty(
+          "message"
+        )
+          ? error.message
+          : ""}
+      </p>
+    {/if}
+  {/await}
+</div>
 
 <Pagination {numberOfPagesPromise} bind:currentPage />
 
