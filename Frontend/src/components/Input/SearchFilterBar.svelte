@@ -29,7 +29,9 @@
 
   const activeFiltersFromSelectedValuesString = () => {
     if (selectedValuesString !== activeFilters.join(", ")) {
-      activeFilters = selectedValuesString.split(", ").filter((val) => val !== "");
+      activeFilters = selectedValuesString
+        .split(", ")
+        .filter((val) => val !== "");
       dispatch("filtersChanged", activeFilters);
     }
   };
@@ -42,7 +44,8 @@
 <div
   class="container"
   on:keydown={(event) => {
-    if (event.key == "ArrowLeft" || event.key == "ArrowRight") event.stopPropagation();
+    if (event.key == "ArrowLeft" || event.key == "ArrowRight")
+      event.stopPropagation();
   }}
 >
   <div class="searchFilterBar">
@@ -73,6 +76,7 @@
     flex-direction: column;
     align-items: stretch;
     padding: 0px;
+    width: 100%;
   }
 
   .searchFilterBar {

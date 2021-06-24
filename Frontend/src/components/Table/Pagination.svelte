@@ -53,17 +53,15 @@
     }
   }}
 />
-{#await numberOfPagesPromise}
-  <div class="container">
-    <div class="pagination">
+<div class="container">
+  <div class="pagination">
+    {#await numberOfPagesPromise}
       <Diamonds size="100" color="#fc03a9" unit="px" />
-    </div>
-  </div>
-{:then numberOfPages}
-  {#if numberOfPages > 1}
-    <div class="container">
-      <div class="pagination">
-        <a href="#/" on:click|preventDefault={() => setPage(currentPage - 1)}>&laquo;</a>
+    {:then numberOfPages}
+      {#if numberOfPages > 1}
+        <a href="#/" on:click|preventDefault={() => setPage(currentPage - 1)}
+          >&laquo;</a
+        >
         {#each pageButtons as pageButton}
           {#if typeof pageButton === "number"}
             <a
@@ -73,18 +71,23 @@
             >
               {pageButton + 1}
             </a>
-          {:else}<a href="#/" class="disabled" on:click|preventDefault>{pageButton}</a>{/if}
+          {:else}<a href="#/" class="disabled" on:click|preventDefault
+              >{pageButton}</a
+            >{/if}
         {/each}
-        <a href="#/" on:click|preventDefault={() => setPage(currentPage + 1)}>&raquo;</a>
-      </div>
-    </div>
-  {/if}
-{/await}
+        <a href="#/" on:click|preventDefault={() => setPage(currentPage + 1)}
+          >&raquo;</a
+        >
+      {/if}
+    {/await}
+  </div>
+</div>
 
 <style>
   .container {
     position: absolute;
     bottom: 0px;
+    height: 60px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -98,7 +101,7 @@
     font-size: 18px;
     padding: 10px;
     width: 60%;
-    background-color: white;
+    background-color: transparent;
   }
   .pagination a {
     color: black;
