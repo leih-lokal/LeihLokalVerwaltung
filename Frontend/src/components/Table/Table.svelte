@@ -2,27 +2,40 @@
   import { createEventDispatcher } from "svelte";
   import Row from "./Row.svelte";
   import Header from "./Header.svelte";
+  import LoadingAnimation from "../LoadingAnimation.svelte";
+  import { fade } from "svelte/transition";
   export let columns = [];
   export let rowHeight = 40;
   export let cellBackgroundColorsFunction;
-  export let data;
+  export let loadData;
   export let indicateSort = {};
+  export let onLoadDataErrorText = () => "Fehler";
   const dispatch = createEventDispatcher();
 </script>
 
 <div class="tablecontainer">
   <table>
     <Header {columns} {indicateSort} on:colHeaderClicked />
-    {#each data as row, i (row._id)}
-      <Row
-        {cellBackgroundColorsFunction}
-        {columns}
-        item={row}
-        {rowHeight}
-        evenRowNumber={i % 2 == 0}
-        on:click={() => dispatch("rowClicked", row)}
-      />
-    {/each}
+    {#await loadData}
+      <LoadingAnimation />
+    {:then data}
+      <tbody in:fade>
+        {#each data as row, i (row._id)}
+          <Row
+            {cellBackgroundColorsFunction}
+            {columns}
+            item={row}
+            {rowHeight}
+            evenRowNumber={i % 2 == 0}
+            on:click={() => dispatch("rowClicked", row)}
+          />
+        {/each}
+      </tbody>
+    {:catch error}
+      <p class="error">
+        {@html onLoadDataErrorText(error)}
+      </p>
+    {/await}
   </table>
 </div>
 
@@ -42,7 +55,16 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
   .tablecontainer::-webkit-scrollbar {
     display: none;
+  }
+
+  .error {
+    position: absolute;
+    color: red;
+    font-size: 2em;
+    margin: 20px;
+    width: 100%;
   }
 </style>

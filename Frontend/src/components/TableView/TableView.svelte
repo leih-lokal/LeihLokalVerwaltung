@@ -1,17 +1,20 @@
 <script>
   import AddNewDocButton from "./AddNewDocButton.svelte";
-  import LoadingAnimation from "../LoadingAnimation.svelte";
   import SearchFilterBar from "./SearchFilterBar.svelte";
   import Pagination from "./Pagination.svelte";
   import Table from "../Table/Table.svelte";
   import Database from "../../database/ENV_DATABASE";
-  import { fade } from "svelte/transition";
   import PopupFormular from "./PopupFormular/PopupFormular.svelte";
+  import { afterUpdate } from "svelte";
 
   export let columns = [];
   export let filters = {};
   export let docType = "";
   export let inputs = [];
+
+  const rowHeight = 44;
+  const maxRowsThatMightFitOnPage = () =>
+    Math.floor((window.innerHeight - 230) / rowHeight);
 
   const refresh = () =>
     (loadData = Database.query(
@@ -40,9 +43,14 @@
           if (rowsOnLastPage > 0) numberOfPages += 1;
           return numberOfPages;
         });
-        return data;
+        return data.docs;
       })
-      .catch((error) => console.error(error)));
+      .catch((error) => {
+        console.error(error);
+
+        // catch again in html
+        throw error;
+      }));
 
   const goToFirstPage = () => {
     if (currentPage !== 0) {
@@ -50,13 +58,13 @@
     }
   };
 
+  let rowsPerPage = maxRowsThatMightFitOnPage();
   let popupFormular;
   let searchInputRef;
   let loadData = Promise.resolve();
   let numberOfPagesPromise = new Promise(() => {});
   let searchTerm = "";
   let currentPage = 0;
-  let rowHeight = 40;
   let innerHeight = window.innerHeight;
   let activeFilters = filters.activeByDefault;
   let sortByColKey = "id";
@@ -69,6 +77,7 @@
     sortReverse,
     searchTerm,
     activeFilters,
+    innerHeight,
     refresh();
   $: sortByColKey, sortReverse, searchTerm, activeFilters, goToFirstPage();
   $: indicateSort = columns.map((col) => {
@@ -76,6 +85,25 @@
       return sortReverse ? "up" : "down";
     } else {
       return "";
+    }
+  });
+
+  afterUpdate(async () => {
+    let paginationElement = document.querySelector(".pagination");
+    let tableHeaderElement = document.querySelector("thead");
+    let tableRowElement = document.querySelector("table > tr");
+    if (paginationElement && tableHeaderElement && tableRowElement) {
+      let tableBodyHeight =
+        window.innerHeight -
+        paginationElement.offsetHeight -
+        tableHeaderElement.getBoundingClientRect().bottom -
+        2; // border spacing 2
+      let rowsFittingInTableBody = Math.floor(
+        tableBodyHeight / (tableRowElement.getBoundingClientRect().height + 2) // border spacing 2
+      );
+      if (rowsPerPage !== rowsFittingInTableBody) {
+        rowsPerPage = rowsFittingInTableBody;
+      }
     }
   });
 
@@ -118,47 +146,37 @@
   bind:this={searchInputRef}
 />
 
-{#await loadData}
-  <LoadingAnimation />
-{:then data}
-  <div in:fade class="animatecontainer">
-    <Table
-      {rowHeight}
-      {columns}
-      data={data.docs}
-      cellBackgroundColorsFunction={(customer) =>
-        Promise.all(columns.map((column) => column.backgroundColor(customer)))}
-      {indicateSort}
-      on:rowClicked={(event) => {
-        popupFormular.show({
-          doc: event.detail,
-          createNew: false,
-          config: inputs,
-        });
-      }}
-      on:colHeaderClicked={(event) => {
-        if (sortByColKey == event.detail.key) sortReverse = !sortReverse;
-        else sortReverse = false;
-        sortByColKey = event.detail.key;
-        const col = columns.find((col) => col.key === sortByColKey);
-        sort = col.sort ?? [sortByColKey];
-      }}
-    />
-  </div>
-{:catch error}
-  {#if error.status === 401}
-    <p class="error">
-      Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den
-      Einstellungen (Zahnrad rechts oben) überprüfen.
-    </p>
-  {:else}
-    <p class="error">
-      Keine Verbindung zur Datenbank. <br />{error.hasOwnProperty("message")
-        ? error.message
-        : ""}
-    </p>
-  {/if}
-{/await}
+<Table
+  {rowHeight}
+  {columns}
+  {loadData}
+  cellBackgroundColorsFunction={(customer) =>
+    Promise.all(columns.map((column) => column.backgroundColor(customer)))}
+  {indicateSort}
+  onLoadDataErrorText={(error) => {
+    if (error.status === 401) {
+      return "Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den Einstellungen (Zahnrad rechts oben) überprüfen.";
+    } else {
+      return `Keine Verbindung zur Datenbank. <br />${
+        error.hasOwnProperty("message") ? error.message : ""
+      }`;
+    }
+  }}
+  on:rowClicked={(event) => {
+    popupFormular.show({
+      doc: event.detail,
+      createNew: false,
+      config: inputs,
+    });
+  }}
+  on:colHeaderClicked={(event) => {
+    if (sortByColKey == event.detail.key) sortReverse = !sortReverse;
+    else sortReverse = false;
+    sortByColKey = event.detail.key;
+    const col = columns.find((col) => col.key === sortByColKey);
+    sort = col.sort ?? [sortByColKey];
+  }}
+/>
 
 <Pagination {numberOfPagesPromise} bind:currentPage />
 
@@ -170,15 +188,3 @@
     });
   }}
 />
-
-<style>
-  .animatecontainer {
-    height: 100%;
-  }
-
-  .error {
-    color: red;
-    font-size: large;
-    margin: 20px;
-  }
-</style>

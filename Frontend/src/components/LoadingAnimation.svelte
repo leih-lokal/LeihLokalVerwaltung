@@ -32,7 +32,7 @@
     margin-top: 0;
   }
   .container {
-    position: absolute;
+    position: fixed;
     width: 400px;
     left: 50%;
     top: 50%;
@@ -43,6 +43,7 @@
     flex-direction: column;
     padding: 20px;
     border-radius: 10px;
+    background-color: transparent;
     z-index: 99999999;
   }
   .fullscreenoverlay {
