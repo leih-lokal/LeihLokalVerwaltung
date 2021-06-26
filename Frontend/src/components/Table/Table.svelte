@@ -45,7 +45,7 @@
     table-layout: auto;
     position: relative;
     overflow-y: scroll;
-    border-spacing: 2px 2px;
+    border-spacing: 1px;
     padding: 0 5px 0 5px;
   }
 

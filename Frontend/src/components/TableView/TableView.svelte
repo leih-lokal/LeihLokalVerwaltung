@@ -12,7 +12,7 @@
   export let docType = "";
   export let inputs = [];
 
-  const rowHeight = 44;
+  const rowHeight = 34;
   const maxRowsThatMightFitOnPage = () =>
     Math.floor((window.innerHeight - 230) / rowHeight);
 
@@ -58,6 +58,7 @@
     }
   };
 
+  let actualRowsFittingOnPage = false;
   let rowsPerPage = maxRowsThatMightFitOnPage();
   let popupFormular;
   let searchInputRef;
@@ -71,13 +72,14 @@
   let sortReverse;
   let sort;
   let indicateSort;
-  $: rowsPerPage = Math.round((innerHeight - 250) / rowHeight);
+  $: innerHeight, (actualRowsFittingOnPage = false);
   $: currentPage,
     sortByColKey,
     sortReverse,
     searchTerm,
     activeFilters,
     innerHeight,
+    rowsPerPage,
     refresh();
   $: sortByColKey, sortReverse, searchTerm, activeFilters, goToFirstPage();
   $: indicateSort = columns.map((col) => {
@@ -89,20 +91,26 @@
   });
 
   afterUpdate(async () => {
-    let paginationElement = document.querySelector(".pagination");
-    let tableHeaderElement = document.querySelector("thead");
-    let tableRowElement = document.querySelector("table > tr");
-    if (paginationElement && tableHeaderElement && tableRowElement) {
-      let tableBodyHeight =
-        window.innerHeight -
-        paginationElement.offsetHeight -
-        tableHeaderElement.getBoundingClientRect().bottom -
-        2; // border spacing 2
-      let rowsFittingInTableBody = Math.floor(
-        tableBodyHeight / (tableRowElement.getBoundingClientRect().height + 2) // border spacing 2
-      );
-      if (rowsPerPage !== rowsFittingInTableBody) {
-        rowsPerPage = rowsFittingInTableBody;
+    if (actualRowsFittingOnPage === false) {
+      await loadData;
+
+      const paginationElement = document.querySelector(".pagination");
+      const tableHeaderElement = document.querySelector("thead");
+      const tableRowElement = document.querySelector("tbody tr");
+      const rowBorderSpacing = 1;
+      if (paginationElement && tableHeaderElement && tableRowElement) {
+        let tableBodyHeight =
+          window.innerHeight -
+          paginationElement.offsetHeight -
+          tableHeaderElement.getBoundingClientRect().bottom;
+
+        actualRowsFittingOnPage = Math.floor(
+          tableBodyHeight /
+            (tableRowElement.getBoundingClientRect().height + rowBorderSpacing)
+        );
+        if (rowsPerPage !== actualRowsFittingOnPage) {
+          rowsPerPage = actualRowsFittingOnPage;
+        }
       }
     }
   });

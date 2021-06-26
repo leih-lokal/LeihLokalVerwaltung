@@ -4,7 +4,7 @@
 
   export let columns = [];
   export let item = {};
-  export let rowHeight = 40;
+  export let rowHeight = 36;
   export let cellBackgroundColorsFunction;
   export let evenRowNumber = false;
 
