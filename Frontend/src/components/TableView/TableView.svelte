@@ -12,7 +12,7 @@
   export let docType = "";
   export let inputs = [];
 
-  const rowHeight = 34;
+  const rowHeight = 36;
   const maxRowsThatMightFitOnPage = () =>
     Math.floor((window.innerHeight - 230) / rowHeight);
 
