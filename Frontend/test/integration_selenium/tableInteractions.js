@@ -13,9 +13,13 @@ describe("Table Interactions", function () {
   };
   const expectToBeOnPage = async (page) => {
     await waitForDataToLoad();
-    expect(await getElementByCss(".pagination > .active").getText()).to.equal(String(page));
+    expect(await getElementByCss(".pagination > .active").getText()).to.equal(
+      String(page)
+    );
   };
-  const waitForDataToLoad = () => driver.wait(until.elementLocated(By.css("table")));
+  const waitForDataToLoad = async () => {
+    await driver.wait(until.elementLocated(By.css("tbody")));
+  };
 
   before(async () => {
     driver = await setupDriver();
