@@ -1,16 +1,25 @@
 const { Builder } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
+const { By, until } = require("selenium-webdriver");
 
 const TIMEOUT = 30_000;
 
 exports.setupDriver = async () => {
   const runningInGithubAction = process.env.CI;
-  const chromeOptions = new chrome.Options().windowSize({ width: 1500, height: 900 });
+  const chromeOptions = new chrome.Options().windowSize({
+    width: 1500,
+    height: 900,
+  });
   //runningInGithubAction &&
   chromeOptions.headless();
 
-  const driver = new Builder().forBrowser("chrome").setChromeOptions(chromeOptions).build();
-  await driver.manage().setTimeouts({ implicit: TIMEOUT, pageLoad: TIMEOUT, script: TIMEOUT });
+  const driver = new Builder()
+    .forBrowser("chrome")
+    .setChromeOptions(chromeOptions)
+    .build();
+  await driver
+    .manage()
+    .setTimeouts({ implicit: TIMEOUT, pageLoad: TIMEOUT, script: TIMEOUT });
   return driver;
 };
 
@@ -25,3 +34,7 @@ exports.configureDbConnection = (driver) =>
     localStorage.setItem("couchdbPassword", "password");
     localStorage.setItem("couchdbName", "leihlokal_test");
   });
+
+exports.waitForDataToLoad = async (driver) => {
+  await driver.wait(until.elementLocated(By.css("tbody")));
+};

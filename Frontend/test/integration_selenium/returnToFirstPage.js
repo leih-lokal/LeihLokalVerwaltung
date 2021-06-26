@@ -1,24 +1,21 @@
 const { expect } = require("chai");
-const { By, until } = require("selenium-webdriver");
-const { setupDriver, sleep } = require("./util.js");
+const { By } = require("selenium-webdriver");
+const { setupDriver, sleep, waitForDataToLoad } = require("./util.js");
 
-describe("Table Interactions", function () {
+describe("Return to first page", function () {
   var driver;
 
   const getElementByCss = (css) => driver.findElement(By.css(css));
   const gotoSecondPage = async () => {
-    await waitForDataToLoad();
+    await waitForDataToLoad(driver);
     await getElementByCss(".pagination > a:nth-child(3)").click();
     await expectToBeOnPage(2);
   };
   const expectToBeOnPage = async (page) => {
-    await waitForDataToLoad();
+    await waitForDataToLoad(driver);
     expect(await getElementByCss(".pagination > .active").getText()).to.equal(
       String(page)
     );
-  };
-  const waitForDataToLoad = async () => {
-    await driver.wait(until.elementLocated(By.css("tbody")));
   };
 
   before(async () => {
