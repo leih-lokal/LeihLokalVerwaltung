@@ -1,31 +1,17 @@
 /// <reference types="cypress" />
-import testdata from "../testdata";
-import ColorDefs from "../../../src/components/Input/ColorDefs";
-import columns from "../../../src/components/TableEditors/Customers/Columns";
-import { dateToString } from "../utils";
+
+const expectedData = {
+  sortedByIdAsc: require("./expectedData/sortedByIdAsc.js"),
+  sortedByIdDesc: require("./expectedData/sortedByIdDesc.js"),
+};
 
 let customers;
 const IGNORE_COL_INDEX = 14; // active_rental_count
 
-const expectedDisplayValue = (customer, customerKey) => {
-  let expectedValue = customer[customerKey];
-  let colKey = columns.find((col) => col.key === customerKey).key;
-  if (["registration_date", "renewed_on"].includes(colKey)) {
-    if (expectedValue === 0) {
-      expectedValue = "";
-    } else {
-      const date = new Date(expectedValue);
-      expectedValue = dateToString(date);
-    }
-  } else if (colKey === "subscribed_to_newsletter") {
-    expectedValue = ["true", "ja"].includes(String(expectedValue).toLowerCase()) ? "Ja" : "Nein";
-  }
-  return expectedValue;
-};
-
 const expectedDisplayedTableDataSortedBy = (key, customers) => {
   let transformBeforeSort = (value) => value;
-  if (key === "id" || key === "registration_date") transformBeforeSort = parseInt;
+  if (key === "id" || key === "registration_date")
+    transformBeforeSort = parseInt;
   return customers.sort(function (a, b) {
     var x = transformBeforeSort(a[key]);
     var y = transformBeforeSort(b[key]);
@@ -34,14 +20,19 @@ const expectedDisplayedTableDataSortedBy = (key, customers) => {
 };
 
 const expectDisplaysAllCustomersSortedBy = (sortKey, reverse = false) => {
-  let expectedDisplayedTableDataSortedById = expectedDisplayedTableDataSortedBy(sortKey, customers);
+  let expectedDisplayedTableDataSortedById = expectedDisplayedTableDataSortedBy(
+    sortKey,
+    customers
+  );
   if (reverse) expectedDisplayedTableDataSortedById.reverse();
   expectDisplaysCustomers(expectedDisplayedTableDataSortedById);
 };
 
 const expectDisplaysOnlyCustomersWithIds = (ids) => {
   const customersWithIds = [];
-  ids.forEach((id) => customersWithIds.push(customers.find((customer) => customer.id === id)));
+  ids.forEach((id) =>
+    customersWithIds.push(customers.find((customer) => customer.id === id))
+  );
   expectDisplaysCustomers(customersWithIds);
 };
 
@@ -55,43 +46,30 @@ const expectedBackgroundColorForRow = (customers, rowIndex) => {
   }
 };
 
-const expectDisplaysCustomers = (customers) =>
-  cy
-    .get("table > tr", { timeout: 10000 })
-    .should("have.length", customers.length)
-    .each((row, rowIndex) =>
-      cy
-        .wrap(row)
-        .children("td")
-        .each(
-          (cell, colIndex) =>
-            IGNORE_COL_INDEX != colIndex &&
-            cy
-              .wrap(cell)
-              .should(
-                "have.text",
-                customers[rowIndex].hasOwnProperty([columns[colIndex].key])
-                  ? expectedDisplayValue(customers[rowIndex], columns[colIndex].key)
-                  : ""
-              )
-              .should(
-                "have.css",
-                "background-color",
-                expectedBackgroundColorForRow(customers, rowIndex)
-              )
-        )
-    );
+const expectDisplaysTableWithData = (expectedDataToBeDisplayed) => {
+  // wait until active rentals (colId 15) is loaded for last customer
+  const waitForLazyLoadingToComplete = () =>
+    cy.contains("tbody > tr:last-child > td:nth-child(15)", /.+/, {
+      timeout: 10000,
+    });
+  cy.expectDisplaysTableData(
+    expectedDataToBeDisplayed,
+    waitForLazyLoadingToComplete
+  );
+};
 
 context("Customers", () => {
   beforeEach(() => {
-    customers = testdata().filter((doc) => doc.type === "customer");
-    cy.clock(Date.UTC(2020, 0, 1), ["Date"]).visit("../../public/index.html#/customers");
+    cy.clock(Date.UTC(2020, 0, 1), ["Date"]).visit(
+      "../../public/index.html#/customers"
+    );
   });
 
-  it("displays correct number of customers", () => {
-    cy.get("table > tr").should("have.length", customers.length);
+  it("displays customers in default order", () => {
+    expectDisplaysTableWithData(expectedData.sortedByIdAsc);
   });
 
+  /** 
   context("Sorting", () => {
     it("sorts customers by id", () => {
       expectDisplaysAllCustomersSortedBy("id");
@@ -330,5 +308,5 @@ context("Customers", () => {
       customers.push(newCustomer);
       expectDisplaysCustomers(customers);
     });
-  });
+  });*/
 });
