@@ -3,6 +3,12 @@
 const expectedData = {
   sortedByIdAsc: require("./expectedData/sortedByIdAsc.js"),
   sortedByIdDesc: require("./expectedData/sortedByIdDesc.js"),
+  sortedByLastnameAsc: require("./expectedData/sortedByLastnameAsc.js"),
+  sortedByLastnameDesc: require("./expectedData/sortedByLastnameDesc.js"),
+  sortedByRegistrationDateAsc: require("./expectedData/sortedByRegistrationDateAsc.js"),
+  sortedByRegistrationDateDesc: require("./expectedData/sortedByRegistrationDateDesc.js"),
+  sortedByStreetAsc: require("./expectedData/sortedByStreetAsc.js"),
+  sortedByStreetDesc: require("./expectedData/sortedByStreetDesc.js"),
 };
 
 let customers;
@@ -49,9 +55,11 @@ const expectedBackgroundColorForRow = (customers, rowIndex) => {
 const expectDisplaysTableWithData = (expectedDataToBeDisplayed) => {
   // wait until active rentals (colId 15) is loaded for last customer
   const waitForLazyLoadingToComplete = () =>
-    cy.contains("tbody > tr:last-child > td:nth-child(15)", /.+/, {
-      timeout: 10000,
-    });
+    cy.get("tbody > tr").each((row) =>
+      cy.wrap(row).contains("td:nth-child(15)", /.+/, {
+        timeout: 10000,
+      })
+    );
   cy.expectDisplaysTableData(
     expectedDataToBeDisplayed,
     waitForLazyLoadingToComplete
@@ -65,92 +73,83 @@ context("Customers", () => {
     );
   });
 
-  it("displays customers in default order", () => {
-    expectDisplaysTableWithData(expectedData.sortedByIdAsc);
-  });
-
-  /** 
   context("Sorting", () => {
-    it("sorts customers by id", () => {
-      expectDisplaysAllCustomersSortedBy("id");
+    it("sorts customers by id asc", () => {
+      expectDisplaysTableWithData(expectedData.sortedByIdAsc);
     });
 
-    it("sorts customers by id reverse", () => {
+    it("sorts customers by id desc", () => {
       cy.get("thead")
         .contains("Id")
         .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("id", true));
+        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdDesc));
     });
 
-    it("sorts customers by lastname", () => {
+    it("sorts customers by lastname asc", () => {
       cy.get("thead")
         .contains("Nachname")
         .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("lastname"));
+        .then(() =>
+          expectDisplaysTableWithData(expectedData.sortedByLastnameAsc)
+        );
     });
 
-    it("sorts customers by lastname reverse", () => {
+    it("sorts customers by lastname desc", () => {
       cy.get("thead")
         .contains("Nachname")
         .click()
         .get("thead")
         .contains("Nachname")
         .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("lastname", true));
+        .then(() =>
+          expectDisplaysTableWithData(expectedData.sortedByLastnameDesc)
+        );
     });
 
-    it("sorts customers by firstname", () => {
-      cy.get("thead")
-        .contains("Vorname")
-        .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("firstname"));
-    });
-
-    it("sorts customers by firstname reverse", () => {
-      cy.get("thead")
-        .contains("Vorname")
-        .click()
-        .get("thead")
-        .contains("Vorname")
-        .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("firstname", true));
-    });
-
-    it("sorts customers by street", () => {
+    it("sorts customers by street asc", () => {
       cy.get("thead")
         .contains("Straße")
         .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("street"));
+        .then(() =>
+          expectDisplaysTableWithData(expectedData.sortedByStreetAsc)
+        );
     });
 
-    it("sorts customers by street reverse", () => {
+    it("sorts customers by street desc", () => {
       cy.get("thead")
         .contains("Straße")
         .click()
         .get("thead")
         .contains("Straße")
         .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("street", true));
+        .then(() =>
+          expectDisplaysTableWithData(expectedData.sortedByStreetDesc)
+        );
     });
 
-    it("sorts customers by registration date", () => {
+    it("sorts customers by registration date asc", () => {
       cy.get("thead")
         .contains("Beitritt")
         .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("registration_date"));
+        .then(() =>
+          expectDisplaysTableWithData(expectedData.sortedByRegistrationDateAsc)
+        );
     });
 
-    it("sorts customers by registration date reverse", () => {
+    it("sorts customers by registration date desc", () => {
       cy.get("thead")
         .contains("Beitritt")
         .click()
         .get("thead")
         .contains("Beitritt")
         .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("registration_date", true));
+        .then(() =>
+          expectDisplaysTableWithData(expectedData.sortedByRegistrationDateDesc)
+        );
     });
   });
 
+  /**
   context("Searching", () => {
     it("finds a customer by search for 'firstname lastname'", () => {
       cy.get(".searchInput")

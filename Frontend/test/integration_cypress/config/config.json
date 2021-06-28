@@ -2,6 +2,7 @@
   "viewportWidth": 1500,
   "viewportHeight": 900,
   "integrationFolder": "./test/integration_cypress/tests",
+  "testFiles": "**/*.spec.js",
   "pluginsFile": "./test/integration_cypress/config/plugins.js",
   "supportFile": "./test/integration_cypress/config/support.js",
   "video": false

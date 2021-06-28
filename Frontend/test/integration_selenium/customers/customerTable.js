@@ -41,15 +41,22 @@ describe("Displays customers", function () {
     );
   };
 
-  const writeFile = (array) => {
-    fs.writeFile("output.json", JSON.stringify(array), "utf8", function (err) {
-      if (err) {
-        console.log("An error occured while writing JSON Object to File.");
-        return console.log(err);
-      }
+  const writeFile = (array, filename = "output.json") => {
+    fs.writeFile(
+      filename,
+      JSON.stringify(array)
+        .replace(/:rgba:/g, "rgb")
+        .replace(/:, \):/g, ")"),
+      "utf8",
+      function (err) {
+        if (err) {
+          console.log("An error occured while writing JSON Object to File.");
+          return console.log(err);
+        }
 
-      console.log("JSON file has been saved.");
-    });
+        console.log("JSON file has been saved.");
+      }
+    );
   };
 
   const clickTableHeader = async (text) => {
@@ -60,20 +67,10 @@ describe("Displays customers", function () {
     await waitForDataToLoad(driver);
   };
 
-  it("displays customers in default order", async () => {
-    await openPage();
-    await expectDisplaysData(expectedData.sortedByIdAsc);
-  });
-
-  it("sorts by id desc", async () => {
-    await openPage();
-    await clickTableHeader("Id");
-    await expectDisplaysData(expectedData.sortedByIdDesc);
-  });
-
   it("sorts by lastname asc", async () => {
     await openPage();
     await clickTableHeader("Nachname");
+    writeFile(await getDisplayedTableData(), "sortedByLastnameAsc.js");
     await expectDisplaysData(expectedData.sortedByIdAsc);
   });
 
@@ -81,12 +78,14 @@ describe("Displays customers", function () {
     await openPage();
     await clickTableHeader("Nachname");
     await clickTableHeader("Nachname");
+    writeFile(await getDisplayedTableData(), "sortedByLastnameDesc.js");
     await expectDisplaysData(expectedData.sortedByIdDesc);
   });
 
   it("sorts by street asc", async () => {
     await openPage();
     await clickTableHeader("Straße");
+    writeFile(await getDisplayedTableData(), "sortedByStreetAsc.js");
     await expectDisplaysData(expectedData.sortedByIdAsc);
   });
 
@@ -94,12 +93,16 @@ describe("Displays customers", function () {
     await openPage();
     await clickTableHeader("Straße");
     await clickTableHeader("Straße");
+
+    writeFile(await getDisplayedTableData(), "sortedByStreetDesc.js");
     await expectDisplaysData(expectedData.sortedByIdDesc);
   });
 
   it("sorts by registration date asc", async () => {
     await openPage();
     await clickTableHeader("Beitritt");
+
+    writeFile(await getDisplayedTableData(), "sortedByRegistrationDateAsc.js");
     await expectDisplaysData(expectedData.sortedByIdAsc);
   });
 
@@ -107,6 +110,7 @@ describe("Displays customers", function () {
     await openPage();
     await clickTableHeader("Beitritt");
     await clickTableHeader("Beitritt");
+    writeFile(await getDisplayedTableData(), "sortedByRegistrationDateDesc.js");
     await expectDisplaysData(expectedData.sortedByIdDesc);
   });
 });
