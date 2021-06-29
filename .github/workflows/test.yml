@@ -44,10 +44,6 @@ jobs:
       - name: Start CouchDB
         run: docker-compose up -d
 
-      - name: Wait for CouchDB with test data
-        working-directory: TestDataGenerator
-        run: ./wait_for_testdata.sh
-
       - name: Run selenium integration tests
         working-directory: Frontend
         run: npm run integration_test_selenium

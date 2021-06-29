@@ -1,8 +1,7 @@
 const dateToString = (date) =>
-  `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(
-    2,
-    0
-  )}.${date.getFullYear()}`;
+  `${String(date.getDate()).padStart(2, 0)}.${String(
+    date.getMonth() + 1
+  ).padStart(2, 0)}.${date.getFullYear()}`;
 
 const statusOnWebsiteDisplayValue = (status) =>
   status
@@ -11,7 +10,8 @@ const statusOnWebsiteDisplayValue = (status) =>
     .replace("outofstock", "verliehen")
     .replace("onbackorder", "nicht verleihbar");
 
-const waitForPopupToClose = () => cy.get(".bg", { timeout: 3000 }).should("not.exist");
+const waitForPopupToClose = () =>
+  cy.get(".fullscreenoverlay", { timeout: 3000 }).should("not.exist");
 const clearFilter = () => cy.get(".multiSelectItem_clear").click();
 
 function millisAtStartOfDay(millis) {
@@ -50,10 +50,9 @@ function saveParseTimestampToHumanReadableString(millis, today) {
   } else if (dayDiff <= 7 && dayDiff > 0) {
     return `In ${dayDiff} Tagen`;
   } else
-    return `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(
-      2,
-      0
-    )}.${date.getFullYear()}`;
+    return `${String(date.getDate()).padStart(2, 0)}.${String(
+      date.getMonth() + 1
+    ).padStart(2, 0)}.${date.getFullYear()}`;
 }
 
 function daysBetween(date1, date2) {

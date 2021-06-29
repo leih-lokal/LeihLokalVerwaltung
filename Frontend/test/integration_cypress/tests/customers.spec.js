@@ -9,10 +9,17 @@ const expectedData = {
   sortedByRegistrationDateDesc: require("./expectedData/sortedByRegistrationDateDesc.js"),
   sortedByStreetAsc: require("./expectedData/sortedByStreetAsc.js"),
   sortedByStreetDesc: require("./expectedData/sortedByStreetDesc.js"),
+  searchFirstnameLastname: require("./expectedData/searchFirstnameLastname.js"),
+  searchSingleDigit: require("./expectedData/searchSingleDigit.js"),
+  searchId: require("./expectedData/searchId.js"),
+  filterNewsletterYes: require("./expectedData/filterNewsletterYes.js"),
+  filterRegistrationOlderThan1Year: require("./expectedData/filterRegistrationOlderThan1Year.js"),
+  filterRegistrationNewerThan1Year: require("./expectedData/filterRegistrationNewerThan1Year.js"),
+  customerToEdit: require("./expectedData/customerToEdit.js"),
+  createdCustomer: require("./expectedData/createdCustomer.js"),
 };
 
 let customers;
-const IGNORE_COL_INDEX = 14; // active_rental_count
 
 const expectedDisplayedTableDataSortedBy = (key, customers) => {
   let transformBeforeSort = (value) => value;
@@ -52,27 +59,39 @@ const expectedBackgroundColorForRow = (customers, rowIndex) => {
   }
 };
 
+// wait until active rentals (colId 15) is loaded for last customer
+const waitForLazyLoadingToComplete = () =>
+  cy.get("tbody > tr").each((row) =>
+    cy.wrap(row).contains("td:nth-child(15)", /.+/, {
+      timeout: 10000,
+    })
+  );
+
 const expectDisplaysTableWithData = (expectedDataToBeDisplayed) => {
-  // wait until active rentals (colId 15) is loaded for last customer
-  const waitForLazyLoadingToComplete = () =>
-    cy.get("tbody > tr").each((row) =>
-      cy.wrap(row).contains("td:nth-child(15)", /.+/, {
-        timeout: 10000,
-      })
-    );
   cy.expectDisplaysTableData(
     expectedDataToBeDisplayed,
     waitForLazyLoadingToComplete
   );
 };
 
+const expectDisplaysRow = (expectedRowToBeDisplayed) => {
+  cy.expectDisplaysRow(expectedRowToBeDisplayed, waitForLazyLoadingToComplete);
+};
+
+const expectNotDisplaysRow = (expectedRowNotToBeDisplayed) => {
+  cy.expectNotDisplaysRow(
+    expectedRowNotToBeDisplayed,
+    waitForLazyLoadingToComplete
+  );
+};
+
 context("Customers", () => {
   beforeEach(() => {
-    cy.clock(Date.UTC(2020, 0, 1), ["Date"]).visit(
-      "../../public/index.html#/customers"
-    );
+    cy.clock(Date.UTC(2020, 5, 1), ["Date"])
+      .visit("../../public/index.html#/customers")
+      .then(waitForLazyLoadingToComplete);
   });
-
+  /**
   context("Sorting", () => {
     it("sorts customers by id asc", () => {
       expectDisplaysTableWithData(expectedData.sortedByIdAsc);
@@ -149,24 +168,30 @@ context("Customers", () => {
     });
   });
 
-  /**
   context("Searching", () => {
     it("finds a customer by search for 'firstname lastname'", () => {
       cy.get(".searchInput")
-        .type(customers[5].firstname + " " + customers[5].lastname)
-        .then(() => expectDisplaysOnlyCustomersWithIds([customers[5].id]));
+        .type("Bursnell Nikaniki")
+        .wait(1000) // wait for debounce
+        .then(() =>
+          expectDisplaysTableWithData(expectedData.searchFirstnameLastname)
+        );
     });
 
     it("finds two customers when seaching for first id digit", () => {
       cy.get(".searchInput")
         .type("1")
-        .then(() => expectDisplaysOnlyCustomersWithIds([1, 10]));
+        .wait(1000) // wait for debounce
+        .then(() =>
+          expectDisplaysTableWithData(expectedData.searchSingleDigit)
+        );
     });
 
     it("finds one customer when seaching for unique id", () => {
       cy.get(".searchInput")
-        .type("2")
-        .then(() => expectDisplaysOnlyCustomersWithIds([2]));
+        .type("67")
+        .wait(1000) // wait for debounce
+        .then(() => expectDisplaysTableWithData(expectedData.searchId));
     });
   });
 
@@ -177,19 +202,12 @@ context("Customers", () => {
         .get(".listContainer")
         .contains("Newsletter: Ja")
         .click()
-        .then(() => expectDisplaysOnlyCustomersWithIds([2, 6, 7]))
+        .then(() =>
+          expectDisplaysTableWithData(expectedData.filterNewsletterYes)
+        )
         .get(".multiSelectItem_clear")
         .click()
-        .then(() => expectDisplaysAllCustomersSortedBy("id"));
-    });
-
-    it("finds customers by filtering for 'Newsletter: Ja'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Newsletter: Ja")
-        .click()
-        .then(() => expectDisplaysOnlyCustomersWithIds([2, 6, 7]));
+        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
     });
 
     it("finds customers by filtering for 'Beitritt vor > 1 Jahr'", () => {
@@ -198,7 +216,11 @@ context("Customers", () => {
         .get(".listContainer")
         .contains("Beitritt vor > 1 Jahr")
         .click()
-        .then(() => expectDisplaysOnlyCustomersWithIds([1, 2, 3, 4, 5]));
+        .then(() =>
+          expectDisplaysTableWithData(
+            expectedData.filterRegistrationOlderThan1Year
+          )
+        );
     });
 
     it("finds customers by filtering for 'Beitritt vor < 1 Jahr'", () => {
@@ -207,66 +229,92 @@ context("Customers", () => {
         .get(".listContainer")
         .contains("Beitritt vor < 1 Jahr")
         .click()
-        .then(() => expectDisplaysOnlyCustomersWithIds([6, 7, 8, 9, 10]));
+        .then(() =>
+          expectDisplaysTableWithData(
+            expectedData.filterRegistrationNewerThan1Year
+          )
+        );
     });
-  });
+  });*/
 
   context("Editing", () => {
-    const expectedDateInputValue = (millis) => {
-      if (millis === 0) return "-";
-      else return dateToString(new Date(millis));
-    };
+    afterEach(() => {
+      // reset testdata
+      cy.exec(
+        "docker start testdata_generator && docker wait testdata_generator"
+      );
+    });
 
     it("Displays correct data in Edit Popup", () => {
-      cy.get("table").contains(customers[3].firstname).click({ force: true });
-      cy.get("#firstname").should("have.value", customers[3].firstname);
-      cy.get("#lastname").should("have.value", customers[3].lastname);
-      cy.get("#email").should("have.value", customers[3].email);
-      cy.get("#telephone_number").should("have.value", customers[3].telephone_number);
-      if (customers[3].subscribed_to_newsletter) {
+      let customer = expectedData.customerToEdit;
+      cy.get("table").contains(customer.firstname).click({ force: true });
+      cy.get("#firstname").should("have.value", customer.firstname);
+      cy.get("#lastname").should("have.value", customer.lastname);
+      cy.get("#email").should("have.value", customer.email);
+      cy.get("#telephone_number").should(
+        "have.value",
+        customer.telephone_number
+      );
+      if (customer.subscribed_to_newsletter) {
         cy.get("#subscribed_to_newsletter").should("have.class", "-checked");
       } else {
-        cy.get("#subscribed_to_newsletter").should("not.have.class", "-checked");
+        cy.get("#subscribed_to_newsletter").should(
+          "not.have.class",
+          "-checked"
+        );
       }
-      cy.get("#street").should("have.value", customers[3].street);
-      cy.get("#house_number").should("have.value", customers[3].house_number);
-      cy.get("#postal_code").should("have.value", customers[3].postal_code);
-      cy.get("#city").should("have.value", customers[3].city);
+      cy.get("#street").should("have.value", customer.street);
+      cy.get("#house_number").should("have.value", customer.house_number);
+      cy.get("#postal_code").should("have.value", customer.postal_code);
+      cy.get("#city").should("have.value", customer.city);
       cy.get(".group row:nth-child(2) .datepicker input").should(
         "have.value",
-        expectedDateInputValue(customers[3].registration_date)
+        customer.registration_date
       );
       cy.get(".group row:nth-child(3) .datepicker input").should(
         "have.value",
-        expectedDateInputValue(customers[3].renewed_on)
+        customer.renewed_on
       );
-      customers[3].heard
+      customer.heard
         .split(",")
         .forEach((heard) =>
-          cy.get(".group row:nth-child(4) .selectContainer").should("contain.text", heard)
+          cy
+            .get(".group row:nth-child(4) .selectContainer")
+            .should("contain.text", heard)
         );
 
-      cy.get("#id").should("have.value", customers[3].id);
-      cy.get("#remark").should("have.value", customers[3].remark);
+      cy.get("#id").should("have.value", customer.id);
+      cy.get("#remark").should("have.value", customer.remark);
     });
 
     it("Saves changes", () => {
-      cy.get("table").contains(customers[3].firstname).click({ force: true });
+      let customer = expectedData.customerToEdit;
+      cy.get("table").contains(customer.firstname).click();
       cy.get("#firstname").clear().type("NewFirstname");
       cy.contains("Speichern").click();
-      customers[3].firstname = "NewFirstname";
-      expectDisplaysAllCustomersSortedBy("id");
+
+      cy.get(".fullscreenoverlay", { timeout: 3000 }).should("not.exist");
+      expectDisplaysRow(
+        expectedData.sortedByIdAsc[13].map((expectedValue) => {
+          if (expectedValue.text === customer.firstname) {
+            expectedValue.text = "NewFirstname";
+          }
+          return expectedValue;
+        })
+      );
     });
 
     it("Deletes customer", () => {
-      cy.get("table").contains(customers[3].firstname).click({ force: true });
+      let customer = expectedData.customerToEdit;
+      cy.get("table").contains(customer.firstname).click();
       cy.contains("Löschen").click();
-      expectDisplaysOnlyCustomersWithIds([1, 2, 3, 5, 6, 7, 8, 9, 10]);
+      cy.get(".fullscreenoverlay", { timeout: 3000 }).should("not.exist");
+      expectNotDisplaysRow(expectedData.sortedByIdAsc[13]);
     });
 
     it("Creates customer", () => {
       const newCustomer = {
-        id: customers.length + 1 + "",
+        id: "101",
         lastname: "lastname",
         firstname: "firstname",
         registration_date: new Date(2020, 0, 1).getTime(),
@@ -283,10 +331,10 @@ context("Customers", () => {
 
       cy.contains("+").click();
 
-      cy.get("#id").should("have.value", customers.length + 1);
+      cy.get("#id").should("have.value", "101");
       cy.get(".group row:nth-child(2) .datepicker input").should(
         "have.value",
-        expectedDateInputValue(new Date(2020, 0, 1).getTime())
+        "01.06.2020"
       );
 
       cy.get("#firstname").type(newCustomer.firstname);
@@ -294,18 +342,26 @@ context("Customers", () => {
       cy.get("#email").type(newCustomer.email);
       cy.get("#telephone_number").type(newCustomer.telephone_number);
       cy.get("#subscribed_to_newsletter").click();
-      cy.get("#street").type(newCustomer.street);
-      cy.get("body").click();
+      cy.get("#street")
+        .type(newCustomer.street)
+        .wait(500)
+        .get("body")
+        .click(0, 0);
       cy.get("#house_number").type(newCustomer.house_number);
-      cy.get("#postal_code").type(newCustomer.postal_code);
+      cy.get("#postal_code")
+        .type(newCustomer.postal_code)
+        .wait(500)
+        .get("body")
+        .click(0, 0);
       cy.get("body").click();
       cy.get("#city").type(newCustomer.city);
       cy.get("#remark").type(newCustomer.remark);
 
       cy.contains("Speichern").click();
+      cy.get(".fullscreenoverlay", { timeout: 3000 }).should("not.exist");
+      cy.get("thead").contains("Id").click();
 
-      customers.push(newCustomer);
-      expectDisplaysCustomers(customers);
+      expectDisplaysRow(expectedData.createdCustomer);
     });
-  });*/
+  });
 });

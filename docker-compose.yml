@@ -15,6 +15,7 @@ services:
     build:
       context: ./TestDataGenerator
       dockerfile: Dockerfile
+    container_name: testdata_generator
     restart: on-failure
     depends_on:
       - "couchdb"
