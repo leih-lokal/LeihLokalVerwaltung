@@ -17,6 +17,9 @@ class Database {
   }
 
   connect() {
+    if (this.changeListener) {
+      this.changeListener.cancel();
+    }
     this.cache.reset();
     this.queryPaginatedDocsCache.reset();
     const settings = get(settingsStore);
@@ -107,8 +110,10 @@ class Database {
     }
   }
 
-  createIndex(index) {
-    return this.database.createIndex(index);
+  async createIndex(index) {
+    await this.database.createIndex(index);
+    this.cache.reset();
+    this.queryPaginatedDocsCache.reset();
   }
 
   async docsMatchingAllSelectorsSortedBy(options) {
@@ -222,7 +227,7 @@ class Database {
           }
         });
         this.queryPaginatedDocsCache.set(cacheKey, result);
-        onDocsInQueryResultUpdated(result);
+        onDocsInQueryResultUpdated(result.docs);
       }
     });
 

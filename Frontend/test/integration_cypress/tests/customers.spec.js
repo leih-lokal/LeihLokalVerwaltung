@@ -19,46 +19,6 @@ const expectedData = {
   createdCustomer: require("./expectedData/createdCustomer.js"),
 };
 
-let customers;
-
-const expectedDisplayedTableDataSortedBy = (key, customers) => {
-  let transformBeforeSort = (value) => value;
-  if (key === "id" || key === "registration_date")
-    transformBeforeSort = parseInt;
-  return customers.sort(function (a, b) {
-    var x = transformBeforeSort(a[key]);
-    var y = transformBeforeSort(b[key]);
-    return x < y ? -1 : x > y ? 1 : 0;
-  });
-};
-
-const expectDisplaysAllCustomersSortedBy = (sortKey, reverse = false) => {
-  let expectedDisplayedTableDataSortedById = expectedDisplayedTableDataSortedBy(
-    sortKey,
-    customers
-  );
-  if (reverse) expectedDisplayedTableDataSortedById.reverse();
-  expectDisplaysCustomers(expectedDisplayedTableDataSortedById);
-};
-
-const expectDisplaysOnlyCustomersWithIds = (ids) => {
-  const customersWithIds = [];
-  ids.forEach((id) =>
-    customersWithIds.push(customers.find((customer) => customer.id === id))
-  );
-  expectDisplaysCustomers(customersWithIds);
-};
-
-const expectedBackgroundColorForRow = (customers, rowIndex) => {
-  if (customers[rowIndex].hasOwnProperty("highlight")) {
-    return customers[rowIndex]["highlight"];
-  } else {
-    return rowIndex % 2 === 0
-      ? ColorDefs.DEFAULT_ROW_BACKGROUND_EVEN
-      : ColorDefs.DEFAULT_ROW_BACKGROUND_ODD;
-  }
-};
-
 // wait until active rentals (colId 15) is loaded for last customer
 const waitForLazyLoadingToComplete = () =>
   cy.get("tbody > tr").each((row) =>
@@ -91,7 +51,7 @@ context("Customers", () => {
       .visit("../../public/index.html#/customers")
       .then(waitForLazyLoadingToComplete);
   });
-  /**
+
   context("Sorting", () => {
     it("sorts customers by id asc", () => {
       expectDisplaysTableWithData(expectedData.sortedByIdAsc);
@@ -235,15 +195,15 @@ context("Customers", () => {
           )
         );
     });
-  });*/
+  });
 
   context("Editing", () => {
-    afterEach(() => {
-      // reset testdata
+    const resetTestData = () =>
       cy.exec(
         "docker start testdata_generator && docker wait testdata_generator"
       );
-    });
+
+    afterEach(resetTestData);
 
     it("Displays correct data in Edit Popup", () => {
       let customer = expectedData.customerToEdit;

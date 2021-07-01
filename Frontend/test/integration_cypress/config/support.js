@@ -6,7 +6,6 @@ const getDisplayedTableData = () =>
         backgroundColor: e.style.backgroundColor,
       }));
     });
-    console.log(tableData);
     return tableData;
   });
 
@@ -20,14 +19,14 @@ const expectDisplaysTableData = (expectedTableData, additionalWaitFunction) => {
 const expectDisplaysRow = (expectedTableRow, additionalWaitFunction) => {
   additionalWaitFunction && additionalWaitFunction();
   getDisplayedTableData().then((tableData) => {
-    expect(tableData).to.deep.include.members(expectedTableRow);
+    expect(tableData).to.deep.include.members([expectedTableRow]);
   });
 };
 
 const expectNotDisplaysRow = (expectedTableRow, additionalWaitFunction) => {
   additionalWaitFunction && additionalWaitFunction();
   getDisplayedTableData().then((tableData) => {
-    expect(tableData).not.to.deep.include.members(expectedTableRow);
+    expect(tableData).not.to.deep.include.members([expectedTableRow]);
   });
 };
 

@@ -16,8 +16,8 @@
   const maxRowsThatMightFitOnPage = () =>
     Math.floor((window.innerHeight - 230) / rowHeight);
 
-  const refresh = () =>
-    (loadData = Database.query(
+  const refresh = () => {
+    loadData = Database.query(
       {
         filters: activeFilters.map((filterName) => filters.filters[filterName]),
         columns,
@@ -50,7 +50,8 @@
 
         // catch again in html
         throw error;
-      }));
+      });
+  };
 
   const goToFirstPage = () => {
     if (currentPage !== 0) {
