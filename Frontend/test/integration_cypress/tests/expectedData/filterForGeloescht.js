@@ -1,7 +1,107 @@
 module.exports = [
   [
     {
-      text: "5059",
+      text: "0100",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Staubsauger",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Thomas",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "SPENDENVERKAUF",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Haushalt",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "5",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "19.10.2018",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "0212",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Kinderhochstuhl",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "icoo",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "SPENDENVERKAUF",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Kinder",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "4",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "11.09.2018",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+  ],
+  [
+    {
+      text: "0409",
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
@@ -9,23 +109,23 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "Kabeltrommel",
+      text: "Dampfbügelstation",
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "-",
+      text: "TCM",
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "-",
+      text: "KASCHKA",
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "Heimwerker",
+      text: "Haushalt",
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "25",
+      text: "15",
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
@@ -33,11 +133,7 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "19.11.2020",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "50m",
+      text: "04.09.2018",
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
@@ -45,13 +141,17 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "verliehen",
+      text: "",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "gelöscht",
       backgroundColor: "rgb(45, 144, 224)",
     },
   ],
   [
     {
-      text: "5059",
+      text: "0614",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -59,23 +159,23 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Kabeltrommel",
+      text: "Autokindersitz",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "-",
+      text: "Nania",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "-",
+      text: "KASCHKA",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Heimwerker",
+      text: "Kinder",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "25",
+      text: "5",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -83,11 +183,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "19.11.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "50m",
+      text: "09.10.2018",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -95,63 +191,167 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "verliehen",
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "gelöscht",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
   [
     {
-      text: "5055",
-      backgroundColor: "rgb(250, 45, 30)",
+      text: "0832",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
       text: "",
-      backgroundColor: "rgb(250, 45, 30)",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Feine-Metall-Feilen",
-      backgroundColor: "rgb(250, 45, 30)",
+      text: "Elektr. Fondue",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "-",
-      backgroundColor: "rgb(250, 45, 30)",
+      text: "TCM",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "-",
-      backgroundColor: "rgb(250, 45, 30)",
+      text: "64696",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Küche",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "11",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "07.08.2020",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "0912",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Elektrohobel",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "KingCraft",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "WK 900 EH",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "Heimwerker",
-      backgroundColor: "rgb(250, 45, 30)",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "45",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "5",
-      backgroundColor: "rgb(250, 45, 30)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "-",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "12.10.2020",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "verschiedene Größen",
-      backgroundColor: "rgb(250, 45, 30)",
+      text: "15.10.2018",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "",
-      backgroundColor: "rgb(250, 45, 30)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "verfügbar",
-      backgroundColor: "rgb(250, 45, 30)",
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
     },
   ],
   [
     {
-      text: "5035",
+      text: "1101",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Joghurt-Box",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "A.Vogel",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "SPENDENVERKAUF",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Küche",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "5",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "5",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "07.09.2018",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "1501",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -159,23 +359,23 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Gartenkralle",
+      text: "Rollator",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Garden Claw",
+      text: "Invacare",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "-",
+      text: "KA",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Garten",
+      text: "Haushalt",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "5",
+      text: "25",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -195,113 +395,13 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "verfügbar",
+      text: "gelöscht",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
   [
     {
-      text: "5034",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Kabeltrommel",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "25",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "24.01.2020",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "mit 3 Steckdosen, 45m",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-  ],
-  [
-    {
-      text: "5025",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Campingsessel",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Freizeit",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "25.02.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "rund, klappbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "5025",
+      text: "1902",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -309,7 +409,11 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Campingsessel",
+      text: "Reithelm",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "SPENDENVERKAF",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -317,611 +421,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "-",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Freizeit",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "25.02.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "rund, klappbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "5010",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Hydraulik-Holzspalter",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Scheppach",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "HL 650",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "100",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "22.11.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "3 PS, Spaltkraft: 6,5 t, Max. Spaltgutlänge: 52 cm, 2.200 W, ca. 50kg",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "5006",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Wasserwaage, 100cm, Alu",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Bauhaus",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "25",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "23.02.2021",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "5004",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Hammer",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "02.11.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verschiedene Art und Größen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Fäustel",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verliehen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "5002",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Schraubenschlüssel",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "24.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "auch: Gabel-Ringschlüssel, Gabelschlüssel\nverschiedene Größen",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verliehen",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "4003",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "Bowle-Set",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "Freizeit",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "9",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "16.11.2018",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "mit 6 Tassen, Schöpfkelle",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-  ],
-  [
-    {
-      text: "4001",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Geschirr",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "05.11.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "ca. 30 Teller, Untertassen, Tassen verschiedener Art",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "3317",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Strandliegen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Freizeit",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "4",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "31.07.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "1 Paar, zerlegbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "3309",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Navigationsgerät",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Tomtom",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Freizeit",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "2",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "31.10.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "3004",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Werkzeugkasten",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "04.01.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Mit Säge und Knieschoner usw…,weiterer Zubehör siehe Bild",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Werkzeugbox, Werkzeugkiste, Werkzeugkoffer",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "2915",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Akkuschrauber",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Bosch",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Ixo full set",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "4",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "13.01.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Bedienungsanleitung in Schriftform vorhanden,\nmit Exzenter und Winkelaufsatz",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "nicht verleihbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "2906",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Bohrmaschine",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Bosch",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "PBH 16 RE",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "4",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "28.10.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verliehen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "2901",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Schwingschleifer",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Bosch",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "PSS 23 AE",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Heimwerker",
+      text: "Kinder",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -933,11 +433,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "05.08.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "mit div. Schleifpapier",
+      text: "19.10.2018",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -945,7 +441,511 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "verfügbar",
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "2402",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Babywippe",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "chicco",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "SPENDENVERKAUF",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Kinder",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "01.03.2019",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+  ],
+  [
+    {
+      text: "2402",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Babywippe",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "chicco",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "SPENDENVERKAUF",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Kinder",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "01.03.2019",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "2402",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Babywippe",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "chicco",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "SPENDENVERKAUF",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Kinder",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "01.03.2019",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+  ],
+  [
+    {
+      text: "2708",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "2708 geändert in 1900 nicht neu besetzen",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "2909",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Multi-Scanner",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Tevion",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "SPENDENVerKAUF",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Freizeit",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "8",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "11.09.2019",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+  ],
+  [
+    {
+      text: "2909",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Multi-Scanner",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Tevion",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "SPENDENVerKAUF",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Freizeit",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "8",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "11.09.2019",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "3212",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "Multifunktionsmixer",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "Bullet Express",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "KASCHKA",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "Freizeit",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "06.09.2019",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+  ],
+  [
+    {
+      text: "6002",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Babysitz",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "bébé comfort",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Kinder",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "17.02.2020",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "6101",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "Faszienrolle",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "Blackroll MED",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "-",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "Freizeit",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "5",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "27.02.2020",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+  ],
+  [
+    {
+      text: "6103",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Strommessgerät",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "ENBW",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Haushalt",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "5",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "27.02.2020",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],

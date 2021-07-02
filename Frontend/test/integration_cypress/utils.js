@@ -64,7 +64,11 @@ function daysBetween(date1, date2) {
   return Math.round(differenceMs / ONE_DAY);
 }
 
+const resetTestData = () =>
+  cy.exec("docker start testdata_generator && docker wait testdata_generator");
+
 export {
+  resetTestData,
   dateToString,
   statusOnWebsiteDisplayValue,
   waitForPopupToClose,

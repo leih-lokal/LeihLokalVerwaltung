@@ -19,6 +19,8 @@ const expectedData = {
   createdCustomer: require("./expectedData/createdCustomer.js"),
 };
 
+const { resetTestData } = require("../../utils.js");
+
 // wait until active rentals (colId 15) is loaded for last customer
 const waitForLazyLoadingToComplete = () =>
   cy.get("tbody > tr").each((row) =>
@@ -198,11 +200,6 @@ context("Customers", () => {
   });
 
   context("Editing", () => {
-    const resetTestData = () =>
-      cy.exec(
-        "docker start testdata_generator && docker wait testdata_generator"
-      );
-
     afterEach(resetTestData);
 
     it("Displays correct data in Edit Popup", () => {
