@@ -131,7 +131,7 @@ export default [
   },
   {
     title: "Bemerkung",
-    key: "remark",
+    key: "_id",
     search: "exclude",
     disableSort: true,
     backgroundColor: highlightByPriority([rentalHighlight]),

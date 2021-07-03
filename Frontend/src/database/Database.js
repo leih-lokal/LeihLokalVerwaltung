@@ -155,7 +155,7 @@ class Database {
       .changes({
         since: "now",
         live: true,
-        include_docs: false,
+        include_docs: true,
       })
       .on("change", function (changes) {
         onDocsChanged(changes.doc);
