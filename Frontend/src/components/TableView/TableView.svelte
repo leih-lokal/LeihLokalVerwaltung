@@ -29,10 +29,7 @@
         docType,
       },
 
-      // update table if a doc returned by this query was updated
-      (updatedDocs) => (loadData = Promise.resolve(updatedDocs)),
-
-      // query again if a doc returned by this query was deleted
+      // query again if a doc was created / deleted / updated
       refresh
     )
       .then((data) => {

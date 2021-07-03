@@ -67,7 +67,11 @@ function daysBetween(date1, date2) {
 const resetTestData = () =>
   cy.exec("docker start testdata_generator && docker wait testdata_generator");
 
+const waitForLoadingOverlayToDisappear = () =>
+  cy.get(".fullscreenoverlay", { timeout: 3000 }).should("not.exist");
+
 export {
+  waitForLoadingOverlayToDisappear,
   resetTestData,
   dateToString,
   statusOnWebsiteDisplayValue,

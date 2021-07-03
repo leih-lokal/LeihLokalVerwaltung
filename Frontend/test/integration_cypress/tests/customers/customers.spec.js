@@ -19,7 +19,10 @@ const expectedData = {
   createdCustomer: require("./expectedData/createdCustomer.js"),
 };
 
-const { resetTestData } = require("../../utils.js");
+const {
+  resetTestData,
+  waitForLoadingOverlayToDisappear,
+} = require("../../utils.js");
 
 // wait until active rentals (colId 15) is loaded for last customer
 const waitForLazyLoadingToComplete = () =>
@@ -250,7 +253,7 @@ context("Customers", () => {
       cy.get("#firstname").clear().type("NewFirstname");
       cy.contains("Speichern").click();
 
-      cy.get(".fullscreenoverlay", { timeout: 3000 }).should("not.exist");
+      waitForLoadingOverlayToDisappear();
       expectDisplaysRow(
         expectedData.sortedByIdAsc[13].map((expectedValue) => {
           if (expectedValue.text === customer.firstname) {
@@ -265,7 +268,7 @@ context("Customers", () => {
       let customer = expectedData.customerToEdit;
       cy.get("table").contains(customer.firstname).click();
       cy.contains("Löschen").click();
-      cy.get(".fullscreenoverlay", { timeout: 3000 }).should("not.exist");
+      waitForLoadingOverlayToDisappear();
       expectNotDisplaysRow(expectedData.sortedByIdAsc[13]);
     });
 
@@ -315,7 +318,7 @@ context("Customers", () => {
       cy.get("#remark").type(newCustomer.remark);
 
       cy.contains("Speichern").click();
-      cy.get(".fullscreenoverlay", { timeout: 3000 }).should("not.exist");
+      waitForLoadingOverlayToDisappear();
       cy.get("thead").contains("Id").click();
 
       expectDisplaysRow(expectedData.createdCustomer);

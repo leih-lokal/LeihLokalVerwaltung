@@ -12,7 +12,9 @@ class Database {
   onConnectedCallback;
 
   constructor() {
+    // cache for query that returns docs on a page
     this.queryPaginatedDocsCache = new Cache(50);
+    // cache for other queries
     this.cache = new Cache(50);
   }
 
@@ -145,7 +147,7 @@ class Database {
     };
   }
 
-  _listenForChanges(docIds, onDocsChanged) {
+  _listenForChanges(onDocsChanged) {
     if (this.changeListener) {
       this.changeListener.cancel();
     }
@@ -153,8 +155,7 @@ class Database {
       .changes({
         since: "now",
         live: true,
-        include_docs: true,
-        doc_ids: docIds,
+        include_docs: false,
       })
       .on("change", function (changes) {
         onDocsChanged(changes.doc);
@@ -169,7 +170,7 @@ class Database {
       });
   }
 
-  async query(options, onDocsInQueryResultUpdated, onDocsInQueryResultDeleted) {
+  async query(options, onDocsUpdated) {
     const cacheKey = JSON.stringify(options);
     if (this.queryPaginatedDocsCache.has(cacheKey)) {
       return this.queryPaginatedDocsCache.get(cacheKey);
@@ -212,23 +213,11 @@ class Database {
     });
     this.queryPaginatedDocsCache.set(cacheKey, result);
 
-    // callback if doc in query result changes
-    let ids = result.docs.map((doc) => doc._id);
-    this._listenForChanges(ids, (changedDoc) => {
-      if (changedDoc._deleted) {
-        this.queryPaginatedDocsCache.del(cacheKey);
-        onDocsInQueryResultDeleted();
-      } else {
-        result.docs = result.docs.map((doc) => {
-          if (doc._id === changedDoc._id) {
-            return changedDoc;
-          } else {
-            return doc;
-          }
-        });
-        this.queryPaginatedDocsCache.set(cacheKey, result);
-        onDocsInQueryResultUpdated(result.docs);
-      }
+    // callback if doc updated
+    this._listenForChanges(() => {
+      this.queryPaginatedDocsCache.reset();
+      this.cache.reset();
+      onDocsUpdated();
     });
 
     return result;
