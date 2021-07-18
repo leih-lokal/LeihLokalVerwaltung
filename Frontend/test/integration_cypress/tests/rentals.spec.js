@@ -1,12 +1,22 @@
 /// <reference types="cypress" />
 
 const expectedData = {
-  sortedByIdAsc: require("./expectedData/sortedByIdAsc.js"),
+  sortedByToReturnOnDesc: require("./expectedData/sortedByToReturnOnDesc.js"),
+  sortedByToReturnOnAsc: require("./expectedData/sortedByToReturnOnAsc.js"),
+  sortedByCustomerIdAsc: require("./expectedData/sortedByCustomerIdAsc.js"),
+  sortedByCustomerIdDesc: require("./expectedData/sortedByCustomerIdDesc.js"),
+  sortedByCustomerNameAsc: require("./expectedData/sortedByCustomerNameAsc.js"),
+  sortedByCustomerNameDesc: require("./expectedData/sortedByCustomerNameDesc.js"),
+  sortedByItemIdAsc: require("./expectedData/sortedByItemIdAsc.js"),
+  sortedByItemIdDesc: require("./expectedData/sortedByItemIdDesc.js"),
+  sortedByItemNameAsc: require("./expectedData/sortedByItemNameAsc.js"),
+  sortedByItemNameDesc: require("./expectedData/sortedByItemNameDesc.js"),
 };
 
-const expectDisplaysTableWithData = (expectedDataToBeDisplayed) => {
-  cy.expectDisplaysTableData(expectedDataToBeDisplayed);
-};
+const {
+  resetTestData,
+  waitForLoadingOverlayToDisappear,
+} = require("../utils.js");
 
 const TODAY = Date.UTC(2021, 2, 28);
 
@@ -17,83 +27,99 @@ context("rentals", () => {
   });
 
   context("Sorting", () => {
-    it("sorts by to return on asc", () => {
-      expectDisplaysTableWithData(expectedData.sortedByIdAsc);
+    it("sorts by to return on desc", () => {
+      cy.expectDisplaysTableData(expectedData.sortedByToReturnOnDesc);
     });
 
-    it("sorts by to return on desc", () => {
+    it("sorts by to return on asc", () => {
       cy.get("thead")
         .contains("Zurückerwartet")
         .click()
-        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
+        .then(() =>
+          cy.expectDisplaysTableData(expectedData.sortedByToReturnOnAsc)
+        );
     });
 
-    it("sorts rentals by number asc", () => {
+    it("sorts rentals by item id asc", () => {
       cy.get("thead")
         .contains("Gegenstand Nr")
         .click()
-        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
+        .then(() => cy.expectDisplaysTableData(expectedData.sortedByItemIdAsc));
     });
 
-    it("sorts rentals by number desc", () => {
+    it("sorts rentals by item id desc", () => {
       cy.get("thead")
         .contains("Gegenstand Nr")
         .click()
         .get("thead")
         .contains("Gegenstand Nr")
         .click()
-        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
+        .then(() =>
+          cy.expectDisplaysTableData(expectedData.sortedByItemIdDesc)
+        );
     });
 
-    it("sorts rentals by item_name asc", () => {
+    it("sorts rentals by item name asc", () => {
       cy.get("thead")
         .contains("Gegenstand Name")
         .click()
-        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
+        .then(() =>
+          cy.expectDisplaysTableData(expectedData.sortedByItemNameAsc)
+        );
     });
 
-    it("sorts rentals by item_name desc", () => {
+    it("sorts rentals by item name desc", () => {
       cy.get("thead")
         .contains("Gegenstand Name")
         .click()
         .get("thead")
         .contains("Gegenstand Name")
         .click()
-        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
+        .then(() =>
+          cy.expectDisplaysTableData(expectedData.sortedByItemNameDesc)
+        );
     });
 
-    it("sorts rentals by customer_id asc", () => {
+    it("sorts rentals by customer id asc", () => {
       cy.get("thead")
         .contains("Kunde Nr")
         .click()
-        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
+        .then(() =>
+          cy.expectDisplaysTableData(expectedData.sortedByCustomerIdAsc)
+        );
     });
 
-    it("sorts rentals by customer_id reverse desc", () => {
+    it("sorts rentals by customer id desc", () => {
       cy.get("thead")
         .contains("Kunde Nr")
         .click()
         .get("thead")
         .contains("Kunde Nr")
         .click()
-        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
+        .then(() =>
+          cy.expectDisplaysTableData(expectedData.sortedByCustomerIdDesc)
+        );
     });
 
-    it("sorts rentals by customer_name asc", () => {
+    it("sorts rentals by customer name asc", () => {
       cy.get("thead")
         .contains("Kunde Name")
         .click()
-        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
+        .then(() =>
+          cy.expectDisplaysTableData(expectedData.sortedByCustomerNameAsc)
+        );
     });
 
-    it("sorts rentals by customer_name desc", () => {
+    it("sorts rentals by customer name desc", () => {
       cy.get("thead")
         .contains("Kunde Name")
         .click()
         .get("thead")
         .contains("Kunde Name")
         .click()
-        .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
+        .then(() =>
+          cy.expectDisplaysTableData(expectedData.sortedByCustomerNameDesc)
+        );
     });
   });
 

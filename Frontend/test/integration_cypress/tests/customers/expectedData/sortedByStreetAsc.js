@@ -396,7 +396,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(255, 255, 255)",
     },
-    { text: "1", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "0", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "7", backgroundColor: "rgb(45, 144, 224)" },

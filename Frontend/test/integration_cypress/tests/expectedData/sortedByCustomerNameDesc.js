@@ -1,7 +1,19 @@
 module.exports = [
   [
     {
-      text: "0308",
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0715",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Multi-Elektrosäge",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Vor 5 Tagen",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -9,49 +21,85 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Römertopf",
+      text: "13.04.2021",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "-",
+      text: "ABC",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "-",
+      text: "38",
+      backgroundColor: "rgb(250, 45, 30)",
+    },
+    {
+      text: "Tofful",
+      backgroundColor: "rgb(250, 45, 30)",
+    },
+    {
+      text: "200",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Küche",
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "5059",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Kabeltrommel",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Vor 6 Tagen",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "05.04.2021",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "84",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "Taunton.",
+      backgroundColor: "rgb(247, 239, 10)",
     },
     {
       text: "5",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "2",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "04.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "0311",
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -59,149 +107,29 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Getreidemühle",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Alnatura",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "25",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "8",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "04.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "2 Gummifüße fehlen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "verfügbar",
+      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
   [
     {
-      text: "0329",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
       text: "",
-      backgroundColor: "rgb(247, 239, 10)",
+      backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "Schokofondue-Set",
-      backgroundColor: "rgb(247, 239, 10)",
+      text: "1919",
+      backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "kela",
-      backgroundColor: "rgb(247, 239, 10)",
+      text: "Dörr-Automat",
+      backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "10",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "19.01.2021",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-  ],
-  [
-    {
-      text: "0504",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Hörnchen-Automat",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Komet",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "7117 BE",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "2",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "05.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "nicht verleihbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "0512",
+      text: "Vor 5 Tagen",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -209,31 +137,27 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Kontaktgrill",
+      text: "06.04.2021",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "privileg",
+      text: "ABC",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "-",
+      text: "64",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Küche",
+      text: "Smyth",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "15",
+      text: "200",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "1",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15.10.2018",
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -245,13 +169,25 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "verfügbar",
+      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
   [
     {
-      text: "0606",
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "0830",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Silikonspritze",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Vor 7 Tagen",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -259,119 +195,11 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Elektr. Gemüseschneider",
+      text: "In 7 Tagen",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Moulinex",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Charlotte HV3",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "22",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "05.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "0606",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Elektr. Gemüseschneider",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Moulinex",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Charlotte HV3",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "22",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "05.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "0711",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küchenmaschine",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Braun",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Type 4200",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
+      text: "ABC",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -379,11 +207,15 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "21",
+      text: "Slym",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "15.10.2018",
+      text: "50",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -395,13 +227,25 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "verliehen",
+      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
   [
     {
-      text: "0832",
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0830",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Silikonspritze",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "10.03.2021",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -409,31 +253,27 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Elektr. Fondue",
+      text: "In 3 Tagen",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "TCM",
+      text: "ABC",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "64696",
-      backgroundColor: "rgb(242, 242, 242)",
+      text: "52",
+      backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "Küche",
-      backgroundColor: "rgb(242, 242, 242)",
+      text: "Sames",
+      backgroundColor: "rgb(45, 144, 224)",
     },
     {
       text: "15",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "11",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "07.08.2020",
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -445,13 +285,25 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "gelöscht",
+      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
   [
     {
-      text: "0921",
+      text: "",
+      backgroundColor: "rgb(250, 45, 30)",
+    },
+    {
+      text: "1919",
+      backgroundColor: "rgb(250, 45, 30)",
+    },
+    {
+      text: "Dörr-Automat",
+      backgroundColor: "rgb(250, 45, 30)",
+    },
+    {
+      text: "11.03.2021",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -459,231 +311,27 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Entsafter",
+      text: "In 4 Tagen",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "mia",
+      text: "ABC",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "SP2003",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "33",
+      backgroundColor: "rgb(131, 235, 52)",
     },
     {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "6",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "11.12.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Fruchtpresse, Kelter, Moster, Mostpresse, Obstpresse, Saftpresse",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "1101",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Joghurt-Box",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "A.Vogel",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "SPENDENVERKAUF",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "07.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "gelöscht",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "1116",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Sandwichmaker",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Hit",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "30.11.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "1202",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Fleischwolf",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "alfa",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "7",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "07.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Faschiermaschine, Fleischmaschine",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "1207",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Stabmixer",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Braun",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "SPENDENVERKAUF",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "Phifer",
+      backgroundColor: "rgb(131, 235, 52)",
     },
     {
       text: "5",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "1",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "07.09.2018",
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -691,17 +339,29 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Mixstab, Pürierstab, Zauberstab",
+      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "verfügbar",
+      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
   [
     {
-      text: "1231",
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0830",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Silikonspritze",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "10.03.2021",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -709,23 +369,243 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Wok",
+      text: "In 3 Tagen",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Bodum",
+      text: "ABC",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Chambord",
+      text: "100",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Küche",
+      text: "Palluschek",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "200",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "5059",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Kabeltrommel",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Vorgestern",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "In 5 Tagen",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "65",
+      backgroundColor: "rgb(131, 235, 52)",
+    },
+    {
+      text: "Mitchener",
+      backgroundColor: "rgb(131, 235, 52)",
+    },
+    {
+      text: "5",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0830",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Silikonspritze",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "20.03.2021",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "In 6 Tagen",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "70",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Maltby",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
       text: "15",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "5059",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Kabeltrommel",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "19.03.2021",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "09.04.2021",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "10",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "Maceur",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "5",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "5059",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Kabeltrommel",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Vorgestern",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "In 5 Tagen",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "ABC",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -733,25 +613,393 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "01.12.2018",
+      text: "Luetkemeyers",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Emaille-beschichtet, für alle Herdarten geeignet (incl. Induktion)\n,gusseisern,370 mm",
+      text: "50",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Wokpfanne",
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "verfügbar",
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
   [
     {
-      text: "1232",
+      text: "",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "0830",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "Silikonspritze",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "06.03.2021",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "20.03.2021",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "4",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "Luetkemeyers",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "50",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "5059",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Kabeltrommel",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "20.03.2021",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "10.04.2021",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "16",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Lainge",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "10",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "0830",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "Silikonspritze",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "14.03.2021",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "In 7 Tagen",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "25",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "Kindred",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "200",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "200",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "Heute",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "5002",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "Schraubenschlüssel",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "Vor 7 Tagen",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "Heute",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "73",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "Kaley",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "200",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(160, 200, 250)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "5004",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "Hammer",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "12.03.2021",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "Vorgestern",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "23",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "Jiggins",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "50",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(240, 200, 200)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0711",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Küchenmaschine",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "19.03.2021",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "09.04.2021",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "2",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Heaviside",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "10",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "0711",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Küchenmaschine",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Vor 3 Tagen",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -759,194 +1007,98 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Saftpresse",
+      text: "In 4 Tagen",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "-",
+      text: "ABC",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "-",
+      text: "93",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Küche",
+      text: "Grise",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "5",
+      text: "50",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "1",
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "01.12.2018",
+      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "2x vorhanden",
+      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Entsafter, Fruchtpresse, Kelter, Moster, Mostpresse, Obstpresse",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
+      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
   [
     {
-      text: "1243",
-      backgroundColor: "rgb(242, 242, 242)",
+      text: "",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "2906",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "Bohrmaschine",
+      backgroundColor: "rgb(214, 252, 208)",
+    },
+    {
+      text: "Heute",
+      backgroundColor: "rgb(214, 252, 208)",
     },
     {
       text: "",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(214, 252, 208)",
     },
     {
-      text: "Handmixer",
-      backgroundColor: "rgb(242, 242, 242)",
+      text: "In 7 Tagen",
+      backgroundColor: "rgb(214, 252, 208)",
     },
     {
-      text: "KRUPS 3 MIX 3000",
-      backgroundColor: "rgb(242, 242, 242)",
+      text: "ABC",
+      backgroundColor: "rgb(214, 252, 208)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
+      text: "95",
+      backgroundColor: "rgb(214, 252, 208)",
     },
     {
-      text: "Küche",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
+      text: "Govan",
+      backgroundColor: "rgb(214, 252, 208)",
     },
     {
       text: "5",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "19.01.2021",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "1702",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Ravioli-Former",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "TCM",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
+      backgroundColor: "rgb(214, 252, 208)",
     },
     {
       text: "5",
-      backgroundColor: "rgb(255, 255, 255)",
+      backgroundColor: "rgb(214, 252, 208)",
     },
     {
-      text: "3",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "Heute",
+      backgroundColor: "rgb(214, 252, 208)",
     },
     {
-      text: "18.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "ABC",
+      backgroundColor: "rgb(214, 252, 208)",
     },
     {
       text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "1710",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "Tortenring",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "chg",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "24.09.2018",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "8,5 cm hoch",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(131, 235, 52)",
+      backgroundColor: "rgb(214, 252, 208)",
     },
   ],
 ];

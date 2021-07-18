@@ -178,7 +178,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(45, 144, 224)",
     },
-    { text: "1", backgroundColor: "rgb(45, 144, 224)" },
+    { text: "0", backgroundColor: "rgb(45, 144, 224)" },
   ],
   [
     { text: "39", backgroundColor: "rgb(242, 242, 242)" },
@@ -264,7 +264,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(255, 255, 255)",
     },
-    { text: "1", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "0", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "15", backgroundColor: "rgb(247, 239, 10)" },
@@ -399,7 +399,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(255, 255, 255)",
     },
-    { text: "1", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "0", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "64", backgroundColor: "rgb(242, 242, 242)" },

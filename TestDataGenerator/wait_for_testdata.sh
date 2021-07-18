@@ -1,8 +1,12 @@
 #!/bin/bash
+host="couchdb"
+database="leihlokal_test"
+user="user"
+password="password"
 
 i=0
 
-while ! curl http://user:password@127.0.0.1:5984/leihlokal_test | grep "\"doc_count\":300" > /dev/null;
+while ! curl http://${user}:${password}@${host}:5984/${database} | grep "\"doc_count\":300" > /dev/null;
 do
     if [[ "$i" -gt 29 ]]; then
         echo "timed out while waiting for testdata after 30s!"

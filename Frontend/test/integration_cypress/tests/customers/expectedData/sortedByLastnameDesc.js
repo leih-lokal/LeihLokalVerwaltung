@@ -132,7 +132,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(255, 255, 255)",
     },
-    { text: "2", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "0", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "84", backgroundColor: "rgb(247, 239, 10)" },

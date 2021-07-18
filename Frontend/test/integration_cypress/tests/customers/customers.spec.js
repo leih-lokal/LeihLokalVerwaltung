@@ -33,21 +33,15 @@ const waitForLazyLoadingToComplete = () =>
   );
 
 const expectDisplaysTableWithData = (expectedDataToBeDisplayed) => {
-  cy.expectDisplaysTableData(
-    expectedDataToBeDisplayed,
-    waitForLazyLoadingToComplete
-  );
+  cy.expectDisplaysTableData(expectedDataToBeDisplayed);
 };
 
 const expectDisplaysRow = (expectedRowToBeDisplayed) => {
-  cy.expectDisplaysRow(expectedRowToBeDisplayed, waitForLazyLoadingToComplete);
+  cy.expectDisplaysRow(expectedRowToBeDisplayed);
 };
 
 const expectNotDisplaysRow = (expectedRowNotToBeDisplayed) => {
-  cy.expectNotDisplaysRow(
-    expectedRowNotToBeDisplayed,
-    waitForLazyLoadingToComplete
-  );
+  cy.expectNotDisplaysRow(expectedRowNotToBeDisplayed);
 };
 
 context("Customers", () => {

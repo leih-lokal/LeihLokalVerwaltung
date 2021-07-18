@@ -1,33 +1,30 @@
-const getDisplayedTableData = () =>
-  cy.get("tbody", { timeout: 10000 }).then((tbody) => {
+const displayedTableDataShould = (assertion) =>
+  cy.get("tbody", { timeout: 10000 }).should((tbody) => {
     let tableData = [...tbody.get(0).querySelectorAll("tr")].map((row) => {
       return [...row.querySelectorAll("td")].map((e) => ({
         text: e.textContent,
         backgroundColor: e.style.backgroundColor,
       }));
     });
-    return tableData;
+    assertion(tableData);
   });
 
-const expectDisplaysTableData = (expectedTableData, additionalWaitFunction) => {
-  additionalWaitFunction && additionalWaitFunction();
-  getDisplayedTableData().then((tableData) => {
-    expect(tableData).to.deep.equal(expectedTableData);
-  });
+const expectDisplaysTableData = (expectedTableData) => {
+  displayedTableDataShould((tableData) =>
+    expect(tableData).to.deep.equal(expectedTableData)
+  );
 };
 
-const expectDisplaysRow = (expectedTableRow, additionalWaitFunction) => {
-  additionalWaitFunction && additionalWaitFunction();
-  getDisplayedTableData().then((tableData) => {
-    expect(tableData).to.deep.include.members([expectedTableRow]);
-  });
+const expectDisplaysRow = (expectedTableRow) => {
+  displayedTableDataShould((tableData) =>
+    expect(tableData).to.deep.include.members([expectedTableRow])
+  );
 };
 
-const expectNotDisplaysRow = (expectedTableRow, additionalWaitFunction) => {
-  additionalWaitFunction && additionalWaitFunction();
-  getDisplayedTableData().then((tableData) => {
-    expect(tableData).not.to.deep.include.members([expectedTableRow]);
-  });
+const expectNotDisplaysRow = (expectedTableRow) => {
+  displayedTableDataShould((tableData) =>
+    expect(tableData).not.to.deep.include.members([expectedTableRow])
+  );
 };
 
 Cypress.Commands.add(
