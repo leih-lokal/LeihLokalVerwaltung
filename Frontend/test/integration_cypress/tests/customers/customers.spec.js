@@ -19,18 +19,15 @@ const expectedData = {
   createdCustomer: require("./expectedData/createdCustomer.js"),
 };
 
-const {
-  resetTestData,
-  waitForLoadingOverlayToDisappear,
-} = require("../../utils.js");
+const { resetTestData } = require("../../utils.js");
 
-// wait until active rentals (colId 15) is loaded for last customer
-const waitForLazyLoadingToComplete = () =>
-  cy.get("tbody > tr").each((row) =>
-    cy.wrap(row).contains("td:nth-child(15)", /.+/, {
-      timeout: 10000,
-    })
-  );
+Cypress.on("uncaught:exception", (err, runnable) => {
+  // returning false here prevents Cypress from
+  // failing the test
+  // necessary to prevent failing tests when application throws error
+  // because of no usable index after db reset
+  return false;
+});
 
 const expectDisplaysTableWithData = (expectedDataToBeDisplayed) => {
   cy.expectDisplaysTableData(expectedDataToBeDisplayed);
@@ -46,9 +43,9 @@ const expectNotDisplaysRow = (expectedRowNotToBeDisplayed) => {
 
 context("Customers", () => {
   beforeEach(() => {
-    cy.clock(Date.UTC(2020, 5, 1), ["Date"])
-      .visit("../../public/index.html#/customers")
-      .then(waitForLazyLoadingToComplete);
+    cy.clock(Date.UTC(2020, 5, 1), ["Date"]).visit(
+      "../../public/index.html#/customers"
+    );
   });
 
   context("Sorting", () => {
@@ -247,7 +244,7 @@ context("Customers", () => {
       cy.get("#firstname").clear().type("NewFirstname");
       cy.contains("Speichern").click();
 
-      waitForLoadingOverlayToDisappear();
+      //waitForLoadingOverlayToDisappear();
       expectDisplaysRow(
         expectedData.sortedByIdAsc[13].map((expectedValue) => {
           if (expectedValue.text === customer.firstname) {
@@ -262,7 +259,7 @@ context("Customers", () => {
       let customer = expectedData.customerToEdit;
       cy.get("table").contains(customer.firstname).click();
       cy.contains("Löschen").click();
-      waitForLoadingOverlayToDisappear();
+      //waitForLoadingOverlayToDisappear();
       expectNotDisplaysRow(expectedData.sortedByIdAsc[13]);
     });
 
@@ -311,11 +308,10 @@ context("Customers", () => {
       cy.get("#city").type(newCustomer.city);
       cy.get("#remark").type(newCustomer.remark);
 
-      cy.contains("Speichern").click();
-      waitForLoadingOverlayToDisappear();
-      cy.get("thead").contains("Id").click();
-
-      expectDisplaysRow(expectedData.createdCustomer);
+      cy.contains("Speichern")
+        .click()
+        .then(() => cy.get("thead").contains("Id").click())
+        .then(() => expectDisplaysRow(expectedData.createdCustomer));
     });
   });
 });

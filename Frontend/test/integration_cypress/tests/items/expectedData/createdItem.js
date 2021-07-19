@@ -33,7 +33,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "03.07.2021",
+      text: "28.03.2021",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
