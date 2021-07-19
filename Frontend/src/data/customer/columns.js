@@ -3,7 +3,7 @@ import {
   saveParseTimestampToString,
 } from "../../utils/utils.js";
 import Database from "../../database/ENV_DATABASE";
-import { activeRentalsForCustomerSelector } from "../rental/selectors";
+import { activeRentalsForCustomerSelector } from "../selectors";
 
 const backgroundColor = async (customer) => customer.highlight;
 

@@ -17,7 +17,7 @@ import {
   customerById,
   customerByLastname,
   itemByName,
-} from "./selectors";
+} from "../selectors";
 
 /**
  * Whether the status of the selected item should be updated when a rental is created or completed.

@@ -1,4 +1,4 @@
-import Database from "../../database/ENV_DATABASE";
+import Database from "../database/ENV_DATABASE";
 
 const customerIdStartsWithSelector = (searchValue) =>
   Database.selectorBuilder()

@@ -3,11 +3,14 @@ import { notifier } from "@beyonk/svelte-notifications";
 import WoocommerceClient from "../../database/ENV_WC_CLIENT";
 import columns from "./columns";
 import { setNumericValuesDefault0 } from "../utils";
+import { itemById } from "../selectors";
 
 const fetchItem = async (rental) => {
   if (rental.item_id) {
     try {
-      const item = await Database.fetchItemById(rental.item_id);
+      const item = (
+        await Database.fetchDocsBySelector(itemById(rental.item_id))
+      )[0];
       rental.image = item.image;
       return item;
     } catch (error) {

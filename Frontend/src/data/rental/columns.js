@@ -2,7 +2,7 @@ import {
   saveParseTimestampToHumanReadableString,
   millisAtStartOfToday,
 } from "../../utils/utils.js";
-import { customerById, itemById } from "./selectors";
+import { customerById, itemById } from "../selectors";
 import COLORS from "../../components/Input/ColorDefs";
 import Database from "../../database/ENV_DATABASE";
 
@@ -27,13 +27,14 @@ const rentalHighlight = async (rental) => {
     return COLORS.RENTAL_LATE_RED;
   }
 };
+
 const customerHighlight = (rental) =>
   Database.fetchDocsBySelector(customerById(rental.customer_id)).then(
-    (customers) => customers[0].highlight
+    (customers) => customers[0] && customers[0].highlight
   );
 const itemHighlight = (rental) =>
   Database.fetchDocsBySelector(itemById(rental.item_id)).then(
-    (items) => items[0].highlight
+    (items) => items[0] && items[0].highlight
   );
 
 const highlightByPriority = (highlightFunctions) => (rental) =>
