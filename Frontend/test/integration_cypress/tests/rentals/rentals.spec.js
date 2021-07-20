@@ -21,19 +21,19 @@ const expectedData = {
   rentalToEdit: require("./expectedData/rentalToEdit.js"),
   rentalEdited: require("./expectedData/rentalEdited.js"),
   rentalDeleted: require("./expectedData/rentalDeleted.js"),
+  createdRental: require("./expectedData/createdRental.js"),
+  createdRentalWithDefaultValues: require("./expectedData/createdRentalWithDefaultValues.js"),
 };
 
-const { resetTestData, dateToString } = require("../../utils.js");
+const {
+  resetTestData,
+  dateToString,
+  catchMissingIndexExceptions,
+} = require("../../utils.js");
 
 const TODAY = Date.UTC(2021, 2, 28);
 
-Cypress.on("uncaught:exception", (err, runnable) => {
-  // returning false here prevents Cypress from
-  // failing the test
-  // necessary to prevent failing tests when application throws error
-  // because of no usable index after db reset
-  return false;
-});
+catchMissingIndexExceptions();
 
 context("rentals", () => {
   beforeEach(() => {
@@ -42,7 +42,7 @@ context("rentals", () => {
       cy.get("tbody > tr", { timeout: 20000 })
     );
   });
-  /**
+
   context("Sorting", () => {
     it("sorts by to return on desc", () => {
       cy.expectDisplaysTableData(expectedData.sortedByToReturnOnDesc);
@@ -202,15 +202,10 @@ context("rentals", () => {
           cy.expectDisplaysTableData(expectedData.filterForVerspaetet)
         );
     });
-  });*/
+  });
 
   context("Editing", () => {
     afterEach(resetTestData);
-
-    const expectedDateInputValue = (millis) => {
-      if (millis === 0) return "-";
-      else return dateToString(new Date(millis));
-    };
 
     it("Displays correct data in Edit Popup", () => {
       const rentalToEdit = expectedData.rentalToEdit;
@@ -292,15 +287,15 @@ context("rentals", () => {
         ":nth-child(3) > .col-input > .datepickercontainer > .datepicker input"
       ).should("have.value", newRental.to_return_on);
 
-      cy.get("#item_id").type(newRental.item_id).wait(500);
+      cy.get("#item_id").type(newRental.item_id).wait(200);
       cy.get(".autocomplete-list-item").contains(newRental.item_id).click();
-      cy.get("#item_name").clear().type(newRental.item_name).wait(500);
+      cy.get("#item_name").clear().type(newRental.item_name).wait(200);
       cy.get(".autocomplete-list-item").contains(newRental.item_name).click();
-      cy.get("#customer_id").clear().type(newRental.customer_id).wait(500);
+      cy.get("#customer_id").clear().type(newRental.customer_id).wait(200);
       cy.get(".autocomplete-list-item")
         .contains(newRental.customer_name)
         .click();
-      cy.get("#customer_name").clear().type(newRental.customer_name).wait(500);
+      cy.get("#customer_name").clear().type(newRental.customer_name).wait(200);
       cy.get(".autocomplete-list-item")
         .contains(newRental.customer_name)
         .click();
@@ -310,35 +305,16 @@ context("rentals", () => {
       cy.contains("Speichern").click();
       cy.get("thead").contains("Ausgegeben").click().click();
       cy.contains("Leihvorgang gespeichert").then(() =>
-        cy.expectDisplaysTableData(expectedData.rentalDeleted)
+        cy.expectDisplaysTableData(expectedData.createdRental)
       );
     });
 
     it("Creates rental with default values", () => {
-      const defaultRental = {
-        item_id: 0,
-        item_name: "",
-        rented_on: "28.03.2021",
-        to_return_on: "04.04.2021",
-        passing_out_employee: "",
-        receiving_employee: "",
-        customer_id: 0,
-        returned_on: 0,
-        extended_on: 0,
-        customer_name: "",
-        deposit: 0,
-        deposit_returned: 0,
-        image: "",
-        remark: "",
-        type: "rental",
-      };
-
       cy.contains("+").click();
-
       cy.contains("Speichern").click();
       cy.get("thead").contains("Ausgegeben").click().click();
       cy.contains("Leihvorgang gespeichert").then(() =>
-        cy.expectDisplaysTableData(expectedData.rentalDeleted)
+        cy.expectDisplaysTableData(expectedData.createdRentalWithDefaultValues)
       );
     });
   });

@@ -34,6 +34,7 @@ const {
   resetTestData,
   dateToString,
   waitForPopupToClose,
+  catchMissingIndexExceptions,
 } = require("../../utils.js");
 
 const TODAY = Date.UTC(2021, 2, 28);
@@ -42,13 +43,7 @@ const expectDisplaysTableWithData = (expectedDataToBeDisplayed) => {
   cy.expectDisplaysTableData(expectedDataToBeDisplayed);
 };
 
-Cypress.on("uncaught:exception", (err, runnable) => {
-  // returning false here prevents Cypress from
-  // failing the test
-  // necessary to prevent failing tests when application throws error
-  // because of no usable index after db reset
-  return false;
-});
+catchMissingIndexExceptions();
 
 context("items", () => {
   beforeEach(() => {
@@ -263,7 +258,6 @@ context("items", () => {
       cy.get("#name").clear().type("NewName");
       cy.contains("Speichern")
         .click()
-        //.then(waitForLoadingOverlayToDisappear)
         .then(() => {
           expectDisplaysTableWithData(expectedData.editedName);
         });

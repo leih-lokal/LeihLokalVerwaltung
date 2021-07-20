@@ -12,6 +12,10 @@
   let title = "";
   let groups = [];
   let inputContainer;
+  let footerButtonsWithContext;
+
+  // needs to be reactive so that the injected context is updated when doc changes
+  $: doc, (footerButtonsWithContext = injectContext(config.footerButtons));
 
   const injectContext = (val) => {
     if (typeof val === "function") {
@@ -91,7 +95,7 @@
     {/each}
   </div>
   <div class="footer">
-    <Footer buttons={injectContext(config.footerButtons)} />
+    <Footer buttons={footerButtonsWithContext} />
   </div>
 </div>
 

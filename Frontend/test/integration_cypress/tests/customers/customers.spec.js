@@ -19,15 +19,12 @@ const expectedData = {
   createdCustomer: require("./expectedData/createdCustomer.js"),
 };
 
-const { resetTestData } = require("../../utils.js");
+const {
+  resetTestData,
+  catchMissingIndexExceptions,
+} = require("../../utils.js");
 
-Cypress.on("uncaught:exception", (err, runnable) => {
-  // returning false here prevents Cypress from
-  // failing the test
-  // necessary to prevent failing tests when application throws error
-  // because of no usable index after db reset
-  return false;
-});
+catchMissingIndexExceptions();
 
 const expectDisplaysTableWithData = (expectedDataToBeDisplayed) => {
   cy.expectDisplaysTableData(expectedDataToBeDisplayed);
@@ -244,7 +241,6 @@ context("Customers", () => {
       cy.get("#firstname").clear().type("NewFirstname");
       cy.contains("Speichern").click();
 
-      //waitForLoadingOverlayToDisappear();
       expectDisplaysRow(
         expectedData.sortedByIdAsc[13].map((expectedValue) => {
           if (expectedValue.text === customer.firstname) {
@@ -259,7 +255,6 @@ context("Customers", () => {
       let customer = expectedData.customerToEdit;
       cy.get("table").contains(customer.firstname).click();
       cy.contains("Löschen").click();
-      //waitForLoadingOverlayToDisappear();
       expectNotDisplaysRow(expectedData.sortedByIdAsc[13]);
     });
 

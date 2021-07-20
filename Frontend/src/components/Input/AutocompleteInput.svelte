@@ -28,7 +28,7 @@
 
 <div class="container">
   <AutoComplete
-    delay={200}
+    delay={150}
     textCleanFunction={(text) => (value = text)}
     {searchFunction}
     labelFunction={(item) => {
@@ -43,8 +43,10 @@
       if (value !== newValue) {
         value = newValue;
         onSelected(value);
+        return true;
       }
-      return value;
+      // do not select same value again
+      return false;
     }}
     inputId={id}
     {noResultsText}
