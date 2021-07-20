@@ -29,15 +29,6 @@ jobs:
         working-directory: Frontend
         run: npm run unit_test
 
-      - name: Run cypress integration tests
-        uses: cypress-io/github-action@v2
-        with:
-          working-directory: "./Frontend"
-          command: npm run integration_test_cypress:run
-          browser: chrome
-          record: false
-          parallel: true
-
       - name: Install Chrome
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb
 
@@ -47,6 +38,15 @@ jobs:
       - name: Wait for CouchDB with test data
         working-directory: TestDataGenerator
         run: ./wait_for_testdata.sh
+
+      - name: Run cypress integration tests
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: "./Frontend"
+          command: npm run integration_test_cypress:run
+          browser: chrome
+          record: false
+          parallel: true
 
       - name: Run selenium integration tests
         working-directory: Frontend
