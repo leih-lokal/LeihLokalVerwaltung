@@ -1,5 +1,5 @@
 #!/bin/bash
-host="couchdb"
+host=${1:-couchdb}
 database="leihlokal_test"
 user="user"
 password="password"

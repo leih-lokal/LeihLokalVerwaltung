@@ -37,7 +37,7 @@ jobs:
 
       - name: Wait for CouchDB with test data
         working-directory: TestDataGenerator
-        run: ./wait_for_testdata.sh
+        run: ./wait_for_testdata.sh 127.0.0.1
 
       - name: Run cypress integration tests
         uses: cypress-io/github-action@v2
