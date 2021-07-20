@@ -1,5 +1,5 @@
 const displayedTableDataShould = (assertion) =>
-  cy.get("tbody", { timeout: 10000 }).should((tbody) => {
+  cy.get("tbody", { timeout: 20000 }).should((tbody) => {
     let tableData = [...tbody.get(0).querySelectorAll("tr")].map((row) => {
       return [...row.querySelectorAll("td")].map((e) => ({
         text: e.textContent,

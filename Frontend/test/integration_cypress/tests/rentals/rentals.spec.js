@@ -27,7 +27,6 @@ const expectedData = {
 
 const {
   resetTestData,
-  dateToString,
   catchMissingIndexExceptions,
 } = require("../../utils.js");
 
