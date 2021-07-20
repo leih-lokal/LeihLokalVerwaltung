@@ -4,6 +4,7 @@ import Cache from "lru-cache";
 import SelectorBuilder from "./SelectorBuilder";
 import { get } from "svelte/store";
 import { settingsStore } from "../utils/settingsStore";
+import Logger from "js-logger";
 PouchDB.plugin(PouchDBFind);
 
 class Database {
@@ -48,24 +49,32 @@ class Database {
         revs_info: true,
         conflicts: true,
       })
-      .then((doc) =>
-        this.database.put({
+      .then((doc) => {
+        let updatedDocWithRev = {
           _rev: doc._rev,
           last_update: new Date().getTime(),
           ...updatedDoc,
-        })
-      );
+        };
+        Logger.debug(
+          `Updated doc from ${JSON.stringify(doc)} to ${JSON.stringify(
+            updatedDocWithRev
+          )}`
+        );
+        return this.database.put(updatedDocWithRev);
+      });
   }
 
   createDoc(doc) {
     this.cache.reset();
     this.queryPaginatedDocsCache.reset();
     doc["last_update"] = new Date().getTime();
+    Logger.debug(`Created doc: ${JSON.stringify(doc)}`);
     return this.database.post(doc);
   }
 
   removeDoc(doc) {
     this.cache.reset();
+    Logger.debug(`Removed doc: ${JSON.stringify(doc)}`);
     return this.database.remove(doc._id, doc._rev);
   }
 

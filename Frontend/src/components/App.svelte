@@ -9,6 +9,8 @@
   import config from "../data/config.js";
   import createIndex from "../data/createIndex";
   import Database from "../database/ENV_DATABASE";
+  import Logger from "./Logging/Logger.svelte";
+  import LogView from "./Logging/LogView.svelte";
 
   const routes = new Map();
   config.forEach((tableViewConfig) =>
@@ -25,6 +27,7 @@
       })
     )
   );
+  routes.set("/logs", LogView);
   routes.set(
     "/settings",
     wrap({
@@ -48,6 +51,7 @@
   Database.connect();
 </script>
 
+<Logger />
 <NotificationDisplay />
 <div class="container">
   <Navbar
