@@ -1,27 +1,20 @@
-import testdataLarge from "../../../../TestDataGenerator/testdata.json";
-import testdataSmall from "../../../test/integration_cypress/testdata.js";
-import customerColumns from "../../config/customer/columns";
-import rentalColumns from "../../config/rental/columns";
-import itemColumns from "../../config/item/columns";
+import testdataLarge from "../../../TestDataGenerator/testdata.json";
 import SelectorBuilder from "./SelectorBuilder";
 
-const COLUMNS = {
-  customer: customerColumns,
-  item: itemColumns,
-  rental: rentalColumns,
-};
-
 class MockDatabase {
+  onConnectedCallback;
   constructor() {
-    if (typeof ENV_LARGE_DATASET === "undefined") {
-      this.data = testdataSmall();
-    } else {
-      this.data = testdataLarge.docs;
-    }
+    this.data = testdataLarge.docs;
     this.writeData(this.data);
   }
 
-  async connect() {}
+  onConnected(onConnectedCallback) {
+    this.onConnectedCallback = onConnectedCallback;
+  }
+
+  async connect() {
+    if (this.onConnectedCallback) this.onConnectedCallback();
+  }
 
   matchesSelector(doc, selector) {
     for (const [selectorKey, selectorObj] of Object.entries(selector)) {
@@ -97,9 +90,8 @@ class MockDatabase {
       currentPage,
       searchTerm,
       docType,
+      columns,
     } = options;
-
-    let columns = COLUMNS[docType];
 
     let selectors = filters.flatMap((filter) => filter.selectors);
     selectors.push({
@@ -196,6 +188,8 @@ class MockDatabase {
     this.writeData([...this.getData(), doc]);
   }
 
+  async createIndex(index) {}
+
   async nextUnusedId(docType) {
     let usedIds = this.getData()
       .filter((doc) => doc.type === docType)
@@ -207,9 +201,13 @@ class MockDatabase {
     return this.getData()
       .filter((doc) => this.matchesSelector(doc, selector))
       .map((doc) => {
-        let docWithFields = {};
-        fields.forEach((field) => (docWithFields[field] = doc[field]));
-        return docWithFields;
+        if (fields) {
+          let docWithFields = {};
+          fields.forEach((field) => (docWithFields[field] = doc[field]));
+          return docWithFields;
+        } else {
+          return doc;
+        }
       });
   }
 
@@ -227,6 +225,17 @@ class MockDatabase {
     return Array.from(uniqueValues).map((uniqueValue) => ({
       [field]: uniqueValue,
     }));
+  }
+
+  fetchByIdAndType(id, type) {
+    return this.fetchDocsBySelector(
+      this.selectorBuilder()
+        .withDocType(type)
+        .withField("id")
+        .equals(parseInt(id))
+        .build(),
+      ["_id"]
+    );
   }
 
   fetchAllDocsBySelector(selector, fields) {

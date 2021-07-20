@@ -28,7 +28,6 @@ export default {
       preventAssignment: true,
       ENV_WC_CLIENT: process.env.WC_CLIENT,
       ENV_DATABASE: process.env.DATABASE,
-      ENV_LARGE_DATASET: process.env.LARGE_DATASET,
       ENV_NODE_ENV: process.env.NODE_ENV,
     }),
     svelte({
