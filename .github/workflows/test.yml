@@ -47,6 +47,13 @@ jobs:
           browser: chrome
           record: true
 
+      - name: Upload cypress failure screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: Frontend/cypress/screenshots
+
       - name: Run selenium integration tests
         working-directory: Frontend
         run: npm run integration_test_selenium
