@@ -45,8 +45,7 @@ jobs:
           working-directory: "./Frontend"
           command: npm run integration_test_cypress:run
           browser: chrome
-          record: false
-          parallel: true
+          record: true
 
       - name: Run selenium integration tests
         working-directory: Frontend
