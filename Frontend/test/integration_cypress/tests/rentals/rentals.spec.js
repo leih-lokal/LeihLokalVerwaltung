@@ -38,7 +38,7 @@ context("rentals", () => {
   beforeEach(() => {
     cy.clock(TODAY, ["Date"]);
     cy.visit("../../public/index.html#/rentals").then(() =>
-      cy.get("tbody > tr", { timeout: 20000 })
+      cy.get("tbody > tr", { timeout: 30000 })
     );
   });
 

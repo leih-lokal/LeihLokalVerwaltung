@@ -1,5 +1,5 @@
 #!/bin/bash
-host="127.0.0.1"
+host=${1:-"127.0.0.1"}
 database="leihlokal_test"
 user="user"
 password="password"
