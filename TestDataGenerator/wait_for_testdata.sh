@@ -11,13 +11,13 @@ while ! echo $response | grep "\"doc_count\":300";
 do
     response=$(curl http://${user}:${password}@${host}:5984/${database})
     echo $response
-    if [[ "$i" -gt 29 ]]; then
-        echo "timed out while waiting for testdata after 30s!"
+    if [[ "$i" -gt 9 ]]; then
+        echo "timed out while waiting for testdata after 10s!"
         exit 1
     fi
     sleep 1
     echo "waiting for testdata..."
-    ((i=i+1))
+    let "i+=1"
 done
 
 echo "testdata in db!"

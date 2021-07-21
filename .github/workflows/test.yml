@@ -38,6 +38,12 @@ jobs:
       - name: Start CouchDB
         run: docker-compose up -d couchdb
 
+      - name: Wait for CouchDB
+        uses: ifaxity/wait-on-action
+        with:
+          resource: http://127.0.0.1:5984
+          delay: 500
+
       - name: Insert Testdata
         run: docker-compose up testdata_generator
 
