@@ -5,9 +5,12 @@ user="user"
 password="password"
 
 i=0
+response=""
 
-while ! curl http://${user}:${password}@${host}:5984/${database} | grep "\"doc_count\":300" > /dev/null;
+while ! echo $response | grep "\"doc_count\":300";
 do
+    response=$(curl -s http://${user}:${password}@${host}:5984/${database})
+    echo $response
     if [[ "$i" -gt 29 ]]; then
         echo "timed out while waiting for testdata after 30s!"
         exit 1
