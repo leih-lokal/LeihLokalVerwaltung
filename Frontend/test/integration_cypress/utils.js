@@ -8,7 +8,9 @@ const waitForPopupToClose = () =>
 const clearFilter = () => cy.get(".multiSelectItem_clear").click();
 
 const resetTestData = () =>
-  cy.exec("docker start testdata_generator && docker wait testdata_generator");
+  cy.exec(
+    "docker start testdata_generator && docker wait testdata_generator && sh ../TestDataGenerator/wait_for_testdata.sh"
+  );
 
 const catchMissingIndexExceptions = () => {
   Cypress.on("uncaught:exception", (err, runnable) => {
