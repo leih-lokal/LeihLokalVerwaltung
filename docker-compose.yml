@@ -2,6 +2,7 @@ version: "3.4"
 
 services:
   couchdb:
+    container_name: couchdb
     image: couchdb:3.1.1
     restart: unless-stopped
     ports:

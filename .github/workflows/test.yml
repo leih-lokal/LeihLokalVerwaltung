@@ -32,12 +32,14 @@ jobs:
       - name: Install Chrome
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb
 
-      - name: Start CouchDB
-        run: docker-compose up -d
+      - name: Build Containers
+        run: docker-compose build
 
-      - name: Wait for CouchDB with test data
-        working-directory: TestDataGenerator
-        run: ./wait_for_testdata.sh
+      - name: Start CouchDB
+        run: docker-compose run -d couchdb
+
+      - name: Insert Testdata
+        run: docker-compose run testdata_generator
 
       - name: Run cypress integration tests
         uses: cypress-io/github-action@v2
