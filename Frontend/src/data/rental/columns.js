@@ -68,6 +68,7 @@ export default [
     title: "Ausgegeben",
     key: "rented_on",
     search: "exclude",
+    sort: ["rented_on", "customer_name"],
     display: (value) => saveParseTimestampToHumanReadableString(value),
     backgroundColor: highlightByPriority([rentalHighlight]),
   },

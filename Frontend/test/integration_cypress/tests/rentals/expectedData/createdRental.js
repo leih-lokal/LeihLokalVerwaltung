@@ -261,15 +261,15 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "4",
-      backgroundColor: "rgb(242, 242, 242)",
+      text: "65",
+      backgroundColor: "rgb(131, 235, 52)",
     },
     {
-      text: "Luetkemeyers",
-      backgroundColor: "rgb(242, 242, 242)",
+      text: "Mitchener",
+      backgroundColor: "rgb(131, 235, 52)",
     },
     {
-      text: "50",
+      text: "5",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -319,15 +319,15 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "65",
-      backgroundColor: "rgb(131, 235, 52)",
+      text: "4",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Mitchener",
-      backgroundColor: "rgb(131, 235, 52)",
+      text: "Luetkemeyers",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "5",
+      text: "50",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -524,64 +524,6 @@ module.exports = [
   [
     {
       text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "0830",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Silikonspritze",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Vor 5 Tagen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Übermorgen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "ABC",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "98",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Costen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "10",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "0",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "",
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
@@ -594,135 +536,135 @@ module.exports = [
     },
     {
       text: "Vor 5 Tagen",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "06.04.2021",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "ABC",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "64",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "Smyth",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "200",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "0",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
   ],
   [
     {
       text: "",
-      backgroundColor: "rgb(255, 255, 255)",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "1506",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "0830",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "el. Kettensäge",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "Silikonspritze",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Vor 6 Tagen",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "Vor 5 Tagen",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
       text: "",
-      backgroundColor: "rgb(255, 255, 255)",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "12.04.2021",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "Übermorgen",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
       text: "ABC",
-      backgroundColor: "rgb(255, 255, 255)",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "40",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "98",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Barbrick",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "Costen",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "200",
-      backgroundColor: "rgb(255, 255, 255)",
+      text: "10",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
       text: "0",
-      backgroundColor: "rgb(255, 255, 255)",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
       text: "",
-      backgroundColor: "rgb(255, 255, 255)",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
       text: "",
-      backgroundColor: "rgb(255, 255, 255)",
+      backgroundColor: "rgb(242, 242, 242)",
     },
     {
       text: "",
-      backgroundColor: "rgb(255, 255, 255)",
+      backgroundColor: "rgb(242, 242, 242)",
     },
   ],
   [
     {
       text: "",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "5059",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "Kabeltrommel",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "Vor 6 Tagen",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "05.04.2021",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "ABC",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
     {
       text: "84",
@@ -734,6 +676,64 @@ module.exports = [
     },
     {
       text: "5",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "1506",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "el. Kettensäge",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Vor 6 Tagen",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "12.04.2021",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "40",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Barbrick",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "200",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -872,6 +872,122 @@ module.exports = [
   [
     {
       text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "0830",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Silikonspritze",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "20.03.2021",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "In 6 Tagen",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "70",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Maltby",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+  ],
+  [
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "5059",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Kabeltrommel",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "20.03.2021",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "10.04.2021",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "ABC",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "16",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Lainge",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "10",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "",
       backgroundColor: "rgb(240, 200, 200)",
     },
     {
@@ -966,122 +1082,6 @@ module.exports = [
     },
     {
       text: "10",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "0",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "5059",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Kabeltrommel",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "20.03.2021",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "10.04.2021",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "ABC",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "16",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Lainge",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "10",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "0",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "0830",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Silikonspritze",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "20.03.2021",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "In 6 Tagen",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "ABC",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "70",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Maltby",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {

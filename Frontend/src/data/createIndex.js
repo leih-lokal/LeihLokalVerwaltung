@@ -7,31 +7,19 @@ var indexCreated = false;
 
 const createIndex = async () => {
   if (!indexCreated) {
-    let createDesignDocPromises = [];
-    const allColumns = [...customerColumns, ...itemColumns, ...rentalColumns];
-
     // create index for each column for sorting
-    allColumns
-      .filter((column) => !column.disableSort)
-      .forEach((column) => {
-        createDesignDocPromises.push(
+    await Promise.all(
+      [...customerColumns, ...itemColumns, ...rentalColumns]
+        .filter((column) => !column.disableSort)
+        .map((column) =>
           Database.createIndex({
             index: {
-              fields: [column.key],
+              fields: column.sort || [column.key],
             },
           })
-        );
-      });
-
-    createDesignDocPromises.push(
-      Database.createIndex({
-        index: {
-          fields: ["returned_on", "to_return_on", "customer_name"],
-        },
-      })
+        )
     );
 
-    await Promise.all(createDesignDocPromises);
     indexCreated = true;
   }
 };
