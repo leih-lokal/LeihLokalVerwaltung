@@ -47,14 +47,14 @@ const notifyActiveRentalsForCustomer = async (customerId) => {
 
   if (activeRentals.length > 0 && activeRentals.length < 3) {
     notifier.warning(
-      `Kunde hat schon diese Gegenstände ausgeliehen: ${activeRentals.join(
+      `Nutzer hat schon diese Gegenstände ausgeliehen: ${activeRentals.join(
         ", "
       )}`,
       6000
     );
   } else if (activeRentals.length >= 3) {
     notifier.danger(
-      `Kunde hat schon mehr als 2 Gegenstände ausgeliehen: ${activeRentals.join(
+      `Nutzer hat schon mehr als 2 Gegenstände ausgeliehen: ${activeRentals.join(
         ", "
       )}`,
       6000
@@ -225,7 +225,7 @@ export default {
     {
       id: "customer_id",
       label: "Nr",
-      group: "Kunde",
+      group: "Nutzer",
       component: AutocompleteInput,
       nobind: true,
       props: {
@@ -238,7 +238,7 @@ export default {
           ),
         suggestionFormat: (context) => (id, firstname, lastname) =>
           `${id}: ${firstname} ${lastname}`,
-        noResultsText: "Kein Kunde mit dieser Id",
+        noResultsText: "Kein Nutzer mit dieser Nummer",
         onSelected: (context) => (selectedCustomerId) => {
           Database.fetchDocsBySelector(customerById(selectedCustomerId), [
             "id",
@@ -258,7 +258,7 @@ export default {
     {
       id: "customer_name",
       label: "Nachname",
-      group: "Kunde",
+      group: "Nutzer",
       component: AutocompleteInput,
       nobind: true,
       props: {
@@ -273,7 +273,7 @@ export default {
           ),
         suggestionFormat: (context) => (id, firstname, lastname) =>
           `${id}: ${firstname} ${lastname}`,
-        noResultsText: "Kein Kunde mit diesem Name",
+        noResultsText: "Kein Nutzer mit diesem Name",
         onSelected: (context) => (selectedCustomerName) => {
           Database.fetchDocsBySelector(
             customerByLastname(selectedCustomerName),
