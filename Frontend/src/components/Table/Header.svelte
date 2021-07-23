@@ -23,6 +23,7 @@
       {:else}
         <th
           on:mouseout={() => (mouseOverColHeader = {})}
+          on:blur={() => (mouseOverColHeader = {})}
           on:mouseover={() => {
             mouseOverColHeader = {};
             mouseOverColHeader[col.key] = true;
@@ -31,18 +32,23 @@
           class="clickable"
         >
           {col.title}
-          <span class="sort-indicator" class:visible={mouseOverColHeader[col.key]}>
+          <span
+            class="sort-indicator"
+            class:visible={mouseOverColHeader[col.key]}
+          >
             <Icon icon={faSort} />
           </span>
           <span
             class="sort-indicator-up"
-            class:visible={indicateSort[i] === "up" && !mouseOverColHeader[col.key]}
+            class:visible={indicateSort[i] === "up" &&
+              !mouseOverColHeader[col.key]}
           >
             <Icon icon={faSortUp} />
           </span>
           <span
             class="sort-indicator-down"
-            class:visible={indicateSort[i] === "down" && !mouseOverColHeader[col.key]}
+            class:visible={indicateSort[i] === "down" &&
+              !mouseOverColHeader[col.key]}
           >
             <Icon icon={faSortDown} />
           </span>
