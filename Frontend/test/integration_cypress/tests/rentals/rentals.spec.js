@@ -98,7 +98,7 @@ context("rentals", () => {
 
     it("sorts rentals by customer id asc", () => {
       cy.get("thead")
-        .contains("Kunde Nr")
+        .contains("Nutzer Nr")
         .click()
         .then(() =>
           cy.expectDisplaysTableData(expectedData.sortedByCustomerIdAsc)
@@ -107,10 +107,10 @@ context("rentals", () => {
 
     it("sorts rentals by customer id desc", () => {
       cy.get("thead")
-        .contains("Kunde Nr")
+        .contains("Nutzer Nr")
         .click()
         .get("thead")
-        .contains("Kunde Nr")
+        .contains("Nutzer Nr")
         .click()
         .then(() =>
           cy.expectDisplaysTableData(expectedData.sortedByCustomerIdDesc)
@@ -119,7 +119,7 @@ context("rentals", () => {
 
     it("sorts rentals by customer name asc", () => {
       cy.get("thead")
-        .contains("Kunde Name")
+        .contains("Nutzer Name")
         .click()
         .then(() =>
           cy.expectDisplaysTableData(expectedData.sortedByCustomerNameAsc)
@@ -128,10 +128,10 @@ context("rentals", () => {
 
     it("sorts rentals by customer name desc", () => {
       cy.get("thead")
-        .contains("Kunde Name")
+        .contains("Nutzer Name")
         .click()
         .get("thead")
-        .contains("Kunde Name")
+        .contains("Nutzer Name")
         .click()
         .then(() =>
           cy.expectDisplaysTableData(expectedData.sortedByCustomerNameDesc)

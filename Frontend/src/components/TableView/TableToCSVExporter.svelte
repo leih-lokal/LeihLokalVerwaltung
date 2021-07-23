@@ -17,7 +17,7 @@
   const filenames = {
     rental: "Leihvorgaenge",
     item: "Gegenstaende",
-    customer: "Kunden",
+    customer: "Nutzer",
   };
 
   // rental, item or customer

@@ -95,14 +95,14 @@ export default [
     backgroundColor: highlightByPriority([rentalHighlight]),
   },
   {
-    title: "Kunde Nr",
+    title: "Nutzer Nr",
     key: "customer_id",
     numeric: true,
     search: "from_beginning",
     backgroundColor: highlightByPriority([customerHighlight, rentalHighlight]),
   },
   {
-    title: "Kunde Name",
+    title: "Nutzer Name",
     key: "customer_name",
     backgroundColor: highlightByPriority([customerHighlight, rentalHighlight]),
   },
