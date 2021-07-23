@@ -10,7 +10,7 @@ import onDelete from "./onDelete";
 import initialValues from "./initialValues";
 
 export default {
-  title: (context) => `Kunde ${context.createNew ? "anlegen" : "bearbeiten"}`,
+  title: (context) => `Nutzer ${context.createNew ? "anlegen" : "bearbeiten"}`,
   initialValues,
   footerButtons: (context) => [
     {
@@ -22,12 +22,12 @@ export default {
       onClick: () => onDelete(context.doc, context.closePopup),
       color: "red",
       hidden: context.createNew,
-      loadingText: "Kunde wird gelöscht",
+      loadingText: "Nutzer wird gelöscht",
     },
     {
       text: "Speichern",
       onClick: () => onSave(context.doc, context.closePopup, context.createNew),
-      loadingText: "Kunde wird gespeichert",
+      loadingText: "Nutzer wird gespeichert",
     },
   ],
   inputs: [
@@ -145,7 +145,7 @@ export default {
     },
     {
       id: "id",
-      label: "Kundennummer",
+      label: "Nutzernummer",
       group: "Sonstiges",
       component: TextInput,
       props: {
