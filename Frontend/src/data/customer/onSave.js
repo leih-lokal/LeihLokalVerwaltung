@@ -11,7 +11,7 @@ export default async (customer, closePopup, createNew) => {
       }
     })
   ) {
-    notifier.danger("Ein Kunde mit dieser Nummer existiert bereits!", 6000);
+    notifier.danger("Ein Nutzer mit dieser Nummer existiert bereits!", 6000);
     return;
   }
 
@@ -19,10 +19,10 @@ export default async (customer, closePopup, createNew) => {
     ? Database.createDoc(customer)
     : Database.updateDoc(customer)
   )
-    .then((result) => notifier.success("Kunde gespeichert!"))
+    .then((result) => notifier.success("Nutzer gespeichert!"))
     .then(closePopup)
     .catch((error) => {
-      notifier.danger("Kunde konnte nicht gespeichert werden!", 6000);
+      notifier.danger("Nutzer konnte nicht gespeichert werden!", 6000);
       console.error(error);
     });
 };

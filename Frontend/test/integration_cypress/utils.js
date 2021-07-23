@@ -19,7 +19,8 @@ const catchMissingIndexExceptions = () => {
     // because of no usable index after db reset
     if (
       err.message.includes("No index exists") ||
-      err.message.includes("Failed to fetch")
+      err.message.includes("Failed to fetch") ||
+      err.message.includes("Database does not exist")
     ) {
       return false;
     }
