@@ -65,7 +65,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "selenium-webdriver": "^4.0.0-beta.3",
     "simple-svelte-autocomplete": "^2.1.0",
-    "sirv-cli": "^1.0.11",
+    "sirv-cli": "^1.0.12",
     "svelte": "^3.38.2",
     "svelte-calendar": "^2.0.4",
     "svelte-checkbox": "^1.0.1",
