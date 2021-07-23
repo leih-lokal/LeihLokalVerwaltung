@@ -19,8 +19,8 @@
     "unit_test:watch": "npm run unit_test -- --watch",
     "unit_test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "integration_test_selenium": "concurrently -k --success first \"npm run test > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && node ./node_modules/mocha/bin/mocha --timeout 15000 ./test/integration_selenium)\"",
-    "integration_test_cypress:run": "npm run build:cypress && cypress run --config-file ./test/integration_cypress/config/config.json",
-    "integration_test_cypress:open": "npm run build:cypress && cypress open --config-file ./test/integration_cypress/config/config.json"
+    "integration_test_cypress:run": "npm run build:test && cypress run --config-file ./test/integration_cypress/config/config.json",
+    "integration_test_cypress:open": "npm run build:test && cypress open --config-file ./test/integration_cypress/config/config.json"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -44,7 +44,7 @@
     "chai": "^4.3.4",
     "concurrently": "^6.1.0",
     "cross-env": "^7.0.3",
-    "cypress": "^7.3.0",
+    "cypress": "^8.0.0",
     "dotenv-flow": "^3.2.0",
     "esm": "^3.2.25",
     "fa-svelte": "^3.1.0",
@@ -64,7 +64,7 @@
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^7.0.2",
     "selenium-webdriver": "^4.0.0-beta.3",
-    "simple-svelte-autocomplete": "^1.3.2",
+    "simple-svelte-autocomplete": "^2.1.0",
     "sirv-cli": "^1.0.11",
     "svelte": "^3.38.2",
     "svelte-calendar": "^2.0.4",

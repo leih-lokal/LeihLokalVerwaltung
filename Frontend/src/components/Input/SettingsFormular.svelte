@@ -1,7 +1,7 @@
 <script>
   import { settingsStore } from "../../utils/settingsStore";
   import Checkbox from "svelte-checkbox";
-  import Database from "../Database/ENV_DATABASE";
+  import Database from "../../database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { onDestroy } from "svelte";
 
@@ -122,7 +122,12 @@
         <label for="wcurl">URL</label>
       </div>
       <div class="col-75">
-        <input bind:value={$settingsStore.wcUrl} id="wcurl" type="text" placeholder="https://" />
+        <input
+          bind:value={$settingsStore.wcUrl}
+          id="wcurl"
+          type="text"
+          placeholder="https://"
+        />
       </div>
     </div>
     <div class="row">
@@ -130,7 +135,12 @@
         <label for="wckey">API Key</label>
       </div>
       <div class="col-75">
-        <input bind:value={$settingsStore.wcKey} id="wckey" type="text" placeholder="API Key" />
+        <input
+          bind:value={$settingsStore.wcKey}
+          id="wckey"
+          type="text"
+          placeholder="API Key"
+        />
       </div>
     </div>
     <div class="row">

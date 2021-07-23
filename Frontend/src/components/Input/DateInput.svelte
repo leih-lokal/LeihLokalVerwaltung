@@ -1,7 +1,10 @@
 <script>
   import Datepicker from "svelte-calendar/src/Components/Datepicker.svelte";
   import ClearInputButton from "./ClearInputButton.svelte";
-  import { saveParseTimestampToString, millisAtStartOfDay } from "../../utils/utils";
+  import {
+    saveParseTimestampToString,
+    millisAtStartOfDay,
+  } from "../../utils/utils";
   import { createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher();
@@ -40,53 +43,96 @@
     return date;
   }
   export let quickset = {};
-  export let timeMillis = 0;
+  export let value = 0;
   export let disabled = false;
+
+  // make sure popup stays in container
+  export let container = false;
+  let datepickercontainer;
+  let popupOffsetY = "-50%";
+  const positionInContainer = () => {
+    // only if container is defined
+    if (container) {
+      const minDistanceToContainerTop = 225;
+      const minDistanceToContainerBottom = 190;
+      const inputRow = datepickercontainer.closest("row");
+      const offsetTop = inputRow.offsetTop - container.scrollTop;
+      const offsetBottom =
+        container.offsetHeight - inputRow.offsetTop + container.scrollTop;
+      // popup would be cut off at top
+      if (offsetTop < minDistanceToContainerTop) {
+        popupOffsetY = `calc(-50% + ${
+          minDistanceToContainerTop - offsetTop
+        }px)`;
+      }
+      // popup would be cut off at bottom
+      else if (offsetBottom < minDistanceToContainerBottom) {
+        popupOffsetY = `calc(-50% - ${
+          minDistanceToContainerBottom - offsetBottom
+        }px)`;
+      } else {
+        popupOffsetY = "-50%";
+      }
+    }
+  };
 
   function addDays(days) {
     let date = new Date();
     date.setDate(date.getDate() + days);
-    timeMillis = millisAtStartOfDay(date.getTime());
+    value = millisAtStartOfDay(date.getTime());
   }
 </script>
 
 {#if disabled}
   <input
     type="text"
-    value={timeMillis === 0 ? "-" : saveParseTimestampToString(timeMillis)}
+    value={value === 0 ? "-" : saveParseTimestampToString(value)}
     disabled={true}
   />
 {:else}
-  <Datepicker
-    selected={timeMillis === 0 ? new Date() : new Date(timeMillis)}
-    on:dateSelected={(event) => {
-      const date = event.detail.date;
-      const newTimeMillis = date.getTime() - getTimeZoneOffsetMs(date.getTime());
-      if (millisAtStartOfDay(timeMillis) !== millisAtStartOfDay(newTimeMillis)) {
-        timeMillis = millisAtStartOfDay(newTimeMillis);
-        dispatch("change", date);
-      }
-    }}
-    weekStart={1}
-    {daysOfWeek}
-    {monthsOfYear}
-    format={"#{d}.#{m}.#{Y}"}
-    start={new Date(2018, 1, 1)}
-    end={inTwoMonths()}
+  <div
+    class="datepickercontainer"
+    style="--popup-offset-y: {popupOffsetY}"
+    on:click={positionInContainer}
+    bind:this={datepickercontainer}
   >
-    <input type="text" value={timeMillis === 0 ? "-" : saveParseTimestampToString(timeMillis)} />
-    <ClearInputButton
-      on:click={() => {
-        timeMillis = 0;
-        dispatch("change", undefined);
+    <Datepicker
+      selected={value === 0 ? new Date() : new Date(value)}
+      on:dateSelected={(event) => {
+        const date = event.detail.date;
+        const newTimeMillis =
+          date.getTime() - getTimeZoneOffsetMs(date.getTime());
+        if (millisAtStartOfDay(value) !== millisAtStartOfDay(newTimeMillis)) {
+          value = millisAtStartOfDay(newTimeMillis);
+          dispatch("change", date);
+        }
       }}
-      visible={timeMillis !== 0}
-    />
-  </Datepicker>
+      weekStart={1}
+      {daysOfWeek}
+      {monthsOfYear}
+      format={"#{d}.#{m}.#{Y}"}
+      start={new Date(2018, 1, 1)}
+      end={inTwoMonths()}
+    >
+      <input
+        type="text"
+        value={value === 0 ? "-" : saveParseTimestampToString(value)}
+      />
+      <ClearInputButton
+        on:click={() => {
+          value = 0;
+          dispatch("change", undefined);
+        }}
+        visible={value !== 0}
+      />
+    </Datepicker>
+  </div>
 {/if}
 
 {#each Object.entries(quickset) as [days, label]}
-  <button class="button-tight" on:click={() => addDays(parseInt(days))}>{label}</button>
+  <button class="button-tight" on:click={() => addDays(parseInt(days))}
+    >{label}</button
+  >
 {/each}
 
 <style>
@@ -100,11 +146,19 @@
     background-color: white;
     color: black;
   }
+  input[disabled] {
+    color: #dcdad1;
+    background-color: rgba(239, 239, 239, 0.3);
+  }
   .button-tight {
     height: 1.5rem;
     font-size: smaller;
     line-height: 0.75rem;
     margin-top: 0.25rem;
     margin-left: 0.1rem;
+  }
+
+  .datepickercontainer :global(.contents-wrapper) {
+    transform: translate(-50%, var(--popup-offset-y)) !important;
   }
 </style>

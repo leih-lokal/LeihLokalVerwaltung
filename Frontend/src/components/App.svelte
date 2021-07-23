@@ -4,54 +4,63 @@
   import { wrap } from "svelte-spa-router/wrap";
   import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import Navbar from "./Layout/Navbar.svelte";
-  import TableEditor from "./TableEditors/TableEditor.svelte";
-  import Modal from "./Layout/Modal.svelte";
+  import TableView from "./TableView/TableView.svelte";
   import Settings from "./Input/SettingsFormular.svelte";
+  import config from "../data/config.js";
+  import createIndex from "../data/createIndex";
+  import Database from "../database/ENV_DATABASE";
   import Logger from "./Logging/Logger.svelte";
   import LogView from "./Logging/LogView.svelte";
+
+  const routes = new Map();
+  config.forEach((tableViewConfig) =>
+    routes.set(
+      tableViewConfig.route,
+      wrap({
+        component: TableView,
+        props: {
+          columns: tableViewConfig.columns,
+          filters: tableViewConfig.filters,
+          docType: tableViewConfig.docType,
+          inputs: tableViewConfig.inputs,
+        },
+      })
+    )
+  );
+  routes.set("/logs", LogView);
+  routes.set(
+    "/settings",
+    wrap({
+      component: Settings,
+    })
+  );
+  routes.set(
+    "*",
+    wrap({
+      component: {},
+      conditions: [
+        (detail) => {
+          replace(config[0].route);
+          return false;
+        },
+      ],
+    })
+  );
+
+  Database.onConnected(createIndex);
+  Database.connect();
 </script>
 
 <Logger />
 <NotificationDisplay />
 <div class="container">
-  <Navbar />
-  <Modal>
-    <Router
-      routes={{
-        "/logs": LogView,
-        "/rentals": wrap({
-          component: TableEditor,
-          props: {
-            tab: "rentals",
-          },
-        }),
-        "/items": wrap({
-          component: TableEditor,
-          props: {
-            tab: "items",
-          },
-        }),
-        "/customers": wrap({
-          component: TableEditor,
-          props: {
-            tab: "customers",
-          },
-        }),
-        "/settings": wrap({
-          component: Settings,
-        }),
-        "*": wrap({
-          component: {},
-          conditions: [
-            (detail) => {
-              replace("/rentals");
-              return false;
-            },
-          ],
-        }),
-      }}
-    />
-  </Modal>
+  <Navbar
+    tabs={config.map((tableEditorConfig) => ({
+      title: tableEditorConfig.title,
+      route: tableEditorConfig.route,
+    }))}
+  />
+  <Router {routes} />
 </div>
 
 <style>
@@ -61,12 +70,21 @@
     overflow: hidden;
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+      "Oxygen";
   }
 
   .container {
     height: 100%;
     display: flex;
     flex-direction: column;
+  }
+
+  :global(:root) {
+    --red: #ff2c5d;
+    --yellow: #ffcd58;
+    --green: #00d39a;
+    --blue: #008cba;
+    --darkblue: #003b4e;
   }
 </style>

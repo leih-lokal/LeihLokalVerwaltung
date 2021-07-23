@@ -1,11 +1,16 @@
 <script>
   import Cell from "./Cell.svelte";
+  import COLORS from "../Input/ColorDefs";
 
   export let columns = [];
   export let item = {};
-  export let rowHeight = 40;
+  export let rowHeight = 36;
   export let cellBackgroundColorsFunction;
   export let evenRowNumber = false;
+
+  $: defaultBackgroundColor = evenRowNumber
+    ? COLORS.DEFAULT_ROW_BACKGROUND_EVEN
+    : COLORS.DEFAULT_ROW_BACKGROUND_ODD;
 
   const displayValue = async (col, item) => {
     if (!(col.key in item)) {
@@ -16,9 +21,15 @@
   };
 
   let cellBackgroundColors = new Array(columns.length).fill("white");
-  $: cellBackgroundColorsFunction(item, evenRowNumber).then(
-    (newCellBackgroundColors) => (cellBackgroundColors = newCellBackgroundColors)
-  );
+  $: cellBackgroundColorsFunction(item).then((newCellBackgroundColors) => {
+    if (!newCellBackgroundColors) newCellBackgroundColors = [];
+    while (newCellBackgroundColors.length < columns.length) {
+      newCellBackgroundColors.push("");
+    }
+    cellBackgroundColors = newCellBackgroundColors.map((newColor) =>
+      newColor && newColor != "" ? newColor : defaultBackgroundColor
+    );
+  });
 </script>
 
 <tr on:click style={`height: ${rowHeight}px;`}>
@@ -33,7 +44,8 @@
 </tr>
 
 <style>
-  tr:hover {
-    background-color: #ff9ef2 !important;
+  tr:hover :global(td) {
+    background-color: var(--red) !important;
+    color: white !important;
   }
 </style>

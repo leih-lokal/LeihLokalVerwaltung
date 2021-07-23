@@ -1,23 +1,20 @@
 <script>
   import { link, replace } from "svelte-spa-router";
   import active from "svelte-spa-router/active";
-  import TableToCSVExporter from "../TableEditors/TableToCSVExporter.svelte";
+  import TableToCSVExporter from "../TableView/TableToCSVExporter.svelte";
   import DropDownMenu from "./DropDownMenu.svelte";
 
+  export let tabs = [];
   let tableToCSVExporterRef;
 </script>
 
 <nav>
   <ul>
-    <li class="left">
-      <a use:active={"/customers"} href="/customers" use:link> Kunden </a>
-    </li>
-    <li class="left">
-      <a use:active={"/items"} href="/items" use:link> Gegenstände </a>
-    </li>
-    <li class="left">
-      <a use:active={"/rentals"} href="/rentals" use:link> Leihvorgänge </a>
-    </li>
+    {#each tabs as tab}
+      <li class="left">
+        <a use:active={tab.route} href={tab.route} use:link> {tab.title} </a>
+      </li>
+    {/each}
     <li class="right">
       <TableToCSVExporter bind:this={tableToCSVExporterRef} />
       <DropDownMenu
@@ -46,7 +43,7 @@
     top: 0;
     width: 100vw;
     height: 50px;
-    background-color: rgb(0, 140, 186);
+    background-color: var(--blue);
     z-index: 1;
   }
 
@@ -67,7 +64,7 @@
   /* Style for "active" links; need to mark this :global because the router adds the class directly */
   :global(a.active),
   :global(svg.active) {
-    color: rgb(255, 208, 0) !important;
+    color: var(--yellow) !important;
   }
 
   .left:hover {

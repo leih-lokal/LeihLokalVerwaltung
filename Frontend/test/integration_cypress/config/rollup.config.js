@@ -20,8 +20,8 @@ export default {
   plugins: [
     replace({
       preventAssignment: true,
-      ENV_WC_CLIENT: "../../Database/WoocommerceClientMock",
-      ENV_DATABASE: "MockDatabase",
+      ENV_WC_CLIENT: process.env.WC_CLIENT,
+      ENV_DATABASE: process.env.DATABASE,
     }),
     svelte({
       emitCss: true,

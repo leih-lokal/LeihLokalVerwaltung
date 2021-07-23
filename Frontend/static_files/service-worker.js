@@ -12,7 +12,12 @@ var urlsToCache = [
 ];
 
 function shouldCache(request) {
-  return request.method === "GET" && !request.url.includes(":6984");
+  return (
+    request.method === "GET" &&
+    !request.url.includes(":6984") &&
+    !request.url.includes(":5984") &&
+    request.url.indexOf("chrome-extension") !== 0
+  );
 }
 
 self.addEventListener("install", function (event) {

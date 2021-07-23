@@ -1,18 +1,58 @@
 <script>
   import { fade } from "svelte/transition";
   import { Pulse } from "svelte-loading-spinners";
+
+  export let text;
+  export let fullScreenOverlay = false;
+  export let color = "#fc03a9";
+
+  let containerHeight;
 </script>
 
-<div in:fade={{ duration: 800 }}>
-  <Pulse size="120" color="#fc03a9" unit="px" />
+{#if fullScreenOverlay}
+  <div class="fullscreenoverlay" />
+{/if}
+<div
+  class="container"
+  in:fade={{ duration: 800 }}
+  bind:clientHeight={containerHeight}
+  style="--container-height: {containerHeight}px; --color: {color};"
+>
+  {#if text}
+    <h1>{text}</h1>
+  {/if}
+  <Pulse size="120" {color} unit="px" />
 </div>
 
 <style>
-  div {
-    position: absolute;
+  h1 {
+    color: var(--color);
+    text-align: center;
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .container {
+    position: fixed;
+    width: 400px;
     left: 50%;
     top: 50%;
-    margin-left: -60px;
-    margin-top: -60px;
+    margin-left: -200px;
+    margin-top: calc(var(--container-height) / -2);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: transparent;
+    z-index: 99999999;
+  }
+  .fullscreenoverlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999998;
+    background-color: rgba(20, 20, 20, 0.6);
   }
 </style>

@@ -11,7 +11,9 @@
       isHEX = color.indexOf("#") == 0,
       isRGB = color.indexOf("rgb") == 0;
     if (isHEX) {
-      var m = color.substr(1).match(color.length == 7 ? /(\S{2})/g : /(\S{1})/g);
+      var m = color
+        .substr(1)
+        .match(color.length == 7 ? /(\S{2})/g : /(\S{1})/g);
       if (m)
         var r = parseInt(m[0], 16),
           g = parseInt(m[1], 16),
@@ -32,7 +34,9 @@
   }
 </script>
 
-<td style={`background-color: ${backgroundColor}; color: ${fontColor}; height: ${rowHeight}px;`}>
+<td
+  style={`background-color: ${backgroundColor}; color: ${fontColor}; height: ${rowHeight}px;`}
+>
   {#await valueFunction() then value}
     {#if isImage}
       {#if value && value !== ""}
@@ -59,7 +63,7 @@
 
   td:hover > img {
     height: 50vh;
-    position: absolute;
+    position: fixed;
     left: 25vw;
     top: 25vh;
     z-index: 1;

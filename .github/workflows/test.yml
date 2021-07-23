@@ -29,24 +29,35 @@ jobs:
         working-directory: Frontend
         run: npm run unit_test
 
+      - name: Install Chrome
+        run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb
+
+      - name: Start CouchDB
+        run: docker-compose up -d couchdb
+
+      - name: Wait for CouchDB
+        uses: iFaxity/wait-on-action@v1
+        with:
+          resource: http://127.0.0.1:5984
+          delay: 500
+
+      - name: Insert Testdata
+        run: docker-compose up testdata_generator
+
       - name: Run cypress integration tests
         uses: cypress-io/github-action@v2
         with:
           working-directory: "./Frontend"
           command: npm run integration_test_cypress:run
           browser: chrome
-          record: false
-          parallel: true
+          record: true
 
-      - name: Install Chrome
-        run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb
-
-      - name: Start CouchDB
-        run: docker-compose up -d
-
-      - name: Wait for CouchDB with test data
-        working-directory: TestDataGenerator
-        run: ./wait_for_testdata.sh
+      - name: Upload cypress failure screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: Frontend/cypress/screenshots
 
       - name: Run selenium integration tests
         working-directory: Frontend

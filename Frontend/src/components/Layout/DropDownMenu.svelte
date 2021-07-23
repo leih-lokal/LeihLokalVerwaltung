@@ -1,5 +1,5 @@
 <script>
-  import { clickOutside } from "../Input/ClickOutside.js";
+  import { clickOutside } from "../../actions/ClickOutside.js";
 
   export let menuItems = [];
 
@@ -11,14 +11,21 @@
 
 <div class="dropdown" use:clickOutside on:click_outside={() => (show = false)}>
   <div on:click={() => (show = !show)} class="dropbtn">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
       ><path
         fill="currentColor"
         d="M12 18c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zm0-9c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zm0-9c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3z"
       /></svg
     >
   </div>
-  <div style="--max-height: {show ? `${maxHeightPx}px` : '0'}" class="dropdown-content">
+  <div
+    style="--max-height: {show ? `${maxHeightPx}px` : '0'}"
+    class="dropdown-content"
+  >
     <ul>
       {#each menuItems as menuItem}
         <li

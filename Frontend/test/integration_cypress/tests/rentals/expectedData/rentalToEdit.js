@@ -1,0 +1,15 @@
+module.exports = {
+  item_name: "Multi-Elektrosäge",
+  item_id: "715",
+  to_return_on: "31.03.2021",
+  rented_on: "17.03.2021",
+  extended_on: "-",
+  returned_on: "-",
+  customer_id: "40",
+  customer_name: "Barbrick",
+  deposit: "50",
+  deposit_returned: "0",
+  passing_out_employee: "ABC",
+  receiving_employee: "",
+  remark: "",
+};

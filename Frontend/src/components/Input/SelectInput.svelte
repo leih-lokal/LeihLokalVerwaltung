@@ -1,7 +1,7 @@
 <script>
   import Select from "svelte-select/src/Select.svelte";
 
-  export let selectedValuesString = "";
+  export let value = "";
   export let selectionOptions = [];
   export let isMulti = true;
   export let isCreatable = true;
@@ -12,14 +12,19 @@
 
   const valuesToOptions = (values) => {
     return values.map(
-      (value) => selectionOptions.find((item) => item === value || item.value === value) ?? value
+      (value) =>
+        selectionOptions.find(
+          (item) => item === value || item.value === value
+        ) || value
     );
   };
 
   const selectedValuesFromString = (valueString) => {
     let selectedValues = [];
     if (valueString !== "") {
-      selectedValues = valuesToOptions(isMulti ? valueString.split(", ") : [valueString]);
+      selectedValues = valuesToOptions(
+        isMulti ? valueString.split(", ") : [valueString]
+      );
     }
     if (!isMulti) {
       selectedValues = selectedValues.length === 0 ? "" : selectedValues[0];
@@ -27,23 +32,25 @@
     return selectedValues;
   };
 
-  $: selectedValuesArray = selectedValuesFromString(selectedValuesString);
+  $: selectedValuesArray = selectedValuesFromString(value);
 </script>
 
 <Select
   items={selectionOptions}
   {inputStyles}
-  selectedValue={selectedValuesArray.length !== 0 ? selectedValuesArray : undefined}
+  selectedValue={selectedValuesArray.length !== 0
+    ? selectedValuesArray
+    : undefined}
   on:select={(event) => {
     let selection = event.detail;
     if (selection) {
       if (!Array.isArray(selection)) selection = [selection];
-      selectedValuesString = selection.map((item) => item.value).join(", ");
+      value = selection.map((item) => item.value).join(", ");
     } else {
-      selectedValuesString = "";
+      value = "";
     }
   }}
-  on:clear={(event) => (selectedValuesString = "")}
+  on:clear={(event) => (value = "")}
   isDisabled={disabled}
   {isMulti}
   {isCreatable}

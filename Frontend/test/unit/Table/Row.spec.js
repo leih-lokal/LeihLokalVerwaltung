@@ -17,7 +17,7 @@ const getMockedComponentProps = (component) => {
 
 describe(Row.name, () => {
   const renderRowWithItemsAndCols = (item, cols) => {
-    const cellBackgroundColorsMock = jest.fn(() => Promise.resolve("background color"));
+    const cellBackgroundColorsMock = jest.fn(() => Promise.resolve([]));
     const { queryAllByText, component, container } = render(Row, {
       props: {
         columns: cols,
@@ -43,7 +43,9 @@ describe(Row.name, () => {
       },
     ]);
 
-    expect(await getMockedComponentProps(Cell)["valueFunction"]()).toEqual("firstname");
+    expect(await getMockedComponentProps(Cell)["valueFunction"]()).toEqual(
+      "firstname"
+    );
   });
 
   it("transforms value before passing it to a cell", async () => {
@@ -54,7 +56,9 @@ describe(Row.name, () => {
         display: async (value) => "transformed value",
       },
     ]);
-    expect(await getMockedComponentProps(Cell)["valueFunction"]()).toEqual("transformed value");
+    expect(await getMockedComponentProps(Cell)["valueFunction"]()).toEqual(
+      "transformed value"
+    );
   });
 
   it("forwards prop rowHeight to cell", () => {
@@ -113,7 +117,10 @@ describe(Row.name, () => {
   });
 
   it("does not render item prop without column", () => {
-    const { queryAllByText } = renderRowWithItemsAndCols({ attrWithoutCol: "firstname" }, []);
+    const { queryAllByText } = renderRowWithItemsAndCols(
+      { attrWithoutCol: "firstname" },
+      []
+    );
     expect(queryAllByText("Mocked Cell")).toHaveLength(0);
   });
 
