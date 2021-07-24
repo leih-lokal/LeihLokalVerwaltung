@@ -54,6 +54,7 @@
   .cell {
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   img {
@@ -74,5 +75,6 @@
     padding: 0px;
     padding-left: 2px;
     padding-right: 2px;
+    max-width: 15vw;
   }
 </style>

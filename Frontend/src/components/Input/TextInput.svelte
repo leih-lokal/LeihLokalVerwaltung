@@ -26,7 +26,7 @@
       {readonly}
       {disabled}
       on:input={(event) => dispatch("change", event.target.value)}
-      rows="4"
+      rows="1"
     />
   {:else}
     <input
@@ -52,5 +52,10 @@
     border-radius: 4px !important;
     resize: vertical !important;
     height: 2.5rem !important;
+  }
+
+  textarea {
+    width: 100% !important;
+    height: auto;
   }
 </style>
