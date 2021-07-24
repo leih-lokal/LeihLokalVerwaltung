@@ -45,7 +45,7 @@
 
 <style>
   tr:hover :global(td) {
-    background-color: var(--red) !important;
+    background-color: var(--highligh-color) !important;
     color: white !important;
   }
 </style>

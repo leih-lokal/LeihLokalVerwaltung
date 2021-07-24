@@ -81,7 +81,7 @@
   }
 
   :global(:root) {
-    --red: #ff2c5d;
+    --highligh-color: #b8b8b8;
     --yellow: #ffcd58;
     --green: #00d39a;
     --blue: #008cba;
