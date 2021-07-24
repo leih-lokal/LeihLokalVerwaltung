@@ -214,8 +214,8 @@ context("items", () => {
         .click()
         .get(".listContainer")
         .contains("Kategorie Freizeit")
-        .click()
-        .get(".selectContainer > input")
+        .click();
+      cy.get(".selectContainer")
         .click()
         .get(".listContainer")
         .contains(/^gelöscht$/)
