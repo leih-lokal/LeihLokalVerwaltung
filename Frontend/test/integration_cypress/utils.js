@@ -18,12 +18,13 @@ const catchMissingIndexExceptions = () => {
     // failing the test when application throws error
     // because of no usable index after db reset
     if (
-      err.message.includes("No index exists") ||
+      err.message.includes("No index exists") || // happens when index is not created yet after recreating db
       err.message.includes("Failed to fetch") ||
-      err.message.includes("Database does not exist") ||
       err.message.includes(
         "Encountered a conflict while saving the design document"
       )
+      err.message.includes("Database does not exist") || // happens when db is recreated after a test
+      err.message.includes(".erl") // erlang error within couchdb sometimes happens when recreating db after a test
     ) {
       return false;
     }
