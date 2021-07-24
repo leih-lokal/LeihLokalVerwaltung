@@ -330,6 +330,9 @@ export default {
       label: "Bemerkung",
       group: "Mitarbeiter",
       component: TextInput,
+      props: {
+        multiline: true,
+      },
     },
   ],
 };
