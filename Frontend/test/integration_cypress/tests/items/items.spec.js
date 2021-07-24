@@ -217,7 +217,6 @@ context("items", () => {
         .click()
         .get(".selectContainer > input")
         .click()
-        .parent()
         .get(".listContainer")
         .contains(/^gelöscht$/)
         .click();
