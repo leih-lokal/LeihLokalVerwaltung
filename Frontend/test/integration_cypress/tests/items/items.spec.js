@@ -215,8 +215,9 @@ context("items", () => {
         .get(".listContainer")
         .contains("Kategorie Freizeit")
         .click()
-        .get(".selectContainer")
+        .get(".selectContainer > input")
         .click()
+        .parent()
         .get(".listContainer")
         .contains(/^gelöscht$/)
         .click();

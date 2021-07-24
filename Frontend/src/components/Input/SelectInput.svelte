@@ -6,6 +6,7 @@
   export let isMulti = true;
   export let isCreatable = true;
   export let isClearable = true;
+  export let isSearchable = false;
   export let disabled = false;
   export let inputStyles = "cursor: pointer;";
   export let placeholder = "Auswählen...";
@@ -53,5 +54,6 @@
   {isMulti}
   {isCreatable}
   {isClearable}
+  {isSearchable}
   {placeholder}
 />

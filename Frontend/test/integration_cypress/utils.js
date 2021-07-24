@@ -20,7 +20,10 @@ const catchMissingIndexExceptions = () => {
     if (
       err.message.includes("No index exists") ||
       err.message.includes("Failed to fetch") ||
-      err.message.includes("Database does not exist")
+      err.message.includes("Database does not exist") ||
+      err.message.includes(
+        "Encountered a conflict while saving the design document"
+      )
     ) {
       return false;
     }
