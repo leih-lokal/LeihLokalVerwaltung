@@ -1,5 +1,5 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import { restrictInputToNumbers } from "../../actions/RestrictInputToNumbers";
 
   export let id = "";
@@ -9,7 +9,17 @@
   export let multiline = false;
   export let onlyNumbers = false;
 
+  let textAreaRef;
   const dispatch = createEventDispatcher();
+
+  const resizeTextArea = () => {
+    if (textAreaRef) {
+      textAreaRef.style.height = "10px"; // for shrinking
+      textAreaRef.style.height = textAreaRef.scrollHeight + "px";
+    }
+  };
+
+  onMount(resizeTextArea);
 
   $: if (onlyNumbers && typeof value !== "number" && value !== "") {
     value = parseInt(value);
@@ -19,14 +29,17 @@
 <form autocomplete="off">
   {#if multiline}
     <textarea
+      bind:this={textAreaRef}
       type="text"
       bind:value
       {id}
       name={id}
       {readonly}
       {disabled}
-      on:input={(event) => dispatch("change", event.target.value)}
-      rows="1"
+      on:input={(event) => {
+        resizeTextArea();
+        dispatch("change", event.target.value);
+      }}
     />
   {:else}
     <input
@@ -56,6 +69,7 @@
 
   textarea {
     width: 100% !important;
-    height: auto;
+    resize: none;
+    overflow: hidden;
   }
 </style>
