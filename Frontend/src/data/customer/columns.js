@@ -37,12 +37,14 @@ export default [
     search: "exclude",
     disableSort: true,
     backgroundColor,
+    hideInTable: true,
   },
   {
     title: "Postleitzahl",
     key: "postal_code",
     search: "exclude",
     backgroundColor,
+    hideInTable: true,
   },
   {
     title: "Stadt",
@@ -91,6 +93,7 @@ export default [
     display: (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
     search: "exclude",
     backgroundColor,
+    hideInTable: true,
   },
   {
     title: "Aufmerksam geworden",

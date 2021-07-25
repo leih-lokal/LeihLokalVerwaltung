@@ -12,7 +12,9 @@
   export let docType = "";
   export let inputs = [];
 
-  const rowHeight = 36;
+  $: columns = columns.filter((column) => !column.hideInTable);
+
+  const rowHeight = 40;
   const maxRowsThatMightFitOnPage = () =>
     Math.floor((window.innerHeight - 230) / rowHeight);
 
