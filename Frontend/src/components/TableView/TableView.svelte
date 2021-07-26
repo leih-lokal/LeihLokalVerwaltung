@@ -15,39 +15,52 @@
   const rowHeight = 36;
   const maxRowsThatMightFitOnPage = () =>
     Math.floor((window.innerHeight - 230) / rowHeight);
+  let popupIsOpen = false;
+  let refreshWhenPopupCloses = false;
+  const onPopupClosed = () => {
+    popupIsOpen = false;
+    if (refreshWhenPopupCloses) refresh();
+  };
 
   const refresh = () => {
-    loadData = Database.query(
-      {
-        filters: activeFilters.map((filterName) => filters.filters[filterName]),
-        columns,
-        searchTerm,
-        currentPage,
-        rowsPerPage,
-        sortBy: sort,
-        sortReverse,
-        docType,
-      },
+    if (!popupIsOpen) {
+      refreshWhenPopupCloses = false;
+      loadData = Database.query(
+        {
+          filters: activeFilters.map(
+            (filterName) => filters.filters[filterName]
+          ),
+          columns,
+          searchTerm,
+          currentPage,
+          rowsPerPage,
+          sortBy: sort,
+          sortReverse,
+          docType,
+        },
 
-      // query again if a doc was created / deleted / updated
-      refresh
-    )
-      .then((data) => {
-        searchInputRef?.focusSearchInput();
-        numberOfPagesPromise = data.count.then((count) => {
-          const rowsOnLastPage = count % rowsPerPage;
-          let numberOfPages = (count - rowsOnLastPage) / rowsPerPage;
-          if (rowsOnLastPage > 0) numberOfPages += 1;
-          return numberOfPages;
+        // query again if a doc was created / deleted / updated
+        refresh
+      )
+        .then((data) => {
+          searchInputRef?.focusSearchInput();
+          numberOfPagesPromise = data.count.then((count) => {
+            const rowsOnLastPage = count % rowsPerPage;
+            let numberOfPages = (count - rowsOnLastPage) / rowsPerPage;
+            if (rowsOnLastPage > 0) numberOfPages += 1;
+            return numberOfPages;
+          });
+          return data.docs;
+        })
+        .catch((error) => {
+          console.error(error);
+
+          // catch again in html
+          throw error;
         });
-        return data.docs;
-      })
-      .catch((error) => {
-        console.error(error);
-
-        // catch again in html
-        throw error;
-      });
+    } else {
+      refreshWhenPopupCloses = true;
+    }
   };
 
   const goToFirstPage = () => {
@@ -169,11 +182,15 @@
     }
   }}
   on:rowClicked={(event) => {
-    popupFormular.show({
-      doc: event.detail,
-      createNew: false,
-      config: inputs,
-    });
+    popupIsOpen = true;
+    popupFormular.show(
+      {
+        doc: event.detail,
+        createNew: false,
+        config: inputs,
+      },
+      onPopupClosed
+    );
   }}
   on:colHeaderClicked={(event) => {
     if (sortByColKey == event.detail.key) sortReverse = !sortReverse;
@@ -188,9 +205,13 @@
 
 <AddNewDocButton
   on:click={() => {
-    popupFormular.show({
-      createNew: true,
-      config: inputs,
-    });
+    popupIsOpen = true;
+    popupFormular.show(
+      {
+        createNew: true,
+        config: inputs,
+      },
+      onPopupClosed
+    );
   }}
 />
