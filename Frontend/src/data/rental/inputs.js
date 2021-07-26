@@ -39,27 +39,41 @@ const updateToggleStatus = (itemExistsMoreThanOnce) => {
   }
 };
 
-const notifyActiveRentalsForCustomer = async (customerId) => {
-  const activeRentals = await Database.fetchAllDocsBySelector(
+const showNotificationsForCustomer = async (customerId) => {
+  Database.fetchAllDocsBySelector(
     activeRentalsForCustomerSelector(customerId),
     ["item_name"]
-  ).then((results) => results.map((doc) => doc["item_name"]));
+  )
+    .then((results) => results.map((doc) => doc["item_name"]))
+    .then((activeRentals) => {
+      if (activeRentals.length > 0 && activeRentals.length < 3) {
+        notifier.warning(
+          `Nutzer hat schon diese Gegenstände ausgeliehen: ${activeRentals.join(
+            ", "
+          )}`,
+          6000
+        );
+      } else if (activeRentals.length >= 3) {
+        notifier.danger(
+          `Nutzer hat schon mehr als 2 Gegenstände ausgeliehen: ${activeRentals.join(
+            ", "
+          )}`,
+          6000
+        );
+      }
+    });
 
-  if (activeRentals.length > 0 && activeRentals.length < 3) {
-    notifier.warning(
-      `Nutzer hat schon diese Gegenstände ausgeliehen: ${activeRentals.join(
-        ", "
-      )}`,
-      6000
-    );
-  } else if (activeRentals.length >= 3) {
-    notifier.danger(
-      `Nutzer hat schon mehr als 2 Gegenstände ausgeliehen: ${activeRentals.join(
-        ", "
-      )}`,
-      6000
-    );
-  }
+  Database.fetchAllDocsBySelector(customerById(customerId), ["remark"]).then(
+    (results) => {
+      if (
+        results.length > 0 &&
+        results[0]["remark"] &&
+        results[0]["remark"] !== ""
+      ) {
+        notifier.danger(results[0]["remark"], { persist: true });
+      }
+    }
+  );
 };
 
 export default {
@@ -250,7 +264,7 @@ export default {
                 customer_name: result.lastname,
                 customer_id: result.id,
               });
-              notifyActiveRentalsForCustomer(result.id);
+              showNotificationsForCustomer(result.id);
             });
         },
       },
@@ -285,7 +299,7 @@ export default {
                 customer_name: result.lastname,
                 customer_id: result.id,
               });
-              notifyActiveRentalsForCustomer(result.id);
+              showNotificationsForCustomer(result.id);
             });
         },
       },
