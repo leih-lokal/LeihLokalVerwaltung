@@ -93,7 +93,6 @@ export default [
     display: (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
     search: "exclude",
     backgroundColor,
-    hideInTable: true,
   },
   {
     title: "Aufmerksam geworden",
