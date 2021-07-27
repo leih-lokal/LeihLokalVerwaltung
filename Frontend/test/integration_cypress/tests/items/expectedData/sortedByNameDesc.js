@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Wokpfanne",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -91,10 +87,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Werkzeugbox, Werkzeugkiste, Werkzeugkoffer",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -134,10 +126,6 @@ module.exports = [
     },
     {
       text: "23.02.2021",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -191,10 +179,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -238,10 +222,6 @@ module.exports = [
     },
     {
       text: "Höhe: 110 cm",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -291,10 +271,6 @@ module.exports = [
       backgroundColor: "rgb(131, 235, 52)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(131, 235, 52)",
     },
@@ -334,10 +310,6 @@ module.exports = [
     },
     {
       text: "24.04.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -391,10 +363,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -438,10 +406,6 @@ module.exports = [
     },
     {
       text: "div. Sägeblätter",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "Laubsäge, Laubsägemaschine, Wippsäge",
       backgroundColor: "rgb(131, 235, 52)",
     },
     {
@@ -491,10 +455,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Laubsäge, Laubsägemaschine, Wippsäge",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -538,10 +498,6 @@ module.exports = [
     },
     {
       text: "Maximale Maße der Leinwand: 1,2 m x 1,25 m",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -591,10 +547,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Mixstab, Pürierstab, Zauberstab",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -638,10 +590,6 @@ module.exports = [
     },
     {
       text: "Kühlflüssigkeit über Nacht kühlstellen",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -691,10 +639,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -741,10 +685,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -788,10 +728,6 @@ module.exports = [
     },
     {
       text: "auch: Profi – Kartuschen-Spritze",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -841,111 +777,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verliehen",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "2901",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Schwingschleifer",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Bosch",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "PSS 23 AE",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "05.08.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "mit div. Schleifpapier",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "2407",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Schreibmaschine",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Olympia",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Freizeit",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "25",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "21.03.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Reiseschreibmaschine mit Tragekoffer",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],

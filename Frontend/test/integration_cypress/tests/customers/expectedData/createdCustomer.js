@@ -16,14 +16,6 @@ module.exports = [
     backgroundColor: "rgb(242, 242, 242)",
   },
   {
-    text: "123",
-    backgroundColor: "rgb(242, 242, 242)",
-  },
-  {
-    text: "76137",
-    backgroundColor: "rgb(242, 242, 242)",
-  },
-  {
     text: "Karlsruhe",
     backgroundColor: "rgb(242, 242, 242)",
   },

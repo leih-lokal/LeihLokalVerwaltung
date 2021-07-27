@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -91,10 +87,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -134,10 +126,6 @@ module.exports = [
     },
     {
       text: "19.01.2021",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -191,10 +179,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "nicht verleihbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -241,10 +225,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -291,10 +271,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -334,10 +310,6 @@ module.exports = [
     },
     {
       text: "05.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -391,10 +363,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -434,10 +402,6 @@ module.exports = [
     },
     {
       text: "07.08.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -491,10 +455,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Fruchtpresse, Kelter, Moster, Mostpresse, Obstpresse, Saftpresse",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -534,10 +494,6 @@ module.exports = [
     },
     {
       text: "07.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -591,10 +547,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -638,10 +590,6 @@ module.exports = [
     },
     {
       text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Faschiermaschine, Fleischmaschine",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -691,10 +639,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Mixstab, Pürierstab, Zauberstab",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -738,10 +682,6 @@ module.exports = [
     },
     {
       text: "Emaille-beschichtet, für alle Herdarten geeignet (incl. Induktion)\n,gusseisern,370 mm",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Wokpfanne",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -791,10 +731,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Entsafter, Fruchtpresse, Kelter, Moster, Mostpresse, Obstpresse",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -841,112 +777,8 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "1702",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Ravioli-Former",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "TCM",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "3",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "18.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "1710",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "Tortenring",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "chg",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "24.09.2018",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "8,5 cm hoch",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(131, 235, 52)",
     },
   ],
 ];

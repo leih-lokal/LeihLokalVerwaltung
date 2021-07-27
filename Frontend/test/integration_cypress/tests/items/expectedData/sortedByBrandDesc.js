@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(250, 45, 30)",
     },
@@ -88,10 +84,6 @@ module.exports = [
     },
     {
       text: "made in Germany , Qualität seit 1895",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -141,10 +133,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -184,10 +172,6 @@ module.exports = [
     },
     {
       text: "24.04.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -241,10 +225,6 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(247, 239, 10)",
     },
@@ -284,10 +264,6 @@ module.exports = [
     },
     {
       text: "10.08.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -341,10 +317,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Laubsäge, Laubsägemaschine, Wippsäge",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -384,10 +356,6 @@ module.exports = [
     },
     {
       text: "31.10.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -441,10 +409,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -488,10 +452,6 @@ module.exports = [
     },
     {
       text: "XS/S 50-53cm, 5 versch. Modelle",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -541,10 +501,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -588,10 +544,6 @@ module.exports = [
     },
     {
       text: "Kühlflüssigkeit über Nacht kühlstellen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -641,10 +593,6 @@ module.exports = [
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(250, 45, 30)",
     },
@@ -691,10 +639,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -734,10 +678,6 @@ module.exports = [
     },
     {
       text: "11.04.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -791,10 +731,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -834,110 +770,6 @@ module.exports = [
     },
     {
       text: "15.10.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "0122",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Digital-Multimeter",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "POWERFIX",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Profi +",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "3",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "19.11.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Bedienungsanleitung in Schriftform vorhanden",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "0120",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Infrarot-Temperaturmessgerät",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "POWERFIX",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Profi+",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "25",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "2",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15.10.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Anleitung in Schriftform vorhanden\nZeigt Wärmeverluste an Fenstern, Türen oder Isolierungen",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {

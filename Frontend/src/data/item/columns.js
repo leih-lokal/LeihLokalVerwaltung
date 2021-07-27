@@ -71,6 +71,7 @@ export default [
     key: "synonyms",
     disableSort: true,
     backgroundColor,
+    hideInTable: true,
   },
   {
     title: "Status",

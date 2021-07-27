@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -91,10 +87,6 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(45, 144, 224)",
     },
@@ -138,10 +130,6 @@ module.exports = [
     },
     {
       text: "50m",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -191,10 +179,6 @@ module.exports = [
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(250, 45, 30)",
     },
@@ -234,10 +218,6 @@ module.exports = [
     },
     {
       text: "01.07.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -291,10 +271,6 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(45, 144, 224)",
     },
@@ -341,10 +317,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -388,10 +360,6 @@ module.exports = [
     },
     {
       text: "rund, klappbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -441,10 +409,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -484,10 +448,6 @@ module.exports = [
     },
     {
       text: "23.02.2021",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -541,10 +501,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Fäustel",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -588,10 +544,6 @@ module.exports = [
     },
     {
       text: "auch: Gabel-Ringschlüssel, Gabelschlüssel\nverschiedene Größen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -641,10 +593,6 @@ module.exports = [
       backgroundColor: "rgb(131, 235, 52)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(131, 235, 52)",
     },
@@ -688,10 +636,6 @@ module.exports = [
     },
     {
       text: "ca. 30 Teller, Untertassen, Tassen verschiedener Art",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -741,10 +685,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -784,10 +724,6 @@ module.exports = [
     },
     {
       text: "31.10.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -841,111 +777,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Werkzeugbox, Werkzeugkiste, Werkzeugkoffer",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "2915",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Akkuschrauber",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Bosch",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Ixo full set",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "4",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "13.01.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Bedienungsanleitung in Schriftform vorhanden,\nmit Exzenter und Winkelaufsatz",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "nicht verleihbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "2906",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Bohrmaschine",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Bosch",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "PBH 16 RE",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "4",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "28.10.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],

@@ -17,14 +17,6 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "976",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "66788",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
       text: "Nebug",
       backgroundColor: "rgb(247, 239, 10)",
     },

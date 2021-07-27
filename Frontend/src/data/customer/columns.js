@@ -37,12 +37,14 @@ export default [
     search: "exclude",
     disableSort: true,
     backgroundColor,
+    hideInTable: true,
   },
   {
     title: "Postleitzahl",
     key: "postal_code",
     search: "exclude",
     backgroundColor,
+    hideInTable: true,
   },
   {
     title: "Stadt",

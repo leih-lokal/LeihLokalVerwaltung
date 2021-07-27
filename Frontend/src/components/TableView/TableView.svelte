@@ -12,7 +12,10 @@
   export let docType = "";
   export let inputs = [];
 
-  const rowHeight = 36;
+  let columnsToDisplay = [];
+  $: columnsToDisplay = columns.filter((column) => !column.hideInTable);
+
+  const rowHeight = 40;
   const maxRowsThatMightFitOnPage = () =>
     Math.floor((window.innerHeight - 230) / rowHeight);
   let popupIsOpen = false;
@@ -93,7 +96,7 @@
     rowsPerPage,
     refresh();
   $: sortByColKey, sortReverse, searchTerm, activeFilters, goToFirstPage();
-  $: indicateSort = columns.map((col) => {
+  $: indicateSort = columnsToDisplay.map((col) => {
     if (col.key === sortByColKey) {
       return sortReverse ? "up" : "down";
     } else {
@@ -167,10 +170,12 @@
 
 <Table
   {rowHeight}
-  {columns}
+  columns={columnsToDisplay}
   {loadData}
   cellBackgroundColorsFunction={(customer) =>
-    Promise.all(columns.map((column) => column.backgroundColor(customer)))}
+    Promise.all(
+      columnsToDisplay.map((column) => column.backgroundColor(customer))
+    )}
   {indicateSort}
   onLoadDataErrorText={(error) => {
     if (error.status === 401) {
@@ -196,7 +201,7 @@
     if (sortByColKey == event.detail.key) sortReverse = !sortReverse;
     else sortReverse = false;
     sortByColKey = event.detail.key;
-    const col = columns.find((col) => col.key === sortByColKey);
+    const col = columnsToDisplay.find((col) => col.key === sortByColKey);
     sort = col.sort ?? [sortByColKey];
   }}
 />

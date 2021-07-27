@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "nicht verleihbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -88,10 +84,6 @@ module.exports = [
     },
     {
       text: "Gr. 9-18 kg",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -141,10 +133,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -184,10 +172,6 @@ module.exports = [
     },
     {
       text: "29.10.2018",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
@@ -241,10 +225,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Bohrer, Bohrgerät",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -284,10 +264,6 @@ module.exports = [
     },
     {
       text: "28.10.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -341,10 +317,6 @@ module.exports = [
       backgroundColor: "rgb(131, 235, 52)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(131, 235, 52)",
     },
@@ -388,10 +360,6 @@ module.exports = [
     },
     {
       text: "mit Gas-Stechkartusche, zum Einsetzen der Kartusche sind 2 Personen benötigt",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -441,10 +409,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -491,10 +455,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -541,10 +501,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -588,10 +544,6 @@ module.exports = [
     },
     {
       text: "rund, klappbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -634,10 +586,6 @@ module.exports = [
     },
     {
       text: "26.05.2019",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -691,10 +639,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -741,10 +685,6 @@ module.exports = [
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(250, 45, 30)",
     },
@@ -784,10 +724,6 @@ module.exports = [
     },
     {
       text: "26.01.2019",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
@@ -841,111 +777,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verliehen",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "0606",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Elektr. Gemüseschneider",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Moulinex",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Charlotte HV3",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "22",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "05.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "0606",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Elektr. Gemüseschneider",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Moulinex",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Charlotte HV3",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "22",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "05.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],

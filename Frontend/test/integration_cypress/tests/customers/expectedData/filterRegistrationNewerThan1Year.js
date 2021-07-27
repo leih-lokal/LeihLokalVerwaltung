@@ -17,14 +17,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "6",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "21810",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Shikeng",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -76,14 +68,6 @@ module.exports = [
     },
     {
       text: "Evergreen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "851",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "92750",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -141,14 +125,6 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "66908",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "48601",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
       text: "Złoty Stok",
       backgroundColor: "rgb(247, 239, 10)",
     },
@@ -200,14 +176,6 @@ module.exports = [
     },
     {
       text: "Ruskin",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "49",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "63473",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -265,14 +233,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "800",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "84522",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Banjar Mambalkajanan",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -324,14 +284,6 @@ module.exports = [
     },
     {
       text: "Lakewood Gardens",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "28",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "86534",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -389,14 +341,6 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "6437",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "21630",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
       text: "Paris 07",
       backgroundColor: "rgb(45, 144, 224)",
     },
@@ -448,14 +392,6 @@ module.exports = [
     },
     {
       text: "Lighthouse Bay",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "7",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "68753",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -513,14 +449,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "685",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "40318",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Tibro",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -572,14 +500,6 @@ module.exports = [
     },
     {
       text: "Grim",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "8604",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "21356",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -637,14 +557,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "9",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "92067",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Provins",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -696,14 +608,6 @@ module.exports = [
     },
     {
       text: "Mayer",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "6922",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "77053",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -761,14 +665,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "278",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "23811",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Nong Phok",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -820,14 +716,6 @@ module.exports = [
     },
     {
       text: "Mockingbird",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "8",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "46222",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -885,14 +773,6 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "46054",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "19530",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
       text: "Juhaynah",
       backgroundColor: "rgb(247, 239, 10)",
     },
@@ -944,14 +824,6 @@ module.exports = [
     },
     {
       text: "Schlimgen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "03714",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "49213",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -1009,14 +881,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "9",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "80629",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Carapo",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -1038,130 +902,6 @@ module.exports = [
     },
     {
       text: "1117290665",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Nein",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "gesehen, vorbeigelaufen",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "0",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "20",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Moneypenny",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Fax",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Heffernan",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "6798",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "92795",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Bol’shaya Setun’",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "14.11.2019",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "fmoneypennyka@w3.org",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "2892685720",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Ja",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "gesehen, vorbeigelaufen",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "0",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-  ],
-  [
-    {
-      text: "22",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Macauley",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Tiphanie",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Sutteridge",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "84679",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "65039",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Daming",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "16.06.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "tmacauleypo@nytimes.com",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "9085448531",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
