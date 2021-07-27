@@ -17,14 +17,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "615",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "11832",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Zhukovo",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -76,14 +68,6 @@ module.exports = [
     },
     {
       text: "Rutledge",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "5370",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "75162",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -141,14 +125,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "3691",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "27706",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Rogów",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -200,14 +176,6 @@ module.exports = [
     },
     {
       text: "Westport",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "64633",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "68262",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {

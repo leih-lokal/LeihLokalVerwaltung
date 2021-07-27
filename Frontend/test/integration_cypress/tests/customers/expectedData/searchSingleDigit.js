@@ -17,14 +17,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "6",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "21810",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Shikeng",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -76,14 +68,6 @@ module.exports = [
     },
     {
       text: "Grim",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "8604",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "21356",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -141,14 +125,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "9",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "92067",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Provins",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -200,14 +176,6 @@ module.exports = [
     },
     {
       text: "Mayer",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "6922",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "77053",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -265,14 +233,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "278",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "23811",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Nong Phok",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -324,14 +284,6 @@ module.exports = [
     },
     {
       text: "Mockingbird",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "8",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "46222",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -389,14 +341,6 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "46054",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "19530",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
       text: "Juhaynah",
       backgroundColor: "rgb(247, 239, 10)",
     },
@@ -448,14 +392,6 @@ module.exports = [
     },
     {
       text: "Schlimgen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "03714",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "49213",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -513,14 +449,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "615",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "11832",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "Zhukovo",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -575,14 +503,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "9",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "80629",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "Carapo",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -634,14 +554,6 @@ module.exports = [
     },
     {
       text: "Bultman",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "58840",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "49591",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {

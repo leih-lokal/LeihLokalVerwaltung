@@ -7,8 +7,6 @@ module.exports = [
       text: "Lighthouse Bay",
       backgroundColor: "rgb(242, 242, 242)",
     },
-    { text: "7", backgroundColor: "rgb(242, 242, 242)" },
-    { text: "68753", backgroundColor: "rgb(242, 242, 242)" },
     { text: "Verba", backgroundColor: "rgb(242, 242, 242)" },
     { text: "29.08.2019", backgroundColor: "rgb(242, 242, 242)" },
     { text: "", backgroundColor: "rgb(242, 242, 242)" },

@@ -40,9 +40,9 @@ const expectNotDisplaysRow = (expectedRowNotToBeDisplayed) => {
 
 context("Customers", () => {
   beforeEach(() => {
-    cy.clock(Date.UTC(2020, 5, 1), ["Date"]).visit(
-      "../../public/index.html#/customers"
-    );
+    cy.clock(Date.UTC(2020, 5, 1), ["Date"])
+      .visit("../../public/index.html#/customers")
+      .then(() => cy.get("tbody > tr", { timeout: 20000 }));
   });
 
   context("Sorting", () => {
