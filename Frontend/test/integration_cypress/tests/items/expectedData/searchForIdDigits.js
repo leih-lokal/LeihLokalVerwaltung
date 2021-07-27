@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Wokpfanne",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -88,10 +84,6 @@ module.exports = [
     },
     {
       text: "2x vorhanden",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Entsafter, Fruchtpresse, Kelter, Moster, Mostpresse, Obstpresse",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {

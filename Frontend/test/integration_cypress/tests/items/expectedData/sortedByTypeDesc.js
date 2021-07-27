@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -84,10 +80,6 @@ module.exports = [
     },
     {
       text: "15.10.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -141,10 +133,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Laubsäge, Laubsägemaschine, Wippsäge",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -191,10 +179,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -234,10 +218,6 @@ module.exports = [
     },
     {
       text: "24.04.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -291,10 +271,6 @@ module.exports = [
       backgroundColor: "rgb(131, 235, 52)",
     },
     {
-      text: "Laubsäge, Laubsägemaschine, Wippsäge",
-      backgroundColor: "rgb(131, 235, 52)",
-    },
-    {
       text: "nicht verleihbar",
       backgroundColor: "rgb(131, 235, 52)",
     },
@@ -338,10 +314,6 @@ module.exports = [
     },
     {
       text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Mixstab, Pürierstab, Zauberstab",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -391,10 +363,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "Fruchtpresse, Kelter, Moster, Mostpresse, Obstpresse, Saftpresse",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -434,10 +402,6 @@ module.exports = [
     },
     {
       text: "10.02.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -491,10 +455,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -538,10 +498,6 @@ module.exports = [
     },
     {
       text: "mit div. Schleifpapier",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -591,10 +547,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -641,10 +593,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -684,10 +632,6 @@ module.exports = [
     },
     {
       text: "28.10.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -741,10 +685,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -791,10 +731,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "nicht verleihbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -838,110 +774,6 @@ module.exports = [
     },
     {
       text: "3 PS, Spaltkraft: 6,5 t, Max. Spaltgutlänge: 52 cm, 2.200 W, ca. 50kg",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "1900",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "Dekupiersäge",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "Güde",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "GDS 16 Elektronik",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "55",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "2",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "26.05.2019",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-  ],
-  [
-    {
-      text: "2318",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Autokindersitz",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Cybex",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "ECE R44/ 04",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Kinder",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "17.01.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Bedienungsanleitung in Schriftform vorhanden\nca. 3-12 Jahre (15-36kg) <150cm",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {

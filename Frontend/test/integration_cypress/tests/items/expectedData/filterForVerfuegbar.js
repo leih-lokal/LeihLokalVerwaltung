@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -91,10 +87,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -134,10 +126,6 @@ module.exports = [
     },
     {
       text: "11.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -191,10 +179,6 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(247, 239, 10)",
     },
@@ -234,10 +218,6 @@ module.exports = [
     },
     {
       text: "04.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -291,10 +271,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -341,10 +317,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -384,10 +356,6 @@ module.exports = [
     },
     {
       text: "19.01.2021",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -441,10 +409,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -488,10 +452,6 @@ module.exports = [
     },
     {
       text: "Gasanschluss möglich für Butan/Propan, 2 Kochstellen\nman benötigt eine große Gasflasche & einen Gas-Schlauch-Regler",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -541,10 +501,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -591,10 +547,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -634,10 +586,6 @@ module.exports = [
     },
     {
       text: "05.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -691,10 +639,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -738,10 +682,6 @@ module.exports = [
     },
     {
       text: "2x vorhanden, Input 230V Output 12V",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
@@ -791,10 +731,6 @@ module.exports = [
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(250, 45, 30)",
     },
@@ -841,112 +777,8 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Trolley",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "0921",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Entsafter",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "mia",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "SP2003",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "6",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "11.12.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Fruchtpresse, Kelter, Moster, Mostpresse, Obstpresse, Saftpresse",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "1009",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "Luftentfeuchter",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "Workzone",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "25",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "26.10.2018",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(250, 45, 30)",
     },
   ],
 ];

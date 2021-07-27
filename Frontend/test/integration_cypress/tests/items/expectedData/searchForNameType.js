@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Laubsäge, Laubsägemaschine, Wippsäge",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },

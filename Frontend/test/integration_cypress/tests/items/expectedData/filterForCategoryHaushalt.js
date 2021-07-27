@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -84,10 +80,6 @@ module.exports = [
     },
     {
       text: "11.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -141,10 +133,6 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(45, 144, 224)",
     },
@@ -184,10 +172,6 @@ module.exports = [
     },
     {
       text: "01.07.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -241,10 +225,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -284,10 +264,6 @@ module.exports = [
     },
     {
       text: "27.02.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {

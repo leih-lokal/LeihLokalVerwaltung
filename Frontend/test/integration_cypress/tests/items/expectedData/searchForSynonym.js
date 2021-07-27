@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Wokpfanne",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },

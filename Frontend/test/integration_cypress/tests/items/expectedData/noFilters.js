@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Laubsäge, Laubsägemaschine, Wippsäge",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -84,10 +80,6 @@ module.exports = [
     },
     {
       text: "10.02.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -141,10 +133,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -188,10 +176,6 @@ module.exports = [
     },
     {
       text: "Anleitung in Schriftform vorhanden\nZeigt Wärmeverluste an Fenstern, Türen oder Isolierungen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -241,10 +225,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -284,10 +264,6 @@ module.exports = [
     },
     {
       text: "11.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -341,10 +317,6 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(247, 239, 10)",
     },
@@ -384,10 +356,6 @@ module.exports = [
     },
     {
       text: "11.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -441,10 +409,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -488,10 +452,6 @@ module.exports = [
     },
     {
       text: "2 Gummifüße fehlen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -541,10 +501,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -584,10 +540,6 @@ module.exports = [
     },
     {
       text: "19.01.2021",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -641,10 +593,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -684,10 +632,6 @@ module.exports = [
     },
     {
       text: "04.09.2018",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
@@ -741,10 +685,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -791,10 +731,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "nicht verleihbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -834,110 +770,6 @@ module.exports = [
     },
     {
       text: "15.10.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "0606",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Elektr. Gemüseschneider",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Moulinex",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Charlotte HV3",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "22",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "05.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verfügbar",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "0606",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Elektr. Gemüseschneider",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Moulinex",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Charlotte HV3",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "22",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "05.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {

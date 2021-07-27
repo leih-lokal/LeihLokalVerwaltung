@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "nicht verleihbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -88,10 +84,6 @@ module.exports = [
     },
     {
       text: "Maximale Maße der Leinwand: 1,2 m x 1,25 m",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -141,10 +133,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -188,10 +176,6 @@ module.exports = [
     },
     {
       text: "Gasanschluss möglich für Butan/Propan, 2 Kochstellen\nman benötigt eine große Gasflasche & einen Gas-Schlauch-Regler",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -241,10 +225,6 @@ module.exports = [
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(250, 45, 30)",
     },
@@ -288,10 +268,6 @@ module.exports = [
     },
     {
       text: "bis zu 15 kg",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
@@ -341,10 +317,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Trolley",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -384,10 +356,6 @@ module.exports = [
     },
     {
       text: "26.01.2019",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
@@ -441,10 +409,6 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(45, 144, 224)",
     },
@@ -484,10 +448,6 @@ module.exports = [
     },
     {
       text: "24.04.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -541,10 +501,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -588,10 +544,6 @@ module.exports = [
     },
     {
       text: "Höhe: 110 cm",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -641,10 +593,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -688,10 +636,6 @@ module.exports = [
     },
     {
       text: "für Busse und Campingvans, 280×300 cm breit, 210 cm hoch, Packmaß 24×74 cm",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -741,10 +685,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -784,10 +724,6 @@ module.exports = [
     },
     {
       text: "11.09.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -841,111 +777,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "gelöscht",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "3212",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Multifunktionsmixer",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Bullet Express",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "KASCHKA",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Freizeit",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "06.09.2019",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "gelöscht",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-  ],
-  [
-    {
-      text: "3309",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Navigationsgerät",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Tomtom",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Freizeit",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "2",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "31.10.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],

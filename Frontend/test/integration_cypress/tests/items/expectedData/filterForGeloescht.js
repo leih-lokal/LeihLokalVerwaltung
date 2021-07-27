@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -84,10 +80,6 @@ module.exports = [
     },
     {
       text: "11.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -141,10 +133,6 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(45, 144, 224)",
     },
@@ -184,10 +172,6 @@ module.exports = [
     },
     {
       text: "09.10.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -241,10 +225,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -284,10 +264,6 @@ module.exports = [
     },
     {
       text: "15.10.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -341,10 +317,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -384,10 +356,6 @@ module.exports = [
     },
     {
       text: "01.07.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -441,10 +409,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -484,10 +448,6 @@ module.exports = [
     },
     {
       text: "01.03.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -541,10 +501,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -584,10 +540,6 @@ module.exports = [
     },
     {
       text: "01.03.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -641,10 +593,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -691,10 +639,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -734,10 +678,6 @@ module.exports = [
     },
     {
       text: "11.09.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -791,10 +731,6 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
       text: "gelöscht",
       backgroundColor: "rgb(45, 144, 224)",
     },
@@ -834,110 +770,6 @@ module.exports = [
     },
     {
       text: "17.02.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "gelöscht",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "6101",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "Faszienrolle",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "Blackroll MED",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "Freizeit",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "27.02.2020",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "gelöscht",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-  ],
-  [
-    {
-      text: "6103",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Strommessgerät",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "ENBW",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Haushalt",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "5",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "27.02.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {

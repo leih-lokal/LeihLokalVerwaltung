@@ -41,10 +41,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Laubsäge, Laubsägemaschine, Wippsäge",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -84,10 +80,6 @@ module.exports = [
     },
     {
       text: "10.02.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -141,10 +133,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -191,10 +179,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -234,10 +218,6 @@ module.exports = [
     },
     {
       text: "11.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -291,10 +271,6 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(247, 239, 10)",
     },
@@ -334,10 +310,6 @@ module.exports = [
     },
     {
       text: "04.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -391,10 +363,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -434,10 +402,6 @@ module.exports = [
     },
     {
       text: "19.01.2021",
-      backgroundColor: "rgb(247, 239, 10)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -491,10 +455,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -541,10 +501,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -584,10 +540,6 @@ module.exports = [
     },
     {
       text: "05.09.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -641,10 +593,6 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
@@ -691,10 +639,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -734,10 +678,6 @@ module.exports = [
     },
     {
       text: "05.09.2018",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -791,10 +731,6 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
@@ -841,112 +777,8 @@ module.exports = [
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "",
-      backgroundColor: "rgb(250, 45, 30)",
-    },
-    {
       text: "verfügbar",
       backgroundColor: "rgb(250, 45, 30)",
-    },
-  ],
-  [
-    {
-      text: "0711",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küchenmaschine",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Braun",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Type 4200",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Küche",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "35",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "21",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15.10.2018",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "verliehen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "0715",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Multi-Elektrosäge",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "KingCraft",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "KMS 550 E",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "25",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "18.02.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "incl. Sägeblätter\nauch: Säbel – Sägemaschine, elektischer Fuchsschwanz",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verliehen",
-      backgroundColor: "rgb(242, 242, 242)",
     },
   ],
 ];
