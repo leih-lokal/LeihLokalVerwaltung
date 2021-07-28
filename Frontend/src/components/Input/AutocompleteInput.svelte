@@ -15,32 +15,30 @@
   export let id;
   export let searchFunction;
   export let value;
-  export let suggestionFormat = valueFromSelected;
+  export let labelFunction = valueFromSelected;
   export let disabled;
   export let onlyNumbers = false;
   export let onSelected = () => {};
   export let valueField;
+  export let placeholder = "";
+  export let singleValue = true;
+  export let showClear = false;
 
   onMount(() =>
     restrictInputToNumbers(document.getElementById(id), onlyNumbers)
   );
+
+  $: value = singleValue ? valueFromSelected(value) : value;
 </script>
 
 <div class="container">
   <AutoComplete
     delay={150}
-    textCleanFunction={(text) => (value = text)}
     {searchFunction}
-    labelFunction={(item) => {
-      const values = Object.values(item);
-      if (values.length === 0) return "";
-      else if (values.length === 1 && Object.keys(item)[0] === "attr")
-        return item.attr;
-      else return suggestionFormat(...values);
-    }}
+    {labelFunction}
     beforeChange={(prevSelectedValue, selectedValue) => {
-      const newValue = valueFromSelected(selectedValue);
-      if (value !== newValue) {
+      const newValue = selectedValue; //valueFromSelected(selectedValue);
+      if (JSON.stringify(value) !== JSON.stringify(newValue)) {
         value = newValue;
         onSelected(value);
         return true;
@@ -50,11 +48,13 @@
     }}
     inputId={id}
     {noResultsText}
+    {placeholder}
+    {showClear}
     {disabled}
     hideArrow={true}
     localSearch={false}
     localFiltering={false}
-    selectedItem={{ attr: value }}
+    bind:selectedItem={value}
     html5autocomplete={false}
   />
 </div>
@@ -67,6 +67,6 @@
   .container :global(.autocomplete-input) {
     border: 1px solid #ccc;
     border-radius: 4px;
-    height: 2.5rem;
+    height: 2.5rem !important;
   }
 </style>

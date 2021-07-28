@@ -72,7 +72,10 @@
                 <label for={input.id}>{input.label}</label>
               </div>
             {/if}
-            <div class="col-input">
+            <div
+              class="col-input"
+              class:fullwidth={!input.label || input.label.length === 0}
+            >
               {#if input.nobind}
                 <svelte:component
                   this={input.component}
@@ -113,6 +116,10 @@
   .col-input {
     float: left;
     width: 60%;
+  }
+
+  .fullwidth {
+    width: 100%;
   }
 
   row {

@@ -71,5 +71,6 @@
     width: 100% !important;
     resize: none;
     overflow: hidden;
+    min-height: 2.5rem !important;
   }
 </style>

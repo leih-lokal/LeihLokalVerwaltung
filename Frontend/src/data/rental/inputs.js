@@ -39,6 +39,22 @@ const updateToggleStatus = (itemExistsMoreThanOnce) => {
   }
 };
 
+const itemToString = (item) => {
+  if (item["id"] && item["name"]) {
+    return `${String(item["id"]).padStart(4, "0")}: ${item["name"]}`;
+  } else {
+    return "";
+  }
+};
+
+const customerToString = (customer) => {
+  if (customer["id"] && customer["lastname"]) {
+    return `${customer.id}: ${customer.firstname} ${customer.lastname}`;
+  } else {
+    return "";
+  }
+};
+
 const showNotificationsForCustomer = async (customerId) => {
   Database.fetchAllDocsBySelector(
     activeRentalsForCustomerSelector(customerId),
@@ -106,83 +122,59 @@ export default {
   ],
   inputs: [
     {
-      id: "item_id",
-      label: "Nr",
+      id: "item",
       group: "Gegenstand",
       component: AutocompleteInput,
-      nobind: true,
+      nobind: true, // bind cannot handle multiple values
       props: {
-        valueField: "id",
-        onlyNumbers: true,
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchDocsBySelector(
-            itemIdStartsWithAndNotDeletedSelector(searchTerm),
-            ["id", "name"]
-          ),
-        suggestionFormat: (context) => (id, item_name) =>
-          `${String(id).padStart(4, "0")}: ${item_name}`,
-        noResultsText: "Kein Gegenstand mit dieser Id",
-        onSelected: (context) => (selectedItemId) => {
-          Database.fetchDocsBySelector(itemById(selectedItemId), [
+        singleValue: false,
+        showClear: true,
+        searchFunction: (context) => (searchTerm) => {
+          const requiredKeys = [
             "id",
             "name",
             "deposit",
             "exists_more_than_once",
-          ])
-            .then((results) => results[0])
-            .then((result) => {
-              context.updateDoc({
-                item_id: result.id,
-                item_name: result.name,
-                deposit: result.deposit,
-              });
-              updateToggleStatus(result.exists_more_than_once);
-            });
+          ];
+
+          // determine if user searches for id (a number) or name (not a number)
+          if (isNaN(searchTerm)) {
+            return Database.fetchDocsBySelector(
+              itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector(
+                "name",
+                searchTerm
+              ),
+              requiredKeys
+            );
+          } else {
+            return Database.fetchDocsBySelector(
+              itemIdStartsWithAndNotDeletedSelector(searchTerm),
+              requiredKeys
+            );
+          }
+        },
+        value: (context) => ({
+          id: context.doc.item_id,
+          name: context.doc.item_name,
+        }),
+        placeholder: "Nummer oder Name",
+        // returns the string displayed as select option
+        labelFunction: (context) => (item) => itemToString(item),
+        noResultsText: "Kein Gegenstand gefunden",
+        onSelected: (context) => (selectedItem) => {
+          context.updateDoc({
+            item_id: selectedItem.id,
+            item_name: selectedItem.name,
+            deposit: selectedItem.deposit,
+          });
+          updateToggleStatus(selectedItem.exists_more_than_once);
         },
       },
     },
 
     {
-      id: "item_name",
-      label: "Name",
-      group: "Gegenstand",
-      component: AutocompleteInput,
-      nobind: true,
-      props: {
-        valueField: "name",
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchDocsBySelector(
-            itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector(
-              "name",
-              searchTerm
-            ),
-            ["id", "name"]
-          ),
-        suggestionFormat: (context) => (id, item_name) =>
-          `${String(id).padStart(4, "0")}: ${item_name}`,
-        noResultsText: "Kein Gegenstand mit diesem Name",
-        onSelected: (context) => (selectedItemName) => {
-          Database.fetchDocsBySelector(itemByName(selectedItemName), [
-            "id",
-            "name",
-            "deposit",
-            "exists_more_than_once",
-          ])
-            .then((results) => results[0])
-            .then((result) => {
-              context.updateDoc({
-                item_id: result.id,
-                item_name: result.name,
-                deposit: result.deposit,
-              });
-              updateToggleStatus(result.exists_more_than_once);
-            });
-        },
-      },
-    },
-    {
       id: "update_status",
-      label: "Status des Gegenstandes aktualisieren",
+      label: "Status automatisch aktualisieren",
       group: "Gegenstand",
       component: Checkbox,
       nobind: true,
@@ -237,70 +229,43 @@ export default {
     },
 
     {
-      id: "customer_id",
-      label: "Nr",
+      id: "customer",
       group: "Nutzer",
       component: AutocompleteInput,
       nobind: true,
       props: {
-        valueField: "id",
-        onlyNumbers: true,
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchDocsBySelector(
-            customerIdStartsWithSelector(searchTerm),
-            ["id", "firstname", "lastname"]
-          ),
-        suggestionFormat: (context) => (id, firstname, lastname) =>
-          `${id}: ${firstname} ${lastname}`,
-        noResultsText: "Kein Nutzer mit dieser Nummer",
-        onSelected: (context) => (selectedCustomerId) => {
-          Database.fetchDocsBySelector(customerById(selectedCustomerId), [
-            "id",
-            "lastname",
-          ])
-            .then((results) => results[0])
-            .then((result) => {
-              context.updateDoc({
-                customer_name: result.lastname,
-                customer_id: result.id,
-              });
-              showNotificationsForCustomer(result.id);
-            });
+        singleValue: false,
+        showClear: true,
+        searchFunction: (context) => (searchTerm) => {
+          if (isNaN(searchTerm)) {
+            return Database.fetchDocsBySelector(
+              customerAttributeStartsWithIgnoreCaseSelector(
+                "lastname",
+                searchTerm
+              ),
+              ["id", "firstname", "lastname"]
+            );
+          } else {
+            return Database.fetchDocsBySelector(
+              customerIdStartsWithSelector(searchTerm),
+              ["id", "firstname", "lastname"]
+            );
+          }
         },
-      },
-    },
-    {
-      id: "customer_name",
-      label: "Nachname",
-      group: "Nutzer",
-      component: AutocompleteInput,
-      nobind: true,
-      props: {
-        valueField: "lastname",
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchDocsBySelector(
-            customerAttributeStartsWithIgnoreCaseSelector(
-              "lastname",
-              searchTerm
-            ),
-            ["id", "firstname", "lastname"]
-          ),
-        suggestionFormat: (context) => (id, firstname, lastname) =>
-          `${id}: ${firstname} ${lastname}`,
-        noResultsText: "Kein Nutzer mit diesem Name",
-        onSelected: (context) => (selectedCustomerName) => {
-          Database.fetchDocsBySelector(
-            customerByLastname(selectedCustomerName),
-            ["id", "lastname"]
-          )
-            .then((results) => results[0])
-            .then((result) => {
-              context.updateDoc({
-                customer_name: result.lastname,
-                customer_id: result.id,
-              });
-              showNotificationsForCustomer(result.id);
-            });
+        placeholder: "Nummer oder Nachname",
+        labelFunction: (context) => (customer) => customerToString(customer),
+        value: (context) => ({
+          id: context.doc.item_id,
+          lastname: context.doc.customer_name,
+          firstname: "", // not stored in rental doc
+        }),
+        noResultsText: "Kein Nutzer gefunden",
+        onSelected: (context) => (selectedCustomer) => {
+          context.updateDoc({
+            customer_name: selectedCustomer.lastname,
+            customer_id: selectedCustomer.id,
+          });
+          showNotificationsForCustomer(selectedCustomer.id);
         },
       },
     },
