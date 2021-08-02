@@ -21,14 +21,16 @@
   export let onSelected = () => {};
   export let valueField;
   export let placeholder = "";
-  export let singleValue = true;
+  export let singleValue;
   export let showClear = false;
 
   onMount(() =>
     restrictInputToNumbers(document.getElementById(id), onlyNumbers)
   );
 
-  $: value = singleValue ? valueFromSelected(value) : value;
+  $: if (singleValue && typeof value === "object") {
+    value = value[valueField ?? Object.keys(value)[0]];
+  }
 </script>
 
 <div class="container">

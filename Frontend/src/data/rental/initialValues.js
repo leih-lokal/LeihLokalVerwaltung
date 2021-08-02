@@ -1,6 +1,6 @@
 import { millisAtStartOfToday, millisAtStartOfDay } from "../../utils/utils";
 
-// initial values for new customers
+// initial values for new rentals
 
 export default {
   rented_on: () => millisAtStartOfToday(),
@@ -10,6 +10,7 @@ export default {
   extended_on: () => 0,
   type: () => "rental",
   image: () => "",
+  items: () => [],
   item_id: () => "",
   item_name: () => "",
   customer_id: () => "",

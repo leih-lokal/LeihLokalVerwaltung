@@ -17,18 +17,26 @@
   // needs to be reactive so that the injected context is updated when doc changes
   $: doc, (footerButtonsWithContext = injectContext(config.footerButtons));
 
-  const injectContext = (val) => {
-    if (typeof val === "function") {
-      return val({
-        doc,
-        createNew,
-        closePopup,
-        updateDoc: (updatedDoc) => (doc = { ...doc, ...updatedDoc }),
-        container: inputContainer,
-      });
-    } else {
-      return val;
+  const injectContext = (valueThatMightRequireContext) => {
+    const context = {
+      doc,
+      createNew,
+      closePopup,
+      updateDoc: (updatedDoc) => (doc = { ...doc, ...updatedDoc }),
+      container: inputContainer,
+    };
+    if (typeof valueThatMightRequireContext === "function") {
+      return valueThatMightRequireContext(context);
+    } else if (typeof valueThatMightRequireContext === "object") {
+      // make a copy to prevent modification of original object
+      valueThatMightRequireContext = { ...valueThatMightRequireContext };
+      for (let [key, value] of Object.entries(valueThatMightRequireContext)) {
+        if (typeof value === "function") {
+          valueThatMightRequireContext[key] = value(context);
+        }
+      }
     }
+    return valueThatMightRequireContext;
   };
 
   const isHidden = (input) => input.hidden && injectContext(input.hidden);
@@ -65,7 +73,8 @@
   <div class="content" bind:this={inputContainer}>
     {#each groups.filter( (group) => groupedInputs[group].some((input) => !isHidden(input)) ) as group}
       <InputGroup title={group}>
-        {#each groupedInputs[group].filter((input) => !isHidden(input)) as input}
+        {#each groupedInputs[group].filter((input) => !isHidden(input)) as input (input.id)}
+          {JSON.stringify(input)}
           <row>
             {#if input.label && input.label.length > 0}
               <div class="col-label">

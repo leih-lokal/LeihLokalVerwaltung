@@ -97,6 +97,15 @@ class SelectorBuilder {
     return this;
   }
 
+  in(values) {
+    this.selectors.push({
+      [this.currentFieldName]: {
+        $in: values,
+      },
+    });
+    return this;
+  }
+
   isNotEqualTo(value) {
     this.selectors.push({
       [this.currentFieldName]: {
@@ -114,7 +123,12 @@ class SelectorBuilder {
       .filter((searchTerm) => searchTerm !== "");
 
     // e.g. 12 => 120 - 129, 1200 - 1299
-    const selectorsForNumbersStartingWith = (searchWord, column, factor = 10, selectors = []) => {
+    const selectorsForNumbersStartingWith = (
+      searchWord,
+      column,
+      factor = 10,
+      selectors = []
+    ) => {
       const number = Math.abs(parseInt(searchWord, 10));
       if (number === 0) {
         // 000 -> 0001 - 0009
@@ -155,7 +169,12 @@ class SelectorBuilder {
       if (number * factor * 10 > 10000) {
         return selectors;
       } else {
-        return selectorsForNumbersStartingWith(searchWord, column, factor * 10, selectors);
+        return selectorsForNumbersStartingWith(
+          searchWord,
+          column,
+          factor * 10,
+          selectors
+        );
       }
     };
 
@@ -169,14 +188,20 @@ class SelectorBuilder {
               $eq: parseInt(searchWord, 10),
             },
           });
-          selectors = [...selectors, ...selectorsForNumbersStartingWith(searchWord, column)];
+          selectors = [
+            ...selectors,
+            ...selectorsForNumbersStartingWith(searchWord, column),
+          ];
         });
         return selectors;
       } else {
         // is not a number
         return columnsToSearch(false).map((column) => ({
           [column.key]: {
-            $regex: "(?i)" + (column?.search === "from_beginning" ? "^(0+?)?" : "") + searchWord,
+            $regex:
+              "(?i)" +
+              (column?.search === "from_beginning" ? "^(0+?)?" : "") +
+              searchWord,
           },
         }));
       }
@@ -186,7 +211,8 @@ class SelectorBuilder {
       columns
         .filter(
           (column) =>
-            (!numericSearchTerm && !column.numeric) || (numericSearchTerm && column.numeric)
+            (!numericSearchTerm && !column.numeric) ||
+            (numericSearchTerm && column.numeric)
         )
         .filter((column) => !column.search || column.search !== "exclude");
 

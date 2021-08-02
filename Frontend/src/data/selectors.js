@@ -65,6 +65,13 @@ const itemById = (itemId) =>
     .equals(itemId)
     .build();
 
+const itemsByIds = (itemIds) =>
+  Database.selectorBuilder()
+    .withDocType("item")
+    .withField("id")
+    .in(itemIds)
+    .build();
+
 const itemByName = (itemName) =>
   Database.selectorBuilder()
     .withDocType("item")
@@ -80,6 +87,7 @@ export {
   activeRentalsForCustomerSelector,
   customerById,
   itemById,
+  itemsByIds,
   itemByName,
   customerByLastname,
 };

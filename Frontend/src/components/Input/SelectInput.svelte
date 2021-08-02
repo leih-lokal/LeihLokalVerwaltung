@@ -10,10 +10,15 @@
   export let inputStyles = "cursor: pointer;";
   export let placeholder = "Auswählen...";
 
+  const selectionOptionsAsArray = () =>
+    typeof selectionOptions === "object"
+      ? Object.values(selectionOptions)
+      : selectionOptions;
+
   const valuesToOptions = (values) => {
     return values.map(
       (value) =>
-        selectionOptions.find(
+        selectionOptionsAsArray().find(
           (item) => item === value || item.value === value
         ) || value
     );
@@ -36,11 +41,9 @@
 </script>
 
 <Select
-  items={selectionOptions}
+  items={selectionOptionsAsArray()}
   {inputStyles}
-  selectedValue={selectedValuesArray.length !== 0
-    ? selectedValuesArray
-    : undefined}
+  value={selectedValuesArray.length !== 0 ? selectedValuesArray : undefined}
   on:select={(event) => {
     let selection = event.detail;
     if (selection) {

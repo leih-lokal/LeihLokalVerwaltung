@@ -37,6 +37,10 @@ class WoocommerceClientMock {
     await new Promise((r) => setTimeout(r, 1500));
   }
 
+  async batchUpdateItems(items) {
+    await new Promise((r) => setTimeout(r, 2500));
+  }
+
   async deleteItem(item) {
     await new Promise((r) => setTimeout(r, 1500));
   }

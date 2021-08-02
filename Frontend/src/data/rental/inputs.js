@@ -1,5 +1,6 @@
 import TextInput from "../../components/Input/TextInput.svelte";
 import AutocompleteInput from "../../components/Input/AutocompleteInput.svelte";
+import InputMultiplier from "../../components/Input/InputMultiplier.svelte";
 import DateInput from "../../components/Input/DateInput.svelte";
 import Checkbox from "../../components/Input/Checkbox.svelte";
 import Database from "../../database/ENV_DATABASE";
@@ -13,10 +14,8 @@ import {
   customerAttributeStartsWithIgnoreCaseSelector,
   itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
   activeRentalsForCustomerSelector,
-  itemById,
   customerById,
-  customerByLastname,
-  itemByName,
+  itemsByIds,
 } from "../selectors";
 
 /**
@@ -35,12 +34,13 @@ const updateToggleStatus = (itemExistsMoreThanOnce) => {
     updateItemStatus = false;
     hideToggleUpdateItemStatus = true;
   } else {
+    updateItemStatus = true;
     hideToggleUpdateItemStatus = false;
   }
 };
 
 const itemToString = (item) => {
-  if (item["id"] && item["name"]) {
+  if (item && item["id"] && item["name"]) {
     return `${String(item["id"]).padStart(4, "0")}: ${item["name"]}`;
   } else {
     return "";
@@ -48,7 +48,7 @@ const itemToString = (item) => {
 };
 
 const customerToString = (customer) => {
-  if (customer["id"] && customer["lastname"]) {
+  if (customer && customer["id"] && customer["lastname"]) {
     return `${customer.id}: ${customer.firstname} ${customer.lastname}`;
   } else {
     return "";
@@ -123,51 +123,86 @@ export default {
   inputs: [
     {
       id: "item",
-      group: "Gegenstand",
-      component: AutocompleteInput,
+      group: "Gegenstände",
+      component: InputMultiplier,
       nobind: true, // bind cannot handle multiple values
       props: {
-        singleValue: false,
-        showClear: true,
-        searchFunction: (context) => (searchTerm) => {
-          const requiredKeys = [
-            "id",
-            "name",
-            "deposit",
-            "exists_more_than_once",
-          ];
-
-          // determine if user searches for id (a number) or name (not a number)
-          if (isNaN(searchTerm)) {
-            return Database.fetchDocsBySelector(
-              itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector(
-                "name",
-                searchTerm
-              ),
-              requiredKeys
-            );
-          } else {
-            return Database.fetchDocsBySelector(
-              itemIdStartsWithAndNotDeletedSelector(searchTerm),
-              requiredKeys
-            );
-          }
+        childComponent: (context) => AutocompleteInput,
+        // only allow multiple items when creating a new rental
+        allowAdditionalInputs: (context) => context.createNew,
+        initialChildComponentValue: {
+          id: undefined,
+          name: undefined,
         },
-        value: (context) => ({
-          id: context.doc.item_id,
-          name: context.doc.item_name,
-        }),
-        placeholder: "Nummer oder Name",
-        // returns the string displayed as select option
-        labelFunction: (context) => (item) => itemToString(item),
-        noResultsText: "Kein Gegenstand gefunden",
-        onSelected: (context) => (selectedItem) => {
-          context.updateDoc({
-            item_id: selectedItem.id,
-            item_name: selectedItem.name,
-            deposit: selectedItem.deposit,
-          });
-          updateToggleStatus(selectedItem.exists_more_than_once);
+        firstChildComponentProps: {
+          placeholder: "Nummer oder Name",
+        },
+        injectChildIndexInto: "onSelected",
+        childComponentProps: {
+          singleValue: false,
+          showClear: true,
+          searchFunction: (context) => (searchTerm) => {
+            const requiredKeys = [
+              "id",
+              "name",
+              "deposit",
+              "exists_more_than_once",
+            ];
+
+            // determine if user searches for id (a number) or name (not a number)
+            if (isNaN(searchTerm)) {
+              return Database.fetchDocsBySelector(
+                itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector(
+                  "name",
+                  searchTerm
+                ),
+                requiredKeys
+              );
+            } else {
+              return Database.fetchDocsBySelector(
+                itemIdStartsWithAndNotDeletedSelector(searchTerm),
+                requiredKeys
+              );
+            }
+          },
+          value: (context) => ({
+            id: context.doc.item_id,
+            name: context.doc.item_name,
+            deposit: context.doc.deposit,
+          }),
+          placeholder: "Noch ein Gegenstand?",
+          // returns the string displayed as select option
+          labelFunction: (context) => (item) => itemToString(item),
+          noResultsText: "Kein Gegenstand gefunden",
+          onSelected: (context) => (childIndex) => (selectedItem) => {
+            let items = context.doc["items"] ? [...context.doc["items"]] : [];
+            items[childIndex] = {
+              id: selectedItem.id,
+              name: selectedItem.name,
+              deposit: selectedItem.deposit,
+            };
+            context.updateDoc({
+              items: items,
+              item_id: items[0].id,
+              item_name: items[0].name,
+              deposit: items.reduce(
+                (currentSum, item) =>
+                  currentSum + (item && item.deposit ? item.deposit : 0),
+                0
+              ),
+            });
+
+            Database.fetchDocsBySelector(
+              itemsByIds(items.map((item) => item.id)),
+              ["exists_more_than_once"]
+            ).then((items) => {
+              const atLeastOneItemExsitsMoreThanOnce = items.some(
+                (item) => item.exists_more_than_once
+              );
+              // TODO: hide toggle not working yet
+              updateToggleStatus(atLeastOneItemExsitsMoreThanOnce);
+            });
+          },
         },
       },
     },
@@ -175,7 +210,7 @@ export default {
     {
       id: "update_status",
       label: "Status automatisch aktualisieren",
-      group: "Gegenstand",
+      group: "Gegenstände",
       component: Checkbox,
       nobind: true,
       hidden: () => hideToggleUpdateItemStatus,
@@ -255,7 +290,7 @@ export default {
         placeholder: "Nummer oder Nachname",
         labelFunction: (context) => (customer) => customerToString(customer),
         value: (context) => ({
-          id: context.doc.item_id,
+          id: context.doc.customer_id,
           lastname: context.doc.customer_name,
           firstname: "", // not stored in rental doc
         }),

@@ -44,37 +44,69 @@ class Database {
 
   updateDoc(updatedDoc) {
     this.cache.reset();
-    return this.database
-      .get(updatedDoc._id, {
-        revs_info: true,
-        conflicts: true,
-      })
-      .then((doc) => {
-        let updatedDocWithRev = {
-          _rev: doc._rev,
-          last_update: new Date().getTime(),
-          ...updatedDoc,
-        };
-        Logger.debug(
-          `Updated doc from ${JSON.stringify(doc)} to ${JSON.stringify(
-            updatedDocWithRev
-          )}`
-        );
-        return this.database.put(updatedDocWithRev);
-      });
+    return this.database.get(updatedDoc._id).then((doc) => {
+      let updatedDocWithRev = {
+        _rev: doc._rev,
+        last_update: new Date().getTime(),
+        ...updatedDoc,
+      };
+      Logger.debug(
+        `Updating doc ${doc._id} from ${JSON.stringify(
+          doc
+        )} to ${JSON.stringify(updatedDocWithRev)}`
+      );
+      return this.database.put(updatedDocWithRev);
+    });
   }
 
   createDoc(doc) {
     this.cache.reset();
     this.queryPaginatedDocsCache.reset();
     doc["last_update"] = new Date().getTime();
-    Logger.debug(`Created doc: ${JSON.stringify(doc)}`);
+    Logger.debug(`Creating doc: ${JSON.stringify(doc)}`);
     return this.database.post(doc);
+  }
+
+  /*
+    Updates or creates a batch of docs. Only docs with _id can be updated.
+  */
+  batchUpdateOrCreateDocs(docs) {
+    this.cache.reset();
+    this.queryPaginatedDocsCache.reset();
+    docs.forEach((doc) => (doc["last_update"] = new Date().getTime()));
+    return this.database
+      .fetchDocsBySelector(
+        this.selectorBuilder()
+          .withField("_id")
+          .in(docs.filter((doc) => doc.id).map((doc) => doc._id))
+          .build()
+      )
+      .then((docsWithLatestRev) => {
+        // get latest _rev for docs to update
+        return docs.map((doc) => {
+          const existingDoc = docsWithLatestRev.find(
+            (docWithLatestRev) => docWithLatestRev._id === doc._id
+          );
+          if (existingDoc) {
+            return {
+              _rev: existingDoc._rev,
+              ...doc,
+            };
+          }
+          return doc;
+        });
+      })
+      .then((docs) => {
+        docs.forEach((doc) =>
+          Logger.debug(`Updating doc ${doc._id} with current rev ${doc._rev}`)
+        );
+        return this.database.bulkDocs(docs);
+      });
   }
 
   removeDoc(doc) {
     this.cache.reset();
-    Logger.debug(`Removed doc: ${JSON.stringify(doc)}`);
+    Logger.debug(`Removing doc ${doc._id} with current rev ${doc._rev}`);
     return this.database.remove(doc._id, doc._rev);
   }
 

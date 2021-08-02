@@ -60,6 +60,7 @@ class WoocommerceClient {
     return {
       name: item.name,
       sku: String(item.id),
+      id: String(item.wc_id),
       stock_status: translateStatus(item.status),
       attributes: [
         {
@@ -130,6 +131,18 @@ class WoocommerceClient {
         "Content-type": "application/json",
       },
       body: JSON.stringify(this._translateItemAttributesForWc(item)),
+    });
+  }
+
+  async batchUpdateItems(items) {
+    await this.fetchWithRetry(this._productUrl("batch"), {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        update: items.map((item) => this._translateItemAttributesForWc(item)),
+      }),
     });
   }
 
