@@ -1,3 +1,10 @@
+# LeihLokalVerwaltung
+
+Easy management of products, rentals and customers. Feel free to use it! Let us know what can be improved! Please contact us if you want to set this up for your Leihladen, we'll help you install it, and write a how-to as a by-product.
+
+The only thing you need to get this running is CouchDB. This can be either installed locally on a main laptop, or on a network server. Additionally, if you want the current status being displayed to the public, you need a website with WordPress and WooCommerce as a frontend.
+
+
 # [Demo](https://leih-lokal.github.io/LeihLokalVerwaltung/demo)
 
 Klickt hier um die Software in einer Demo zu sehen: [Demo](https://leih-lokal.github.io/LeihLokalVerwaltung/demo)
@@ -6,10 +13,7 @@ Klickt hier um die Software in einer Demo zu sehen: [Demo](https://leih-lokal.gi
 
 ![Tests](https://github.com/leih-lokal/LeihLokalVerwaltung/workflows/Test,%20Build%20and%20Deploy/badge.svg)
 
-# LeihLokalVerwaltung
-
-Easy management of products, rentals and customers
-
+## Architecture
 ![Architecture](architecture.png)
 
 ## Local Setup
