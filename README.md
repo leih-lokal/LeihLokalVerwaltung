@@ -2,7 +2,7 @@
 
 Klickt hier um die Software in einer Demo zu sehen: [Demo](https://leih-lokal.github.io/LeihLokalVerwaltung/demo)
 
-[<img src="https://user-images.githubusercontent.com/14980558/128120460-9812a75d-64fb-4f69-b305-d283aa9f5bc3.gif" width="400">](https://leih-lokal.github.io/LeihLokalVerwaltung/demo)
+[<img src="https://user-images.githubusercontent.com/14980558/128120460-9812a75d-64fb-4f69-b305-d283aa9f5bc3.gif" width="700">](https://leih-lokal.github.io/LeihLokalVerwaltung/demo)
 
 ![Tests](https://github.com/leih-lokal/LeihLokalVerwaltung/workflows/Test,%20Build%20and%20Deploy/badge.svg)
 
