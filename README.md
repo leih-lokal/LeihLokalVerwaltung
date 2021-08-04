@@ -2,6 +2,9 @@
 
 Klickt hier um die Software in einer Demo zu sehen: [Demo](https://leih-lokal.github.io/LeihLokalVerwaltung/demo)
 
+![image](https://user-images.githubusercontent.com/14980558/128120079-1f86fed8-8bda-4842-8d9e-da7364de01bb.png)
+
+
 ![Tests](https://github.com/leih-lokal/LeihLokalVerwaltung/workflows/Test,%20Build%20and%20Deploy/badge.svg)
 
 # LeihLokalVerwaltung
