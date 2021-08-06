@@ -4,6 +4,8 @@ Easy management of products, rentals and customers. Feel free to use it! Let us 
 
 The only thing you need to get this running is CouchDB. This can be either installed locally on a main laptop, or on a network server. Additionally, if you want the current status being displayed to the public, you need a website with WordPress and WooCommerce as a frontend.
 
+you can contact us via `leihlokal (ät) buergerstiftung-karlsruhe.de`
+
 
 # [Demo](https://leih-lokal.github.io/LeihLokalVerwaltung/demo)
 
