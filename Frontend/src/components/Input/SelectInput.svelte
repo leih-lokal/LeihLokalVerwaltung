@@ -38,9 +38,7 @@
 <Select
   items={selectionOptions}
   {inputStyles}
-  selectedValue={selectedValuesArray.length !== 0
-    ? selectedValuesArray
-    : undefined}
+  value={selectedValuesArray.length !== 0 ? selectedValuesArray : undefined}
   on:select={(event) => {
     let selection = event.detail;
     if (selection) {
