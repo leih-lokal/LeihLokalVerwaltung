@@ -1,5 +1,6 @@
 import Database from "../../database/ENV_DATABASE";
 import { notifier } from "@beyonk/svelte-notifications";
+import Logger from "js-logger";
 
 export default async (customer, closePopup, createNew) => {
   if (
@@ -22,7 +23,9 @@ export default async (customer, closePopup, createNew) => {
     .then((result) => notifier.success("Nutzer gespeichert!"))
     .then(closePopup)
     .catch((error) => {
-      notifier.danger("Nutzer konnte nicht gespeichert werden!", 6000);
-      console.error(error);
+      notifier.danger("Nutzer konnte nicht gespeichert werden!", {
+        persist: true,
+      });
+      Logger.error(error);
     });
 };

@@ -3,6 +3,7 @@ import WoocommerceClient from "../../database/ENV_WC_CLIENT";
 import { notifier } from "@beyonk/svelte-notifications";
 import columns from "./columns";
 import { setNumericValuesDefault0 } from "../utils";
+import Logger from "js-logger";
 
 export default async (item, closePopup) => {
   if (
@@ -24,7 +25,7 @@ export default async (item, closePopup) => {
     .then(() => notifier.success("Gegenstand gespeichert!"))
     .catch((error) => {
       notifier.danger("Gegenstand konnte nicht gespeichert werden!", 6000);
-      console.error(error);
+      Logger.error(error);
     });
 
   // no await to update woocommerce in background
@@ -37,6 +38,6 @@ export default async (item, closePopup) => {
         "Gegenstand auf der Webseite konnte nicht aktualisiert werden!",
         6000
       );
-      console.error(error);
+      Logger.error(error);
     });
 };

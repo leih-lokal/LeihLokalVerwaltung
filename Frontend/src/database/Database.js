@@ -170,12 +170,12 @@ class Database {
         onDocsChanged(changes.doc);
       })
       .on("complete", function (info) {
-        console.debug(
+        Logger.debug(
           `CouchDb changeListener completed: ${JSON.stringify(info)}`
         );
       })
       .on("error", function (err) {
-        console.error(err);
+        Logger.error(err);
       });
   }
 
