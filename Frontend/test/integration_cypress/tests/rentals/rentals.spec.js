@@ -170,36 +170,21 @@ context("rentals", () => {
     });
 
     it("finds rentals by filtering for 'abgeschlossen'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("abgeschlossen")
-        .click()
-        .then(() =>
-          cy.expectDisplaysTableData(expectedData.filterForAbgeschlossen)
-        );
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "abgeschlossen").click();
+      cy.expectDisplaysTableData(expectedData.filterForAbgeschlossen);
     });
 
     it("finds rentals by filtering for 'Rückgabe heute'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Rückgabe heute")
-        .click()
-        .then(() =>
-          cy.expectDisplaysTableData(expectedData.filterForRueckgabeHeute)
-        );
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Rückgabe heute").click();
+      cy.expectDisplaysTableData(expectedData.filterForRueckgabeHeute);
     });
 
     it("finds rentals by filtering for 'verspätet'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("verspätet")
-        .click()
-        .then(() =>
-          cy.expectDisplaysTableData(expectedData.filterForVerspaetet)
-        );
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "verspätet").click();
+      cy.expectDisplaysTableData(expectedData.filterForVerspaetet);
     });
   });
 

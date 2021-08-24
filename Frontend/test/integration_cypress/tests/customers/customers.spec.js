@@ -150,24 +150,21 @@ context("Customers", () => {
 
   context("Filtering", () => {
     it("Displays all customers when removing filters", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Newsletter: Ja")
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Newsletter: Ja")
         .click()
         .then(() =>
           expectDisplaysTableWithData(expectedData.filterNewsletterYes)
-        )
-        .get(".multiSelectItem_clear")
+        );
+
+      cy.get(".multiSelectItem_clear")
         .click()
         .then(() => expectDisplaysTableWithData(expectedData.sortedByIdAsc));
     });
 
     it("finds customers by filtering for 'Beitritt vor > 1 Jahr'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Beitritt vor > 1 Jahr")
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Beitritt vor > 1 Jahr")
         .click()
         .then(() =>
           expectDisplaysTableWithData(
@@ -179,7 +176,6 @@ context("Customers", () => {
     it("finds customers by filtering for 'Beitritt vor < 1 Jahr'", () => {
       cy.get(".selectContainer")
         .click()
-        .get(".listContainer")
         .contains("Beitritt vor < 1 Jahr")
         .click()
         .then(() =>
