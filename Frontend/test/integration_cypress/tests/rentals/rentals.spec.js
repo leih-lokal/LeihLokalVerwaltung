@@ -264,9 +264,15 @@ context("rentals", () => {
     });
 
     it("Creates rental", () => {
+      cy.exec(
+        'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 122}}, {"type":{"$eq": "item"}}]}}\''
+      )
+        .its("stdout")
+        .should("contain", '"status":"instock"');
+
       const newRental = {
-        item_id: 1,
-        item_name: "Dekupiersäge",
+        item_id: 122,
+        item_name: "Digital-Multimeter",
         rented_on: "28.03.2021",
         to_return_on: "04.04.2021",
         passing_out_employee: "MM",
@@ -306,6 +312,12 @@ context("rentals", () => {
       cy.contains("Leihvorgang gespeichert").then(() =>
         cy.expectDisplaysTableData(expectedData.createdRental)
       );
+
+      cy.exec(
+        'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 122}}, {"type":{"$eq": "item"}}]}}\''
+      )
+        .its("stdout")
+        .should("contain", '"status":"outofstock"');
     });
 
     it("Creates rental with default values", () => {
@@ -315,6 +327,27 @@ context("rentals", () => {
       cy.contains("Leihvorgang gespeichert").then(() =>
         cy.expectDisplaysTableData(expectedData.createdRentalWithDefaultValues)
       );
+    });
+
+    it("Marks item instock when returned", () => {
+      cy.exec(
+        'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 5004}}, {"type":{"$eq": "item"}}]}}\''
+      )
+        .its("stdout")
+        .should("contain", '"status":"outofstock"');
+
+      cy.get("table")
+        .contains("Hammer")
+        .click()
+        .get(":nth-child(5) > .col-input > .button-tight")
+        .click();
+      cy.contains("Speichern").click();
+
+      cy.exec(
+        'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 5004}}, {"type":{"$eq": "item"}}]}}\''
+      )
+        .its("stdout")
+        .should("contain", '"status":"instock"');
     });
   });
 });
