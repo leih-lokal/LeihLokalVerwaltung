@@ -74,7 +74,7 @@
     "svelte-jester": "^1.6.0",
     "svelte-jester-mock": "^1.0.3",
     "svelte-loading-spinners": "^0.1.7",
-    "svelte-select": "^3.17.0",
+    "svelte-select": "^4.4.0",
     "svelte-simple-modal": "^1.0.0",
     "svelte-spa-router": "^3.2.0",
     "wait-on": "^6.0.0"
