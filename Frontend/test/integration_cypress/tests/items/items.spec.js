@@ -120,9 +120,10 @@ context("items", () => {
   });
 
   context("Filtering", () => {
-    const clearFilter = () => cy.get(".multiSelectItem_clear").click();
-
-    beforeEach(clearFilter);
+    beforeEach(() => {
+      cy.get(".multiSelectItem_clear").click();
+      cy.get("tbody > tr", { timeout: 20000 });
+    });
 
     it("displays all items when removing filters", () => {
       expectDisplaysTableWithData(expectedData.noFilters);
@@ -185,6 +186,7 @@ context("items", () => {
     it("finds items by filtering for 'Kategorie Freizeit' and 'gelöscht'", () => {
       cy.get(".selectContainer").click();
       cy.contains(".selectContainer .item", "Kategorie Freizeit").click();
+      cy.get("tbody > tr", { timeout: 20000 });
       cy.get(".selectContainer").click();
       cy.contains(".selectContainer .item", /^gelöscht$/).click();
       expectDisplaysTableWithData(
