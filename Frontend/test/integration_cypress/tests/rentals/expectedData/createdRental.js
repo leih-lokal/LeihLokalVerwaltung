@@ -5,11 +5,11 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "0015",
+      text: "0122",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "Stichsäge",
+      text: "Digital-Multimeter",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {

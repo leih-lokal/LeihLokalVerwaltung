@@ -2,6 +2,7 @@ import Database from "../../database/ENV_DATABASE";
 import WoocommerceClient from "../../database/ENV_WC_CLIENT";
 import { notifier } from "@beyonk/svelte-notifications";
 import { itemById } from "../selectors";
+import Logger from "js-logger";
 
 export default async (item, closePopup) => {
   if (confirm("Soll dieser Gegenstand wiederhergestellt werden?")) {
@@ -20,7 +21,7 @@ export default async (item, closePopup) => {
           "Gegenstand konnte auf der Webseite nicht erstellt werden!",
           6000
         );
-        console.error(error);
+        Logger.error(error);
       });
   }
 };

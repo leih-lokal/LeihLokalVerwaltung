@@ -3,6 +3,7 @@ import { notifier } from "@beyonk/svelte-notifications";
 import WoocommerceClient from "../../database/ENV_WC_CLIENT";
 import columns from "./columns";
 import { setNumericValuesDefault0 } from "../utils";
+import Logger from "js-logger";
 
 export default async (item, closePopup) => {
   if (
@@ -30,16 +31,20 @@ export default async (item, closePopup) => {
     .catch((error) => {
       notifier.warning(
         "Gegenstand konnte auf der Webseite nicht erstellt werden!",
-        6000
+        {
+          persist: true,
+        }
       );
-      console.error(error);
+      Logger.error(error);
     })
     // create in db even if creating item in woocommerce fails
     .then(() => Database.createDoc(item))
     .then(closePopup)
     .then(() => notifier.success("Gegenstand gespeichert!"))
     .catch((error) => {
-      notifier.danger("Gegenstand konnte nicht gespeichert werden!", 6000);
-      console.error(error);
+      notifier.danger("Gegenstand konnte nicht gespeichert werden!", {
+        persist: true,
+      });
+      Logger.error(error);
     });
 };

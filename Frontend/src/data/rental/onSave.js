@@ -4,6 +4,7 @@ import WoocommerceClient from "../../database/ENV_WC_CLIENT";
 import columns from "./columns";
 import { setNumericValuesDefault0 } from "../utils";
 import { itemById } from "../selectors";
+import Logger from "js-logger";
 
 const fetchItem = async (rental) => {
   if (rental.item_id) {
@@ -18,7 +19,7 @@ const fetchItem = async (rental) => {
         `Gegenstand '${rental.item_id}' konnte nicht geladen werden!`,
         6000
       );
-      console.error(error);
+      Logger.error(error);
       return undefined;
     }
   } else {
@@ -55,11 +56,11 @@ export default async (rental, closePopup, updateItemStatus, createNew) => {
         );
       })
       .catch((error) => {
-        notifier.warning(
+        notifier.danger(
           `Status von '${item.name}' konnte nicht aktualisiert werden!`,
-          6000
+          { persist: true }
         );
-        console.error(error);
+        Logger.error(error);
       });
   }
 
@@ -67,7 +68,9 @@ export default async (rental, closePopup, updateItemStatus, createNew) => {
     .then((result) => notifier.success("Leihvorgang gespeichert!"))
     .then(closePopup)
     .catch((error) => {
-      notifier.danger("Leihvorgang konnte nicht gespeichert werden!", 6000);
-      console.error(error);
+      notifier.danger("Leihvorgang konnte nicht gespeichert werden!", {
+        persist: true,
+      });
+      Logger.error(error);
     });
 };

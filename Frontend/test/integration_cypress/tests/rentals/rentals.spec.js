@@ -28,6 +28,7 @@ const expectedData = {
 const {
   resetTestData,
   catchMissingIndexExceptions,
+  waitForPopupToClose,
 } = require("../../utils.js");
 
 const TODAY = Date.UTC(2021, 2, 28);
@@ -170,36 +171,21 @@ context("rentals", () => {
     });
 
     it("finds rentals by filtering for 'abgeschlossen'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("abgeschlossen")
-        .click()
-        .then(() =>
-          cy.expectDisplaysTableData(expectedData.filterForAbgeschlossen)
-        );
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "abgeschlossen").click();
+      cy.expectDisplaysTableData(expectedData.filterForAbgeschlossen);
     });
 
     it("finds rentals by filtering for 'Rückgabe heute'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Rückgabe heute")
-        .click()
-        .then(() =>
-          cy.expectDisplaysTableData(expectedData.filterForRueckgabeHeute)
-        );
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Rückgabe heute").click();
+      cy.expectDisplaysTableData(expectedData.filterForRueckgabeHeute);
     });
 
     it("finds rentals by filtering for 'verspätet'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("verspätet")
-        .click()
-        .then(() =>
-          cy.expectDisplaysTableData(expectedData.filterForVerspaetet)
-        );
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "verspätet").click();
+      cy.expectDisplaysTableData(expectedData.filterForVerspaetet);
     });
   });
 
@@ -264,9 +250,15 @@ context("rentals", () => {
     });
 
     it("Creates rental", () => {
+      cy.exec(
+        'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 122}}, {"type":{"$eq": "item"}}]}}\''
+      )
+        .its("stdout")
+        .should("contain", '"status":"instock"');
+
       const newRental = {
-        item_id: 1,
-        item_name: "Dekupiersäge",
+        item_id: 122,
+        item_name: "Digital-Multimeter",
         rented_on: "28.03.2021",
         to_return_on: "04.04.2021",
         passing_out_employee: "MM",
@@ -306,6 +298,14 @@ context("rentals", () => {
       cy.contains("Leihvorgang gespeichert").then(() =>
         cy.expectDisplaysTableData(expectedData.createdRental)
       );
+
+      waitForPopupToClose();
+
+      cy.exec(
+        'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 122}}, {"type":{"$eq": "item"}}]}}\''
+      )
+        .its("stdout")
+        .should("contain", '"status":"outofstock"');
     });
 
     it("Creates rental with default values", () => {
@@ -315,6 +315,29 @@ context("rentals", () => {
       cy.contains("Leihvorgang gespeichert").then(() =>
         cy.expectDisplaysTableData(expectedData.createdRentalWithDefaultValues)
       );
+    });
+
+    it("Marks item instock when returned", () => {
+      cy.exec(
+        'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 5004}}, {"type":{"$eq": "item"}}]}}\''
+      )
+        .its("stdout")
+        .should("contain", '"status":"outofstock"');
+
+      cy.get("table")
+        .contains("Hammer")
+        .click()
+        .get(":nth-child(5) > .col-input > .button-tight")
+        .click();
+      cy.contains("Speichern").click();
+
+      waitForPopupToClose();
+
+      cy.exec(
+        'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 5004}}, {"type":{"$eq": "item"}}]}}\''
+      )
+        .its("stdout")
+        .should("contain", '"status":"instock"');
     });
   });
 });

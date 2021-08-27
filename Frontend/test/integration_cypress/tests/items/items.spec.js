@@ -120,106 +120,75 @@ context("items", () => {
   });
 
   context("Filtering", () => {
-    const clearFilter = () => cy.get(".multiSelectItem_clear").click();
-
-    beforeEach(clearFilter);
+    beforeEach(() => {
+      cy.get(".multiSelectItem_clear").click();
+      cy.get("tbody > tr", { timeout: 20000 });
+    });
 
     it("displays all items when removing filters", () => {
       expectDisplaysTableWithData(expectedData.noFilters);
     });
 
     it("finds items by filtering for 'gelöscht'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains(/^gelöscht$/)
-        .click();
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", /^gelöscht$/).click();
       expectDisplaysTableWithData(expectedData.filterForGeloescht);
     });
 
     it("finds items by filtering for 'ausgeliehen'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("ausgeliehen")
-        .click();
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "ausgeliehen").click();
       expectDisplaysTableWithData(expectedData.filterForAusgeliehen);
     });
 
     it("finds items by filtering for 'verfügbar'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("verfügbar")
-        .click();
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "verfügbar").click();
       expectDisplaysTableWithData(expectedData.filterForVerfuegbar);
     });
 
     it("finds items by filtering for 'Kategorie Küche'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Kategorie Küche")
-        .click();
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Kategorie Küche").click();
       expectDisplaysTableWithData(expectedData.filterForCategoryKueche);
     });
 
     it("finds items by filtering for 'Kategorie Garten'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Kategorie Garten")
-        .click();
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Kategorie Garten").click();
       expectDisplaysTableWithData(expectedData.filterForCategoryGarten);
     });
 
     it("finds items by filtering for 'Kategorie Haushalt'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Kategorie Haushalt")
-        .click();
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Kategorie Haushalt").click();
       expectDisplaysTableWithData(expectedData.filterForCategoryHaushalt);
     });
 
     it("finds items by filtering for 'Kategorie Heimwerker'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Kategorie Heimwerker")
-        .click();
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Kategorie Heimwerker").click();
       expectDisplaysTableWithData(expectedData.filterForCategoryHeimwerker);
     });
 
     it("finds items by filtering for 'Kategorie Kinder'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Kategorie Kinder")
-        .click();
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Kategorie Kinder").click();
       expectDisplaysTableWithData(expectedData.filterForCategoryKinder);
     });
 
     it("finds items by filtering for 'Kategorie Freizeit'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Kategorie Freizeit")
-        .click();
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Kategorie Freizeit").click();
       expectDisplaysTableWithData(expectedData.filterForCategoryFreizeit);
     });
 
     it("finds items by filtering for 'Kategorie Freizeit' and 'gelöscht'", () => {
-      cy.get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains("Kategorie Freizeit")
-        .click()
-        .get(".selectContainer")
-        .click()
-        .get(".listContainer")
-        .contains(/^gelöscht$/)
-        .click();
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", "Kategorie Freizeit").click();
+      cy.get("tbody > tr", { timeout: 20000 });
+      cy.get(".selectContainer").click();
+      cy.contains(".selectContainer .item", /^gelöscht$/).click();
       expectDisplaysTableWithData(
         expectedData.filterForCategoryFreizeitAndGeloescht
       );

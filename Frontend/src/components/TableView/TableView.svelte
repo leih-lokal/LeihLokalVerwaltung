@@ -6,6 +6,7 @@
   import Database from "../../database/ENV_DATABASE";
   import PopupFormular from "./PopupFormular/PopupFormular.svelte";
   import { afterUpdate } from "svelte";
+  import Logger from "js-logger";
 
   export let columns = [];
   export let filters = {};
@@ -56,7 +57,7 @@
           return data.docs;
         })
         .catch((error) => {
-          console.error(error);
+          Logger.error(error);
 
           // catch again in html
           throw error;

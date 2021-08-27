@@ -1,5 +1,6 @@
 import Database from "../../database/ENV_DATABASE";
 import { notifier } from "@beyonk/svelte-notifications";
+import Logger from "js-logger";
 
 export default async (rental, closePopup) => {
   if (confirm("Soll dieser Leihvorgang wirklich gelöscht werden?")) {
@@ -7,7 +8,7 @@ export default async (rental, closePopup) => {
       .then(() => notifier.success("Leihvorgang gelöscht!"))
       .then(closePopup)
       .catch((error) => {
-        console.error(error);
+        Logger.error(error);
         notifier.danger("Leihvorgang konnte nicht gelöscht werden!", 6000);
       });
   }

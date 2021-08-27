@@ -1,6 +1,7 @@
 import Database from "../../database/ENV_DATABASE";
 import WoocommerceClient from "../../database/ENV_WC_CLIENT";
 import { notifier } from "@beyonk/svelte-notifications";
+import Logger from "js-logger";
 
 export default async (item, closePopup) => {
   if (confirm("Soll dieser Gegenstand wirklich gelöscht werden?")) {
@@ -9,8 +10,10 @@ export default async (item, closePopup) => {
       .then(() => notifier.success("Gegenstand als gelöscht markiert!"))
       .then(closePopup)
       .catch((error) => {
-        console.error(error);
-        notifier.danger("Gegenstand konnte nicht gelöscht werden!", 6000);
+        Logger.error(error);
+        notifier.danger("Gegenstand konnte nicht gelöscht werden!", {
+          persist: true,
+        });
       });
 
     await WoocommerceClient.deleteItem(item)
@@ -20,9 +23,11 @@ export default async (item, closePopup) => {
       .catch((error) => {
         notifier.warning(
           "Gegenstand konnte nicht von der Webseite gelöscht werden!",
-          6000
+          {
+            persist: true,
+          }
         );
-        console.error(error);
+        Logger.error(error);
       });
   }
 };
