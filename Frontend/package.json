@@ -23,7 +23,7 @@
     "integration_test_cypress:open": "npm run build:test && cypress open --config-file ./test/integration_cypress/config/config.json"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.8",
+    "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "@bahmutov/cy-rollup": "^2.0.0",
     "@beyonk/svelte-notifications": "^4.1.0",
