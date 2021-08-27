@@ -28,6 +28,7 @@ const expectedData = {
 const {
   resetTestData,
   catchMissingIndexExceptions,
+  waitForPopupToClose,
 } = require("../../utils.js");
 
 const TODAY = Date.UTC(2021, 2, 28);
@@ -298,6 +299,8 @@ context("rentals", () => {
         cy.expectDisplaysTableData(expectedData.createdRental)
       );
 
+      waitForPopupToClose();
+
       cy.exec(
         'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 122}}, {"type":{"$eq": "item"}}]}}\''
       )
@@ -327,6 +330,8 @@ context("rentals", () => {
         .get(":nth-child(5) > .col-input > .button-tight")
         .click();
       cy.contains("Speichern").click();
+
+      waitForPopupToClose();
 
       cy.exec(
         'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 5004}}, {"type":{"$eq": "item"}}]}}\''
