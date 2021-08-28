@@ -80,6 +80,10 @@ export default {
   title: (context) =>
     `Leihvorgang ${context.createNew ? "anlegen" : "bearbeiten"}`,
   initialValues,
+  onMount: (context) => () => {
+    updateItemStatus = true;
+    hideToggleUpdateItemStatus = false;
+  },
   footerButtons: (context) => [
     {
       text: "Abbrechen",

@@ -23,6 +23,9 @@ const fetchItem = async (rental) => {
       return undefined;
     }
   } else {
+    Logger.warn(
+      `Could not update item because rental ${rental._id} does not have an item_id.`
+    );
     return undefined;
   }
 };
@@ -43,25 +46,35 @@ const newItemStatus = (rental) => {
 export default async (rental, closePopup, updateItemStatus, createNew) => {
   setNumericValuesDefault0(rental, columns);
 
-  const item = await fetchItem(rental);
-  if (item && updateItemStatus) {
-    item.status = newItemStatus(rental);
-    await Database.updateDoc(item)
-      .then(() => WoocommerceClient.updateItem(item))
-      .then(() => {
-        notifier.success(
-          `'${item.name}' wurde auf als ${
-            item.status === "instock" ? "verfügbar" : "verliehen"
-          } markiert.`
-        );
-      })
-      .catch((error) => {
-        notifier.danger(
-          `Status von '${item.name}' konnte nicht aktualisiert werden!`,
-          { persist: true }
-        );
-        Logger.error(error);
-      });
+  if (updateItemStatus) {
+    const item = await fetchItem(rental);
+    if (item) {
+      item.status = newItemStatus(rental);
+      await Database.updateDoc(item)
+        .then(() => WoocommerceClient.updateItem(item))
+        .then(() => {
+          notifier.success(
+            `'${item.name}' wurde als ${
+              item.status === "instock" ? "verfügbar" : "verliehen"
+            } markiert.`
+          );
+        })
+        .catch((error) => {
+          notifier.danger(
+            `Status von '${item.name}' konnte nicht aktualisiert werden!`,
+            { persist: true }
+          );
+          Logger.error(error);
+        });
+    } else {
+      Logger.warn(
+        `Did not update item of rental ${rental._id} because item not found.`
+      );
+    }
+  } else {
+    Logger.debug(
+      `Did not update item of rental ${rental._id} because updateItemStatus is false.`
+    );
   }
 
   await (createNew ? Database.createDoc(rental) : Database.updateDoc(rental))

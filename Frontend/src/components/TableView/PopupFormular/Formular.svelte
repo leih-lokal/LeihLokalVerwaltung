@@ -34,6 +34,9 @@
   const isHidden = (input) => input.hidden && injectContext(input.hidden);
 
   onMount(() => {
+    if (config.onMount) {
+      injectContext(config.onMount)();
+    }
     title = injectContext(config.title);
     let inputs = config.inputs.map((input) => ({
       ...input,
