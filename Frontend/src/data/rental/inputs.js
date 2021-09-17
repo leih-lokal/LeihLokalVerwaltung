@@ -39,6 +39,23 @@ const updateToggleStatus = (itemExistsMoreThanOnce) => {
   }
 };
 
+const updateItemOfRental = (context, item) => {
+  context.updateDoc({
+    item_id: item.id,
+    item_name: item.name,
+    deposit: item.deposit,
+  });
+  updateToggleStatus(item.exists_more_than_once);
+};
+
+const updateCustomerOfRental = (context, customer) => {
+  context.updateDoc({
+    customer_name: customer.lastname,
+    customer_id: customer.id,
+  });
+  showNotificationsForCustomer(customer.id);
+};
+
 const showNotificationsForCustomer = async (customerId) => {
   Database.fetchAllDocsBySelector(
     activeRentalsForCustomerSelector(customerId),
@@ -121,27 +138,13 @@ export default {
         searchFunction: (context) => (searchTerm) =>
           Database.fetchDocsBySelector(
             itemIdStartsWithAndNotDeletedSelector(searchTerm),
-            ["id", "name"]
+            ["id", "name", "deposit", "exists_more_than_once"]
           ),
         suggestionFormat: (context) => (id, item_name) =>
           `${String(id).padStart(4, "0")}: ${item_name}`,
         noResultsText: "Kein Gegenstand mit dieser Id",
-        onSelected: (context) => (selectedItemId) => {
-          Database.fetchDocsBySelector(itemById(selectedItemId), [
-            "id",
-            "name",
-            "deposit",
-            "exists_more_than_once",
-          ])
-            .then((results) => results[0])
-            .then((result) => {
-              context.updateDoc({
-                item_id: result.id,
-                item_name: result.name,
-                deposit: result.deposit,
-              });
-              updateToggleStatus(result.exists_more_than_once);
-            });
+        onSelected: (context) => (selectedItem) => {
+          updateItemOfRental(context, selectedItem);
         },
       },
     },
@@ -160,27 +163,13 @@ export default {
               "name",
               searchTerm
             ),
-            ["id", "name"]
+            ["id", "name", "deposit", "exists_more_than_once"]
           ),
         suggestionFormat: (context) => (id, item_name) =>
           `${String(id).padStart(4, "0")}: ${item_name}`,
         noResultsText: "Kein Gegenstand mit diesem Name",
-        onSelected: (context) => (selectedItemName) => {
-          Database.fetchDocsBySelector(itemByName(selectedItemName), [
-            "id",
-            "name",
-            "deposit",
-            "exists_more_than_once",
-          ])
-            .then((results) => results[0])
-            .then((result) => {
-              context.updateDoc({
-                item_id: result.id,
-                item_name: result.name,
-                deposit: result.deposit,
-              });
-              updateToggleStatus(result.exists_more_than_once);
-            });
+        onSelected: (context) => (selectedItem) => {
+          updateItemOfRental(context, selectedItem);
         },
       },
     },
@@ -257,19 +246,8 @@ export default {
         suggestionFormat: (context) => (id, firstname, lastname) =>
           `${id}: ${firstname} ${lastname}`,
         noResultsText: "Kein Nutzer mit dieser Nummer",
-        onSelected: (context) => (selectedCustomerId) => {
-          Database.fetchDocsBySelector(customerById(selectedCustomerId), [
-            "id",
-            "lastname",
-          ])
-            .then((results) => results[0])
-            .then((result) => {
-              context.updateDoc({
-                customer_name: result.lastname,
-                customer_id: result.id,
-              });
-              showNotificationsForCustomer(result.id);
-            });
+        onSelected: (context) => (selectedCustomer) => {
+          updateCustomerOfRental(context, selectedCustomer);
         },
       },
     },
@@ -292,19 +270,8 @@ export default {
         suggestionFormat: (context) => (id, firstname, lastname) =>
           `${id}: ${firstname} ${lastname}`,
         noResultsText: "Kein Nutzer mit diesem Name",
-        onSelected: (context) => (selectedCustomerName) => {
-          Database.fetchDocsBySelector(
-            customerByLastname(selectedCustomerName),
-            ["id", "lastname"]
-          )
-            .then((results) => results[0])
-            .then((result) => {
-              context.updateDoc({
-                customer_name: result.lastname,
-                customer_id: result.id,
-              });
-              showNotificationsForCustomer(result.id);
-            });
+        onSelected: (context) => (selectedCustomer) => {
+          updateCustomerOfRental(context, selectedCustomer);
         },
       },
     },

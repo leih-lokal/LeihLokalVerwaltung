@@ -3,19 +3,11 @@
   import { onMount } from "svelte";
   import { restrictInputToNumbers } from "../../actions/RestrictInputToNumbers";
 
-  const valueFromSelected = (selected) => {
-    if (typeof selected === "object") {
-      return selected[valueField ?? Object.keys(selected)[0]];
-    } else {
-      return selected;
-    }
-  };
-
   export let noResultsText;
   export let id;
   export let searchFunction;
   export let value;
-  export let suggestionFormat = valueFromSelected;
+  export let suggestionFormat;
   export let disabled;
   export let onlyNumbers = false;
   export let onSelected = () => {};
@@ -29,24 +21,23 @@
 <div class="container">
   <AutoComplete
     delay={150}
-    textCleanFunction={(text) => (value = text)}
     {searchFunction}
+    textCleanFunction={(text) => (value = text)}
     labelFunction={(item) => {
+      if (typeof item === "undefined") return "";
       const values = Object.values(item);
       if (values.length === 0) return "";
       else if (values.length === 1 && Object.keys(item)[0] === "attr")
         return item.attr;
-      else return suggestionFormat(...values);
-    }}
-    beforeChange={(prevSelectedValue, selectedValue) => {
-      const newValue = valueFromSelected(selectedValue);
-      if (value !== newValue) {
-        value = newValue;
-        onSelected(value);
-        return true;
+      else if (suggestionFormat) {
+        return suggestionFormat(...values);
+      } else {
+        return item[valueField];
       }
-      // do not select same value again
-      return false;
+    }}
+    beforeChange={(prevSelectedObject, selectedObject) => {
+      if (valueField) value = selectedObject[valueField];
+      onSelected(selectedObject);
     }}
     inputId={id}
     {noResultsText}
@@ -54,6 +45,7 @@
     hideArrow={true}
     localSearch={false}
     localFiltering={false}
+    valueFieldName={valueField}
     selectedItem={{ attr: value }}
     html5autocomplete={false}
   />
