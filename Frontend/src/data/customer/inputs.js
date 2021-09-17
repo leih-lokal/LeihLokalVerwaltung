@@ -52,6 +52,7 @@ export default {
         searchFunction: (context) => (searchTerm) =>
           Database.fetchUniqueCustomerFieldValues("street", searchTerm),
         noResultsText: "Straße noch nicht in Datenbank",
+        valueField: "street",
       },
     },
     {
@@ -73,6 +74,7 @@ export default {
             searchTerm,
             true
           ),
+        valueField: "postal_code",
 
         noResultsText: "PLZ noch nicht in Datenbank",
       },
@@ -85,6 +87,7 @@ export default {
       props: {
         searchFunction: (context) => (searchTerm) =>
           Database.fetchUniqueCustomerFieldValues("city", searchTerm),
+        valueField: "city",
         noResultsText: "Stadt noch nicht in Datenbank",
       },
     },
