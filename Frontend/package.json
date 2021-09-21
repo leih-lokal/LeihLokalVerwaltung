@@ -71,7 +71,7 @@
     "svelte-checkbox": "^1.0.1",
     "svelte-component-double": "^0.8.0",
     "svelte-htm": "^1.1.1",
-    "svelte-jester": "^1.6.0",
+    "svelte-jester": "^2.1.4",
     "svelte-jester-mock": "^1.0.3",
     "svelte-loading-spinners": "^0.1.7",
     "svelte-select": "^4.4.0",
