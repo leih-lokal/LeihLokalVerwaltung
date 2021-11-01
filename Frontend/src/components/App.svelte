@@ -11,6 +11,9 @@
   import Database from "../database/ENV_DATABASE";
   import Logger from "./Logging/Logger.svelte";
   import LogView from "./Logging/LogView.svelte";
+  import Dashboard from "./Dashboard/Dashboard.svelte";
+
+  import "bytemd/dist/index.min.css";
 
   const routes = new Map();
   config.forEach((tableViewConfig) =>
@@ -35,12 +38,18 @@
     })
   );
   routes.set(
+    "/start",
+    wrap({
+      component: Dashboard,
+    })
+  );
+  routes.set(
     "*",
     wrap({
       component: {},
       conditions: [
         (detail) => {
-          replace(config[0].route);
+          replace("/start");
           return false;
         },
       ],
