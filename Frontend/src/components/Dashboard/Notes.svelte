@@ -1,6 +1,5 @@
 <script>
   import { flip } from "svelte/animate";
-  import { dndzone } from "svelte-dnd-action";
   import Note from "./Note.svelte";
   import AddNote from "./AddNote.svelte";
 
@@ -39,16 +38,6 @@
 
   const flipDurationMs = 300;
 
-  const onNoteOrderUpdated = (notesWithUpdatedOrder, persist = false) => {
-    notesWithUpdatedOrder.forEach(
-      (noteWithUpdatedOrder, i) => (noteWithUpdatedOrder.orderIndex = i)
-    );
-    notes = notesWithUpdatedOrder;
-    if (persist) {
-      // TODO db
-    }
-  };
-
   const onNoteDeleted = (noteId) => {
     notes = notes.filter((note) => note.id !== noteId);
     // TODO db
@@ -62,22 +51,36 @@
     console.log("changed: " + noteId);
     // TODO db
   };
+
+  const onNoteDrop = (event, dragEndIndex) => {
+    event.dataTransfer.dropEffect = "move";
+    const dragStartIndex = parseInt(event.dataTransfer.getData("text/plain"));
+    const draggedNote = notes[dragStartIndex];
+    notes[dragStartIndex] = notes[dragEndIndex];
+    notes[dragEndIndex] = draggedNote;
+    notes.forEach((note, i) => (note.orderIndex = i));
+    notes = [...notes];
+  };
+
+  const onNoteDragStart = (event, i) => {
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.dropEffect = "move";
+    const startIndex = i;
+    event.dataTransfer.setData("text/plain", startIndex);
+  };
 </script>
 
 <div class="notescontainer">
   <div class="notescontainerheader">Notizen</div>
-  <div
-    class="notescontainercontent"
-    use:dndzone={{
-      items: notes,
-      flipDurationMs,
-      dropTargetStyle: { outline: "" },
-    }}
-    on:consider={(e) => onNoteOrderUpdated(e.detail.items)}
-    on:finalize={(e) => onNoteOrderUpdated(e.detail.items, true)}
-  >
-    {#each notes as note (note.id)}
-      <div animate:flip={{ duration: flipDurationMs }}>
+  <div class="notescontainercontent">
+    {#each notes as note, index (note.id)}
+      <div
+        animate:flip={{ duration: flipDurationMs }}
+        draggable={true}
+        on:dragstart={(event) => onNoteDragStart(event, index)}
+        on:drop|preventDefault={(event) => onNoteDrop(event, index)}
+        ondragover="return false"
+      >
         <Note
           contentHtml={note.contentHtml}
           timestamp={note.timestamp}

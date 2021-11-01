@@ -2,8 +2,8 @@
   import Plus from "../svgs/Plus.svelte";
 </script>
 
-<div class="addnotecontainer" on:mousedown|stopPropagation|preventDefault>
-  <div class="addnote">
+<div class="addnotecontainer" id={"addnotecontainer"}>
+  <div class="addnote" on:click={(e) => alert("wgweg")}>
     <Plus />
     <div class="text">Neue Notiz</div>
   </div>
@@ -18,6 +18,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    cursor: pointer;
   }
 
   .addnotecontainer {
