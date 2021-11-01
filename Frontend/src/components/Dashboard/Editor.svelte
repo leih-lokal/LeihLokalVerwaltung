@@ -24,3 +24,9 @@
   height={heightPx - actionBarHeightPx + "px"}
   contentId="notes-content"
 />
+
+<style>
+  :global(#notes-content) {
+    width: var(--note-width);
+  }
+</style>

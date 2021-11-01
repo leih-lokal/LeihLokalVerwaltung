@@ -1,9 +1,10 @@
 <script>
   import { flip } from "svelte/animate";
+  import { v4 as uuidv4 } from "uuid";
   import Note from "./Note.svelte";
   import AddNote from "./AddNote.svelte";
 
-  let colors = [
+  const colors = [
     "#ffd8c0",
     "#a1f5cf",
     "#f1bff4",
@@ -12,31 +13,47 @@
     "#fdb7b8",
   ];
 
+  const randomColor = () => colors[Math.floor(Math.random() * colors.length)];
+
   let notes = [
     {
       id: 1,
       contentHtml: "Note 1",
       timestamp: 1609455600000,
-      backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+      backgroundColor: randomColor(),
       orderIndex: 1,
     },
     {
       id: 2,
       contentHtml: "Note 2",
       timestamp: 1609455600000,
-      backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+      backgroundColor: randomColor(),
       orderIndex: 2,
     },
     {
       id: 3,
       contentHtml: "Note 3",
       timestamp: 1609455600000,
-      backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+      backgroundColor: randomColor(),
       orderIndex: 3,
     },
   ];
 
   const flipDurationMs = 300;
+
+  const initializeNode = () => ({
+    id: uuidv4(),
+    contentHtml: "",
+    timestamp: new Date().getTime(),
+    backgroundColor: randomColor(),
+    orderIndex: 1,
+  });
+
+  const onAddNodeButtonClicked = () => {
+    notes.forEach((note, i) => (note.orderIndex = i + 1));
+    notes = [initializeNode(), ...notes];
+    // TODO db
+  };
 
   const onNoteDeleted = (noteId) => {
     notes = notes.filter((note) => note.id !== noteId);
@@ -90,7 +107,7 @@
         />
       </div>
     {/each}
-    <AddNote />
+    <AddNote on:click={onAddNodeButtonClicked} />
   </div>
 </div>
 
@@ -99,7 +116,7 @@
     display: flex;
     flex-direction: column;
     background-color: white;
-    --note-width: 18rem;
+    --note-width: 24rem;
   }
 
   .notescontainerheader {
