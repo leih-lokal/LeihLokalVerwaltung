@@ -13,5 +13,6 @@
     background-color: rgb(230, 230, 230);
     padding: 1rem;
     box-sizing: border-box;
+    overflow-y: scroll;
   }
 </style>

@@ -8,25 +8,28 @@
   });
 
   export let heightPx;
+  export let widthPx;
   export let contentHtml = "";
 
   const actionBarHeightPx = 36;
   const dispatch = createEventDispatcher();
 </script>
 
-<Editor
-  html={contentHtml}
-  on:change={(evt) => {
-    contentHtml = evt.detail;
-    dispatch("change");
-  }}
-  actions={["b", "i", "u", "ul", "ol", "h1", "h2", "forecolor"]}
-  height={heightPx - actionBarHeightPx + "px"}
-  contentId="notes-content"
-/>
+<div style="--editor-width: {widthPx}px">
+  <Editor
+    html={contentHtml}
+    on:change={(evt) => {
+      contentHtml = evt.detail;
+      dispatch("change");
+    }}
+    actions={["b", "i", "u", "ul", "ol", "h1", "h2", "forecolor"]}
+    height={heightPx - actionBarHeightPx + "px"}
+    contentId="notes-content"
+  />
+</div>
 
 <style>
   :global(#notes-content) {
-    width: var(--note-width);
+    width: var(--editor-width);
   }
 </style>

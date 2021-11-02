@@ -99,6 +99,7 @@
         ondragover="return false"
       >
         <Note
+          id={note.id}
           contentHtml={note.contentHtml}
           timestamp={note.timestamp}
           backgroundColor={note.backgroundColor}
