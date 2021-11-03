@@ -91,6 +91,7 @@
         widthPx={lastNoteViewElementWidth}
         bind:contentHtml
         on:change={(e) => (contentChanged = true)}
+        on:save={disableEditMode}
       />
     {:else}
       <div

@@ -25,7 +25,24 @@
       contentHtml = evt.detail;
       dispatch("change");
     }}
-    actions={["b", "i", "u", "ul", "ol", "h1", "h2", "forecolor"]}
+    actions={[
+      "b",
+      "i",
+      "u",
+      "ul",
+      "ol",
+      "h1",
+      "h2",
+      "forecolor",
+      {
+        name: "save", // required
+        icon: "<b>Speichern</b>", // string or html string (ex. <svg>...</svg>)
+        title: "Speichern",
+        result: () => {
+          dispatch("save");
+        },
+      },
+    ]}
     height={heightPx - actionBarHeightPx + "px"}
     contentId="notes-content"
   />
@@ -34,5 +51,11 @@
 <style>
   :global(#notes-content) {
     width: var(--editor-width);
+  }
+
+  :global(.cl-button:last-child) {
+    width: auto !important;
+    float: right;
+    background-color: #8de3ff !important;
   }
 </style>
