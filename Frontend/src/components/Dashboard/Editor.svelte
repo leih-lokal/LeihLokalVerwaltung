@@ -15,7 +15,10 @@
   const dispatch = createEventDispatcher();
 </script>
 
-<div style="--editor-width: {widthPx}px">
+<div
+  style="--editor-width: {widthPx}px"
+  on:dragstart|preventDefault|stopPropagation
+>
   <Editor
     html={contentHtml}
     on:change={(evt) => {

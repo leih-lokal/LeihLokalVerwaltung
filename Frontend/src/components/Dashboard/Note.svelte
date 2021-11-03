@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
+  import { flip } from "svelte/animate";
   import { clickOutside } from "../../actions/ClickOutside";
   import { observeResize } from "../../actions/ResizeObserver";
   import TrashCan from "../svgs/TrashCan.svelte";
@@ -9,6 +10,8 @@
   export let timestamp = new Date().getTime();
   export let backgroundColor;
   export let id;
+
+  const flipDurationMs = 300;
 
   const convertRemToPixels = (rem) =>
     rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -96,6 +99,10 @@
         use:observeResize={onNoteResize}
         bind:offsetWidth={noteViewElementWidth}
         bind:offsetHeight={noteViewElementHeight}
+        draggable={true}
+        ondragover="return false"
+        on:dragstart
+        on:drop|preventDefault
       >
         <div class="noteviewcontent" on:click={enableEditMode}>
           {@html contentHtml}
@@ -119,6 +126,7 @@
 <style>
   .note {
     display: flex;
+    background-color: transparent;
   }
 
   .noteview {
@@ -136,6 +144,7 @@
 
   .notecontainer {
     padding: 1rem;
+    background-color: transparent;
   }
 
   :global(.noteview *) {

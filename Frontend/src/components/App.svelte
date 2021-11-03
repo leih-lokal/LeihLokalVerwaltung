@@ -13,8 +13,6 @@
   import LogView from "./Logging/LogView.svelte";
   import Dashboard from "./Dashboard/Dashboard.svelte";
 
-  import "bytemd/dist/index.min.css";
-
   const routes = new Map();
   config.forEach((tableViewConfig) =>
     routes.set(

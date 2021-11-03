@@ -5,7 +5,7 @@
   import Table from "../Table/Table.svelte";
   import Database from "../../database/ENV_DATABASE";
   import PopupFormular from "./PopupFormular/PopupFormular.svelte";
-  import { afterUpdate } from "svelte";
+  import { afterUpdate, onDestroy } from "svelte";
   import Logger from "js-logger";
 
   export let columns = [];
@@ -128,6 +128,10 @@
         }
       }
     }
+  });
+
+  onDestroy(() => {
+    Database.cancelListenerForDocType(docType);
   });
 
   const shouldBeSortedByInitially = (col) => "initialSort" in col;

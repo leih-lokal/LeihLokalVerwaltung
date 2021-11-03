@@ -3,6 +3,10 @@
   import { v4 as uuidv4 } from "uuid";
   import Note from "./Note.svelte";
   import AddNote from "./AddNote.svelte";
+  import Database from "../../database/ENV_DATABASE";
+  import { onDestroy, onMount } from "svelte";
+  import Logger from "js-logger";
+  import { notifier } from "@beyonk/svelte-notifications";
 
   const colors = [
     "#ffd8c0",
@@ -13,70 +17,98 @@
     "#fdb7b8",
   ];
 
+  const flipDurationMs = 300;
+  const docType = "note";
+
   const randomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
-  let notes = [
-    {
-      id: 1,
-      contentHtml: "Note 1",
-      timestamp: 1609455600000,
-      backgroundColor: randomColor(),
-      orderIndex: 1,
-    },
-    {
-      id: 2,
-      contentHtml: "Note 2",
-      timestamp: 1609455600000,
-      backgroundColor: randomColor(),
-      orderIndex: 2,
-    },
-    {
-      id: 3,
-      contentHtml: "Note 3",
-      timestamp: 1609455600000,
-      backgroundColor: randomColor(),
-      orderIndex: 3,
-    },
-  ];
+  let notes = [];
 
-  const flipDurationMs = 300;
+  const loadNotesFromDatabase = (forceRefreshCache = false) =>
+    Database.fetchByType("note", forceRefreshCache)
+      .then(
+        (result) =>
+          (notes = result.sort(
+            (noteA, noteB) => noteA.orderIndex - noteB.orderIndex
+          ))
+      )
+      .catch((error) => {
+        Logger.error(`Failed to load notes`, error);
+        notifier.danger("Notizen konnten nicht geladen werden!", {
+          persist: true,
+        });
+      });
+
+  onMount(() => {
+    loadNotesFromDatabase().then(() =>
+      Database.listenForChanges(() => loadNotesFromDatabase(true), docType)
+    );
+  });
+
+  onDestroy(() => {
+    Database.cancelListenerForDocType(docType);
+  });
 
   const initializeNode = () => ({
-    id: uuidv4(),
+    _id: uuidv4(),
     contentHtml: "",
     timestamp: new Date().getTime(),
     backgroundColor: randomColor(),
-    orderIndex: 1,
+    orderIndex: Math.min(notes.map((note) => note.orderIndex)) - 1,
+    type: "note",
   });
 
   const onAddNodeButtonClicked = () => {
-    notes.forEach((note, i) => (note.orderIndex = i + 1));
-    notes = [initializeNode(), ...notes];
-    // TODO db
+    const newNote = initializeNode();
+    notes = [newNote, ...notes];
+    Database.createDoc(newNote)
+      .then((response) => (newNote._rev = response.rev))
+      .catch((error) => {
+        Logger.error(`Failed to create note ${newNote._id}`, error);
+        notifier.danger("Notiz konnte nicht gespeichert werden!", {
+          persist: true,
+        });
+      });
   };
 
   const onNoteDeleted = (noteId) => {
-    notes = notes.filter((note) => note.id !== noteId);
-    // TODO db
+    const noteToRemove = notes.find((note) => note._id === noteId);
+    notes = notes.filter((note) => note._id !== noteId);
+    Database.removeDoc(noteToRemove).catch((error) => {
+      Logger.error(`Failed to remove note ${noteId}`, error);
+      notifier.danger("Notiz konnte nicht gelöscht werden!", {
+        persist: true,
+      });
+    });
   };
 
   const onNoteChanged = (noteId, changedContentHtml) => {
-    const note = notes.find((note) => note.id === noteId);
+    const note = notes.find((note) => note._id === noteId);
     note.timestamp = new Date().getTime();
     note.contentHtml = changedContentHtml;
     notes = [...notes];
-    console.log("changed: " + noteId);
-    // TODO db
+    Database.updateDoc(note, false)
+      .then((response) => (note._rev = response.rev))
+      .catch((error) => {
+        Logger.error(`Failed to save note ${noteId}`, error);
+        notifier.danger("Notiz konnte nicht gespeichert werden!", {
+          persist: true,
+        });
+      });
   };
 
   const onNoteDrop = (event, dragEndIndex) => {
     event.dataTransfer.dropEffect = "move";
     const dragStartIndex = parseInt(event.dataTransfer.getData("text/plain"));
-    const draggedNote = notes[dragStartIndex];
-    notes[dragStartIndex] = notes[dragEndIndex];
-    notes[dragEndIndex] = draggedNote;
-    notes.forEach((note, i) => (note.orderIndex = i));
-    notes = [...notes];
+    if (dragStartIndex !== dragEndIndex) {
+      const draggedNote = notes[dragStartIndex];
+      notes[dragStartIndex] = notes[dragEndIndex];
+      notes[dragEndIndex] = draggedNote;
+      notes.forEach((note, i) => (note.orderIndex = i));
+      notes = [...notes];
+      // TODO: improve, reduce db updates
+      notes.forEach((note) => Database.updateDoc(note));
+    }
   };
 
   const onNoteDragStart = (event, i) => {
@@ -90,21 +122,17 @@
 <div class="notescontainer">
   <div class="notescontainerheader">Notizen</div>
   <div class="notescontainercontent">
-    {#each notes as note, index (note.id)}
-      <div
-        animate:flip={{ duration: flipDurationMs }}
-        draggable={true}
-        on:dragstart={(event) => onNoteDragStart(event, index)}
-        on:drop|preventDefault={(event) => onNoteDrop(event, index)}
-        ondragover="return false"
-      >
+    {#each notes as note, index (note._id)}
+      <div animate:flip={{ duration: flipDurationMs }}>
         <Note
-          id={note.id}
+          id={note._id}
           contentHtml={note.contentHtml}
           timestamp={note.timestamp}
           backgroundColor={note.backgroundColor}
-          on:delete={(e) => onNoteDeleted(note.id)}
-          on:change={(e) => onNoteChanged(note.id, e.detail)}
+          on:delete={(e) => onNoteDeleted(note._id)}
+          on:change={(e) => onNoteChanged(note._id, e.detail)}
+          on:dragstart={(event) => onNoteDragStart(event, index)}
+          on:drop={(event) => onNoteDrop(event, index)}
         />
       </div>
     {/each}
