@@ -1,6 +1,5 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
-  import { flip } from "svelte/animate";
   import { clickOutside } from "../../actions/ClickOutside";
   import { observeResize } from "../../actions/ResizeObserver";
   import TrashCan from "../svgs/TrashCan.svelte";
@@ -10,8 +9,6 @@
   export let timestamp = new Date().getTime();
   export let backgroundColor;
   export let id;
-
-  const flipDurationMs = 300;
 
   const convertRemToPixels = (rem) =>
     rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
