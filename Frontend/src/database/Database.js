@@ -9,7 +9,7 @@ PouchDB.plugin(PouchDBFind);
 
 class Database {
   database;
-  changeListener;
+  changeListeners = {};
   onConnectedCallback;
 
   constructor() {
@@ -19,10 +19,16 @@ class Database {
     this.cache = new Cache(50);
   }
 
-  connect() {
-    if (this.changeListener) {
-      this.changeListener.cancel();
+  cancelAllListeners() {
+    for (const [listenForDocType, listener] of Object.entries(
+      this.changeListeners
+    )) {
+      listener.cancel();
     }
+  }
+
+  connect() {
+    this.cancelAllListeners();
     this.cache.reset();
     this.queryPaginatedDocsCache.reset();
     const settings = get(settingsStore);
@@ -42,26 +48,24 @@ class Database {
     return new SelectorBuilder();
   }
 
-  updateDoc(updatedDoc) {
+  async updateDoc(updatedDoc, updateRev = true) {
     this.cache.reset();
-    return this.database
-      .get(updatedDoc._id, {
-        revs_info: true,
-        conflicts: true,
-      })
-      .then((doc) => {
-        let updatedDocWithRev = {
-          _rev: doc._rev,
-          last_update: new Date().getTime(),
-          ...updatedDoc,
-        };
-        Logger.debug(
-          `Updated doc from ${JSON.stringify(doc)} to ${JSON.stringify(
-            updatedDocWithRev
-          )}`
-        );
-        return this.database.put(updatedDocWithRev);
-      });
+    let rev = updatedDoc._rev;
+    if (updateRev) {
+      rev = await this.database
+        .get(updatedDoc._id, {
+          revs_info: true,
+          conflicts: true,
+        })
+        .then((doc) => doc._rev);
+    }
+    let updatedDocWithRev = {
+      last_update: new Date().getTime(),
+      ...updatedDoc,
+      _rev: rev,
+    };
+    Logger.debug(`Updated doc ${JSON.stringify(updatedDocWithRev)}`);
+    return this.database.put(updatedDocWithRev);
   }
 
   createDoc(doc) {
@@ -76,6 +80,15 @@ class Database {
     this.cache.reset();
     Logger.debug(`Removed doc: ${JSON.stringify(doc)}`);
     return this.database.remove(doc._id, doc._rev);
+  }
+
+  fetchByType(type, forceRefreshCache = false) {
+    return this.findCached(
+      {
+        selector: this.selectorBuilder().withDocType(type).build(),
+      },
+      forceRefreshCache
+    ).then((result) => result.docs ?? []);
   }
 
   fetchByIdAndType(id, type) {
@@ -156,27 +169,45 @@ class Database {
     };
   }
 
-  _listenForChanges(onDocsChanged) {
-    if (this.changeListener) {
-      this.changeListener.cancel();
+  cancelListenerForDocType(docType) {
+    if (this.changeListeners[docType]) {
+      this.changeListeners[docType].cancel();
     }
-    this.changeListener = this.database
+  }
+
+  async listenForChanges(onDocsChanged, docType) {
+    await this.database
+      .put({
+        _id: "_design/filterbytype",
+        filters: {
+          filterbytype: function (doc, req) {
+            return doc.type === req.query.type || doc._deleted === true;
+          }.toString(),
+        },
+      })
+      .catch((error) => {
+        // ignore document update conflicts (when already exists)
+        if (error.status !== 409) {
+          Logger.error("Failed to create design doc for change filter", error);
+        }
+      });
+
+    this.cancelListenerForDocType(docType);
+    this.changeListeners[docType] = this.database
       .changes({
         since: "now",
         live: true,
-        include_docs: true,
+        include_docs: false,
+        filter: "filterbytype",
+        query_params: { type: docType },
       })
-      .on("change", function (changes) {
-        onDocsChanged(changes.doc);
-      })
+      .on("change", onDocsChanged)
       .on("complete", function (info) {
         Logger.debug(
           `CouchDb changeListener completed: ${JSON.stringify(info)}`
         );
       })
-      .on("error", function (err) {
-        Logger.error(err);
-      });
+      .on("error", Logger.error);
   }
 
   async query(options, onDocsUpdated) {
@@ -223,11 +254,11 @@ class Database {
     this.queryPaginatedDocsCache.set(cacheKey, result);
 
     // callback if doc updated
-    this._listenForChanges(() => {
+    this.listenForChanges(() => {
       this.queryPaginatedDocsCache.reset();
       this.cache.reset();
       onDocsUpdated();
-    });
+    }, docType);
 
     return result;
   }
@@ -250,9 +281,9 @@ class Database {
     }).then((result) => result.docs);
   }
 
-  async findCached(options) {
+  async findCached(options, forceRefresh = false) {
     const cacheKey = JSON.stringify(options);
-    if (this.cache.has(cacheKey)) {
+    if (!forceRefresh && this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
     }
     const result = await this.database.find(options);

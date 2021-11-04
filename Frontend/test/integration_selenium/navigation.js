@@ -11,8 +11,16 @@ describe("Navigation", function () {
     driver = await setupDriver();
   });
 
-  it("redirects to /customers", async () => {
+  it("redirects to /start", async () => {
     await driver.get("http://localhost:5000");
+    expect(await driver.getCurrentUrl()).to.equal(
+      "http://localhost:5000/#/start"
+    );
+  });
+
+  it("redirects to '/customers' when 'Nutzer' is clicked", async () => {
+    await driver.get("http://localhost:5000/#/items");
+    await getElementByText("Nutzer").click();
     expect(await driver.getCurrentUrl()).to.equal(
       "http://localhost:5000/#/customers"
     );

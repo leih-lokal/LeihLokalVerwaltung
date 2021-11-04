@@ -42,6 +42,7 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-register": "^6.26.0",
     "chai": "^4.3.4",
+    "cl-editor": "^2.2.2",
     "concurrently": "^6.2.1",
     "cross-env": "^7.0.3",
     "cypress": "^8.3.1",
@@ -77,6 +78,7 @@
     "svelte-select": "^4.4.0",
     "svelte-simple-modal": "^1.0.0",
     "svelte-spa-router": "^3.2.0",
+    "uuid": "^8.3.2",
     "wait-on": "^6.0.0"
   }
 }

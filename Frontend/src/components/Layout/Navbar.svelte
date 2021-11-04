@@ -10,6 +10,9 @@
 
 <nav>
   <ul>
+    <li class="left">
+      <a use:active={"/start"} href={"/start"} use:link> {"Start"} </a>
+    </li>
     {#each tabs as tab}
       <li class="left">
         <a use:active={tab.route} href={tab.route} use:link> {tab.title} </a>
