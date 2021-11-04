@@ -181,7 +181,7 @@ class Database {
         _id: "_design/filterbytype",
         filters: {
           filterbytype: function (doc, req) {
-            return doc.type === req.query.type;
+            return doc.type === req.query.type || doc._deleted === true;
           }.toString(),
         },
       })
