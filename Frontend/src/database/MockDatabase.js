@@ -159,9 +159,13 @@ class MockDatabase {
     };
   }
 
+  cancelListenerForDocType(docType) {}
+
+  async listenForChanges(onDocsChanged, docType) {}
+
   async updateDoc(updatedDoc) {
     await this.removeDoc(updatedDoc);
-    await this.createDoc(updatedDoc);
+    return await this.createDoc(updatedDoc);
   }
 
   async removeDoc(docToRemove) {
@@ -184,8 +188,10 @@ class MockDatabase {
 
     if (!doc.hasOwnProperty("_id")) {
       doc["_id"] = makeId();
+      doc["_rev"] = makeId();
     }
     this.writeData([...this.getData(), doc]);
+    return doc;
   }
 
   async createIndex(index) {}
@@ -225,6 +231,13 @@ class MockDatabase {
     return Array.from(uniqueValues).map((uniqueValue) => ({
       [field]: uniqueValue,
     }));
+  }
+
+  fetchByType(type) {
+    return this.fetchDocsBySelector(
+      this.selectorBuilder().withDocType(type).build(),
+      ["_id"]
+    );
   }
 
   fetchByIdAndType(id, type) {
