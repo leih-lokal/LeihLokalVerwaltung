@@ -3,7 +3,7 @@
   import { v4 as uuidv4 } from "uuid";
   import Note from "./Note.svelte";
   import AddNote from "./AddNote.svelte";
-  import Database from "../../database/ENV_DATABASE";
+  import Database from "../../../database/ENV_DATABASE";
   import { onDestroy, onMount } from "svelte";
   import Logger from "js-logger";
   import { notifier } from "@beyonk/svelte-notifications";
