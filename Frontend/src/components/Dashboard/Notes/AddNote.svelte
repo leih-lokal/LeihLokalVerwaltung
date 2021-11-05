@@ -1,5 +1,5 @@
 <script>
-  import Plus from "../svgs/Plus.svelte";
+  import Plus from "../../svgs/Plus.svelte";
 </script>
 
 <div class="addnotecontainer" id={"addnotecontainer"}>

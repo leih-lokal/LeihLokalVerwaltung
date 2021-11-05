@@ -1,8 +1,8 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
-  import { clickOutside } from "../../actions/ClickOutside";
-  import { observeResize } from "../../actions/ResizeObserver";
-  import TrashCan from "../svgs/TrashCan.svelte";
+  import { clickOutside } from "../../../actions/ClickOutside";
+  import { observeResize } from "../../../actions/ResizeObserver";
+  import TrashCan from "../../svgs/TrashCan.svelte";
   import Editor from "./Editor.svelte";
 
   export let contentHtml = "";
@@ -130,7 +130,7 @@
   .noteview {
     padding: 0.5rem 0.5rem 0.2rem 0.5rem;
     width: var(--note-width);
-    min-height: var(--note-height);
+    height: var(--note-height);
     font-size: 1.2rem;
     display: flex;
     flex-direction: column;

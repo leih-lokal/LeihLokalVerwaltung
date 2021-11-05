@@ -1,5 +1,5 @@
 <script>
-  import Notes from "./Notes.svelte";
+  import Notes from "./Notes/Notes.svelte";
 </script>
 
 <div class="dashboardcontent">
