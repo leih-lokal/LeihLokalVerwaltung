@@ -69,6 +69,7 @@
     "sirv-cli": "^1.0.14",
     "svelte": "^3.42.4",
     "svelte-calendar": "^2.0.4",
+    "svelte-chartjs": "^1.1.1",
     "svelte-checkbox": "^1.0.1",
     "svelte-component-double": "^0.8.0",
     "svelte-htm": "^1.1.1",
