@@ -1,10 +1,51 @@
 <script>
   import Line from "svelte-chartjs/src/Line.svelte";
   import Database from "../../../database/ENV_DATABASE";
+  import LoadingAnimation from "../../LoadingAnimation.svelte";
 
-  let dataLine = [];
+  function startOfMonthMs(timestamp) {
+    const date = new Date(timestamp);
+    return new Date(date.getFullYear(), date.getMonth(), 1).getTime();
+  }
 
-  const activeCustomers = async () => {
+  function addMonths(timestamp, monthsCount) {
+    const date = new Date(timestamp);
+    date.setMonth(date.getMonth() + monthsCount);
+    return date.getTime();
+  }
+
+  function monthDiff(d1, d2) {
+    var months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth();
+    months += d2.getMonth();
+    return months <= 0 ? 0 : months;
+  }
+
+  function cache(stats) {
+    localStorage.setItem(
+      "stats",
+      JSON.stringify({ timestamp: new Date().getTime(), stats })
+    );
+  }
+
+  function loadFromCache() {
+    const statsFromCache = JSON.parse(localStorage.getItem("stats"));
+    if (
+      statsFromCache !== null &&
+      monthDiff(new Date(statsFromCache.timestamp), new Date()) === 0
+    ) {
+      return statsFromCache.stats;
+    }
+    return false;
+  }
+
+  const calcStats = async () => {
+    let cachedStats = loadFromCache();
+    if (cachedStats) {
+      return cachedStats;
+    }
+
     let rentals = await Database.findCached({
       fields: ["customer_id", "rented_on", "returned_on"],
       limit: 1_000_000,
@@ -31,25 +72,6 @@
       limit: 1_000_000,
       selector: Database.selectorBuilder().withDocType("customer").build(),
     }).then((result) => result.docs);
-
-    const startOfMonthMs = (timestamp) => {
-      const date = new Date(timestamp);
-      return new Date(date.getFullYear(), date.getMonth(), 1).getTime();
-    };
-
-    const addMonths = (timestamp, monthsCount) => {
-      const date = new Date(timestamp);
-      date.setMonth(date.getMonth() + monthsCount);
-      return date.getTime();
-    };
-
-    const monthDiff = (d1, d2) => {
-      var months;
-      months = (d2.getFullYear() - d1.getFullYear()) * 12;
-      months -= d1.getMonth();
-      months += d2.getMonth();
-      return months <= 0 ? 0 : months;
-    };
 
     const timestampLiesInMonthsBefore = (timestamp, before, monthCount) =>
       timestamp < before && timestamp >= addMonths(before, monthCount * -1);
@@ -110,7 +132,7 @@
       newCustomerCountsPerMonth.push(newCustomerCount);
     }
 
-    dataLine = {
+    let stats = {
       labels,
       datasets: [
         {
@@ -178,56 +200,63 @@
         },
       ],
     };
-    console.log(activeCustomerCountsPerMonth);
+    cache(stats);
+    return stats;
   };
 
-  let stats = "Anzahl Nutzer:";
-  activeCustomers();
+  calcStats();
 </script>
 
 <div class="statscontainer">
   <div class="statscontainerheader">Statistiken</div>
-  <Line
-    data={dataLine}
-    options={{
-      scales: {
-        x: {
-          ticks: {
-            font: {
-              size: 18,
+  {#await calcStats()}
+    <LoadingAnimation positionFixed={false} />
+  {:then stats}
+    <Line
+      data={stats}
+      options={{
+        scales: {
+          x: {
+            ticks: {
+              font: {
+                size: 18,
+              },
+            },
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              font: {
+                size: 18,
+              },
             },
           },
         },
-        y: {
-          beginAtZero: true,
-          ticks: {
-            font: {
-              size: 18,
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: {
+              font: {
+                size: 14,
+              },
             },
           },
         },
-      },
-      plugins: {
-        legend: {
-          position: "bottom",
-          labels: {
-            font: {
-              size: 14,
-            },
-          },
-        },
-      },
-    }}
-  />
+      }}
+    />
+  {:catch error}
+    <p class="error">Statistiken konnten nicht geladen werden :(</p>
+  {/await}
 </div>
 
 <style>
   .statscontainer {
     background-color: white;
+    padding: 1rem 1rem 1rem 1rem;
   }
   .statscontainerheader {
     font-size: 1.7rem;
-    padding: 1rem 1rem 1rem 1rem;
     font-weight: bold;
+    padding-bottom: 1rem;
   }
 </style>

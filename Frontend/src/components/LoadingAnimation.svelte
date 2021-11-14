@@ -4,6 +4,7 @@
 
   export let text;
   export let fullScreenOverlay = false;
+  export let positionFixed = true;
   export let color = "#fc03a9";
 
   let containerHeight;
@@ -14,6 +15,7 @@
 {/if}
 <div
   class="container"
+  class:positionFixed
   in:fade={{ duration: 800 }}
   bind:clientHeight={containerHeight}
   style="--container-height: {containerHeight}px; --color: {color};"
@@ -32,7 +34,6 @@
     margin-top: 0;
   }
   .container {
-    position: fixed;
     width: 400px;
     left: 50%;
     top: 50%;
@@ -45,6 +46,9 @@
     border-radius: 10px;
     background-color: transparent;
     z-index: 99999999;
+  }
+  .positionFixed {
+    position: fixed;
   }
   .fullscreenoverlay {
     position: absolute;
