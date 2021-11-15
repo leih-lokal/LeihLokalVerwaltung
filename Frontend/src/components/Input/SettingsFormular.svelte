@@ -16,6 +16,7 @@
   };
 
   const onSettingsChanged = () => {
+    localStorage.removeItem("stats");
     Database.connect();
     notifier.success("Einstellungen gespeichert!", 1500);
   };

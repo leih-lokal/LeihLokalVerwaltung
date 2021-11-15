@@ -203,6 +203,14 @@ class MockDatabase {
     return Math.max(...usedIds) + 1;
   }
 
+  async findCached(options) {
+    return this.fetchAllDocsBySelector(options.selector, options.fields).then(
+      (docs) => ({
+        docs,
+      })
+    );
+  }
+
   async fetchDocsBySelector(selector, fields) {
     return this.getData()
       .filter((doc) => this.matchesSelector(doc, selector))

@@ -1,9 +1,15 @@
 <script>
   import Notes from "./Notes/Notes.svelte";
+  import Stats from "./Stats/Stats.svelte";
 </script>
 
 <div class="dashboardcontent">
-  <Notes />
+  <div class="container">
+    <Notes />
+  </div>
+  <div class="container">
+    <Stats />
+  </div>
 </div>
 
 <style>
@@ -14,5 +20,9 @@
     padding: 1rem;
     box-sizing: border-box;
     overflow-y: scroll;
+  }
+
+  .container {
+    padding: 0.4rem;
   }
 </style>

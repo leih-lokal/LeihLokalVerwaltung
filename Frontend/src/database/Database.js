@@ -116,13 +116,14 @@ class Database {
     );
   }
 
-  async createView(name, mapFun) {
+  async createView(name, mapFun, reduceFun) {
     try {
       await this.database.put({
         _id: "_design/" + name,
         views: {
           [name]: {
             map: mapFun,
+            ...(reduceFun && { reduce: reduceFun }),
           },
         },
       });
@@ -132,6 +133,10 @@ class Database {
         throw err;
       }
     }
+  }
+
+  async queryView(name, options = {}) {
+    return this.database.query(name, options);
   }
 
   async createIndex(index) {
@@ -286,6 +291,7 @@ class Database {
     if (!forceRefresh && this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
     }
+    //this.database.explain(options).then(console.log);
     const result = await this.database.find(options);
     this.cache.set(cacheKey, result);
     return result;
