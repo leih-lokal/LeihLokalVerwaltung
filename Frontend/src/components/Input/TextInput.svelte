@@ -60,11 +60,11 @@
 <style>
   input[type="text"] {
     width: 100% !important;
-    padding: 0.5rem !important;
+    padding: 0 0.7rem 0 0.7rem !important;
     border: 1px solid #ccc !important;
     border-radius: 4px !important;
     resize: vertical !important;
-    height: 2.5rem !important;
+    height: 2rem !important;
   }
 
   textarea {

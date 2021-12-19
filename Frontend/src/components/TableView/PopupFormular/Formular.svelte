@@ -65,37 +65,39 @@
 
 <div class="container">
   <h1 class="header">{title}</h1>
-  <div class="content" bind:this={inputContainer}>
-    {#each groups.filter( (group) => groupedInputs[group].some((input) => !isHidden(input)) ) as group}
-      <InputGroup title={group}>
-        {#each groupedInputs[group].filter((input) => !isHidden(input)) as input}
-          <row>
-            {#if input.label && input.label.length > 0}
-              <div class="col-label">
-                <label for={input.id}>{input.label}</label>
-              </div>
-            {/if}
-            <div class="col-input">
-              {#if input.nobind}
-                <svelte:component
-                  this={input.component}
-                  value={doc[input.id]}
-                  {...input.props}
-                  id={input.id}
-                />
-              {:else}
-                <svelte:component
-                  this={input.component}
-                  {...input.props}
-                  id={input.id}
-                  bind:value={doc[input.id]}
-                />
+  <div class="contentContainer">
+    <div class="content" bind:this={inputContainer}>
+      {#each groups.filter( (group) => groupedInputs[group].some((input) => !isHidden(input)) ) as group}
+        <InputGroup title={group}>
+          {#each groupedInputs[group].filter((input) => !isHidden(input)) as input}
+            <row>
+              {#if input.label && input.label.length > 0}
+                <div class="col-label">
+                  <label for={input.id}>{input.label}</label>
+                </div>
               {/if}
-            </div>
-          </row>
-        {/each}
-      </InputGroup>
-    {/each}
+              <div class="col-input">
+                {#if input.nobind}
+                  <svelte:component
+                    this={input.component}
+                    value={doc[input.id]}
+                    {...input.props}
+                    id={input.id}
+                  />
+                {:else}
+                  <svelte:component
+                    this={input.component}
+                    {...input.props}
+                    id={input.id}
+                    bind:value={doc[input.id]}
+                  />
+                {/if}
+              </div>
+            </row>
+          {/each}
+        </InputGroup>
+      {/each}
+    </div>
   </div>
   <div class="footer">
     <Footer buttons={footerButtonsWithContext} />
@@ -119,7 +121,7 @@
   }
 
   row {
-    padding: 0.6rem 0 0.6rem 0;
+    padding: 0.3rem 0 0.3rem 0;
     display: inline-block;
     width: 100%;
   }
@@ -136,17 +138,24 @@
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
+    justify-content: center;
+  }
+
+  .contentContainer {
+    display: block;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .content {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    overflow-y: scroll;
-    flex-grow: 1;
-    min-height: 2em;
+    column-count: 2;
+  }
+
+  @media (max-width: 1045px) {
+    .content {
+      column-count: 1;
+    }
   }
 
   .header {

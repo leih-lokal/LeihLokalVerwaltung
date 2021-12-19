@@ -15,6 +15,7 @@ export default {
   title: (context) =>
     `Gegenstand ${context.createNew ? "anlegen" : "bearbeiten"}`,
   initialValues,
+  height: "20rem",
   footerButtons: (context) => [
     {
       text: "Abbrechen",
@@ -45,7 +46,7 @@ export default {
   inputs: [
     {
       id: "id",
-      label: "Gegenstand Nr",
+      label: "Nr",
       group: "Bezeichnung",
       component: TextInput,
       props: {
@@ -55,7 +56,7 @@ export default {
     },
     {
       id: "name",
-      label: "Gegenstand Name",
+      label: "Name",
       group: "Bezeichnung",
       component: TextInput,
       props: {

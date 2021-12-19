@@ -138,7 +138,8 @@
 <style>
   input {
     width: 100%;
-    padding: 12px;
+    padding: 0.2rem 0.7rem 0.2rem 0.7rem;
+    height: 2rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: vertical;
