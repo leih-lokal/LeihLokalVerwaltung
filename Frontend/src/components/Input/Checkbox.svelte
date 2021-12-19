@@ -7,7 +7,8 @@
 </script>
 
 <Checkbox
-  size="2rem"
+  class="checkbox"
+  size="1.7rem"
   {disabled}
   bind:checked={value}
   on:change={(event) => {
@@ -17,3 +18,9 @@
   }}
   {...$$props}
 />
+
+<style>
+  :global(.checkbox) {
+    margin-top: 0.3rem;
+  }
+</style>

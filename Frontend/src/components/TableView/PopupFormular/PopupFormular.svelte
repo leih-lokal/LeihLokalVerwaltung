@@ -20,10 +20,12 @@
   closeOnEsc={true}
   closeOnOuterClick={false}
   styleWindow={{
-    width: "60rem",
+    width: "55rem",
     "max-width": "90%",
-    height: "90%",
+    height: "100%",
     overflow: "hidden",
+    "margin-top": 0,
+    "margin-bottom": 0,
   }}
   styleContent={{
     height: "100%",

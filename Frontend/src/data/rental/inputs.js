@@ -175,7 +175,7 @@ export default {
     },
     {
       id: "update_status",
-      label: "Status des Gegenstandes aktualisieren",
+      label: "Status aktualisieren",
       group: "Gegenstand",
       component: Checkbox,
       nobind: true,
