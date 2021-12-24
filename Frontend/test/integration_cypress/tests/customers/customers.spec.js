@@ -235,7 +235,7 @@ context("Customers", () => {
       let customer = expectedData.customerToEdit;
       cy.get("table").contains(customer.firstname).click();
       cy.get("#firstname").clear().type("NewFirstname");
-      cy.contains("Speichern").click();
+      cy.get(".footer").contains("Speichern").click();
 
       expectDisplaysRow(
         expectedData.sortedByIdAsc[13].map((expectedValue) => {
@@ -299,7 +299,8 @@ context("Customers", () => {
       cy.get("#city").type(newCustomer.city);
       cy.get("#remark").type(newCustomer.remark);
 
-      cy.contains("Speichern")
+      cy.get(".footer")
+        .contains("Speichern")
         .click()
         .then(() => cy.get("thead").contains("Id").click())
         .then(() => expectDisplaysRow(expectedData.createdCustomer));

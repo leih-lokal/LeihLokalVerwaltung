@@ -225,7 +225,8 @@ context("items", () => {
     it("Saves changes", () => {
       cy.get("table").contains(expectedData.itemToEdit.name).click();
       cy.get("#name").clear().type("NewName");
-      cy.contains("Speichern")
+      cy.get(".footer")
+        .contains("Speichern")
         .click()
         .then(() => {
           expectDisplaysTableWithData(expectedData.editedName);
@@ -285,7 +286,8 @@ context("items", () => {
         .contains(newItem.status)
         .click({ force: true });
 
-      cy.contains("Speichern")
+      cy.get(".footer")
+        .contains("Speichern")
         .click()
         .then(waitForPopupToClose)
         .then(() => {
@@ -299,7 +301,8 @@ context("items", () => {
       // wait for value to load
       cy.get("#id").invoke("val").should("not.be.empty");
 
-      cy.contains("Speichern")
+      cy.get(".footer")
+        .contains("Speichern")
         .click()
         .then(waitForPopupToClose)
         .then(() => cy.get("thead").contains("Id").click())

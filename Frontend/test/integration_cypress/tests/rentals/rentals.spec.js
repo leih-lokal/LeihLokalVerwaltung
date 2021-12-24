@@ -197,18 +197,22 @@ context("rentals", () => {
       cy.get("table").contains(rentalToEdit.customer_name).click();
       cy.get("#item_id").should("have.value", rentalToEdit.item_id);
       cy.get("#item_name").should("have.value", rentalToEdit.item_name);
-      cy.get(
-        ":nth-child(2) > .col-input > .datepickercontainer > .datepicker input"
-      ).should("have.value", rentalToEdit.rented_on);
-      cy.get(
-        ":nth-child(3) > .col-input > .datepickercontainer > .datepicker input"
-      ).should("have.value", rentalToEdit.extended_on);
-      cy.get(
-        ":nth-child(4) > .col-input > .datepickercontainer > .datepicker input"
-      ).should("have.value", rentalToEdit.to_return_on);
-      cy.get(
-        ":nth-child(5) > .col-input > .datepickercontainer > .datepicker input"
-      ).should("have.value", rentalToEdit.returned_on);
+      cy.get(":nth-child(2) > .col-input > .datepicker input").should(
+        "have.value",
+        rentalToEdit.rented_on
+      );
+      cy.get(":nth-child(3) > .col-input > .datepicker input").should(
+        "have.value",
+        rentalToEdit.extended_on
+      );
+      cy.get(":nth-child(4) > .col-input > .datepicker input").should(
+        "have.value",
+        rentalToEdit.to_return_on
+      );
+      cy.get(":nth-child(5) > .col-input > .datepicker input").should(
+        "have.value",
+        rentalToEdit.returned_on
+      );
 
       cy.get("#customer_id").should("have.value", rentalToEdit.customer_id);
       cy.get("#customer_name").should("have.value", rentalToEdit.customer_name);
@@ -236,7 +240,7 @@ context("rentals", () => {
         .get("#deposit")
         .clear()
         .type(3);
-      cy.contains("Speichern").click();
+      cy.get(".footer").contains("Speichern").click();
       cy.expectDisplaysTableData(expectedData.rentalEdited);
     });
 
@@ -271,12 +275,14 @@ context("rentals", () => {
 
       cy.contains("+").click();
 
-      cy.get(
-        ":nth-child(2) > .col-input > .datepickercontainer > .datepicker input"
-      ).should("have.value", newRental.rented_on);
-      cy.get(
-        ":nth-child(3) > .col-input > .datepickercontainer > .datepicker input"
-      ).should("have.value", newRental.to_return_on);
+      cy.get(":nth-child(2) > .col-input > .datepicker input").should(
+        "have.value",
+        newRental.rented_on
+      );
+      cy.get(":nth-child(3) > .col-input > .datepicker input").should(
+        "have.value",
+        newRental.to_return_on
+      );
 
       cy.get("#item_id").type(newRental.item_id).wait(200);
       cy.get(".autocomplete-list-item").contains(newRental.item_id).click();
@@ -293,7 +299,7 @@ context("rentals", () => {
       cy.get("#deposit").clear().type(newRental.deposit);
       cy.get("#passing_out_employee").type(newRental.passing_out_employee);
 
-      cy.contains("Speichern").click();
+      cy.get(".footer").contains("Speichern").click();
       cy.get("thead").contains("Ausgegeben").click().click();
       cy.contains("Leihvorgang gespeichert").then(() =>
         cy.expectDisplaysTableData(expectedData.createdRental)
@@ -310,7 +316,7 @@ context("rentals", () => {
 
     it("Creates rental with default values", () => {
       cy.contains("+").click();
-      cy.contains("Speichern").click();
+      cy.get(".footer").contains("Speichern").click();
       cy.get("thead").contains("Ausgegeben").click().click();
       cy.contains("Leihvorgang gespeichert").then(() =>
         cy.expectDisplaysTableData(expectedData.createdRentalWithDefaultValues)
@@ -329,7 +335,7 @@ context("rentals", () => {
         .click()
         .get(":nth-child(5) > .col-input > .button-tight")
         .click();
-      cy.contains("Speichern").click();
+      cy.get(".footer").contains("Speichern").click();
 
       waitForPopupToClose();
 
