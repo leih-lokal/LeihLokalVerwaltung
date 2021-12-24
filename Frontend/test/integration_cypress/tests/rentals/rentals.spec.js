@@ -236,7 +236,7 @@ context("rentals", () => {
         .get("#deposit")
         .clear()
         .type(3);
-      cy.contains("Speichern").click();
+      cy.get(".footer").contains("Speichern").click();
       cy.expectDisplaysTableData(expectedData.rentalEdited);
     });
 
@@ -293,7 +293,7 @@ context("rentals", () => {
       cy.get("#deposit").clear().type(newRental.deposit);
       cy.get("#passing_out_employee").type(newRental.passing_out_employee);
 
-      cy.contains("Speichern").click();
+      cy.get(".footer").contains("Speichern").click();
       cy.get("thead").contains("Ausgegeben").click().click();
       cy.contains("Leihvorgang gespeichert").then(() =>
         cy.expectDisplaysTableData(expectedData.createdRental)
@@ -310,7 +310,7 @@ context("rentals", () => {
 
     it("Creates rental with default values", () => {
       cy.contains("+").click();
-      cy.contains("Speichern").click();
+      cy.get(".footer").contains("Speichern").click();
       cy.get("thead").contains("Ausgegeben").click().click();
       cy.contains("Leihvorgang gespeichert").then(() =>
         cy.expectDisplaysTableData(expectedData.createdRentalWithDefaultValues)
@@ -329,7 +329,7 @@ context("rentals", () => {
         .click()
         .get(":nth-child(5) > .col-input > .button-tight")
         .click();
-      cy.contains("Speichern").click();
+      cy.get(".footer").contains("Speichern").click();
 
       waitForPopupToClose();
 
