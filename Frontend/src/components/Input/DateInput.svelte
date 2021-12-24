@@ -47,7 +47,6 @@
         dispatch("change", date);
       }
     }}
-    weekStart={1}
     format={"#{d}.#{m}.#{Y}"}
     start={new Date(2018, 1, 1)}
     end={inTwoMonths()}

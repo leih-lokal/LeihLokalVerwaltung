@@ -12,6 +12,8 @@ module.exports = {
     "\\.js$": "babel-jest",
     "^.+\\.svelte$": "svelte-jester",
   },
-  transformIgnorePatterns: ["node_modules/(?!(fa-svelte|svelte-select|svelte-calendar)/)"],
+  transformIgnorePatterns: [
+    "node_modules/(?!(fa-svelte|svelte-select|.beyonk|dayjs)/)",
+  ],
   moduleFileExtensions: ["js", "svelte"],
 };

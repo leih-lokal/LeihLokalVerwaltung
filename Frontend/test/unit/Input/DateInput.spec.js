@@ -11,10 +11,10 @@ const renderDateInputWithTimeMillis = (timeMillis, quickset = {}) => {
   );
   const textInput = container.querySelector('input[type="text"]');
   return {
-    textInput: textInput,
-    timeMillisStore: timeMillisStore,
-    container: container,
-    getByText: getByText,
+    textInput,
+    timeMillisStore,
+    container,
+    getByText,
   };
 };
 
@@ -55,6 +55,7 @@ describe("DateInput", () => {
     const { container, textInput } = renderDateInputWithTimeMillis(0);
     await fireEvent.click(textInput);
     await fireEvent.click(container.querySelector(".highlighted"));
+    await fireEvent.click(container.querySelector(".toolbar button"));
     expect(textInput).toHaveValue(dateToString(new Date()));
   });
 
