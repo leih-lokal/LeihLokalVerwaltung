@@ -73,6 +73,16 @@
       selector: Database.selectorBuilder().withDocType("customer").build(),
     }).then((result) => result.docs);
 
+    let items = await Database.findCached({
+      fields: ["added"],
+      limit: 1_000_000,
+      selector: Database.selectorBuilder()
+        .withDocType("item")
+        .withField("status")
+        .isNotEqualTo("deleted")
+        .build(),
+    }).then((result) => result.docs);
+
     const timestampLiesInMonthsBefore = (timestamp, before, monthCount) =>
       timestamp < before && timestamp >= addMonths(before, monthCount * -1);
 
@@ -88,6 +98,7 @@
     const activeCustomerCountsPerMonth = [];
     const numberOfRentalsCountsPerMonth = [];
     const newCustomerCountsPerMonth = [];
+    const itemCountPerMonth = [];
     const labels = [];
 
     for (
@@ -126,10 +137,15 @@
         )
       ).length;
 
+      const itemCount = items.filter(
+        (item) => item.added <= addMonths(CURRENT_MS, monthsAgo * -1)
+      ).length;
+
       labels.push(monthYearString(addMonths(timestampNMonthsAgo, -1)));
       activeCustomerCountsPerMonth.push(activeCustomerCount);
       numberOfRentalsCountsPerMonth.push(rentalCount);
       newCustomerCountsPerMonth.push(newCustomerCount);
+      itemCountPerMonth.push(itemCount);
     }
 
     let stats = {
@@ -197,6 +213,27 @@
           pointRadius: 1,
           pointHitRadius: 10,
           data: newCustomerCountsPerMonth,
+        },
+        {
+          label: "Anzahl Gegenstände",
+          fill: true,
+          lineTension: 0.3,
+          backgroundColor: "rgba(189, 224, 254, 0.3)",
+          borderColor: "rgb(189, 224, 254)",
+          borderCapStyle: "butt",
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: "miter",
+          pointBorderColor: "rgb(189, 224, 254)",
+          pointBackgroundColor: "rgb(255, 255, 255)",
+          pointBorderWidth: 10,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgb(0, 0, 0)",
+          pointHoverBorderColor: "rgba(220, 220, 220,1)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: itemCountPerMonth,
         },
       ],
     };
