@@ -20,13 +20,14 @@
     "unit_test:debug": "node --inspect node_modules/.bin/jest --runInBand --env=jsdom",
     "integration_test_selenium": "concurrently -k --success first \"npm run test > /dev/null\" \"(wait-on http://127.0.0.1:5000/ && node ./node_modules/mocha/bin/mocha --timeout 15000 ./test/integration_selenium)\"",
     "integration_test_cypress:run": "npm run build:test && cypress run --config-file ./test/integration_cypress/config/config.json",
-    "integration_test_cypress:open": "npm run build:test && cypress open --config-file ./test/integration_cypress/config/config.json"
+    "integration_test_cypress:open": "npm run build:test && cypress open --config-file ./test/integration_cypress/config/config.json",
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "@bahmutov/cy-rollup": "^2.0.0",
-    "@beyonk/svelte-datepicker": "^11.0.2",
+    "@beyonk/svelte-datepicker": "^12.0.0",
     "@beyonk/svelte-notifications": "^4.1.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@rollup/plugin-babel": "^5.3.0",
@@ -54,6 +55,7 @@
     "jest-svelte-events": "^1.0.5",
     "js-logger": "^1.6.1",
     "lru-cache": "^6.0.0",
+    "patch-package": "^6.4.7",
     "mocha": "^9.2.0",
     "pouchdb-browser": "^7.2.1",
     "pouchdb-find": "^7.2.2",
