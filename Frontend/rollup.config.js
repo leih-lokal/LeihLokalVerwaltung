@@ -29,6 +29,7 @@ export default {
       ENV_WC_CLIENT: process.env.WC_CLIENT,
       ENV_DATABASE: process.env.DATABASE,
       ENV_NODE_ENV: process.env.NODE_ENV,
+      ENV_SERVICE_WORKER_DISABLED: process.env.SERVICE_WORKER_DISABLED,
     }),
     svelte({
       emitCss: true,
