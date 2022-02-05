@@ -116,38 +116,23 @@ class Database {
     );
   }
 
-  async createView(name, mapFun, reduceFun) {
-    try {
-      await this.database.put({
-        _id: "_design/" + name,
-        views: {
-          [name]: {
-            map: mapFun,
-            ...(reduceFun && { reduce: reduceFun }),
-          },
-        },
-      });
-    } catch (err) {
-      // ignore if doc already exists
-      if (err.name !== "conflict") {
-        throw err;
-      }
-    }
-  }
-
   async queryView(name, options = {}) {
     return this.database.query(name, options);
   }
 
   async createIndex(index) {
+    Logger.debug("creating index", JSON.stringify(index));
     await this.database.createIndex(index);
     this.cache.reset();
     this.queryPaginatedDocsCache.reset();
   }
 
-  async docsMatchingAllSelectorsSortedBy(options) {
-    const { selectors, sortBy, rowsPerPage, skip } = options;
-
+  async docsMatchingAllSelectorsSortedBy({
+    selectors,
+    sortBy,
+    rowsPerPage,
+    skip,
+  }) {
     // get docs of page
     const docsOfPage = await this.findCached({
       sort: sortBy,
@@ -180,23 +165,7 @@ class Database {
     }
   }
 
-  async listenForChanges(onDocsChanged, docType) {
-    await this.database
-      .put({
-        _id: "_design/filterbytype",
-        filters: {
-          filterbytype: function (doc, req) {
-            return doc.type === req.query.type || doc._deleted === true;
-          }.toString(),
-        },
-      })
-      .catch((error) => {
-        // ignore document update conflicts (when already exists)
-        if (error.status !== 409) {
-          Logger.error("Failed to create design doc for change filter", error);
-        }
-      });
-
+  listenForChanges(onDocsChanged, docType) {
     this.cancelListenerForDocType(docType);
     this.changeListeners[docType] = this.database
       .changes({
@@ -208,11 +177,37 @@ class Database {
       })
       .on("change", onDocsChanged)
       .on("complete", function (info) {
-        Logger.debug(
-          `CouchDb changeListener completed: ${JSON.stringify(info)}`
-        );
+        Logger.debug("Change listener completed", info);
       })
-      .on("error", Logger.error);
+      .on("error", async (error) => {
+        if ("not_found" === error.name) {
+          Logger.warn(
+            "Design Doc for filtering docs by type is missing and will be created now",
+            error
+          );
+          await this.database
+            .put({
+              _id: "_design/filterbytype",
+              filters: {
+                filterbytype: function (doc, req) {
+                  return doc.type === req.query.type || doc._deleted === true;
+                }.toString(),
+              },
+            })
+            .then(() => this.listenForChanges(onDocsChanged, docType))
+            .catch((error) => {
+              // ignore document update conflicts (when already exists)
+              if (error.status !== 409) {
+                Logger.error(
+                  "Failed to create design doc for change filter",
+                  error
+                );
+              }
+            });
+        } else {
+          Logger.error("failed to listen for changes", error);
+        }
+      });
   }
 
   async query(options, onDocsUpdated) {
@@ -286,15 +281,31 @@ class Database {
     }).then((result) => result.docs);
   }
 
-  async findCached(options, forceRefresh = false) {
-    const cacheKey = JSON.stringify(options);
+  async findCached(query, forceRefresh = false) {
+    const cacheKey = JSON.stringify(query);
     if (!forceRefresh && this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
     }
-    //this.database.explain(options).then(console.log);
-    const result = await this.database.find(options);
-    this.cache.set(cacheKey, result);
-    return result;
+    try {
+      const result = await this.database.find(query);
+      this.cache.set(cacheKey, result);
+      return result;
+    } catch (error) {
+      if ("no_usable_index" === error.name && query.sort) {
+        const sortFields = query.sort.flatMap(Object.keys);
+        Logger.warn(
+          `Index for sort field ${sortFields} was missing and will be created now.`
+        );
+        await this.createIndex({
+          index: {
+            fields: sortFields,
+          },
+        });
+        return this.findCached(query, forceRefresh);
+      }
+      Logger.error("failed to execute query", JSON.stringify(query), e);
+      throw e;
+    }
   }
 
   async fetchUniqueCustomerFieldValues(field, startsWith, isNumeric = false) {

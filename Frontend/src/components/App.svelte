@@ -7,7 +7,6 @@
   import TableView from "./TableView/TableView.svelte";
   import Settings from "./Input/SettingsFormular.svelte";
   import config from "../data/config.js";
-  import createIndex from "../data/createIndex";
   import Database from "../database/ENV_DATABASE";
   import Logger from "./Logging/Logger.svelte";
   import LogView from "./Logging/LogView.svelte";
@@ -54,7 +53,6 @@
     })
   );
 
-  Database.onConnected(createIndex);
   Database.connect();
 </script>
 
