@@ -303,8 +303,8 @@ class Database {
         });
         return this.findCached(query, forceRefresh);
       }
-      Logger.error("failed to execute query", JSON.stringify(query), e);
-      throw e;
+      Logger.error("failed to execute query", JSON.stringify(query), error);
+      throw error;
     }
   }
 
