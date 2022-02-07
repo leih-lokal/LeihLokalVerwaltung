@@ -32,15 +32,24 @@ export default {
   ],
   inputs: [
     {
+      id: "id",
+      label: "Nutzernummer",
+      group: "ID und Name",
+      component: TextInput,
+      props: {
+        onlyNumbers: true,
+      },
+    },
+    {
       id: "firstname",
       label: "Vorname",
-      group: "Name",
+      group: "ID und Name",
       component: TextInput,
     },
     {
       id: "lastname",
       label: "Nachname",
-      group: "Name",
+      group: "ID und Name",
       component: TextInput,
     },
     {
@@ -144,15 +153,6 @@ export default {
         isCreatable: true,
         isMulti: true,
         isClearable: true,
-      },
-    },
-    {
-      id: "id",
-      label: "Nutzernummer",
-      group: "Sonstiges",
-      component: TextInput,
-      props: {
-        onlyNumbers: true,
       },
     },
     {
