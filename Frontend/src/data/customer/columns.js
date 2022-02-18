@@ -7,6 +7,16 @@ import { activeRentalsForCustomerSelector } from "../selectors";
 
 const backgroundColor = async (customer) => customer.highlight;
 
+async function countRentals(customer_id) {
+  const selectors = [
+    {
+      customer_id: customer_id,
+    },
+  ];
+  return await Database.countDocs(selectors);
+}
+
+
 export default [
   {
     title: "Id",
@@ -113,6 +123,14 @@ export default [
       );
       return activeRentalIds.length;
     },
+    backgroundColor,
+  },
+  {
+    title: "Ausleihen Insgesamt",
+    key: "id",
+    search: "exclude",
+    disableSort: true,
+    display: countRentals,
     backgroundColor,
   },
 ];

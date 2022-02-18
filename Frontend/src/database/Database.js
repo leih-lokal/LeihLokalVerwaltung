@@ -116,6 +116,17 @@ class Database {
     );
   }
 
+ countDocs(selectors) {
+    const countPromise = this.findCached({
+      limit: 99999999,
+      fields: ["_id"],
+      selector: {
+        $and: selectors,
+      },
+    }).then((result) => result.docs.length);
+    return countPromise
+  }
+
   async createView(name, mapFun, reduceFun) {
     try {
       await this.database.put({
