@@ -8,6 +8,7 @@
   export let disabled = false;
   export let multiline = false;
   export let onlyNumbers = false;
+  export let quickset = {};
 
   let textAreaRef;
   const dispatch = createEventDispatcher();
@@ -20,7 +21,6 @@
   };
 
   onMount(resizeTextArea);
-
   $: if (onlyNumbers && typeof value !== "number" && value !== "") {
     value = parseInt(value);
   }
@@ -50,12 +50,20 @@
       name={id}
       {readonly}
       {disabled}
-      on:keydown={(event) =>
-        event.key === "Enter" ? event.preventDefault() : event}
+      on:keydown={(event) => (event.key === "Enter" ? event.preventDefault() : event)}
       on:input={(event) => dispatch("change", event.target.value)}
     />
   {/if}
 </form>
+
+{#each Object.entries(quickset) as [val, label]}
+  <button
+    class="button-tight"
+    on:click={() => {
+      value = val;
+    }}>{label}</button
+  >
+{/each}
 
 <style>
   input[type="text"] {
@@ -71,5 +79,12 @@
     width: 100% !important;
     resize: none;
     overflow: hidden;
+  }
+  .button-tight {
+    height: 1.5rem;
+    font-size: smaller;
+    line-height: 0.75rem;
+    margin-top: 0.25rem;
+    margin-left: 0.1rem;
   }
 </style>
