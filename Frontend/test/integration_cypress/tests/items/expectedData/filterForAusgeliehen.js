@@ -44,6 +44,10 @@ module.exports = [
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
+    {
+      text: "8",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -88,6 +92,10 @@ module.exports = [
     },
     {
       text: "verliehen",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "6",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -136,6 +144,10 @@ module.exports = [
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
+    {
+      text: "11",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -182,6 +194,10 @@ module.exports = [
       text: "verliehen",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "33",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -226,6 +242,10 @@ module.exports = [
     },
     {
       text: "verliehen",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "33",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
@@ -274,6 +294,10 @@ module.exports = [
       text: "verliehen",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "5",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -318,6 +342,10 @@ module.exports = [
     },
     {
       text: "verliehen",
+      backgroundColor: "rgb(250, 45, 30)",
+    },
+    {
+      text: "8",
       backgroundColor: "rgb(250, 45, 30)",
     },
   ],
@@ -366,6 +394,10 @@ module.exports = [
       text: "verliehen",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "1",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -410,6 +442,10 @@ module.exports = [
     },
     {
       text: "verliehen",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "1",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
@@ -458,6 +494,10 @@ module.exports = [
       text: "verliehen",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "4",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -504,6 +544,10 @@ module.exports = [
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
+    {
+      text: "15",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -548,6 +592,10 @@ module.exports = [
     },
     {
       text: "verliehen",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "15",
       backgroundColor: "rgb(45, 144, 224)",
     },
   ],

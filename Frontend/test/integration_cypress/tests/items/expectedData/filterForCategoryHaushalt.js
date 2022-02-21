@@ -44,6 +44,10 @@ module.exports = [
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
+	{
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -88,6 +92,10 @@ module.exports = [
     },
     {
       text: "verfügbar",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+		{
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -136,6 +144,10 @@ module.exports = [
       text: "gelöscht",
       backgroundColor: "rgb(45, 144, 224)",
     },
+	{
+      text: "0",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
   ],
   [
     {
@@ -180,6 +192,10 @@ module.exports = [
     },
     {
       text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+	{
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -228,6 +244,10 @@ module.exports = [
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
+	{
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -272,6 +292,10 @@ module.exports = [
     },
     {
       text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+	{
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],

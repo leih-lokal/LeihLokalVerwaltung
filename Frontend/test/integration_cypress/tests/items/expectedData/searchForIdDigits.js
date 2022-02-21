@@ -44,6 +44,10 @@ module.exports = [
       text: "verfügbar",
       backgroundColor: "rgb(242, 242, 242)",
     },
+    {
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -88,6 +92,10 @@ module.exports = [
     },
     {
       text: "verfügbar",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
