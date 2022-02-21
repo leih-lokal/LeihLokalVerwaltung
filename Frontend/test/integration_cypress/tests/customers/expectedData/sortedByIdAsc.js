@@ -113,7 +113,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     { text: "0", backgroundColor: "rgb(242, 242, 242)" },
-    { text: "0", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "1", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
     { text: "6", backgroundColor: "rgb(247, 239, 10)" },
