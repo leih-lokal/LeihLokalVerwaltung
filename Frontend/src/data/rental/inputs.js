@@ -305,7 +305,7 @@ export default {
       hidden: (context) => context.createNew,
       component: TextInput,
       props: {
-        quickset:{0:'0'},
+        quickset: (context) => ({ [context.doc.deposit]: context.doc.deposit }),
         onlyNumbers: true,
       },
     },
