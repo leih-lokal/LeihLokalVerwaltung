@@ -116,7 +116,7 @@ class Database {
     );
   }
 
- countDocs(selectors) {
+  async countDocs(selectors) {
     const countPromise = this.findCached({
       limit: 99999999,
       fields: ["_id"],
@@ -124,7 +124,7 @@ class Database {
         $and: selectors,
       },
     }).then((result) => result.docs.length);
-    return countPromise
+    return countPromise;
   }
 
   async createView(name, mapFun, reduceFun) {
@@ -169,19 +169,9 @@ class Database {
       },
     }).then((result) => result.docs);
 
-    // lazy count (for pagination)
-    const countPromise = this.findCached({
-      sort: sortBy,
-      limit: 99999999,
-      fields: ["_id"],
-      selector: {
-        $and: selectors,
-      },
-    }).then((result) => result.docs.length);
-
     return {
       docs: docsOfPage,
-      count: countPromise,
+      count: this.countDocs(selectors),
     };
   }
 
