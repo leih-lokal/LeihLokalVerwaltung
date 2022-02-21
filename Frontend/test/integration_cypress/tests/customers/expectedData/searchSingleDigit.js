@@ -52,6 +52,10 @@ module.exports = [
       text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
+    {
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -104,6 +108,10 @@ module.exports = [
     },
     {
       text: "1",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "2",
       backgroundColor: "rgb(247, 239, 10)",
     },
   ],
@@ -160,6 +168,10 @@ module.exports = [
       text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
+    {
+      text: "1",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -214,6 +226,10 @@ module.exports = [
       text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "1",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -262,6 +278,10 @@ module.exports = [
     },
     {
       text: "gesehen, vorbeigelaufen",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -322,6 +342,10 @@ module.exports = [
       text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "2",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -370,6 +394,10 @@ module.exports = [
     },
     {
       text: "gesehen, vorbeigelaufen",
+      backgroundColor: "rgb(247, 239, 10)",
+    },
+    {
+      text: "0",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -430,6 +458,10 @@ module.exports = [
       text: "1",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "1",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -484,112 +516,8 @@ module.exports = [
       text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
-  ],
-  [
-    {
-      text: "19",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Stichel",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Zorine",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Burning Wood",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Carapo",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "22.12.2020",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "zstichelby@goo.ne.jp",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "1117290665",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Nein",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "gesehen, vorbeigelaufen",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
     {
       text: "0",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "100",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Palluschek",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Laurette",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Bultman",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Cereté",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "21.11.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "lpalluschek2l@rambler.ru",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "2535673244",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Nein",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "gesehen, vorbeigelaufen",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "1",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
