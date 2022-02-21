@@ -7,6 +7,7 @@ async function countRentals(item_id) {
   const selectors = [
     {
       item_id: item_id,
+      type: "rental"
     },
   ];
   return await Database.countDocs(selectors);
