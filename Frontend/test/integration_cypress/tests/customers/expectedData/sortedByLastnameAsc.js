@@ -16,6 +16,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     { text: "0", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "1", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
     { text: "61", backgroundColor: "rgb(255, 255, 255)" },
@@ -34,6 +35,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     { text: "0", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "1", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "40", backgroundColor: "rgb(242, 242, 242)" },
@@ -55,6 +57,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     { text: "2", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "4", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
     { text: "97", backgroundColor: "rgb(255, 255, 255)" },
@@ -76,6 +79,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     { text: "0", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "1", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "49", backgroundColor: "rgb(242, 242, 242)" },
@@ -96,6 +100,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(242, 242, 242)",
     },
+    { text: "0", backgroundColor: "rgb(242, 242, 242)" },
     { text: "0", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
@@ -118,6 +123,7 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     { text: "1", backgroundColor: "rgb(45, 144, 224)" },
+    { text: "2", backgroundColor: "rgb(45, 144, 224)" },
   ],
   [
     { text: "74", backgroundColor: "rgb(247, 239, 10)" },
@@ -138,6 +144,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(247, 239, 10)",
     },
+    { text: "0", backgroundColor: "rgb(247, 239, 10)" },
     { text: "0", backgroundColor: "rgb(247, 239, 10)" },
   ],
   [
@@ -160,6 +167,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     { text: "0", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "0", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "46", backgroundColor: "rgb(242, 242, 242)" },
@@ -180,6 +188,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(242, 242, 242)",
     },
+    { text: "0", backgroundColor: "rgb(242, 242, 242)" },
     { text: "0", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
@@ -202,6 +211,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     { text: "0", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "1", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "8", backgroundColor: "rgb(242, 242, 242)" },
@@ -223,6 +233,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     { text: "0", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "1", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
     { text: "78", backgroundColor: "rgb(255, 255, 255)" },
@@ -241,6 +252,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     { text: "1", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "2", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "69", backgroundColor: "rgb(242, 242, 242)" },
@@ -261,6 +273,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(242, 242, 242)",
     },
+    { text: "0", backgroundColor: "rgb(242, 242, 242)" },
     { text: "0", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
@@ -286,6 +299,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     { text: "0", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "2", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "66", backgroundColor: "rgb(242, 242, 242)" },
@@ -304,6 +318,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     { text: "0", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "1", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
     { text: "18", backgroundColor: "rgb(255, 255, 255)" },
@@ -321,6 +336,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    { text: "0", backgroundColor: "rgb(255, 255, 255)" },
     { text: "0", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
@@ -342,6 +358,7 @@ module.exports = [
       text: "gesehen, vorbeigelaufen",
       backgroundColor: "rgb(250, 45, 30)",
     },
+    { text: "0", backgroundColor: "rgb(250, 45, 30)" },
     { text: "0", backgroundColor: "rgb(250, 45, 30)" },
   ],
 ];
