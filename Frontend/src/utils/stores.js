@@ -25,8 +25,10 @@ const createRecentEmployeesSet = () => {
   return {
     ...store,
     add: (string) =>
-      store.update((prevStore) => string ? (new Set([...prevStore, string])):prevStore),
-    size: () => store.size
+      store.update((prevStore) =>
+        string ? new Set([...prevStore, string]) : prevStore
+      ),
+    size: () => store.size,
   };
 };
 

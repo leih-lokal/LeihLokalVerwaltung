@@ -50,7 +50,8 @@
       name={id}
       {readonly}
       {disabled}
-      on:keydown={(event) => (event.key === "Enter" ? event.preventDefault() : event)}
+      on:keydown={(event) =>
+        event.key === "Enter" ? event.preventDefault() : event}
       on:input={(event) => dispatch("change", event.target.value)}
     />
   {/if}
