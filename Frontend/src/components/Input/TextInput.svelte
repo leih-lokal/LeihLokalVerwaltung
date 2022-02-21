@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
   import { restrictInputToNumbers } from "../../actions/RestrictInputToNumbers";
+  import ButtonTight from "./ButtonTight.svelte";
 
   export let id = "";
   export let readonly = false;
@@ -43,7 +44,6 @@
     />
   {:else}
     <input
-      use:restrictInputToNumbers={onlyNumbers}
       type="text"
       bind:value
       {id}
@@ -57,13 +57,13 @@
   {/if}
 </form>
 
-{#each Object.entries(quickset) as [val, label]}
-  <button
-    class="button-tight"
-    on:click={() => {
-      value = val;
-    }}>{label}</button
-  >
+{#each Object.entries(quickset) as [target, text]}
+  <ButtonTight
+    {text}
+    onclick={() => {
+      value = target;
+    }}
+  />
 {/each}
 
 <style>
@@ -80,12 +80,5 @@
     width: 100% !important;
     resize: none;
     overflow: hidden;
-  }
-  .button-tight {
-    height: 1.5rem;
-    font-size: smaller;
-    line-height: 0.75rem;
-    margin-top: 0.25rem;
-    margin-left: 0.1rem;
   }
 </style>
