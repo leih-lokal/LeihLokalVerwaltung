@@ -95,7 +95,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "0",
+      text: "8",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -346,7 +346,7 @@ module.exports = [
     },
     {
       text: "0",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(247, 239, 10)",
     },
   ],
   [
@@ -496,7 +496,7 @@ module.exports = [
     },
     {
       text: "0",
-      backgroundColor: "rgb(242, 242, 242)",
+      backgroundColor: "rgb(255, 255, 255)",
     },
   ],
   [

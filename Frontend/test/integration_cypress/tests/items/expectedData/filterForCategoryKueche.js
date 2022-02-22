@@ -395,7 +395,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
 	{
-      text: "0",
+      text: "6",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
