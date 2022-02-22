@@ -116,7 +116,7 @@ class Database {
     );
   }
 
-  async countDocs(selectors) {
+  countDocs(selectors) {
     const countPromise = this.findCached({
       limit: 99999999,
       fields: ["_id"],
