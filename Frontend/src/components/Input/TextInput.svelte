@@ -60,7 +60,7 @@
 {#each Object.entries(quickset) as [target, text]}
   <ButtonTight
     {text}
-    onclick={() => {
+    on:click={() => {
       value = target;
     }}
   />
