@@ -1,9 +1,8 @@
 <script>
   export let text;
-  export let onclick;
 </script>
 
-<button class="button-tight" on:click={onclick}>{text}</button>
+<button class="button-tight" on:click>{text}</button>
 
 <style>
   .button-tight {
