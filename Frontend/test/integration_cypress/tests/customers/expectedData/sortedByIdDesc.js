@@ -19,8 +19,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     { text: "1", backgroundColor: "rgb(242, 242, 242)" },
-	    { text: "2", backgroundColor: "rgb(242, 242, 242)" },
-
+    { text: "2", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
     { text: "99", backgroundColor: "rgb(131, 235, 52)" },
@@ -39,8 +38,7 @@ module.exports = [
       backgroundColor: "rgb(131, 235, 52)",
     },
     { text: "1", backgroundColor: "rgb(131, 235, 52)" },
-	    { text: "1", backgroundColor: "rgb(131, 235, 52)" },
-
+    { text: "1", backgroundColor: "rgb(131, 235, 52)" },
   ],
   [
     { text: "98", backgroundColor: "rgb(242, 242, 242)" },
@@ -62,8 +60,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     { text: "2", backgroundColor: "rgb(242, 242, 242)" },
-	    { text: "2", backgroundColor: "rgb(242, 242, 242)" },
-
+    { text: "2", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
     { text: "97", backgroundColor: "rgb(255, 255, 255)" },
@@ -85,8 +82,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     { text: "0", backgroundColor: "rgb(255, 255, 255)" },
-	    { text: "1", backgroundColor: "rgb(255, 255, 255)" },
-
+    { text: "1", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "96", backgroundColor: "rgb(247, 239, 10)" },
@@ -108,8 +104,7 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     { text: "0", backgroundColor: "rgb(247, 239, 10)" },
-	    { text: "1", backgroundColor: "rgb(247, 239, 10)" },
-
+    { text: "1", backgroundColor: "rgb(247, 239, 10)" },
   ],
   [
     { text: "95", backgroundColor: "rgb(255, 255, 255)" },
@@ -131,8 +126,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     { text: "0", backgroundColor: "rgb(255, 255, 255)" },
-	    { text: "2", backgroundColor: "rgb(255, 255, 255)" },
-
+    { text: "2", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "94", backgroundColor: "rgb(242, 242, 242)" },
@@ -154,8 +148,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     { text: "0", backgroundColor: "rgb(242, 242, 242)" },
-	    { text: "0", backgroundColor: "rgb(242, 242, 242)" },
-
+    { text: "0", backgroundColor: "rgb(242, 242, 242)" },
   ],
   [
     { text: "93", backgroundColor: "rgb(255, 255, 255)" },
@@ -177,8 +170,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     { text: "1", backgroundColor: "rgb(255, 255, 255)" },
-	    { text: "1", backgroundColor: "rgb(255, 255, 255)" },
-
+    { text: "1", backgroundColor: "rgb(255, 255, 255)" },
   ],
   [
     { text: "92", backgroundColor: "rgb(242, 242, 242)" },

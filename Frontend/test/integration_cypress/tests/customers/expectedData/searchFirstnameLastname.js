@@ -23,6 +23,5 @@ module.exports = [
     },
     { text: "0", backgroundColor: "rgb(242, 242, 242)" },
     { text: "1", backgroundColor: "rgb(242, 242, 242)" },
-
   ],
 ];
