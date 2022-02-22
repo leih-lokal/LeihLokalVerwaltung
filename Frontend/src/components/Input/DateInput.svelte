@@ -68,7 +68,7 @@
 {/if}
 
 {#each Object.entries(quickset) as [days, text]}
-  <ButtonTight {text} onclick={() => addDays(parseInt(days))} />
+  <ButtonTight {text} on:click={() => addDays(parseInt(days))} />
 {/each}
 
 <style>
