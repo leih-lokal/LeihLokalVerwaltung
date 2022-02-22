@@ -45,107 +45,107 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-  ],
-  [
-    {
-      text: "5059",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Kabeltrommel",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "25",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "19.11.2020",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "50m",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "verliehen",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(45, 144, 224)",
-    },
-  ],
-  [
-    {
-      text: "5059",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Kabeltrommel",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "-",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Heimwerker",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "25",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "19.11.2020",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "50m",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "verliehen",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
       text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "5059",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "Kabeltrommel",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "-",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "-",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "Heimwerker",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "25",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "19.11.2020",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "50m",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "verliehen",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
+  ],
+  [
+    {
+      text: "5059",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Kabeltrommel",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "-",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "-",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Heimwerker",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "25",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "19.11.2020",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "50m",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "verliehen",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "15",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
