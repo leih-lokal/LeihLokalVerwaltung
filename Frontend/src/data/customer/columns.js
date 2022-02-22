@@ -16,7 +16,6 @@ async function countRentals(customer_id) {
   return await Database.countDocs(selectors);
 }
 
-
 export default [
   {
     title: "Id",
@@ -116,13 +115,8 @@ export default [
     search: "exclude",
     disableSort: true,
     export: "exclude",
-    display: async (customer_id) => {
-      let activeRentalIds = await Database.fetchAllDocsBySelector(
-        activeRentalsForCustomerSelector(customer_id),
-        ["_id"]
-      );
-      return activeRentalIds.length;
-    },
+    display: async (customer_id) =>
+      Database.countDocs([activeRentalsForCustomerSelector(customer_id)]),
     backgroundColor,
   },
   {

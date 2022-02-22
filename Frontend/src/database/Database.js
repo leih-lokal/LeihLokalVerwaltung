@@ -16,7 +16,7 @@ class Database {
     // cache for query that returns docs on a page
     this.queryPaginatedDocsCache = new Cache(50);
     // cache for other queries
-    this.cache = new Cache(50);
+    this.cache = new Cache(500);
   }
 
   cancelAllListeners() {
