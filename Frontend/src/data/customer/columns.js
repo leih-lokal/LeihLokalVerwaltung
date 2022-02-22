@@ -11,10 +11,10 @@ async function countRentals(customer_id) {
   const selectors = [
     {
       customer_id: customer_id,
-      type: "rental"
+      type: "rental",
     },
   ];
-  return await Database.countDocs(selectors);
+  return Database.countDocs(selectors);
 }
 
 export default [
