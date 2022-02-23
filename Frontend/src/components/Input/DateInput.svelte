@@ -6,6 +6,7 @@
     millisAtStartOfDay,
   } from "../../utils/utils";
   import { createEventDispatcher } from "svelte";
+  import ButtonTight from "./ButtonTight.svelte";
 
   const dispatch = createEventDispatcher();
 
@@ -66,10 +67,8 @@
   </DatePicker>
 {/if}
 
-{#each Object.entries(quickset) as [days, label]}
-  <button class="button-tight" on:click={() => addDays(parseInt(days))}
-    >{label}</button
-  >
+{#each Object.entries(quickset) as [days, text]}
+  <ButtonTight {text} on:click={() => addDays(parseInt(days))} />
 {/each}
 
 <style>
@@ -87,12 +86,5 @@
   input[disabled] {
     color: #dcdad1;
     background-color: rgba(239, 239, 239, 0.3);
-  }
-  .button-tight {
-    height: 1.5rem;
-    font-size: smaller;
-    line-height: 0.75rem;
-    margin-top: 0.25rem;
-    margin-left: 0.1rem;
   }
 </style>

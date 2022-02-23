@@ -1,4 +1,5 @@
 import Database from "../../database/ENV_DATABASE";
+import { recentEmployeesStore } from "../../utils/stores";
 import { notifier } from "@beyonk/svelte-notifications";
 import WoocommerceClient from "../../database/ENV_WC_CLIENT";
 import columns from "./columns";
@@ -79,6 +80,8 @@ export default async (rental, closePopup, updateItemStatus, createNew) => {
 
   await (createNew ? Database.createDoc(rental) : Database.updateDoc(rental))
     .then((result) => notifier.success("Leihvorgang gespeichert!"))
+    .then(() => recentEmployeesStore.add(rental.passing_out_employee))
+    .then(() => recentEmployeesStore.add(rental.receiving_employee))
     .then(closePopup)
     .catch((error) => {
       notifier.danger("Leihvorgang konnte nicht gespeichert werden!", {

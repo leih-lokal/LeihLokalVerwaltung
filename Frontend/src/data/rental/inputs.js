@@ -5,8 +5,10 @@ import Checkbox from "../../components/Input/Checkbox.svelte";
 import Database from "../../database/ENV_DATABASE";
 import onSave from "./onSave";
 import onDelete from "./onDelete";
+import { recentEmployeesStore } from "../../utils/stores";
 import initialValues from "./initialValues";
 import { notifier } from "@beyonk/svelte-notifications";
+import { get } from "svelte/store";
 import {
   customerIdStartsWithSelector,
   itemIdStartsWithAndNotDeletedSelector,
@@ -38,6 +40,14 @@ const updateToggleStatus = (itemExistsMoreThanOnce) => {
     hideToggleUpdateItemStatus = false;
   }
 };
+
+function getRecentEmployees() {
+  var employeeList = {};
+  for (let employee of get(recentEmployeesStore)) {
+    employeeList[employee] = employee;
+  }
+  return employeeList;
+}
 
 const updateItemOfRental = (context, item) => {
   context.updateDoc({
@@ -293,6 +303,7 @@ export default {
       hidden: (context) => context.createNew,
       component: TextInput,
       props: {
+        quickset: (context) => ({ [context.doc.deposit]: context.doc.deposit }),
         onlyNumbers: true,
       },
     },
@@ -302,6 +313,9 @@ export default {
       label: "Ausgabe",
       group: "Mitarbeiter",
       component: TextInput,
+      props: {
+        quickset: getRecentEmployees,
+      },
     },
     {
       id: "receiving_employee",
@@ -309,6 +323,9 @@ export default {
       group: "Mitarbeiter",
       hidden: (context) => context.createNew,
       component: TextInput,
+      props: {
+        quickset: getRecentEmployees,
+      },
     },
     {
       id: "remark",

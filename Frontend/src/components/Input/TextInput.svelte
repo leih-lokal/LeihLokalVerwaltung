@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
   import { restrictInputToNumbers } from "../../actions/RestrictInputToNumbers";
+  import ButtonTight from "./ButtonTight.svelte";
 
   export let id = "";
   export let readonly = false;
@@ -8,6 +9,7 @@
   export let disabled = false;
   export let multiline = false;
   export let onlyNumbers = false;
+  export let quickset = {};
 
   let textAreaRef;
   const dispatch = createEventDispatcher();
@@ -20,7 +22,6 @@
   };
 
   onMount(resizeTextArea);
-
   $: if (onlyNumbers && typeof value !== "number" && value !== "") {
     value = parseInt(value);
   }
@@ -43,7 +44,6 @@
     />
   {:else}
     <input
-      use:restrictInputToNumbers={onlyNumbers}
       type="text"
       bind:value
       {id}
@@ -56,6 +56,15 @@
     />
   {/if}
 </form>
+
+{#each Object.entries(quickset) as [target, text]}
+  <ButtonTight
+    {text}
+    on:click={() => {
+      value = target;
+    }}
+  />
+{/each}
 
 <style>
   input[type="text"] {
