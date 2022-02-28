@@ -279,6 +279,14 @@ class Database {
       .then((result) => result.docs);
   }
 
+  fetchAll() {
+    return this.database
+      .allDocs({
+        include_docs: true,
+      })
+      .then((result) => result.rows.map((row) => row.doc));
+  }
+
   fetchDocsBySelector(selector, fields) {
     return this.findCached({
       limit: 10,

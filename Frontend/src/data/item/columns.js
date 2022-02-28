@@ -1,16 +1,16 @@
 import { saveParseTimestampToString } from "../../utils/utils.js";
-import Database from "../../database/Database"
+import Database from "../../database/Database";
 
 const backgroundColor = async (customer) => customer.highlight;
 
-async function countRentals(item_id) {
+function countRentals(item_id) {
   const selectors = [
     {
       item_id: item_id,
-      type: "rental"
+      type: "rental",
     },
   ];
-  return await Database.countDocs(selectors);
+  return Database.countDocs(selectors);
 }
 
 export default [
@@ -104,6 +104,9 @@ export default [
     search: "exclude",
     disableSort: true,
     display: countRentals,
+    displayExport: (allDocs, item_id) =>
+      allDocs.filter((doc) => doc.type === "rental" && doc.item_id === item_id)
+        .length,
     backgroundColor,
   },
 ];

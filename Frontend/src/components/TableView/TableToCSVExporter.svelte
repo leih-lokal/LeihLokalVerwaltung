@@ -24,45 +24,43 @@
   $: itemType = $location.split("/")[1].slice(0, -1);
   const delimiter = ";";
 
-  function fetchItems() {
-    return Database.fetchAllDocsBySelector(
-      Database.selectorBuilder().withDocType(itemType).build()
-    );
-  }
-
-  function convertToCSV(items) {
-    const validKeys = columns[itemType].map((col) => col.key);
-    const colByKey = (key) => columns[itemType].find((col) => col.key === key);
+  async function convertToCSV(items) {
+    console.log(items);
     let csvString =
       columns[itemType].map((col) => col.title).join(delimiter) + "\r\n";
-    items.forEach((item) => {
-      let csvValues = [];
-      for (const validKey of validKeys) {
-        let value = item.hasOwnProperty(validKey) ? item[validKey] : "";
+    items
+      .filter((item) => item.type === itemType)
+      .forEach((item) => {
+        let csvValues = [];
+        for (const column of columns[itemType]) {
+          let key = column.key;
+          let value = item.hasOwnProperty(key) ? item[key] : "";
 
-        // format value for display
-        if (colByKey(validKey).display) {
-          value = colByKey(validKey).display(value);
+          // calculate and format value for display
+          if (column.displayExport) {
+            value = column.displayExport(items, value);
+          } else if (column.display) {
+            value = column.display(value);
+          }
+
+          // remove csv delimiters and line breaks from data
+          value = String(value).replaceAll(delimiter, "");
+          value = String(value).replaceAll("\r", " ");
+          value = String(value).replaceAll("\n", " ");
+          value = String(value).replaceAll("  ", " ");
+
+          csvValues.push(value);
         }
-
-        // remove csv delimiters and line breaks from data
-        value = String(value).replaceAll(delimiter, "");
-        value = String(value).replaceAll("\r", " ");
-        value = String(value).replaceAll("\n", " ");
-        value = String(value).replaceAll("  ", " ");
-
-        csvValues.push(value);
-      }
-      csvString += csvValues.join(delimiter) + "\r\n";
-    });
+        csvString += csvValues.join(delimiter) + "\r\n";
+      });
 
     return csvString;
   }
 
   export const exportCSVFile = async () => {
-    const items = await fetchItems();
+    const allItems = await Database.fetchAll();
 
-    var csv = convertToCSV(items);
+    var csv = await convertToCSV(allItems);
 
     var exportedFilenmae = `${filenames[itemType]}.csv`;
 
