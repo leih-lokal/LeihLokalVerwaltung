@@ -44,6 +44,10 @@ module.exports = [
       text: "verliehen",
       backgroundColor: "rgb(45, 144, 224)",
     },
+    {
+      text: "15",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
   ],
   [
     {
@@ -88,6 +92,10 @@ module.exports = [
     },
     {
       text: "verliehen",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "15",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -136,6 +144,10 @@ module.exports = [
       text: "verfügbar",
       backgroundColor: "rgb(250, 45, 30)",
     },
+    {
+      text: "0",
+      backgroundColor: "rgb(250, 45, 30)",
+    },
   ],
   [
     {
@@ -180,6 +192,10 @@ module.exports = [
     },
     {
       text: "verfügbar",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -228,6 +244,10 @@ module.exports = [
       text: "verfügbar",
       backgroundColor: "rgb(45, 144, 224)",
     },
+    {
+      text: "0",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
   ],
   [
     {
@@ -274,6 +294,10 @@ module.exports = [
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "0",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -318,6 +342,10 @@ module.exports = [
     },
     {
       text: "verfügbar",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
@@ -366,6 +394,10 @@ module.exports = [
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "0",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -410,6 +442,10 @@ module.exports = [
     },
     {
       text: "verfügbar",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
@@ -458,6 +494,10 @@ module.exports = [
       text: "verliehen",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "4",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -502,6 +542,10 @@ module.exports = [
     },
     {
       text: "verliehen",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "9",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
@@ -550,6 +594,10 @@ module.exports = [
       text: "verfügbar",
       backgroundColor: "rgb(131, 235, 52)",
     },
+    {
+      text: "0",
+      backgroundColor: "rgb(131, 235, 52)",
+    },
   ],
   [
     {
@@ -594,6 +642,10 @@ module.exports = [
     },
     {
       text: "verfügbar",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
@@ -642,6 +694,10 @@ module.exports = [
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "0",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -686,6 +742,10 @@ module.exports = [
     },
     {
       text: "verfügbar",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
@@ -734,6 +794,10 @@ module.exports = [
       text: "verfügbar",
       backgroundColor: "rgb(255, 255, 255)",
     },
+    {
+      text: "0",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -778,6 +842,10 @@ module.exports = [
     },
     {
       text: "nicht verleihbar",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],

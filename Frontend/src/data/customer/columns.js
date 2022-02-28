@@ -7,6 +7,16 @@ import { activeRentalsForCustomerSelector } from "../selectors";
 
 const backgroundColor = async (customer) => customer.highlight;
 
+function countRentals(customer_id) {
+  const selectors = [
+    {
+      customer_id: customer_id,
+      type: "rental",
+    },
+  ];
+  return Database.countDocs(selectors);
+}
+
 export default [
   {
     title: "Id",
@@ -105,14 +115,27 @@ export default [
     key: "id",
     search: "exclude",
     disableSort: true,
-    export: "exclude",
-    display: async (customer_id) => {
-      let activeRentalIds = await Database.fetchAllDocsBySelector(
-        activeRentalsForCustomerSelector(customer_id),
-        ["_id"]
-      );
-      return activeRentalIds.length;
-    },
+    display: async (customer_id) =>
+      Database.countDocs([activeRentalsForCustomerSelector(customer_id)]),
+    displayExport: (allDocs, customer_id) =>
+      allDocs.filter(
+        (doc) =>
+          doc.type === "rental" &&
+          doc.customer_id === customer_id &&
+          doc.returned_on === 0
+      ).length,
+    backgroundColor,
+  },
+  {
+    title: "Ausleihen Insgesamt",
+    key: "id",
+    search: "exclude",
+    disableSort: true,
+    display: countRentals,
+    displayExport: (allDocs, customer_id) =>
+      allDocs.filter(
+        (doc) => doc.type === "rental" && doc.customer_id === customer_id
+      ).length,
     backgroundColor,
   },
 ];

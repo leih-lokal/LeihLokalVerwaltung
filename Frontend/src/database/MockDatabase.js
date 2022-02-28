@@ -271,6 +271,10 @@ class MockDatabase {
     }
   }
 
+  fetchAll() {
+    return this.getData();
+  }
+
   writeData(data) {
     localStorage.setItem("data", JSON.stringify(data));
   }

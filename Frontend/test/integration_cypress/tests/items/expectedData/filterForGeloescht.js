@@ -44,6 +44,10 @@ module.exports = [
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
+	{
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -88,6 +92,10 @@ module.exports = [
     },
     {
       text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+	{
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -136,6 +144,10 @@ module.exports = [
       text: "gelöscht",
       backgroundColor: "rgb(45, 144, 224)",
     },
+	{
+      text: "0",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
   ],
   [
     {
@@ -180,6 +192,10 @@ module.exports = [
     },
     {
       text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+	{
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -228,6 +244,10 @@ module.exports = [
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
+	{
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -272,6 +292,10 @@ module.exports = [
     },
     {
       text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+	{
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -320,6 +344,10 @@ module.exports = [
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
+	{
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -364,6 +392,10 @@ module.exports = [
     },
     {
       text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+	{
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -412,96 +444,8 @@ module.exports = [
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
-  ],
-  [
-    {
-      text: "2402",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Babywippe",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "chicco",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "SPENDENVERKAUF",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "Kinder",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "01.03.2019",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-    {
-      text: "gelöscht",
-      backgroundColor: "rgb(255, 255, 255)",
-    },
-  ],
-  [
-    {
-      text: "2402",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Babywippe",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "chicco",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "SPENDENVERKAUF",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "Kinder",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "15",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "1",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "01.03.2019",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "",
-      backgroundColor: "rgb(242, 242, 242)",
-    },
-    {
-      text: "gelöscht",
+	{
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
@@ -548,6 +492,110 @@ module.exports = [
     },
     {
       text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+	{
+      text: "0",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+  ],
+  [
+    {
+      text: "2402",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Babywippe",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "chicco",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "SPENDENVERKAUF",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "Kinder",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "01.03.2019",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+	{
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+  ],
+  [
+    {
+      text: "2402",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Babywippe",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "chicco",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "SPENDENVERKAUF",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "Kinder",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "15",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "1",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "01.03.2019",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+    {
+      text: "gelöscht",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
+	{
+      text: "0",
       backgroundColor: "rgb(255, 255, 255)",
     },
   ],
@@ -596,6 +644,10 @@ module.exports = [
       text: "gelöscht",
       backgroundColor: "rgb(242, 242, 242)",
     },
+	{
+      text: "0",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
   [
     {
@@ -642,6 +694,10 @@ module.exports = [
       text: "gelöscht",
       backgroundColor: "rgb(255, 255, 255)",
     },
+	{
+      text: "0",
+      backgroundColor: "rgb(255, 255, 255)",
+    },
   ],
   [
     {
@@ -686,6 +742,10 @@ module.exports = [
     },
     {
       text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+	{
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],
@@ -734,6 +794,10 @@ module.exports = [
       text: "gelöscht",
       backgroundColor: "rgb(45, 144, 224)",
     },
+	{
+      text: "0",
+      backgroundColor: "rgb(45, 144, 224)",
+    },
   ],
   [
     {
@@ -778,6 +842,10 @@ module.exports = [
     },
     {
       text: "gelöscht",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
+	{
+      text: "0",
       backgroundColor: "rgb(242, 242, 242)",
     },
   ],

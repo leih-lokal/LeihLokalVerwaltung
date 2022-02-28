@@ -1,6 +1,17 @@
 import { saveParseTimestampToString } from "../../utils/utils.js";
+import Database from "../../database/Database";
 
 const backgroundColor = async (customer) => customer.highlight;
+
+function countRentals(item_id) {
+  const selectors = [
+    {
+      item_id: item_id,
+      type: "rental",
+    },
+  ];
+  return Database.countDocs(selectors);
+}
 
 export default [
   {
@@ -84,6 +95,18 @@ export default [
       if (value === "reserved") return "reserviert";
       if (value === "onbackorder") return "nicht verleihbar";
     },
+    backgroundColor,
+  },
+
+  {
+    title: "Anzahl Ausleihen",
+    key: "id",
+    search: "exclude",
+    disableSort: true,
+    display: countRentals,
+    displayExport: (allDocs, item_id) =>
+      allDocs.filter((doc) => doc.type === "rental" && doc.item_id === item_id)
+        .length,
     backgroundColor,
   },
 ];

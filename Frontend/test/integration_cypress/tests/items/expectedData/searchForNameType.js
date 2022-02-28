@@ -44,5 +44,9 @@ module.exports = [
       text: "verliehen",
       backgroundColor: "rgb(242, 242, 242)",
     },
+    {
+      text: "8",
+      backgroundColor: "rgb(242, 242, 242)",
+    },
   ],
 ];
