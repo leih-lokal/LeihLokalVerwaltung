@@ -24,8 +24,7 @@
   $: itemType = $location.split("/")[1].slice(0, -1);
   const delimiter = ";";
 
-  async function convertToCSV(items) {
-    console.log(items);
+  function convertToCSV(items) {
     let csvString =
       columns[itemType].map((col) => col.title).join(delimiter) + "\r\n";
     items
@@ -60,7 +59,7 @@
   export const exportCSVFile = async () => {
     const allItems = await Database.fetchAll();
 
-    var csv = await convertToCSV(allItems);
+    var csv = convertToCSV(allItems);
 
     var exportedFilenmae = `${filenames[itemType]}.csv`;
 
