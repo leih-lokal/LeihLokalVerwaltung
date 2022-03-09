@@ -68,7 +68,7 @@
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^7.0.2",
     "selenium-webdriver": "^4.1.1",
-    "simple-svelte-autocomplete": "^2.1.0",
+    "simple-svelte-autocomplete": "^2.3.5",
     "sirv-cli": "^1.0.14",
     "svelte": "^3.42.4",
     "svelte-chartjs": "^1.1.1",
