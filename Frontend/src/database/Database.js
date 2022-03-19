@@ -14,9 +14,9 @@ class Database {
 
   constructor() {
     // cache for query that returns docs on a page
-    this.queryPaginatedDocsCache = new Cache(50);
+    this.queryPaginatedDocsCache = new Cache({ max: 50 });
     // cache for other queries
-    this.cache = new Cache(500);
+    this.cache = new Cache({ max: 500 });
   }
 
   cancelAllListeners() {
@@ -29,8 +29,8 @@ class Database {
 
   connect() {
     this.cancelAllListeners();
-    this.cache.reset();
-    this.queryPaginatedDocsCache.reset();
+    this.cache.clear();
+    this.queryPaginatedDocsCache.clear();
     const settings = get(settingsStore);
     this.database = new PouchDB(
       `http${settings.couchdbHTTPS ? "s" : ""}://${settings.couchdbUser}:${
@@ -49,7 +49,7 @@ class Database {
   }
 
   async updateDoc(updatedDoc, updateRev = true) {
-    this.cache.reset();
+    this.cache.clear();
     let rev = updatedDoc._rev;
     if (updateRev) {
       rev = await this.database
@@ -69,15 +69,15 @@ class Database {
   }
 
   createDoc(doc) {
-    this.cache.reset();
-    this.queryPaginatedDocsCache.reset();
+    this.cache.clear();
+    this.queryPaginatedDocsCache.clear();
     doc["last_update"] = new Date().getTime();
     Logger.debug(`Created doc: ${JSON.stringify(doc)}`);
     return this.database.post(doc);
   }
 
   removeDoc(doc) {
-    this.cache.reset();
+    this.cache.clear();
     Logger.debug(`Removed doc: ${JSON.stringify(doc)}`);
     return this.database.remove(doc._id, doc._rev);
   }
@@ -152,8 +152,8 @@ class Database {
 
   async createIndex(index) {
     await this.database.createIndex(index);
-    this.cache.reset();
-    this.queryPaginatedDocsCache.reset();
+    this.cache.clear();
+    this.queryPaginatedDocsCache.clear();
   }
 
   async docsMatchingAllSelectorsSortedBy(options) {
@@ -261,8 +261,8 @@ class Database {
 
     // callback if doc updated
     this.listenForChanges(() => {
-      this.queryPaginatedDocsCache.reset();
-      this.cache.reset();
+      this.queryPaginatedDocsCache.clear();
+      this.cache.clear();
       onDocsUpdated();
     }, docType);
 

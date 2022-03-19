@@ -20,6 +20,8 @@ const createIndex = async () => {
         )
     );
 
+    await Database.createIndex({ index: { fields: ["type"] } });
+
     indexCreated = true;
   }
 };
