@@ -14,11 +14,15 @@ const createIndex = async () => {
         .map((column) =>
           Database.createIndex({
             index: {
-              fields: column.sort || [column.key],
+              fields: column.sort
+                ? ["type", ...column.sort]
+                : ["type", column.key],
             },
           })
         )
     );
+
+    await Database.createIndex({ index: { fields: ["type"] } });
 
     indexCreated = true;
   }
