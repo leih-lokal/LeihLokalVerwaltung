@@ -37,7 +37,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "6187969517",
+      text: "6187 9695 17",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -95,7 +95,7 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "7819757001",
+      text: "7819 7570 01",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -150,7 +150,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "9873270667",
+      text: "9873 2706 67",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -208,7 +208,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "4832908208",
+      text: "4832 9082 08",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -266,7 +266,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "2069133956",
+      text: "2069 1339 56",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -324,7 +324,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "1706083031",
+      text: "1706 0830 31",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -382,7 +382,7 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "5761735353",
+      text: "5761 7353 53",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -440,7 +440,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "5921089325",
+      text: "5921 0893 25",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -498,7 +498,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "1237584292",
+      text: "1237 5842 92",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -556,7 +556,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "1117290665",
+      text: "1117 2906 65",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -614,7 +614,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "2535673244",
+      text: "2535 6732 44",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {

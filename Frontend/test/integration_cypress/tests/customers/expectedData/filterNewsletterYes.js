@@ -37,7 +37,7 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "5742228330",
+      text: "5742 2283 30",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -95,7 +95,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "7174438962",
+      text: "7174 4389 62",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -153,7 +153,7 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "6489598645",
+      text: "6489 5986 45",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -211,7 +211,7 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "3364449161",
+      text: "3364 4491 61",
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
@@ -269,7 +269,7 @@ module.exports = [
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
-      text: "7819757001",
+      text: "7819 7570 01",
       backgroundColor: "rgb(247, 239, 10)",
     },
     {
@@ -327,7 +327,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "9873270667",
+      text: "9873 2706 67",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -385,7 +385,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "4832908208",
+      text: "4832 9082 08",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -443,7 +443,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "2069133956",
+      text: "2069 1339 56",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -501,7 +501,7 @@ module.exports = [
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
-      text: "2892685720",
+      text: "2892 6857 20",
       backgroundColor: "rgb(45, 144, 224)",
     },
     {
@@ -560,7 +560,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "6963406050",
+      text: "6963 4060 50",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -618,7 +618,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "3967432551",
+      text: "3967 4325 51",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -676,7 +676,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "3007668408",
+      text: "3007 6684 08",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -734,7 +734,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "7371856075",
+      text: "7371 8560 75",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -792,7 +792,7 @@ module.exports = [
       backgroundColor: "rgb(131, 235, 52)",
     },
     {
-      text: "6305604608",
+      text: "6305 6046 08",
       backgroundColor: "rgb(131, 235, 52)",
     },
     {
@@ -850,7 +850,7 @@ module.exports = [
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
-      text: "6949167944",
+      text: "6949 1679 44",
       backgroundColor: "rgb(242, 242, 242)",
     },
     {
@@ -908,7 +908,7 @@ module.exports = [
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
-      text: "2851403193",
+      text: "2851 4031 93",
       backgroundColor: "rgb(255, 255, 255)",
     },
     {
@@ -966,7 +966,7 @@ module.exports = [
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
-      text: "3156842097",
+      text: "3156 8420 97",
       backgroundColor: "rgb(250, 45, 30)",
     },
     {
