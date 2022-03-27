@@ -15,7 +15,7 @@ module.exports = [
       text: "nbursnell8z@house.gov",
       backgroundColor: "rgb(242, 242, 242)",
     },
-    { text: "3223053856", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "3223 0538 56", backgroundColor: "rgb(242, 242, 242)" },
     { text: "Nein", backgroundColor: "rgb(242, 242, 242)" },
     {
       text: "gesehen, vorbeigelaufen",

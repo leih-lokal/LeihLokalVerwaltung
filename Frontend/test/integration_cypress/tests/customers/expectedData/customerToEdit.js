@@ -10,7 +10,7 @@ module.exports = {
   renewed_on: "-",
   remark: "",
   email: "zdaville8l@macromedia.com",
-  telephone_number: "1706 0830 31",
+  telephone_number: "1706083031",
   subsribed_to_newsletter: false,
   heard: "gesehen, vorbeigelaufen",
 };
