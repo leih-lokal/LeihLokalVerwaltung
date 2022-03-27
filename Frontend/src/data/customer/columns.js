@@ -93,6 +93,22 @@ export default [
   {
     title: "Telefonnummer",
     key: "telephone_number",
+    display: (value) => {
+      if (!value) return value;
+      let formattedValue = value.replace(/ /g, "");
+      if (formattedValue.startsWith("+")) {
+        formattedValue = formattedValue.replace(
+          /(\d{5})(\d{4})(\d{1,})/,
+          "$1 $2 $3"
+        );
+      } else {
+        formattedValue = formattedValue.replace(
+          /(\d{4})(\d{4})(\d{1,})/,
+          "$1 $2 $3"
+        );
+      }
+      return formattedValue;
+    },
     search: "exclude",
     disableSort: true,
     backgroundColor,

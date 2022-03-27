@@ -15,7 +15,7 @@ module.exports = [
       text: "ntunnol4@princeton.edu",
       backgroundColor: "rgb(242, 242, 242)",
     },
-    { text: "6187969517", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "6187 9695 17", backgroundColor: "rgb(242, 242, 242)" },
     { text: "Nein", backgroundColor: "rgb(242, 242, 242)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -37,7 +37,7 @@ module.exports = [
       text: "zheavisidef8@qq.com",
       backgroundColor: "rgb(255, 255, 255)",
     },
-    { text: "9511662807", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "9511 6628 07", backgroundColor: "rgb(255, 255, 255)" },
     { text: "Nein", backgroundColor: "rgb(255, 255, 255)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -59,7 +59,7 @@ module.exports = [
       text: "qmacallaster6n@independent.co.uk",
       backgroundColor: "rgb(247, 239, 10)",
     },
-    { text: "5742228330", backgroundColor: "rgb(247, 239, 10)" },
+    { text: "5742 2283 30", backgroundColor: "rgb(247, 239, 10)" },
     { text: "Ja", backgroundColor: "rgb(247, 239, 10)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -81,7 +81,7 @@ module.exports = [
       text: "eluetkemeyerspq@acquirethisname.com",
       backgroundColor: "rgb(255, 255, 255)",
     },
-    { text: "8479421710", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "8479 4217 10", backgroundColor: "rgb(255, 255, 255)" },
     { text: "Nein", backgroundColor: "rgb(255, 255, 255)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -106,7 +106,7 @@ module.exports = [
       text: "logelsbylw@wordpress.com",
       backgroundColor: "rgb(242, 242, 242)",
     },
-    { text: "7174438962", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "7174 4389 62", backgroundColor: "rgb(242, 242, 242)" },
     { text: "Ja", backgroundColor: "rgb(242, 242, 242)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -131,7 +131,7 @@ module.exports = [
       text: "bsheildsoi@netscape.com",
       backgroundColor: "rgb(247, 239, 10)",
     },
-    { text: "6489598645", backgroundColor: "rgb(247, 239, 10)" },
+    { text: "6489 5986 45", backgroundColor: "rgb(247, 239, 10)" },
     { text: "Ja", backgroundColor: "rgb(247, 239, 10)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -156,7 +156,7 @@ module.exports = [
       text: "kmcnishhm@stumbleupon.com",
       backgroundColor: "rgb(45, 144, 224)",
     },
-    { text: "3364449161", backgroundColor: "rgb(45, 144, 224)" },
+    { text: "3364 4491 61", backgroundColor: "rgb(45, 144, 224)" },
     { text: "Ja", backgroundColor: "rgb(45, 144, 224)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -181,7 +181,7 @@ module.exports = [
       text: "nbursnell8z@house.gov",
       backgroundColor: "rgb(255, 255, 255)",
     },
-    { text: "3223053856", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "3223 0538 56", backgroundColor: "rgb(255, 255, 255)" },
     { text: "Nein", backgroundColor: "rgb(255, 255, 255)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -203,7 +203,7 @@ module.exports = [
       text: "amurieqj@state.gov",
       backgroundColor: "rgb(242, 242, 242)",
     },
-    { text: "6309947304", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "6309 9473 04", backgroundColor: "rgb(242, 242, 242)" },
     { text: "Nein", backgroundColor: "rgb(242, 242, 242)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -225,7 +225,7 @@ module.exports = [
       text: "mmaceurj6@weebly.com",
       backgroundColor: "rgb(247, 239, 10)",
     },
-    { text: "7819757001", backgroundColor: "rgb(247, 239, 10)" },
+    { text: "7819 7570 01", backgroundColor: "rgb(247, 239, 10)" },
     { text: "Ja", backgroundColor: "rgb(247, 239, 10)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -247,7 +247,7 @@ module.exports = [
       text: "ckubicekq8@addthis.com",
       backgroundColor: "rgb(242, 242, 242)",
     },
-    { text: "9873270667", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "9873 2706 67", backgroundColor: "rgb(242, 242, 242)" },
     { text: "Ja", backgroundColor: "rgb(242, 242, 242)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -269,7 +269,7 @@ module.exports = [
       text: "rmarushakjo@icio.us",
       backgroundColor: "rgb(255, 255, 255)",
     },
-    { text: "4832908208", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "4832 9082 08", backgroundColor: "rgb(255, 255, 255)" },
     { text: "Ja", backgroundColor: "rgb(255, 255, 255)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -291,7 +291,7 @@ module.exports = [
       text: "cfevierde@xing.com",
       backgroundColor: "rgb(242, 242, 242)",
     },
-    { text: "2069133956", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "2069 1339 56", backgroundColor: "rgb(242, 242, 242)" },
     { text: "Ja", backgroundColor: "rgb(242, 242, 242)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -313,7 +313,7 @@ module.exports = [
       text: "zdaville8l@macromedia.com",
       backgroundColor: "rgb(255, 255, 255)",
     },
-    { text: "1706083031", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "1706 0830 31", backgroundColor: "rgb(255, 255, 255)" },
     { text: "Nein", backgroundColor: "rgb(255, 255, 255)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -338,7 +338,7 @@ module.exports = [
       text: "gjanikowski6w@digg.com",
       backgroundColor: "rgb(247, 239, 10)",
     },
-    { text: "5761735353", backgroundColor: "rgb(247, 239, 10)" },
+    { text: "5761 7353 53", backgroundColor: "rgb(247, 239, 10)" },
     { text: "Nein", backgroundColor: "rgb(247, 239, 10)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -363,7 +363,7 @@ module.exports = [
       text: "klainged1@qq.com",
       backgroundColor: "rgb(255, 255, 255)",
     },
-    { text: "5921089325", backgroundColor: "rgb(255, 255, 255)" },
+    { text: "5921 0893 25", backgroundColor: "rgb(255, 255, 255)" },
     { text: "Nein", backgroundColor: "rgb(255, 255, 255)" },
     {
       text: "gesehen, vorbeigelaufen",
@@ -385,7 +385,7 @@ module.exports = [
       text: "jcolliholeqs@go.com",
       backgroundColor: "rgb(242, 242, 242)",
     },
-    { text: "1237584292", backgroundColor: "rgb(242, 242, 242)" },
+    { text: "1237 5842 92", backgroundColor: "rgb(242, 242, 242)" },
     { text: "Nein", backgroundColor: "rgb(242, 242, 242)" },
     {
       text: "gesehen, vorbeigelaufen",
