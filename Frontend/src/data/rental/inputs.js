@@ -56,6 +56,7 @@ const updateItemOfRental = (context, item) => {
     deposit: item.deposit,
   });
   updateToggleStatus(item.exists_more_than_once);
+  showNotificationsForItem(item.id);
 };
 
 const updateCustomerOfRental = (context, customer) => {
@@ -64,6 +65,20 @@ const updateCustomerOfRental = (context, customer) => {
     customer_id: customer.id,
   });
   showNotificationsForCustomer(customer.id);
+};
+
+const showNotificationsForItem = async (itemId) => {
+  Database.fetchAllDocsBySelector(itemById(itemId), ["highlight"]).then(
+    (results) => {
+      if (
+        results.length > 0 &&
+        results[0]["highlight"] &&
+        results[0]["highlight"] !== ""
+      ) {
+        notifier.info("Dieser Artikel wurde farblich markiert, ggf. muss etwas beachtet werden bei ihm (zB. er hängt vorne).", { persist: true });
+      }
+    }
+  );
 };
 
 const showNotificationsForCustomer = async (customerId) => {
@@ -98,6 +113,17 @@ const showNotificationsForCustomer = async (customerId) => {
         results[0]["remark"] !== ""
       ) {
         notifier.danger(results[0]["remark"], { persist: true });
+      }
+    }
+  );
+  Database.fetchAllDocsBySelector(customerById(customerId), ["highlight"]).then(
+    (results) => {
+      if (
+        results.length > 0 &&
+        results[0]["highlight"] &&
+        results[0]["highlight"] !== ""
+      ) {
+        notifier.info("Dieser Nutzer wurde farblich markiert, bitte sieh nach wieso dies der Fall ist", { persist: true });
       }
     }
   );
