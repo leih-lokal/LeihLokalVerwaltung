@@ -78,11 +78,21 @@ export default async (rental, closePopup, updateItemStatus, createNew) => {
     );
   }
 
+  const duplicateRental = (rental) => {
+    var rental_copy = new Object();
+    Object.keys(rental).forEach(function (key) {
+      if (["deposit", "item_name", "item_id"].indexOf(key) == -1) {
+        rental_copy[key] = () => rental[key];
+      }
+    });
+    return rental_copy;
+  };
+
   await (createNew ? Database.createDoc(rental) : Database.updateDoc(rental))
     .then((result) => notifier.success("Leihvorgang gespeichert!"))
     .then(() => recentEmployeesStore.add(rental.passing_out_employee))
     .then(() => recentEmployeesStore.add(rental.receiving_employee))
-    .then(closePopup)
+    .then(() => closePopup(duplicateRental(rental)))
     .catch((error) => {
       notifier.danger("Leihvorgang konnte nicht gespeichert werden!", {
         persist: true,

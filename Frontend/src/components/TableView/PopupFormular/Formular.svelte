@@ -7,6 +7,7 @@
   export let doc = {};
   export let createNew = false;
   export let closePopup;
+  export let copyPopup;
 
   let groupedInputs = [];
   let title = "";
@@ -23,6 +24,7 @@
         doc,
         createNew,
         closePopup,
+        copyPopup,
         updateDoc: (updatedDoc) => (doc = { ...doc, ...updatedDoc }),
         container: inputContainer,
       });

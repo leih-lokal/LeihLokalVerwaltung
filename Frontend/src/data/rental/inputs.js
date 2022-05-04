@@ -124,6 +124,18 @@ export default {
       loadingText: "Leihvorgang wird gelöscht",
     },
     {
+      text: "Speichern & Duplizieren",
+      onClick: () =>
+        onSave(
+          context.doc,
+          context.copyPopup,
+          updateItemStatus,
+          context.createNew
+        ),
+      hidden: !context.createNew,
+      loadingText: "Leihvorgang wird gespeichert",
+    },
+    {
       text: "Speichern",
       onClick: () =>
         onSave(

@@ -6,8 +6,16 @@
   const modal = writable();
   let onClose;
 
+  function duplicate(props, fill_values) {
+    modal.set(null);
+    props["createNew"] = true;
+    props["config"]["initialValues"] = fill_values;
+    show(props);
+  }
+
   export function show(props, onCloseCallback = () => {}) {
     props["closePopup"] = () => modal.set(null);
+    props["copyPopup"] = (fill_values) => duplicate(props, fill_values);
     onClose = onCloseCallback;
     modal.set(bind(Formular, props));
   }
