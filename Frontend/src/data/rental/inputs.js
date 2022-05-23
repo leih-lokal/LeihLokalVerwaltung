@@ -67,7 +67,7 @@ const updateCustomerOfRental = (context, customer) => {
   showNotificationsForCustomer(customer.id);
 };
 
-const showNotificationsIfNotAvailable = (item) => {
+const showNotificationsIfNotAvailable = async (item) => {
   var status_mapping = {
     instock: "verfügbar",
     outofstock: "verliehen",
@@ -75,9 +75,14 @@ const showNotificationsIfNotAvailable = (item) => {
     onbackorder: "temporär nicht verfügbar / in Reparatur",
   };
   var status = status_mapping[item.status];
-  if (item.status != "instock") {
+  if (["outofstock", "reserved", "onbackorder"].includes(item.status)) {
     notifier.danger(
       `Gegenstand ist nicht verfügbar, hat Status: ${status}`,
+      6000
+    );
+  } else if (item.status == "undefined") {
+    notifier.warning(
+      `Fehler beim Statuscheck, Gegenstand hat Status: ${status}`,
       6000
     );
   }
