@@ -133,6 +133,7 @@ export default {
      * check if the item was changed when saving the rental.
      */
     context.contextVars.initialItemId = context.doc.item_id;
+    context.contextVars.initialItemName = context.doc.item_name;
   },
   footerButtons: (context) => [
     {

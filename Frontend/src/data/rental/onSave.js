@@ -42,7 +42,6 @@ const updateItemStatus = async (item, status) => {
 
 export default async (context) => {
   const { doc, closePopup, createNew, contextVars } = context;
-  console.log(contextVars);
   setNumericValuesDefault0(doc, columns);
 
   // item changed, reset initial item to status available
@@ -54,15 +53,15 @@ export default async (context) => {
       const initialItem = await fetchItemById(contextVars.initialItemId);
       await updateItemStatus(initialItem, "instock");
       notifier.warning(
-        `Status des Gegenstandes mit ID '${contextVars.initialItemId}' wurde auf 'verfügbar' geändert. Bitter überprüfe ob das stimmt.`,
+        `Status von '${contextVars.initialItemName}' wurde auf 'verfügbar' geändert. Bitter überprüfe ob das stimmt.`,
         { persist: true }
       );
     } catch (error) {
       Logger.error(
-        `Failed to update status of initial item with id ${contextVars.initialItemId}, ${error}`
+        `Failed to update status of initial item with name ${contextVars.initialItemName} id ${contextVars.initialItemId}, ${error}`
       );
       notifier.warning(
-        `Status des Gegenstandes mit ID '${contextVars.initialItemId}' konnte nicht aktualisiert werden. Bitte überprüfe den Status dieses Gegenstandes.`,
+        `Status von '${contextVars.initialItemName}' konnte nicht aktualisiert werden. Bitte überprüfe den Status dieses Gegenstandes.`,
         { persist: true }
       );
     }
