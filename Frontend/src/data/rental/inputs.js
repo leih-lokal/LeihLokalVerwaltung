@@ -55,6 +55,7 @@ const updateItemOfRental = (context, item) => {
     item_name: item.name,
     deposit: item.deposit,
   });
+  showNotificationsIfNotAvailable(item);
   updateToggleStatus(item.exists_more_than_once);
 };
 
@@ -64,6 +65,27 @@ const updateCustomerOfRental = (context, customer) => {
     customer_id: customer.id,
   });
   showNotificationsForCustomer(customer.id);
+};
+
+const showNotificationsIfNotAvailable = async (item) => {
+  var status_mapping = {
+    instock: "verfügbar",
+    outofstock: "verliehen",
+    reserved: "reserviert",
+    onbackorder: "temporär nicht verfügbar / in Reparatur",
+  };
+  var status = status_mapping[item.status];
+  if (["outofstock", "reserved", "onbackorder"].includes(item.status)) {
+    notifier.danger(
+      `Gegenstand ist nicht verfügbar, hat Status: ${status}`,
+      6000
+    );
+  } else if (item.status == "undefined") {
+    notifier.warning(
+      `Fehler beim Statuscheck, Gegenstand hat Status: ${status}`,
+      6000
+    );
+  }
 };
 
 const showNotificationsForCustomer = async (customerId) => {
@@ -160,7 +182,7 @@ export default {
         searchFunction: (context) => (searchTerm) =>
           Database.fetchDocsBySelector(
             itemIdStartsWithAndNotDeletedSelector(searchTerm),
-            ["id", "name", "deposit", "exists_more_than_once"]
+            ["id", "name", "deposit", "exists_more_than_once", "status"]
           ),
         suggestionFormat: (context) => (id, item_name) =>
           `${String(id).padStart(4, "0")}: ${item_name}`,

@@ -13,17 +13,16 @@ const shouldBeReturnedToday = (rental) =>
   rental.to_return_on &&
   rental.to_return_on === millisAtStartOfToday() &&
   !hasReturnDate(rental);
-const shouldHaveBeenReturnedBeforeToday = (rental) =>
+const shouldHaveBeenReturnedBeforeTodayAndIsNotReturned = (rental) =>
   rental.to_return_on &&
-  ((!hasReturnDate(rental) && rental.to_return_on < millisAtStartOfToday()) ||
-    (hasReturnDate(rental) && rental.to_return_on < rental.returned_on));
+  (!hasReturnDate(rental) && rental.to_return_on < millisAtStartOfToday());
 
 const rentalHighlight = async (rental) => {
   if (hasBeenReturnedToday(rental)) {
     return COLORS.RENTAL_RETURNED_TODAY_GREEN;
   } else if (shouldBeReturnedToday(rental)) {
     return COLORS.RENTAL_TO_RETURN_TODAY_BLUE;
-  } else if (shouldHaveBeenReturnedBeforeToday(rental)) {
+  } else if (shouldHaveBeenReturnedBeforeTodayAndIsNotReturned(rental)) {
     return COLORS.RENTAL_LATE_RED;
   }
 };
