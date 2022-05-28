@@ -30,7 +30,8 @@ const newItemStatus = (rental) => {
 };
 
 const updateItemStatus = async (item, status) => {
-  await Database.updateDoc({ ...item, status });
+  item.status = status;
+  await Database.updateDoc(item);
   await WoocommerceClient.updateItem(item);
   notifier.success(
     `'${item.name}' wurde als ${
@@ -41,10 +42,14 @@ const updateItemStatus = async (item, status) => {
 
 export default async (context) => {
   const { doc, closePopup, createNew, contextVars } = context;
+  console.log(contextVars);
   setNumericValuesDefault0(doc, columns);
 
   // item changed, reset initial item to status available
-  if (contextVars.initialItemId && contextVars.initialItemId !== doc.item_id) {
+  if (
+    contextVars.initialItemId !== undefined &&
+    contextVars.initialItemId !== doc.item_id
+  ) {
     try {
       const initialItem = await fetchItemById(contextVars.initialItemId);
       await updateItemStatus(initialItem, "instock");
@@ -70,7 +75,7 @@ export default async (context) => {
       await updateItemStatus(item, newItemStatus(doc));
     } catch (error) {
       Logger.error(
-        `Failed to update status of item with id ${doc._id}, ${error}`
+        `Failed to update status of item with id ${doc.item_id}, ${error}`
       );
 
       notifier.danger(
