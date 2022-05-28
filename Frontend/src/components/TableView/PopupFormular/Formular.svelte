@@ -8,6 +8,7 @@
   export let createNew = false;
   export let closePopup;
   export let copyPopup;
+  export let duplicated = false;
 
   let groupedInputs = [];
   let title = "";
@@ -23,6 +24,7 @@
       return val({
         doc,
         createNew,
+        duplicated,
         closePopup,
         copyPopup,
         updateDoc: (updatedDoc) => (doc = { ...doc, ...updatedDoc }),
@@ -56,10 +58,14 @@
         (groupedInputs[group] = inputs.filter((input) => input.group === group))
     );
 
-    if (createNew) {
+    if (createNew & !duplicated) {
       // load initial values (e.g. first unused id when creating a new customer)
       Object.keys(config.initialValues).forEach(async (key) => {
         doc[key] = await config.initialValues[key]();
+      });
+    } else if (duplicated) {
+      Object.keys(config.duplicatedValues).forEach(async (key) => {
+        doc[key] = await config.duplicatedValues[key]();
       });
     }
   });

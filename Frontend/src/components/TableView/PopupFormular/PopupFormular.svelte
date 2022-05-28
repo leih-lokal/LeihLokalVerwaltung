@@ -9,13 +9,15 @@
   function duplicate(props, fill_values) {
     modal.set(null);
     props["createNew"] = true;
-    props["config"]["initialValues"] = fill_values;
-    show(props);
+    props["duplicated"] = true;
+    props["config"]["duplicatedValues"] = fill_values;
+    show(props); // show again with duplicated values
   }
 
   export function show(props, onCloseCallback = () => {}) {
     props["closePopup"] = () => modal.set(null);
-    props["copyPopup"] = (fill_values) => duplicate(props, fill_values);
+    props["copyPopup"] = (fill_values) =>
+      duplicate(props, fill_values) && modal.set(null);
     onClose = onCloseCallback;
     modal.set(bind(Formular, props));
   }

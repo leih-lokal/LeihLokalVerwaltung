@@ -152,7 +152,8 @@ export default {
           context.doc,
           context.copyPopup,
           updateItemStatus,
-          context.createNew
+          context.createNew,
+          true // duplicate=true
         ),
       hidden: !context.createNew,
       loadingText: "Leihvorgang wird gespeichert",
