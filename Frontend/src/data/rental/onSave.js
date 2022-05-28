@@ -83,6 +83,19 @@ export default async (
           );
           Logger.error(error);
         });
+      console.log(duplicateForm);
+
+      // show a persistent info notifier of previous items when duplicating a form
+      // this makes it easier to keep in mind what previous items you just rented for
+      // the same person
+      if (duplicateForm) {
+        notifier.info(
+          `Gespeichert: '${rental.item_name}', Pfand: ${rental.deposit}€ bis ${rental.to_return_on}`,
+          {
+            persist: true,
+          }
+        );
+      }
     } else {
       Logger.warn(
         `Did not update item of rental ${rental._id} because item not found.`
