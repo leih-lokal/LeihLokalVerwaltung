@@ -15,26 +15,17 @@ import {
   customerAttributeStartsWithIgnoreCaseSelector,
   itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
   activeRentalsForCustomerSelector,
-  itemById,
   customerById,
-  customerByLastname,
-  itemByName,
 } from "../selectors";
-
-/**
- * Whether the status of the selected item should be updated when a rental is created or completed.
- * For items existing more than once this should always be false. For other items this can be toggled by the user.
- */
-var updateItemStatus = true;
 
 /**
  * Whether the toggle for updateStatusOnWebsite is hidden.
  */
 var hideToggleUpdateItemStatus = false;
 
-const updateToggleStatus = (itemExistsMoreThanOnce) => {
+const updateToggleStatus = (context, itemExistsMoreThanOnce) => {
   if (itemExistsMoreThanOnce) {
-    updateItemStatus = false;
+    context.contextVars.updateItemStatus = false;
     hideToggleUpdateItemStatus = true;
   } else {
     hideToggleUpdateItemStatus = false;
@@ -56,7 +47,7 @@ const updateItemOfRental = (context, item) => {
     deposit: item.deposit,
   });
   showNotificationsIfNotAvailable(item);
-  updateToggleStatus(item.exists_more_than_once);
+  updateToggleStatus(context, item.exists_more_than_once);
 };
 
 const updateCustomerOfRental = (context, customer) => {
@@ -130,8 +121,18 @@ export default {
     `Leihvorgang ${context.createNew ? "anlegen" : "bearbeiten"}`,
   initialValues,
   onMount: (context) => () => {
-    updateItemStatus = true;
     hideToggleUpdateItemStatus = false;
+    /**
+     * Whether the status of the selected item should be updated when a rental is created or completed.
+     * For items existing more than once this should always be false. For other items this can be toggled by the user.
+     */
+    context.contextVars.updateItemStatus = true;
+
+    /**
+     * The id of the item that belongs to this rental at the time of opening the input form. This is required to
+     * check if the item was changed when saving the rental.
+     */
+    context.contextVars.initialItemId = context.doc.item_id;
   },
   footerButtons: (context) => [
     {
@@ -147,13 +148,7 @@ export default {
     },
     {
       text: "Speichern",
-      onClick: () =>
-        onSave(
-          context.doc,
-          context.closePopup,
-          updateItemStatus,
-          context.createNew
-        ),
+      onClick: () => onSave(context),
       loadingText: "Leihvorgang wird gespeichert",
     },
   ],
@@ -213,9 +208,10 @@ export default {
       nobind: true,
       hidden: () => hideToggleUpdateItemStatus,
       props: {
-        value: updateItemStatus,
+        value: (context) => context.contextVars.updateItemStatus,
         // onChange callback necessary because bind only works for doc attributes
-        onChange: (context) => (value) => (updateItemStatus = value),
+        onChange: (context) => (value) =>
+          (context.contextVars.updateItemStatus = value),
       },
     },
 
