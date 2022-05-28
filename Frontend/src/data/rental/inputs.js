@@ -5,6 +5,7 @@ import Checkbox from "../../components/Input/Checkbox.svelte";
 import Database from "../../database/ENV_DATABASE";
 import onSave from "./onSave";
 import onDelete from "./onDelete";
+import onReturnAndSave from "./onSave";
 import { recentEmployeesStore } from "../../utils/stores";
 import initialValues from "./initialValues";
 import { notifier } from "@beyonk/svelte-notifications";
@@ -47,6 +48,16 @@ function getRecentEmployees() {
     employeeList[employee] = employee;
   }
   return employeeList;
+}
+
+function getMostRecentEmployee(context) {
+  var employeeList = getRecentEmployees();
+  var mostRecent = Object.keys(employeeList).at(-1);
+  if (!mostRecent) {
+    mostRecent = context.doc.passing_out_employee;
+    console.log(mostRecent);
+  }
+  return mostRecent;
 }
 
 const updateItemOfRental = (context, item) => {
@@ -144,6 +155,23 @@ export default {
       color: "red",
       hidden: context.createNew,
       loadingText: "Leihvorgang wird gelöscht",
+    },
+    {
+      text: `Zurück geben ${
+        getMostRecentEmployee(context)
+          ? "(als " + getMostRecentEmployee(context) + ")"
+          : ""
+      }`,
+      onClick: () =>
+        onReturnAndSave(
+          context.doc,
+          context.closePopup,
+          updateItemStatus,
+          context.createNew
+        ),
+      color: "green",
+      hidden: context.createNew,
+      loadingText: "Leihvorgang wird abgeschlossen",
     },
     {
       text: "Speichern",
