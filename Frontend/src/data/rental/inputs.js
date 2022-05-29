@@ -21,6 +21,7 @@ import {
   customerByLastname,
   itemByName,
 } from "../selectors";
+import { millisAtStartOfDay, millisAtStartOfToday } from "../../utils/utils";
 
 /**
  * Whether the status of the selected item should be updated when a rental is created or completed.
@@ -50,10 +51,14 @@ function getRecentEmployees() {
   return employeeList;
 }
 
-function getMostRecentEmployee(context) {
+function suggestReceivingEmployee(context) {
+  if (context.doc.receiving_employee != "") {
+    return context.doc.receiving_employee;
+  }
   var employeeList = getRecentEmployees();
   var mostRecent = Object.keys(employeeList).at(-1);
   if (!mostRecent) {
+    // if none is in the store, assume the passing out employee is currently working
     mostRecent = context.doc.passing_out_employee;
   }
   return mostRecent;
@@ -156,9 +161,9 @@ export default {
       loadingText: "Leihvorgang wird gelöscht",
     },
     {
-      text: `Zurück geben ${
-        getMostRecentEmployee(context)
-          ? "(als " + getMostRecentEmployee(context) + ")"
+      text: `Zurückgeben ${
+        suggestReceivingEmployee(context)
+          ? `\n(als ${suggestReceivingEmployee(context)})`
           : ""
       }`,
       onClick: () =>
@@ -167,10 +172,16 @@ export default {
           context.closePopup,
           updateItemStatus,
           context.createNew,
-          getMostRecentEmployee(context)
+          suggestReceivingEmployee(context)
         ),
       color: "green",
-      hidden: context.createNew | context.doc.returned_on,
+      hidden: context.createNew,
+      //((context.doc.receiving_employee !== "") &
+      //  (context.doc.receiving_employee != getMostRecentEmployee(context))) |
+      //(context.doc.returned_on &
+      //  (context.doc.returned_on != millisAtStartOfToday())) |
+      //(context.doc.deposit_returned &
+      //  (context.doc.deposit_returned != context.doc.deposit)),
       loadingText: "Leihvorgang wird abgeschlossen",
     },
 

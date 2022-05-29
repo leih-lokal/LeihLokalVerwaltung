@@ -7,6 +7,7 @@ import { setNumericValuesDefault0 } from "../utils";
 import { itemById } from "../selectors";
 import Logger from "js-logger";
 import { now } from "svelte/internal";
+import { millisAtStartOfToday } from "../../utils/utils";
 
 const fetchItem = async (rental) => {
   if (rental.item_id) {
@@ -45,20 +46,33 @@ const newItemStatus = (rental) => {
   }
 };
 
-export const onReturnAndSave = (
-  rental,
+export async function onReturnAndSave(
+  doc,
   closePopup,
   updateItemStatus,
   createNew,
   employee
-) => {
-  console.log(employee);
-  //rental.deposit_returned = rental.deposit;
-  rental.receiving_employee = employee;
-  setNumericValuesDefault0(rental, columns);
-};
+) {
+  if (createNew) {
+    Logger.error("createNew is true if it should be false");
+    return; // just for safety
+  }
+  doc.deposit_returned = doc.deposit_returned
+    ? doc.deposit_returned
+    : doc.deposit;
+  doc.receiving_employee = doc.receiving_employee
+    ? doc.receiving_employee
+    : employee;
+  doc.returned_on = doc.returned_on ? doc.returned_on : millisAtStartOfToday();
+  await onSave(doc, closePopup, updateItemStatus, createNew);
+}
 
-export default async (rental, closePopup, updateItemStatus, createNew) => {
+export default async function onSave(
+  rental,
+  closePopup,
+  updateItemStatus,
+  createNew
+) {
   setNumericValuesDefault0(rental, columns);
 
   if (updateItemStatus) {
@@ -103,4 +117,4 @@ export default async (rental, closePopup, updateItemStatus, createNew) => {
       });
       Logger.error(error);
     });
-};
+}
