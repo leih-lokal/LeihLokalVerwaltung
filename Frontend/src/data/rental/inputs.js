@@ -44,19 +44,27 @@ const updateToggleStatus = (itemExistsMoreThanOnce) => {
 };
 
 function getRecentEmployees() {
-  var employeeList = {};
+  var employeeObj = {};
   for (let employee of get(recentEmployeesStore)) {
-    employeeList[employee] = employee;
+    employeeObj[employee] = employee;
   }
-  return employeeList;
+  return employeeObj;
 }
 
 function suggestReceivingEmployee(context) {
   if (context.doc.receiving_employee != "") {
     return context.doc.receiving_employee;
   }
-  var employeeList = getRecentEmployees();
-  var mostRecent = Object.keys(employeeList).at(-1);
+  var employeeObj = getRecentEmployees();
+
+  // Object.keys() is failing the cypress tests :-/ so need
+  // to manually create the array like a stone-age person
+  var keys = new Array();
+  for (var key in employeeObj) {
+    keys[keys.length] = key;
+  }
+
+  var mostRecent = keys.at(-1);
   if (!mostRecent) {
     // if none is in the store, assume the passing out employee is currently working
     mostRecent = context.doc.passing_out_employee;
