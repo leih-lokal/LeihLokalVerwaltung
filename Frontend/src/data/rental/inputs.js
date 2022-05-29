@@ -175,13 +175,7 @@ export default {
           : ""
       }`,
       onClick: () =>
-        onReturnAndSave(
-          context.doc,
-          context.closePopup,
-          updateItemStatus,
-          context.createNew,
-          suggestReceivingEmployee(context)
-        ),
+        onReturnAndSave(context, suggestReceivingEmployee(context)),
       color: "green",
       hidden: context.createNew,
       //((context.doc.receiving_employee !== "") &

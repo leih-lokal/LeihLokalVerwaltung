@@ -46,13 +46,9 @@ const newItemStatus = (rental) => {
   }
 };
 
-export async function onReturnAndSave(
-  doc,
-  closePopup,
-  updateItemStatus,
-  createNew,
-  employee
-) {
+export async function onReturnAndSave(context, employee) {
+  const { doc, closePopup, createNew, contextVars } = context;
+
   if (createNew) {
     Logger.error("createNew is true if it should be false");
     return; // just for safety
@@ -64,7 +60,7 @@ export async function onReturnAndSave(
     ? doc.receiving_employee
     : employee;
   doc.returned_on = doc.returned_on ? doc.returned_on : millisAtStartOfToday();
-  await onSave(doc, closePopup, updateItemStatus, createNew);
+  await onSave(context);
 }
 
 const updateItemStatus = async (item, status) => {
@@ -78,49 +74,58 @@ const updateItemStatus = async (item, status) => {
   );
 };
 
-export default async function onSave(
-  rental,
-  closePopup,
-  updateItemStatus,
-  createNew
-) {
-  setNumericValuesDefault0(rental, columns);
+export default async function onSave(context) {
+  const { doc, closePopup, createNew, contextVars } = context;
+  setNumericValuesDefault0(doc, columns);
 
-  if (updateItemStatus) {
-    const item = await fetchItem(rental);
-    if (item) {
-      item.status = newItemStatus(rental);
-      await Database.updateDoc(item)
-        .then(() => WoocommerceClient.updateItem(item))
-        .then(() => {
-          notifier.success(
-            `'${item.name}' wurde als ${
-              item.status === "instock" ? "verfügbar" : "verliehen"
-            } markiert.`
-          );
-        })
-        .catch((error) => {
-          notifier.danger(
-            `Status von '${item.name}' konnte nicht aktualisiert werden!`,
-            { persist: true }
-          );
-          Logger.error(error);
-        });
-    } else {
-      Logger.warn(
-        `Did not update item of rental ${rental._id} because item not found.`
+  // item changed, reset initial item to status available
+  if (
+    contextVars.initialItemId !== undefined &&
+    contextVars.initialItemId !== doc.item_id
+  ) {
+    try {
+      const initialItem = await fetchItemById(contextVars.initialItemId);
+      await updateItemStatus(initialItem, "instock");
+      notifier.warning(
+        `Status von '${contextVars.initialItemName}' wurde auf 'verfügbar' geändert. Bitter überprüfe ob das stimmt.`,
+        { persist: true }
+      );
+    } catch (error) {
+      Logger.error(
+        `Failed to update status of initial item with name ${contextVars.initialItemName} id ${contextVars.initialItemId}, ${error}`
+      );
+      notifier.warning(
+        `Status von '${contextVars.initialItemName}' konnte nicht aktualisiert werden. Bitte überprüfe den Status dieses Gegenstandes.`,
+        { persist: true }
+      );
+    }
+  }
+
+  if (contextVars.updateItemStatus) {
+    try {
+      const item = await fetchItemById(doc.item_id);
+      doc.image = item.image;
+      await updateItemStatus(item, newItemStatus(doc));
+    } catch (error) {
+      Logger.error(
+        `Failed to update status of item with id ${doc.item_id}, ${error}`
+      );
+
+      notifier.danger(
+        `Status des Gegenstandes mit ID '${doc.item_id}' konnte nicht aktualisiert werden!`,
+        { persist: true }
       );
     }
   } else {
     Logger.debug(
-      `Did not update item of rental ${rental._id} because updateItemStatus is false.`
+      `Did not update item of rental ${doc._id} because updateItemStatus is false.`
     );
   }
 
-  await (createNew ? Database.createDoc(rental) : Database.updateDoc(rental))
-    .then((result) => notifier.success("Leihvorgang gespeichert!"))
-    .then(() => recentEmployeesStore.add(rental.passing_out_employee))
-    .then(() => recentEmployeesStore.add(rental.receiving_employee))
+  await (createNew ? Database.createDoc(doc) : Database.updateDoc(doc))
+    .then((_) => notifier.success("Leihvorgang gespeichert!"))
+    .then(() => recentEmployeesStore.add(doc.passing_out_employee))
+    .then(() => recentEmployeesStore.add(doc.receiving_employee))
     .then(closePopup)
     .catch((error) => {
       notifier.danger("Leihvorgang konnte nicht gespeichert werden!", {
