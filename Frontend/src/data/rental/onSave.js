@@ -67,6 +67,17 @@ export async function onReturnAndSave(
   await onSave(doc, closePopup, updateItemStatus, createNew);
 }
 
+const updateItemStatus = async (item, status) => {
+  item.status = status;
+  await Database.updateDoc(item);
+  await WoocommerceClient.updateItem(item);
+  notifier.success(
+    `'${item.name}' wurde als ${
+      item.status === "instock" ? "verfügbar" : "verliehen"
+    } markiert.`
+  );
+};
+
 export default async function onSave(
   rental,
   closePopup,
