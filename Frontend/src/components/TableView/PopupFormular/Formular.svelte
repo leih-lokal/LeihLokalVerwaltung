@@ -13,6 +13,7 @@
   let groups = [];
   let inputContainer;
   let footerButtonsWithContext;
+  let contextVars = {};
 
   // needs to be reactive so that the injected context is updated when doc changes
   $: doc, (footerButtonsWithContext = injectContext(config.footerButtons));
@@ -25,6 +26,7 @@
         closePopup,
         updateDoc: (updatedDoc) => (doc = { ...doc, ...updatedDoc }),
         container: inputContainer,
+        contextVars,
       });
     } else {
       return val;
