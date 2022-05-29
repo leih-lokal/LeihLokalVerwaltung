@@ -9,27 +9,12 @@ import Logger from "js-logger";
 import { now } from "svelte/internal";
 import { millisAtStartOfToday } from "../../utils/utils";
 
-const fetchItem = async (rental) => {
-  if (rental.item_id) {
-    try {
-      const item = (
-        await Database.fetchDocsBySelector(itemById(rental.item_id))
-      )[0];
-      rental.image = item.image;
-      return item;
-    } catch (error) {
-      notifier.warning(
-        `Gegenstand '${rental.item_id}' konnte nicht geladen werden!`,
-        6000
-      );
-      Logger.error(error);
-      return undefined;
-    }
-  } else {
-    Logger.warn(
-      `Could not update item because rental ${rental._id} does not have an item_id.`
-    );
-    return undefined;
+const fetchItemById = async (itemId) => {
+  try {
+    return (await Database.fetchDocsBySelector(itemById(itemId)))[0];
+  } catch (error) {
+    Logger.error(error);
+    throw `Failed to load item with id ${itemId}`;
   }
 };
 
@@ -44,6 +29,17 @@ const newItemStatus = (rental) => {
   } else {
     return "outofstock";
   }
+};
+
+const updateItemStatus = async (item, status) => {
+  item.status = status;
+  await Database.updateDoc(item);
+  await WoocommerceClient.updateItem(item);
+  notifier.success(
+    `'${item.name}' wurde als ${
+      item.status === "instock" ? "verfügbar" : "verliehen"
+    } markiert.`
+  );
 };
 
 export async function onReturnAndSave(context, employee) {
@@ -62,17 +58,6 @@ export async function onReturnAndSave(context, employee) {
   doc.returned_on = doc.returned_on ? doc.returned_on : millisAtStartOfToday();
   await onSave(context);
 }
-
-const updateItemStatus = async (item, status) => {
-  item.status = status;
-  await Database.updateDoc(item);
-  await WoocommerceClient.updateItem(item);
-  notifier.success(
-    `'${item.name}' wurde als ${
-      item.status === "instock" ? "verfügbar" : "verliehen"
-    } markiert.`
-  );
-};
 
 export default async function onSave(context) {
   const { doc, closePopup, createNew, contextVars } = context;
