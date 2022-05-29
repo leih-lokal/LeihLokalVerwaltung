@@ -6,6 +6,7 @@ import columns from "./columns";
 import { setNumericValuesDefault0 } from "../utils";
 import { itemById } from "../selectors";
 import Logger from "js-logger";
+import { now } from "svelte/internal";
 
 const fetchItem = async (rental) => {
   if (rental.item_id) {
@@ -42,6 +43,19 @@ const newItemStatus = (rental) => {
   } else {
     return "outofstock";
   }
+};
+
+export const onReturnAndSave = (
+  rental,
+  closePopup,
+  updateItemStatus,
+  createNew,
+  employee
+) => {
+  console.log(employee);
+  //rental.deposit_returned = rental.deposit;
+  rental.receiving_employee = employee;
+  setNumericValuesDefault0(rental, columns);
 };
 
 export default async (rental, closePopup, updateItemStatus, createNew) => {

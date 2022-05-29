@@ -44,6 +44,12 @@ const newItemStatus = (rental) => {
   }
 };
 
+export const returnAndSave (rental, closePopup, updateItemStatus, createNew) => {
+  default()
+
+}
+
+
 export default async (rental, closePopup, updateItemStatus, createNew) => {
   setNumericValuesDefault0(rental, columns);
 
@@ -90,3 +96,4 @@ export default async (rental, closePopup, updateItemStatus, createNew) => {
       Logger.error(error);
     });
 };
+
