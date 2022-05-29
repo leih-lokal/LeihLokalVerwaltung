@@ -55,7 +55,7 @@ function suggestReceivingEmployee(context) {
     keys[keys.length] = key;
   }
 
-  var mostRecent = keys.[keys.length-1];
+  var mostRecent = keys[keys.length - 1];
   if (!mostRecent) {
     // if none is in the store, assume the passing out employee is currently working
     mostRecent = context.doc.passing_out_employee;
