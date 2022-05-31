@@ -47,7 +47,6 @@ const updateItemStatus = async (item, status, rental) => {
 export default async (context) => {
   const { doc, closePopup, createNew, contextVars } = context;
   setNumericValuesDefault0(doc, columns);
-  console.log(context);
   // item changed, reset initial item to status available
   if (
     contextVars.initialItemId !== undefined &&
