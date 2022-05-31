@@ -88,7 +88,7 @@ class WoocommerceClient {
         },
         {
           id: 2,
-          name: "Zurückerwartet (ggf. Verlängerung möglich): ",
+          name: "Zurückerwartet (ggf. Verlängerung möglich):",
           position: 1,
           visible: hasReturnDateInFuture,
           variation: false,
