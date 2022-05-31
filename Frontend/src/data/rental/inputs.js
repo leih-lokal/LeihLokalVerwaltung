@@ -46,16 +46,10 @@ function suggestReceivingEmployee(context) {
   if (context.doc.receiving_employee != "") {
     return context.doc.receiving_employee;
   }
-  var employeeObj = getRecentEmployees();
 
-  // Object.keys() is failing the cypress tests :-/ so need
-  // to manually create the array like a stone-age person
-  var keys = new Array();
-  for (var key in employeeObj) {
-    keys[keys.length] = key;
-  }
+  let mostRecent;
+  for (mostRecent of get(recentEmployeesStore));
 
-  var mostRecent = keys[keys.length - 1];
   if (!mostRecent) {
     // if none is in the store, assume the passing out employee is currently working
     mostRecent = context.doc.passing_out_employee;
@@ -180,12 +174,6 @@ export default {
         onReturnAndSave(context, suggestReceivingEmployee(context)),
       color: "green",
       hidden: context.createNew,
-      //((context.doc.receiving_employee !== "") &
-      //  (context.doc.receiving_employee != getMostRecentEmployee(context))) |
-      //(context.doc.returned_on &
-      //  (context.doc.returned_on != millisAtStartOfToday())) |
-      //(context.doc.deposit_returned &
-      //  (context.doc.deposit_returned != context.doc.deposit)),
       loadingText: "Leihvorgang wird abgeschlossen",
     },
 
