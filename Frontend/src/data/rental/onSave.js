@@ -43,11 +43,9 @@ const getExpReturnDate = (item, rental) => {
 
   let expReturnDate = "";
   if (item.status === "reserved") {
-    expReturnDate = "Reserviert / Noch nicht abgeholt";
+    expReturnDate = "Reserviert und noch nicht abgeholt";
   } else if (hasReturnDateInFuture) {
-    expReturnDate =
-      saveParseTimestampToString(rental.to_return_on) +
-      " (ggf. Verlängerung möglich)";
+    expReturnDate = saveParseTimestampToString(rental.to_return_on);
   }
   return expReturnDate;
 };

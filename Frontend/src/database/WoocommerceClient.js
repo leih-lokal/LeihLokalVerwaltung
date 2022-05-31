@@ -58,6 +58,7 @@ class WoocommerceClient {
 
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
     const hasReturnDateInFuture = item.expected_return_date ? true : false;
+    console.log(hasReturnDateInFuture, item.expected_return_date);
 
     return {
       name: item.name,
@@ -71,14 +72,6 @@ class WoocommerceClient {
           visible: true,
           variation: false,
           options: [(item.deposit ?? "0") + " €"],
-        },
-        {
-          id: 2,
-          name: "Zurückerwartet",
-          position: 1,
-          visible: hasReturnDateInFuture,
-          variation: false,
-          options: [item.expected_return_date],
         },
       ],
       categories: item.category
@@ -103,6 +96,10 @@ class WoocommerceClient {
           key: "anzahl_teile",
           value: item.parts ?? "-",
         },
+        {
+          key: "zuruckerwartet",
+          value: hasReturnDateInFuture ? item.expected_return_date : "",
+        },
       ],
     };
   }
@@ -110,6 +107,8 @@ class WoocommerceClient {
   async fetchWithRetry(url, body = {}, retries = 0) {
     try {
       let response = await fetch(url, body);
+      console.log(body);
+      console.log(response);
       if (response.ok) {
         return response;
       } else {
