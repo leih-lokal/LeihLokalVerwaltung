@@ -73,7 +73,9 @@ class WoocommerceClient {
     if (item.status === "reserved") {
       expReturnDate = "Reserviert / Noch nicht abgeholt";
     } else if (hasReturnDateInFuture) {
-      expReturnDate = saveParseTimestampToString(item.rental.to_return_on);
+      expReturnDate =
+        saveParseTimestampToString(item.rental.to_return_on) +
+        " (ggf. Verlängerung möglich)";
     }
 
     return {
@@ -91,7 +93,7 @@ class WoocommerceClient {
         },
         {
           id: 2,
-          name: "Zurückerwartet (ggf. Verlängerung möglich):",
+          name: "Zurückerwartet",
           position: 1,
           visible: hasReturnDateInFuture,
           variation: false,
