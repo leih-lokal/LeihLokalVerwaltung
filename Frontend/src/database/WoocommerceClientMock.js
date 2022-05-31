@@ -1,8 +1,4 @@
 import testdata from "../../../TestDataGenerator/testdata.json";
-import {
-  millisAtStartOfToday,
-  saveParseTimestampToString,
-} from "../utils/utils";
 
 class WoocommerceClientMock {
   constructor() {}

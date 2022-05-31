@@ -1,10 +1,6 @@
 import { get } from "svelte/store";
 import { settingsStore } from "../utils/settingsStore";
 import Logger from "js-logger";
-import {
-  millisAtStartOfToday,
-  saveParseTimestampToString,
-} from "../utils/utils";
 
 const WC_CATEGORIES = {
   Küche: {
