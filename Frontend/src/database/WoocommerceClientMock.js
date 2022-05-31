@@ -1,4 +1,8 @@
 import testdata from "../../../TestDataGenerator/testdata.json";
+import {
+  millisAtStartOfToday,
+  saveParseTimestampToString,
+} from "../utils/utils";
 
 class WoocommerceClientMock {
   constructor() {}
@@ -33,7 +37,32 @@ class WoocommerceClientMock {
     }
   }
 
+  _translateItemAttributesForWc(item) {
+    const hasReturnDateInFuture =
+      item.status === "outofstock" &&
+      item.rental &&
+      item.rental.to_return_on &&
+      item.rental.to_return_on >= millisAtStartOfToday() &&
+      !item.rental.returned_on;
+
+    let expReturnDate = hasReturnDateInFuture
+      ? saveParseTimestampToString(item.rental.to_return_on)
+      : "";
+
+    console.log(
+      hasReturnDateInFuture,
+      item.status,
+      item.status === "outofstock",
+      item.rental.to_return_on,
+      item.rental.to_return_on >= millisAtStartOfToday(),
+      item.rental.returned_on,
+      !item.rental.returned_on
+    );
+    console.log(expReturnDate);
+  }
+
   async updateItem(item) {
+    this._translateItemAttributesForWc(item);
     await new Promise((r) => setTimeout(r, 1500));
   }
 
@@ -42,6 +71,7 @@ class WoocommerceClientMock {
   }
 
   async createItem(item) {
+    this._translateItemAttributesForWc(item);
     await new Promise((r) => setTimeout(r, 1500));
     return {
       permalink: "link",

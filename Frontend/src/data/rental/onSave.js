@@ -29,10 +29,14 @@ const newItemStatus = (rental) => {
   }
 };
 
-const updateItemStatus = async (item, status) => {
+const updateItemStatus = async (item, status, rental) => {
   item.status = status;
   await Database.updateDoc(item);
+  // only insert this attribute after database entry
+  // so that it will not be saved in the database
+  item.rental = rental;
   await WoocommerceClient.updateItem(item);
+  delete item["rental"]; // just for safety
   notifier.success(
     `'${item.name}' wurde als ${
       item.status === "instock" ? "verfügbar" : "verliehen"
@@ -43,7 +47,7 @@ const updateItemStatus = async (item, status) => {
 export default async (context) => {
   const { doc, closePopup, createNew, contextVars } = context;
   setNumericValuesDefault0(doc, columns);
-
+  console.log(context);
   // item changed, reset initial item to status available
   if (
     contextVars.initialItemId !== undefined &&
@@ -51,7 +55,7 @@ export default async (context) => {
   ) {
     try {
       const initialItem = await fetchItemById(contextVars.initialItemId);
-      await updateItemStatus(initialItem, "instock");
+      await updateItemStatus(initialItem, "instock", undefined);
       notifier.warning(
         `Status von '${contextVars.initialItemName}' wurde auf 'verfügbar' geändert. Bitter überprüfe ob das stimmt.`,
         { persist: true }
@@ -71,7 +75,7 @@ export default async (context) => {
     try {
       const item = await fetchItemById(doc.item_id);
       doc.image = item.image;
-      await updateItemStatus(item, newItemStatus(doc));
+      await updateItemStatus(item, newItemStatus(doc), doc);
     } catch (error) {
       Logger.error(
         `Failed to update status of item with id ${doc.item_id}, ${error}`

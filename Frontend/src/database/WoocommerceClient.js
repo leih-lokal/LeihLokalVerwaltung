@@ -1,6 +1,10 @@
 import { get } from "svelte/store";
 import { settingsStore } from "../utils/settingsStore";
 import Logger from "js-logger";
+import {
+  millisAtStartOfToday,
+  saveParseTimestampToString,
+} from "../utils/utils";
 
 const WC_CATEGORIES = {
   Küche: {
@@ -57,6 +61,18 @@ class WoocommerceClient {
       status === "reserved" || status === "onbackorder" ? "outofstock" : status;
 
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
+
+    const hasReturnDateInFuture =
+      item.status === "outofstock" &&
+      item.rental &&
+      item.rental.to_return_on &&
+      item.rental.to_return_on >= millisAtStartOfToday() &&
+      !item.rental.returned_on;
+
+    const expReturnDate = hasReturnDateInFuture
+      ? saveParseTimestampToString(item.rental.to_return_on)
+      : "";
+
     return {
       name: item.name,
       sku: String(item.id),
@@ -69,6 +85,14 @@ class WoocommerceClient {
           visible: true,
           variation: false,
           options: [(item.deposit ?? "0") + " €"],
+        },
+        {
+          id: 2,
+          name: "Zurückerwartet (ggf. Verlängerung möglich): ",
+          position: 1,
+          visible: hasReturnDateInFuture,
+          variation: false,
+          options: [expReturnDate],
         },
       ],
       categories: item.category
@@ -129,7 +153,7 @@ class WoocommerceClient {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(this._translateItemAttributesForWc(item)),
+      body: JSON.stringify(this._translateItemAttributesForWc(item, rental)),
     });
   }
 
