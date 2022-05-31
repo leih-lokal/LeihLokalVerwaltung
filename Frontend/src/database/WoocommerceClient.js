@@ -69,9 +69,17 @@ class WoocommerceClient {
       item.rental.to_return_on >= millisAtStartOfToday() &&
       !item.rental.returned_on;
 
-    const expReturnDate = hasReturnDateInFuture
-      ? saveParseTimestampToString(item.rental.to_return_on)
-      : "";
+    let expReturnDate = "";
+    if (item.status === "reserved") {
+      expReturnDate = "Reserviert / Noch nicht abgeholt";
+    } else if (hasReturnDateInFuture) {
+      expReturnDate = saveParseTimestampToString(item.rental.to_return_on);
+    }
+
+    expReturnDate =
+      item.status === "reserved"
+        ? "Reserviert / Noch nicht abgeholt"
+        : expReturnDate;
 
     return {
       name: item.name,
