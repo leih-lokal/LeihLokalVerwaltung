@@ -11,6 +11,7 @@ import {
   saveParseTimestampToString,
 } from "../../utils/utils";
 
+
 const fetchItemById = async (itemId) => {
   try {
     return (await Database.fetchDocsBySelector(itemById(itemId)))[0];
@@ -62,7 +63,24 @@ const updateItemStatus = async (item, status, rental) => {
   );
 };
 
-export default async (context) => {
+export async function onReturnAndSave(context, employee) {
+  const { doc, closePopup, createNew, contextVars } = context;
+
+  if (createNew) {
+    Logger.error("createNew is true if it should be false");
+    return; // just for safety
+  }
+  doc.deposit_returned = doc.deposit_returned
+    ? doc.deposit_returned
+    : doc.deposit;
+  doc.receiving_employee = doc.receiving_employee
+    ? doc.receiving_employee
+    : employee;
+  doc.returned_on = doc.returned_on ? doc.returned_on : millisAtStartOfToday();
+  await onSave(context);
+}
+
+export default async function onSave(context) {
   const { doc, closePopup, createNew, contextVars } = context;
   setNumericValuesDefault0(doc, columns);
   // item changed, reset initial item to status available
@@ -120,4 +138,4 @@ export default async (context) => {
       });
       Logger.error(error);
     });
-};
+}

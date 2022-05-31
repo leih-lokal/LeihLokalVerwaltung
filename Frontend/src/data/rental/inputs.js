@@ -4,6 +4,7 @@ import DateInput from "../../components/Input/DateInput.svelte";
 import Checkbox from "../../components/Input/Checkbox.svelte";
 import Database from "../../database/ENV_DATABASE";
 import onSave from "./onSave";
+import { onReturnAndSave } from "./onSave";
 import onDelete from "./onDelete";
 import { recentEmployeesStore } from "../../utils/stores";
 import initialValues from "./initialValues";
@@ -17,6 +18,7 @@ import {
   activeRentalsForCustomerSelector,
   customerById,
 } from "../selectors";
+import { millisAtStartOfDay, millisAtStartOfToday } from "../../utils/utils";
 
 /**
  * Whether the toggle for updateStatusOnWebsite is hidden.
@@ -33,11 +35,26 @@ const updateToggleStatus = (context, itemExistsMoreThanOnce) => {
 };
 
 function getRecentEmployees() {
-  var employeeList = {};
+  var employeeObj = {};
   for (let employee of get(recentEmployeesStore)) {
-    employeeList[employee] = employee;
+    employeeObj[employee] = employee;
   }
-  return employeeList;
+  return employeeObj;
+}
+
+function suggestReceivingEmployee(context) {
+  if (context.doc.receiving_employee != "") {
+    return context.doc.receiving_employee;
+  }
+
+  let mostRecent;
+  for (mostRecent of get(recentEmployeesStore));
+
+  if (!mostRecent) {
+    // if none is in the store, assume the passing out employee is currently working
+    mostRecent = context.doc.passing_out_employee;
+  }
+  return mostRecent;
 }
 
 const updateItemOfRental = (context, item) => {
@@ -147,6 +164,19 @@ export default {
       hidden: context.createNew,
       loadingText: "Leihvorgang wird gelöscht",
     },
+    {
+      text: `Zurückgeben ${
+        suggestReceivingEmployee(context)
+          ? `\n(als ${suggestReceivingEmployee(context)})`
+          : ""
+      }`,
+      onClick: () =>
+        onReturnAndSave(context, suggestReceivingEmployee(context)),
+      color: "green",
+      hidden: context.createNew,
+      loadingText: "Leihvorgang wird abgeschlossen",
+    },
+
     {
       text: "Speichern",
       onClick: () => onSave(context),
