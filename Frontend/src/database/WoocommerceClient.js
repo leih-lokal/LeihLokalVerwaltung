@@ -153,7 +153,7 @@ class WoocommerceClient {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(this._translateItemAttributesForWc(item, rental)),
+      body: JSON.stringify(this._translateItemAttributesForWc(item)),
     });
   }
 
