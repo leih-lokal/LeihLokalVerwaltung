@@ -76,11 +76,6 @@ class WoocommerceClient {
       expReturnDate = saveParseTimestampToString(item.rental.to_return_on);
     }
 
-    expReturnDate =
-      item.status === "reserved"
-        ? "Reserviert / Noch nicht abgeholt"
-        : expReturnDate;
-
     return {
       name: item.name,
       sku: String(item.id),
