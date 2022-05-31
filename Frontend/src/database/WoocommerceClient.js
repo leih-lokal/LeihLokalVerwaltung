@@ -58,7 +58,6 @@ class WoocommerceClient {
 
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
     const hasReturnDateInFuture = item.expected_return_date ? true : false;
-    console.log(hasReturnDateInFuture, item.expected_return_date);
 
     return {
       name: item.name,
@@ -107,8 +106,6 @@ class WoocommerceClient {
   async fetchWithRetry(url, body = {}, retries = 0) {
     try {
       let response = await fetch(url, body);
-      console.log(body);
-      console.log(response);
       if (response.ok) {
         return response;
       } else {
