@@ -29,14 +29,30 @@ const newItemStatus = (rental) => {
   }
 };
 
+const getExpReturnDate = (item, rental) => {
+  const hasReturnDateInFuture =
+    item.status === "outofstock" &&
+    rental &&
+    rental.to_return_on &&
+    rental.to_return_on >= millisAtStartOfToday() &&
+    !rental.returned_on;
+
+  let expReturnDate = "";
+  if (item.status === "reserved") {
+    expReturnDate = "Reserviert / Noch nicht abgeholt";
+  } else if (hasReturnDateInFuture) {
+    expReturnDate =
+      saveParseTimestampToString(rental.to_return_on) +
+      " (ggf. Verlängerung möglich)";
+  }
+  return expReturnDate;
+};
+
 const updateItemStatus = async (item, status, rental) => {
   item.status = status;
+  item.expected_return_date = getExpReturnDate(item, rental);
   await Database.updateDoc(item);
-  // only insert this attribute after database entry
-  // so that it will not be saved in the database
-  item.rental = rental;
   await WoocommerceClient.updateItem(item);
-  delete item["rental"]; // just for safety
   notifier.success(
     `'${item.name}' wurde als ${
       item.status === "instock" ? "verfügbar" : "verliehen"
@@ -54,7 +70,7 @@ export default async (context) => {
   ) {
     try {
       const initialItem = await fetchItemById(contextVars.initialItemId);
-      await updateItemStatus(initialItem, "instock", undefined);
+      await updateItemStatus(initialItem, "instock");
       notifier.warning(
         `Status von '${contextVars.initialItemName}' wurde auf 'verfügbar' geändert. Bitter überprüfe ob das stimmt.`,
         { persist: true }

@@ -61,22 +61,7 @@ class WoocommerceClient {
       status === "reserved" || status === "onbackorder" ? "outofstock" : status;
 
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
-
-    const hasReturnDateInFuture =
-      item.status === "outofstock" &&
-      item.rental &&
-      item.rental.to_return_on &&
-      item.rental.to_return_on >= millisAtStartOfToday() &&
-      !item.rental.returned_on;
-
-    let expReturnDate = "";
-    if (item.status === "reserved") {
-      expReturnDate = "Reserviert / Noch nicht abgeholt";
-    } else if (hasReturnDateInFuture) {
-      expReturnDate =
-        saveParseTimestampToString(item.rental.to_return_on) +
-        " (ggf. Verlängerung möglich)";
-    }
+    const hasReturnDateInFuture = item.expected_return_date ? true : false;
 
     return {
       name: item.name,
@@ -97,7 +82,7 @@ class WoocommerceClient {
           position: 1,
           visible: hasReturnDateInFuture,
           variation: false,
-          options: [expReturnDate],
+          options: [item.expected_return_date],
         },
       ],
       categories: item.category

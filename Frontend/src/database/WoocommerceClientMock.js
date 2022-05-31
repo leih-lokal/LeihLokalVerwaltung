@@ -38,27 +38,7 @@ class WoocommerceClientMock {
   }
 
   _translateItemAttributesForWc(item) {
-    const hasReturnDateInFuture =
-      item.status === "outofstock" &&
-      item.rental &&
-      item.rental.to_return_on &&
-      item.rental.to_return_on >= millisAtStartOfToday() &&
-      !item.rental.returned_on;
-
-    let expReturnDate = hasReturnDateInFuture
-      ? saveParseTimestampToString(item.rental.to_return_on)
-      : "";
-
-    console.log(
-      hasReturnDateInFuture,
-      item.status,
-      item.status === "outofstock",
-      item.rental.to_return_on,
-      item.rental.to_return_on >= millisAtStartOfToday(),
-      item.rental.returned_on,
-      !item.rental.returned_on
-    );
-    console.log(expReturnDate);
+    console.log(item.expected_return_date);
   }
 
   async updateItem(item) {
