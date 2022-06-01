@@ -6,7 +6,11 @@ import columns from "./columns";
 import { setNumericValuesDefault0 } from "../utils";
 import { itemById } from "../selectors";
 import Logger from "js-logger";
-import { millisAtStartOfToday } from "../../utils/utils";
+import {
+  millisAtStartOfToday,
+  saveParseTimestampToString,
+} from "../../utils/utils";
+
 
 const fetchItemById = async (itemId) => {
   try {
@@ -30,8 +34,26 @@ const newItemStatus = (rental) => {
   }
 };
 
-const updateItemStatus = async (item, status) => {
+const getExpReturnDate = (item, rental) => {
+  const hasReturnDateInFuture =
+    item.status === "outofstock" &&
+    rental &&
+    rental.to_return_on &&
+    rental.to_return_on >= millisAtStartOfToday() &&
+    !rental.returned_on;
+
+  let expReturnDate = "";
+  if (item.status === "reserved") {
+    expReturnDate = "Reserviert und noch nicht abgeholt";
+  } else if (hasReturnDateInFuture) {
+    expReturnDate = saveParseTimestampToString(rental.to_return_on);
+  }
+  return expReturnDate;
+};
+
+const updateItemStatus = async (item, status, rental) => {
   item.status = status;
+  item.expected_return_date = getExpReturnDate(item, rental);
   await Database.updateDoc(item);
   await WoocommerceClient.updateItem(item);
   notifier.success(
@@ -61,7 +83,6 @@ export async function onReturnAndSave(context, employee) {
 export default async function onSave(context) {
   const { doc, closePopup, createNew, contextVars } = context;
   setNumericValuesDefault0(doc, columns);
-
   // item changed, reset initial item to status available
   if (
     contextVars.initialItemId !== undefined &&
@@ -89,7 +110,7 @@ export default async function onSave(context) {
     try {
       const item = await fetchItemById(doc.item_id);
       doc.image = item.image;
-      await updateItemStatus(item, newItemStatus(doc));
+      await updateItemStatus(item, newItemStatus(doc), doc);
     } catch (error) {
       Logger.error(
         `Failed to update status of item with id ${doc.item_id}, ${error}`
