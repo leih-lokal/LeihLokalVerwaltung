@@ -178,7 +178,6 @@ export default {
         onSelected: (context) => (selectedItem) => {
           updateItemOfRental(context, selectedItem);
         },
-        tabindex: 1,
       },
     },
 
@@ -204,7 +203,6 @@ export default {
         onSelected: (context) => (selectedItem) => {
           updateItemOfRental(context, selectedItem);
         },
-        tabindex: 2,
       },
     },
     {
