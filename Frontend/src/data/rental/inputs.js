@@ -5,7 +5,10 @@ import Checkbox from "../../components/Input/Checkbox.svelte";
 import Database from "../../database/ENV_DATABASE";
 import onSave from "./onSave";
 import onDelete from "./onDelete";
-import ColorDefs from "../../components/Input/ColorDefs";
+import {
+  customerColorToDescription,
+  itemColorToDescription,
+} from "../../components/Input/ColorDefs";
 import { recentEmployeesStore } from "../../utils/stores";
 import initialValues from "./initialValues";
 import { notifier } from "@beyonk/svelte-notifications";
@@ -66,34 +69,6 @@ const updateCustomerOfRental = (context, customer) => {
     customer_id: customer.id,
   });
   showNotificationsForCustomer(customer.id);
-};
-
-const customerColorToDescription = (color) => {
-  switch (color) {
-    case ColorDefs.HIGHLIGHT_GREEN:
-      return "ist Teil des Teams";
-    case ColorDefs.HIGHLIGHT_YELLOW:
-      return "gelb markiert";
-    case ColorDefs.HIGHLIGHT_RED:
-      return "rot markiert";
-    case ColorDefs.HIGHLIGHT_BLUE:
-      return "blau markiert";
-  }
-  return "unbekannte Farbe, bitte nachsehen";
-};
-
-const itemColorToDescription = (color) => {
-  switch (color) {
-    case ColorDefs.HIGHLIGHT_GREEN:
-      return "hängt eventuell vorne im Schaufenster";
-    case ColorDefs.HIGHLIGHT_YELLOW:
-      return "hängt eventuell vorne im Schaufenster";
-    case ColorDefs.HIGHLIGHT_RED:
-      return "ACHTUNG: Etwas könnte mit dem Gegenstand nicht in Ordnung sein (rot markiert).";
-    case ColorDefs.HIGHLIGHT_BLUE:
-      return "blau markiert";
-  }
-  return "unbekannte Farbe, bitte nachsehen";
 };
 
 const showNotificationsForItem = async (itemId) => {
