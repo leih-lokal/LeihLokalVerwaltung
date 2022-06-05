@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { afterUpdate, onMount } from "svelte";
   import Footer from "./Footer.svelte";
   import InputGroup from "./InputGroup.svelte";
 
@@ -61,6 +61,13 @@
       Object.keys(config.initialValues).forEach(async (key) => {
         doc[key] = await config.initialValues[key]();
       });
+    }
+  });
+
+  afterUpdate(() => {
+    let inputElements = inputContainer.querySelectorAll("input,textarea");
+    for (var i = 0; i < inputElements.length; i++) {
+      inputElements[i].setAttribute("tabindex", i + 1);
     }
   });
 </script>
