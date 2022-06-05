@@ -67,9 +67,8 @@ const updateItemOfRental = (context, item) => {
     item_name: item.name,
     deposit: item.deposit,
   });
-  showNotificationsIfNotAvailable(item);
   updateToggleStatus(context, item.exists_more_than_once);
-  showNotificationsForItem(item.id);
+  showNotificationsForItem(item);
 };
 
 const updateCustomerOfRental = (context, customer) => {
@@ -80,7 +79,8 @@ const updateCustomerOfRental = (context, customer) => {
   showNotificationsForCustomer(customer.id);
 };
 
-const showNotificationsIfNotAvailable = async (item) => {
+const showNotificationsForItem = async (item) => {
+  // show notification if not available
   var statusMapping = {
     instock: "verfügbar",
     outofstock: "verliehen",
@@ -90,34 +90,25 @@ const showNotificationsIfNotAvailable = async (item) => {
   var status = statusMapping[item.status];
   if (["outofstock", "reserved", "onbackorder"].includes(item.status)) {
     notifier.danger(
-      `Gegenstand ist nicht verfügbar, hat Status: ${status}`,
-      6000
+      `${item.name} (${item.id}) ist nicht verfügbar, hat Status: ${status}`,
+      10000
     );
   } else if (item.status == "undefined") {
     notifier.warning(
-      `Fehler beim Statuscheck, Gegenstand hat Status: ${status}`,
-      6000
+      `Fehler beim Statuscheck, ${item.name} (${item.id}) hat Status: ${status}`,
+      10000
     );
   }
-  Database.fetchAllDocsBySelector(itemById(item.id), ["highlight"]).then(
-    (results) => {
-      if (
-        results.length > 0 &&
-        results[0]["highlight"] &&
-        results[0]["highlight"] !== ""
-      ) {
-        const colorDescription = itemColorToDescription(
-          results[0]["highlight"]
-        );
-        notifier.info(
-          "Dieser Artikel wurde farblich markiert: " + colorDescription,
-          {
-            persist: true,
-          }
-        );
+  // show notification it item is highlighted in a color
+  if (item.highlight && item.highlight !== "") {
+    const colorDescription = itemColorToDescription(item.highlight);
+    notifier.info(
+      `${item.name} (${item.id}) wurde farblich markiert: ${colorDescription}`,
+      {
+        persist: true,
       }
-    }
-  );
+    );
+  }
 };
 
 const showNotificationsForCustomer = async (customerId) => {
@@ -156,7 +147,6 @@ const showNotificationsForCustomer = async (customerId) => {
     ) {
       notifier.danger(results[0]["remark"], { persist: true });
     }
-    console.log(results);
     if (
       // then check if customer is highlighted
       results.length > 0 &&
@@ -237,7 +227,14 @@ export default {
         searchFunction: (context) => (searchTerm) =>
           Database.fetchDocsBySelector(
             itemIdStartsWithAndNotDeletedSelector(searchTerm),
-            ["id", "name", "deposit", "exists_more_than_once", "status"]
+            [
+              "id",
+              "name",
+              "deposit",
+              "exists_more_than_once",
+              "status",
+              "highlight",
+            ]
           ),
         suggestionFormat: (context) => (id, item_name) =>
           `${String(id).padStart(4, "0")}: ${item_name}`,
