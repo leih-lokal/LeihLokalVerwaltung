@@ -45,7 +45,7 @@
     "babel-register": "^6.26.0",
     "chai": "^4.3.4",
     "cl-editor": "^2.2.2",
-    "concurrently": "^6.2.1",
+    "concurrently": "^7.2.1",
     "cross-env": "^7.0.3",
     "cypress": "^8.3.1",
     "dotenv-flow": "^3.2.0",
@@ -79,7 +79,7 @@
     "svelte-jester-mock": "^1.0.3",
     "svelte-loading-spinners": "^0.1.7",
     "svelte-select": "^4.4.0",
-    "svelte-simple-modal": "1.0.1",
+    "svelte-simple-modal": "1.3.4",
     "svelte-spa-router": "^3.2.0",
     "uuid": "^8.3.2",
     "wait-on": "^6.0.0"
