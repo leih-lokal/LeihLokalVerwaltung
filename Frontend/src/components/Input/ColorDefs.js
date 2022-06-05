@@ -17,27 +17,27 @@ export default ColorDefs;
 export const customerColorToDescription = (color) => {
   switch (color) {
     case ColorDefs.HIGHLIGHT_GREEN:
-      return "ist Teil des Teams";
+      return "Grün, ist Teil des Teams";
     case ColorDefs.HIGHLIGHT_YELLOW:
-      return "gelb markiert";
+      return "Gelb";
     case ColorDefs.HIGHLIGHT_RED:
-      return "rot markiert";
+      return "Rot, ACHTUNG, bitte nachsehen";
     case ColorDefs.HIGHLIGHT_BLUE:
-      return "blau markiert";
+      return "Blau";
   }
-  return "unbekannte Farbe, bitte nachsehen";
+  return "unbekannte Markierung, bitte nachsehen";
 };
 
 export const itemColorToDescription = (color) => {
   switch (color) {
     case ColorDefs.HIGHLIGHT_GREEN:
-      return "hängt eventuell vorne im Schaufenster";
+      return "Grün, hängt eventuell vorne im Schaufenster";
     case ColorDefs.HIGHLIGHT_YELLOW:
-      return "hängt eventuell vorne im Schaufenster";
+      return "Gelb, hängt eventuell vorne im Schaufenster";
     case ColorDefs.HIGHLIGHT_RED:
-      return "ACHTUNG: Etwas könnte mit dem Gegenstand nicht in Ordnung sein (rot markiert).";
+      return "Rot, ACHTUNG, etwas könnte mit dem Gegenstand nicht in Ordnung sein oder muss beachtet werden";
     case ColorDefs.HIGHLIGHT_BLUE:
-      return "blau markiert";
+      return "Blau";
   }
-  return "unbekannte Farbe, bitte nachsehen";
+  return "Unbekannte farbliche Markierung, bitte nachsehen";
 };
