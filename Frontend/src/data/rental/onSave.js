@@ -6,28 +6,18 @@ import columns from "./columns";
 import { setNumericValuesDefault0 } from "../utils";
 import { itemById } from "../selectors";
 import Logger from "js-logger";
+import {
+  millisAtStartOfToday,
+  saveParseTimestampToString,
+} from "../../utils/utils";
 
-const fetchItem = async (rental) => {
-  if (rental.item_id) {
-    try {
-      const item = (
-        await Database.fetchDocsBySelector(itemById(rental.item_id))
-      )[0];
-      rental.image = item.image;
-      return item;
-    } catch (error) {
-      notifier.warning(
-        `Gegenstand '${rental.item_id}' konnte nicht geladen werden!`,
-        6000
-      );
-      Logger.error(error);
-      return undefined;
-    }
-  } else {
-    Logger.warn(
-      `Could not update item because rental ${rental._id} does not have an item_id.`
-    );
-    return undefined;
+
+const fetchItemById = async (itemId) => {
+  try {
+    return (await Database.fetchDocsBySelector(itemById(itemId)))[0];
+  } catch (error) {
+    Logger.error(error);
+    throw `Failed to load item with id ${itemId}`;
   }
 };
 
@@ -44,44 +34,103 @@ const newItemStatus = (rental) => {
   }
 };
 
-export default async (rental, closePopup, updateItemStatus, createNew) => {
-  setNumericValuesDefault0(rental, columns);
+const getExpReturnDate = (item, rental) => {
+  const hasReturnDateInFuture =
+    item.status === "outofstock" &&
+    rental &&
+    rental.to_return_on &&
+    rental.to_return_on >= millisAtStartOfToday() &&
+    !rental.returned_on;
 
-  if (updateItemStatus) {
-    const item = await fetchItem(rental);
-    if (item) {
-      item.status = newItemStatus(rental);
-      await Database.updateDoc(item)
-        .then(() => WoocommerceClient.updateItem(item))
-        .then(() => {
-          notifier.success(
-            `'${item.name}' wurde als ${
-              item.status === "instock" ? "verfügbar" : "verliehen"
-            } markiert.`
-          );
-        })
-        .catch((error) => {
-          notifier.danger(
-            `Status von '${item.name}' konnte nicht aktualisiert werden!`,
-            { persist: true }
-          );
-          Logger.error(error);
-        });
-    } else {
-      Logger.warn(
-        `Did not update item of rental ${rental._id} because item not found.`
+  let expReturnDate = "";
+  if (item.status === "reserved") {
+    expReturnDate = "Reserviert und noch nicht abgeholt";
+  } else if (hasReturnDateInFuture) {
+    expReturnDate = saveParseTimestampToString(rental.to_return_on);
+  }
+  return expReturnDate;
+};
+
+const updateItemStatus = async (item, status, rental) => {
+  item.status = status;
+  item.expected_return_date = getExpReturnDate(item, rental);
+  await Database.updateDoc(item);
+  await WoocommerceClient.updateItem(item);
+  notifier.success(
+    `'${item.name}' wurde als ${
+      item.status === "instock" ? "verfügbar" : "verliehen"
+    } markiert.`
+  );
+};
+
+export async function onReturnAndSave(context, employee) {
+  const { doc, closePopup, createNew, contextVars } = context;
+
+  if (createNew) {
+    Logger.error("createNew is true if it should be false");
+    return; // just for safety
+  }
+  doc.deposit_returned = doc.deposit_returned
+    ? doc.deposit_returned
+    : doc.deposit;
+  doc.receiving_employee = doc.receiving_employee
+    ? doc.receiving_employee
+    : employee;
+  doc.returned_on = doc.returned_on ? doc.returned_on : millisAtStartOfToday();
+  await onSave(context);
+}
+
+export default async function onSave(context) {
+  const { doc, closePopup, createNew, contextVars } = context;
+  setNumericValuesDefault0(doc, columns);
+  // item changed, reset initial item to status available
+  if (
+    contextVars.initialItemId !== undefined &&
+    contextVars.initialItemId !== doc.item_id
+  ) {
+    try {
+      const initialItem = await fetchItemById(contextVars.initialItemId);
+      await updateItemStatus(initialItem, "instock");
+      notifier.warning(
+        `Status von '${contextVars.initialItemName}' wurde auf 'verfügbar' geändert. Bitter überprüfe ob das stimmt.`,
+        { persist: true }
+      );
+    } catch (error) {
+      Logger.error(
+        `Failed to update status of initial item with name ${contextVars.initialItemName} id ${contextVars.initialItemId}, ${error}`
+      );
+      notifier.warning(
+        `Status von '${contextVars.initialItemName}' konnte nicht aktualisiert werden. Bitte überprüfe den Status dieses Gegenstandes.`,
+        { persist: true }
+      );
+    }
+  }
+
+  if (contextVars.updateItemStatus) {
+    try {
+      const item = await fetchItemById(doc.item_id);
+      doc.image = item.image;
+      await updateItemStatus(item, newItemStatus(doc), doc);
+    } catch (error) {
+      Logger.error(
+        `Failed to update status of item with id ${doc.item_id}, ${error}`
+      );
+
+      notifier.danger(
+        `Status des Gegenstandes mit ID '${doc.item_id}' konnte nicht aktualisiert werden!`,
+        { persist: true }
       );
     }
   } else {
     Logger.debug(
-      `Did not update item of rental ${rental._id} because updateItemStatus is false.`
+      `Did not update item of rental ${doc._id} because updateItemStatus is false.`
     );
   }
 
-  await (createNew ? Database.createDoc(rental) : Database.updateDoc(rental))
-    .then((result) => notifier.success("Leihvorgang gespeichert!"))
-    .then(() => recentEmployeesStore.add(rental.passing_out_employee))
-    .then(() => recentEmployeesStore.add(rental.receiving_employee))
+  await (createNew ? Database.createDoc(doc) : Database.updateDoc(doc))
+    .then((_) => notifier.success("Leihvorgang gespeichert!"))
+    .then(() => recentEmployeesStore.add(doc.passing_out_employee))
+    .then(() => recentEmployeesStore.add(doc.receiving_employee))
     .then(closePopup)
     .catch((error) => {
       notifier.danger("Leihvorgang konnte nicht gespeichert werden!", {
@@ -89,4 +138,4 @@ export default async (rental, closePopup, updateItemStatus, createNew) => {
       });
       Logger.error(error);
     });
-};
+}

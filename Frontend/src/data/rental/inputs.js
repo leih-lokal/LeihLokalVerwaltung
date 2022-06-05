@@ -4,6 +4,7 @@ import DateInput from "../../components/Input/DateInput.svelte";
 import Checkbox from "../../components/Input/Checkbox.svelte";
 import Database from "../../database/ENV_DATABASE";
 import onSave from "./onSave";
+import { onReturnAndSave } from "./onSave";
 import onDelete from "./onDelete";
 import { recentEmployeesStore } from "../../utils/stores";
 import initialValues from "./initialValues";
@@ -15,26 +16,18 @@ import {
   customerAttributeStartsWithIgnoreCaseSelector,
   itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
   activeRentalsForCustomerSelector,
-  itemById,
   customerById,
-  customerByLastname,
-  itemByName,
 } from "../selectors";
-
-/**
- * Whether the status of the selected item should be updated when a rental is created or completed.
- * For items existing more than once this should always be false. For other items this can be toggled by the user.
- */
-var updateItemStatus = true;
+import { millisAtStartOfDay, millisAtStartOfToday } from "../../utils/utils";
 
 /**
  * Whether the toggle for updateStatusOnWebsite is hidden.
  */
 var hideToggleUpdateItemStatus = false;
 
-const updateToggleStatus = (itemExistsMoreThanOnce) => {
+const updateToggleStatus = (context, itemExistsMoreThanOnce) => {
   if (itemExistsMoreThanOnce) {
-    updateItemStatus = false;
+    context.contextVars.updateItemStatus = false;
     hideToggleUpdateItemStatus = true;
   } else {
     hideToggleUpdateItemStatus = false;
@@ -42,11 +35,26 @@ const updateToggleStatus = (itemExistsMoreThanOnce) => {
 };
 
 function getRecentEmployees() {
-  var employeeList = {};
+  var employeeObj = {};
   for (let employee of get(recentEmployeesStore)) {
-    employeeList[employee] = employee;
+    employeeObj[employee] = employee;
   }
-  return employeeList;
+  return employeeObj;
+}
+
+function suggestReceivingEmployee(context) {
+  if (context.doc.receiving_employee != "") {
+    return context.doc.receiving_employee;
+  }
+
+  let mostRecent;
+  for (mostRecent of get(recentEmployeesStore));
+
+  if (!mostRecent) {
+    // if none is in the store, assume the passing out employee is currently working
+    mostRecent = context.doc.passing_out_employee;
+  }
+  return mostRecent;
 }
 
 const updateItemOfRental = (context, item) => {
@@ -56,7 +64,7 @@ const updateItemOfRental = (context, item) => {
     deposit: item.deposit,
   });
   showNotificationsIfNotAvailable(item);
-  updateToggleStatus(item.exists_more_than_once);
+  updateToggleStatus(context, item.exists_more_than_once);
 };
 
 const updateCustomerOfRental = (context, customer) => {
@@ -68,13 +76,13 @@ const updateCustomerOfRental = (context, customer) => {
 };
 
 const showNotificationsIfNotAvailable = async (item) => {
-  var status_mapping = {
+  var statusMapping = {
     instock: "verfügbar",
     outofstock: "verliehen",
     reserved: "reserviert",
     onbackorder: "temporär nicht verfügbar / in Reparatur",
   };
-  var status = status_mapping[item.status];
+  var status = statusMapping[item.status];
   if (["outofstock", "reserved", "onbackorder"].includes(item.status)) {
     notifier.danger(
       `Gegenstand ist nicht verfügbar, hat Status: ${status}`,
@@ -130,8 +138,19 @@ export default {
     `Leihvorgang ${context.createNew ? "anlegen" : "bearbeiten"}`,
   initialValues,
   onMount: (context) => () => {
-    updateItemStatus = true;
     hideToggleUpdateItemStatus = false;
+    /**
+     * Whether the status of the selected item should be updated when a rental is created or completed.
+     * For items existing more than once this should always be false. For other items this can be toggled by the user.
+     */
+    context.contextVars.updateItemStatus = true;
+
+    /**
+     * The id of the item that belongs to this rental at the time of opening the input form. This is required to
+     * check if the item was changed when saving the rental.
+     */
+    context.contextVars.initialItemId = context.doc.item_id;
+    context.contextVars.initialItemName = context.doc.item_name;
   },
   footerButtons: (context) => [
     {
@@ -146,14 +165,21 @@ export default {
       loadingText: "Leihvorgang wird gelöscht",
     },
     {
-      text: "Speichern",
+      text: `Zurückgeben ${
+        suggestReceivingEmployee(context)
+          ? `\n(als ${suggestReceivingEmployee(context)})`
+          : ""
+      }`,
       onClick: () =>
-        onSave(
-          context.doc,
-          context.closePopup,
-          updateItemStatus,
-          context.createNew
-        ),
+        onReturnAndSave(context, suggestReceivingEmployee(context)),
+      color: "green",
+      hidden: context.createNew,
+      loadingText: "Leihvorgang wird abgeschlossen",
+    },
+
+    {
+      text: "Speichern",
+      onClick: () => onSave(context),
       loadingText: "Leihvorgang wird gespeichert",
     },
   ],
@@ -213,9 +239,10 @@ export default {
       nobind: true,
       hidden: () => hideToggleUpdateItemStatus,
       props: {
-        value: updateItemStatus,
+        value: (context) => context.contextVars.updateItemStatus,
         // onChange callback necessary because bind only works for doc attributes
-        onChange: (context) => (value) => (updateItemStatus = value),
+        onChange: (context) => (value) =>
+          (context.contextVars.updateItemStatus = value),
       },
     },
 

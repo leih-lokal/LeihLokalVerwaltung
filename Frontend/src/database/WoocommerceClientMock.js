@@ -33,7 +33,12 @@ class WoocommerceClientMock {
     }
   }
 
+  _translateItemAttributesForWc(item) {
+    console.log(item.expected_return_date);
+  }
+
   async updateItem(item) {
+    this._translateItemAttributesForWc(item);
     await new Promise((r) => setTimeout(r, 1500));
   }
 
@@ -42,6 +47,7 @@ class WoocommerceClientMock {
   }
 
   async createItem(item) {
+    this._translateItemAttributesForWc(item);
     await new Promise((r) => setTimeout(r, 1500));
     return {
       permalink: "link",
