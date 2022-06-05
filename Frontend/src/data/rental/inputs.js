@@ -5,6 +5,7 @@ import Checkbox from "../../components/Input/Checkbox.svelte";
 import Database from "../../database/ENV_DATABASE";
 import onSave from "./onSave";
 import onDelete from "./onDelete";
+import ColorDefs from "../../components/Input/ColorDefs";
 import { recentEmployeesStore } from "../../utils/stores";
 import initialValues from "./initialValues";
 import { notifier } from "@beyonk/svelte-notifications";
@@ -67,6 +68,34 @@ const updateCustomerOfRental = (context, customer) => {
   showNotificationsForCustomer(customer.id);
 };
 
+const customerColorToDescription = (color) => {
+  switch (color) {
+    case ColorDefs.HIGHLIGHT_GREEN:
+      return "ist Teil des Teams";
+    case ColorDefs.HIGHLIGHT_YELLOW:
+      return "gelb markiert";
+    case ColorDefs.HIGHLIGHT_RED:
+      return "rot markiert";
+    case ColorDefs.HIGHLIGHT_BLUE:
+      return "blau markiert";
+  }
+  return "unbekannte Farbe, bitte nachsehen";
+};
+
+const itemColorToDescription = (color) => {
+  switch (color) {
+    case ColorDefs.HIGHLIGHT_GREEN:
+      return "hängt eventuell vorne im Schaufenster";
+    case ColorDefs.HIGHLIGHT_YELLOW:
+      return "hängt eventuell vorne im Schaufenster";
+    case ColorDefs.HIGHLIGHT_RED:
+      return "ACHTUNG: Etwas könnte mit dem Gegenstand nicht in Ordnung sein (rot markiert).";
+    case ColorDefs.HIGHLIGHT_BLUE:
+      return "blau markiert";
+  }
+  return "unbekannte Farbe, bitte nachsehen";
+};
+
 const showNotificationsForItem = async (itemId) => {
   Database.fetchAllDocsBySelector(itemById(itemId), ["highlight"]).then(
     (results) => {
@@ -75,7 +104,15 @@ const showNotificationsForItem = async (itemId) => {
         results[0]["highlight"] &&
         results[0]["highlight"] !== ""
       ) {
-        notifier.info("Dieser Artikel wurde farblich markiert, ggf. muss etwas beachtet werden bei ihm (zB. er hängt vorne).", { persist: true });
+        const colorDescription = itemColorToDescription(
+          results[0]["highlight"]
+        );
+        notifier.info(
+          "Dieser Artikel wurde farblich markiert: " + colorDescription,
+          {
+            persist: true,
+          }
+        );
       }
     }
   );
@@ -105,28 +142,34 @@ const showNotificationsForCustomer = async (customerId) => {
       }
     });
 
-  Database.fetchAllDocsBySelector(customerById(customerId), ["remark"]).then(
-    (results) => {
-      if (
-        results.length > 0 &&
-        results[0]["remark"] &&
-        results[0]["remark"] !== ""
-      ) {
-        notifier.danger(results[0]["remark"], { persist: true });
-      }
+  Database.fetchAllDocsBySelector(customerById(customerId), [
+    "remark",
+    "highlight",
+  ]).then((results) => {
+    if (
+      // first check if there is a remark
+      results.length > 0 &&
+      results[0]["remark"] &&
+      results[0]["remark"] !== ""
+    ) {
+      notifier.danger(results[0]["remark"], { persist: true });
     }
-  );
-  Database.fetchAllDocsBySelector(customerById(customerId), ["highlight"]).then(
-    (results) => {
-      if (
-        results.length > 0 &&
-        results[0]["highlight"] &&
-        results[0]["highlight"] !== ""
-      ) {
-        notifier.info("Dieser Nutzer wurde farblich markiert, bitte sieh nach wieso dies der Fall ist", { persist: true });
-      }
+    console.log(results);
+    if (
+      // then check if customer is highlighted
+      results.length > 0 &&
+      results[0]["highlight"] &&
+      results[0]["highlight"] !== ""
+    ) {
+      const colorDescription = customerColorToDescription(
+        results[0]["highlight"]
+      );
+      notifier.info(
+        "Dieser Nutzer wurde farblich markiert: " + colorDescription,
+        { persist: true }
+      );
     }
-  );
+  });
 };
 
 export default {
