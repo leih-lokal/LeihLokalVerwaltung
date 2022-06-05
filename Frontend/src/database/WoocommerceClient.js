@@ -57,6 +57,8 @@ class WoocommerceClient {
       status === "reserved" || status === "onbackorder" ? "outofstock" : status;
 
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
+    const hasReturnDateInFuture = item.expected_return_date ? true : false;
+
     return {
       name: item.name,
       sku: String(item.id),
@@ -92,6 +94,10 @@ class WoocommerceClient {
         {
           key: "anzahl_teile",
           value: item.parts ?? "-",
+        },
+        {
+          key: "zuruckerwartet",
+          value: hasReturnDateInFuture ? item.expected_return_date : "",
         },
       ],
     };
