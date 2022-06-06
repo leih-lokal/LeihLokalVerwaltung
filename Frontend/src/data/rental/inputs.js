@@ -1,24 +1,22 @@
-import TextInput from "../../components/Input/TextInput.svelte";
-import AutocompleteInput from "../../components/Input/AutocompleteInput.svelte";
-import DateInput from "../../components/Input/DateInput.svelte";
-import Checkbox from "../../components/Input/Checkbox.svelte";
-import Database from "../../database/ENV_DATABASE";
-import onSave from "./onSave";
-import { onReturnAndSave } from "./onSave";
-import onDelete from "./onDelete";
-import { recentEmployeesStore } from "../../utils/stores";
-import initialValues from "./initialValues";
 import { notifier } from "@beyonk/svelte-notifications";
 import { get } from "svelte/store";
+import AutocompleteInput from "../../components/Input/AutocompleteInput.svelte";
+import Checkbox from "../../components/Input/Checkbox.svelte";
+import DateInput from "../../components/Input/DateInput.svelte";
+import TextInput from "../../components/Input/TextInput.svelte";
+import Database from "../../database/ENV_DATABASE";
+import { recentEmployeesStore } from "../../utils/stores";
 import {
-  customerIdStartsWithSelector,
-  itemIdStartsWithAndNotDeletedSelector,
-  customerAttributeStartsWithIgnoreCaseSelector,
-  itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
   activeRentalsForCustomerSelector,
+  customerAttributeStartsWithIgnoreCaseSelector,
   customerById,
+  customerIdStartsWithSelector,
+  itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
+  itemIdStartsWithAndNotDeletedSelector,
 } from "../selectors";
-import { millisAtStartOfDay, millisAtStartOfToday } from "../../utils/utils";
+import initialValues from "./initialValues";
+import onDelete from "./onDelete";
+import onSave, { onReturnAndSave } from "./onSave";
 
 /**
  * Whether the toggle for updateStatusOnWebsite is hidden.

@@ -1,13 +1,13 @@
-import TextInput from "../../components/Input/TextInput.svelte";
 import AutocompleteInput from "../../components/Input/AutocompleteInput.svelte";
+import Checkbox from "../../components/Input/Checkbox.svelte";
+import ColorDefs from "../../components/Input/ColorDefs";
 import DateInput from "../../components/Input/DateInput.svelte";
 import SelectInput from "../../components/Input/SelectInput.svelte";
-import Checkbox from "../../components/Input/Checkbox.svelte";
+import TextInput from "../../components/Input/TextInput.svelte";
 import Database from "../../database/ENV_DATABASE";
-import ColorDefs from "../../components/Input/ColorDefs";
-import onSave from "./onSave";
-import onDelete from "./onDelete";
 import initialValues from "./initialValues";
+import onDelete from "./onDelete";
+import onSave from "./onSave";
 
 export default {
   title: (context) => `Nutzer ${context.createNew ? "anlegen" : "bearbeiten"}`,
