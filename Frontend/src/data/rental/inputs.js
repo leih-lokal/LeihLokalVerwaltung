@@ -6,6 +6,10 @@ import Database from "../../database/ENV_DATABASE";
 import onSave from "./onSave";
 import { onReturnAndSave } from "./onSave";
 import onDelete from "./onDelete";
+import {
+  customerColorToDescription,
+  itemColorToDescription,
+} from "../../components/Input/ColorDefs";
 import { recentEmployeesStore } from "../../utils/stores";
 import initialValues from "./initialValues";
 import { notifier } from "@beyonk/svelte-notifications";
@@ -63,8 +67,8 @@ const updateItemOfRental = (context, item) => {
     item_name: item.name,
     deposit: item.deposit,
   });
-  showNotificationsIfNotAvailable(item);
   updateToggleStatus(context, item.exists_more_than_once);
+  showNotificationsForItem(item);
 };
 
 const updateCustomerOfRental = (context, customer) => {
@@ -75,7 +79,8 @@ const updateCustomerOfRental = (context, customer) => {
   showNotificationsForCustomer(customer.id);
 };
 
-const showNotificationsIfNotAvailable = async (item) => {
+const showNotificationsForItem = async (item) => {
+  // show notification if not available
   var statusMapping = {
     instock: "verfügbar",
     outofstock: "verliehen",
@@ -85,13 +90,23 @@ const showNotificationsIfNotAvailable = async (item) => {
   var status = statusMapping[item.status];
   if (["outofstock", "reserved", "onbackorder"].includes(item.status)) {
     notifier.danger(
-      `Gegenstand ist nicht verfügbar, hat Status: ${status}`,
-      6000
+      `${item.name} (${item.id}) ist nicht verfügbar, hat Status: ${status}`,
+      10000
     );
   } else if (item.status == "undefined") {
     notifier.warning(
-      `Fehler beim Statuscheck, Gegenstand hat Status: ${status}`,
-      6000
+      `Fehler beim Statuscheck, ${item.name} (${item.id}) hat Status: ${status}`,
+      10000
+    );
+  }
+  // show notification it item is highlighted in a color
+  if (item.highlight && item.highlight !== "") {
+    const colorDescription = itemColorToDescription(item.highlight);
+    notifier.info(
+      `${item.name} (${item.id}) wurde farblich markiert: ${colorDescription}`,
+      {
+        persist: true,
+      }
     );
   }
 };
@@ -120,17 +135,33 @@ const showNotificationsForCustomer = async (customerId) => {
       }
     });
 
-  Database.fetchAllDocsBySelector(customerById(customerId), ["remark"]).then(
-    (results) => {
-      if (
-        results.length > 0 &&
-        results[0]["remark"] &&
-        results[0]["remark"] !== ""
-      ) {
-        notifier.danger(results[0]["remark"], { persist: true });
-      }
+  Database.fetchAllDocsBySelector(customerById(customerId), [
+    "remark",
+    "highlight",
+  ]).then((results) => {
+    if (
+      // first check if there is a remark
+      results.length > 0 &&
+      results[0]["remark"] &&
+      results[0]["remark"] !== ""
+    ) {
+      notifier.danger(results[0]["remark"], { persist: true });
     }
-  );
+    if (
+      // then check if customer is highlighted
+      results.length > 0 &&
+      results[0]["highlight"] &&
+      results[0]["highlight"] !== ""
+    ) {
+      const colorDescription = customerColorToDescription(
+        results[0]["highlight"]
+      );
+      notifier.info(
+        "Dieser Nutzer wurde farblich markiert: " + colorDescription,
+        { persist: true }
+      );
+    }
+  });
 };
 
 export default {
@@ -196,7 +227,14 @@ export default {
         searchFunction: (context) => (searchTerm) =>
           Database.fetchDocsBySelector(
             itemIdStartsWithAndNotDeletedSelector(searchTerm),
-            ["id", "name", "deposit", "exists_more_than_once", "status"]
+            [
+              "id",
+              "name",
+              "deposit",
+              "exists_more_than_once",
+              "status",
+              "highlight",
+            ]
           ),
         suggestionFormat: (context) => (id, item_name) =>
           `${String(id).padStart(4, "0")}: ${item_name}`,
