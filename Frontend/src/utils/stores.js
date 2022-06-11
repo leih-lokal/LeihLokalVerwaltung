@@ -18,23 +18,20 @@ const createKeyValueStore = () => {
   };
 };
 
-const createRecentEmployeesOrderedSet = () => {
-  // a array, that means each value is only included once
-  // however, we overwrite the "add" function to only add
-  // items that are not in the list yet. So it is basically
-  // a Set that is ordered by insertion order
+const createRecentEmployeesArray = () => {
+  // the array will simply keep growing and items will be double.
+  // however we should never run into performance problems
+  // as there are only a couple of dozens of entries created per day
   const store = writable(new Array());
 
   return {
     ...store,
     add: (string) =>
       store.update((prevStore) =>
-        string && !prevStore.includes(string)
-          ? [...prevStore, string]
-          : prevStore
+        string ? [...prevStore, string] : prevStore
       ),
   };
 };
 
 export const keyValueStore = createKeyValueStore();
-export const recentEmployeesStore = createRecentEmployeesOrderedSet();
+export const recentEmployeesStore = createRecentEmployeesArray();
