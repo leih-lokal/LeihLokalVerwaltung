@@ -52,6 +52,7 @@ function suggestReceivingEmployee(context) {
   }
 
   let mostRecent;
+  // retrieve last element of array
   for (mostRecent of get(recentEmployeesStore));
 
   if (!mostRecent) {
