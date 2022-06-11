@@ -18,19 +18,20 @@ const createKeyValueStore = () => {
   };
 };
 
-const createRecentEmployeesSet = () => {
-  // a set, that means each value is only included once
-  const store = writable(new Set([]));
+const createRecentEmployeesArray = () => {
+  // the array will simply keep growing and items will be double.
+  // however we should never run into performance problems
+  // as there are only a couple of dozens of entries created per day
+  const store = writable(new Array());
 
   return {
     ...store,
     add: (string) =>
       store.update((prevStore) =>
-        string ? new Set([...prevStore, string]) : prevStore
+        string ? [...prevStore, string] : prevStore
       ),
-    size: () => store.size,
   };
 };
 
 export const keyValueStore = createKeyValueStore();
-export const recentEmployeesStore = createRecentEmployeesSet();
+export const recentEmployeesStore = createRecentEmployeesArray();
