@@ -72,6 +72,7 @@ class Database {
     this.cache.clear();
     this.queryPaginatedDocsCache.clear();
     doc["last_update"] = new Date().getTime();
+    doc["created"] = new Date().getTime();
     Logger.debug(`Created doc: ${JSON.stringify(doc)}`);
     return this.database.post(doc);
   }
