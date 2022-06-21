@@ -21,8 +21,8 @@ import {
   itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
   activeRentalsForCustomerSelector,
   customerById,
+  itemById,
 } from "../selectors";
-import { millisAtStartOfDay, millisAtStartOfToday } from "../../utils/utils";
 
 /**
  * Whether the toggle for updateStatusOnWebsite is hidden.
@@ -183,6 +183,15 @@ export default {
      */
     context.contextVars.initialItemId = context.doc.item_id;
     context.contextVars.initialItemName = context.doc.item_name;
+
+    if (context.doc.item_id) {
+      Database.fetchDocsBySelector(itemById(context.doc.item_id), [
+        "id",
+        "name",
+        "deposit",
+        "exists_more_than_once",
+      ]).then((items) => updateItemOfRental(context, items[0]));
+    }
   },
   footerButtons: (context) => [
     {
