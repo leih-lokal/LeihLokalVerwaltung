@@ -1,4 +1,4 @@
-export default Object.freeze({
+const ColorDefs = Object.freeze({
   HIGHLIGHT_RED: "rgb(250, 45, 30)",
   HIGHLIGHT_GREEN: "rgb(131, 235, 52)",
   HIGHLIGHT_BLUE: "rgb(45, 144, 224)",
@@ -11,3 +11,33 @@ export default Object.freeze({
   DEFAULT_ROW_BACKGROUND_ODD: "rgb(255, 255, 255)",
   DEFAULT_ROW_BACKGROUND_EVEN: "rgb(242, 242, 242)",
 });
+
+export default ColorDefs;
+
+export const customerColorToDescription = (color) => {
+  switch (color) {
+    case ColorDefs.HIGHLIGHT_GREEN:
+      return "Grün, ist Teil des Teams";
+    case ColorDefs.HIGHLIGHT_YELLOW:
+      return "Gelb";
+    case ColorDefs.HIGHLIGHT_RED:
+      return "Rot, ACHTUNG, bitte nachsehen";
+    case ColorDefs.HIGHLIGHT_BLUE:
+      return "Blau";
+  }
+  return "unbekannte Markierung, bitte nachsehen";
+};
+
+export const itemColorToDescription = (color) => {
+  switch (color) {
+    case ColorDefs.HIGHLIGHT_GREEN:
+      return "Grün, hängt eventuell vorne im Schaufenster";
+    case ColorDefs.HIGHLIGHT_YELLOW:
+      return "Gelb, hängt eventuell vorne im Schaufenster";
+    case ColorDefs.HIGHLIGHT_RED:
+      return "Rot, ACHTUNG, etwas könnte mit dem Gegenstand nicht in Ordnung sein oder muss beachtet werden";
+    case ColorDefs.HIGHLIGHT_BLUE:
+      return "Blau";
+  }
+  return "Unbekannte farbliche Markierung, bitte nachsehen";
+};

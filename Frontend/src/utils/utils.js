@@ -2,10 +2,9 @@ function saveParseTimestampToString(millis) {
   const date = new Date(millis);
   if (isNaN(date) || date.getTime() === 0) return "";
   else
-    return `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(
-      2,
-      0
-    )}.${date.getFullYear()}`;
+    return `${String(date.getDate()).padStart(2, 0)}.${String(
+      date.getMonth() + 1
+    ).padStart(2, 0)}.${date.getFullYear()}`;
 }
 
 function saveParseTimestampToHumanReadableString(millis) {
@@ -31,10 +30,9 @@ function saveParseTimestampToHumanReadableString(millis) {
   } else if (dayDiff <= 7 && dayDiff > 0) {
     return `In ${dayDiff} Tagen`;
   } else
-    return `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(
-      2,
-      0
-    )}.${date.getFullYear()}`;
+    return `${String(date.getDate()).padStart(2, 0)}.${String(
+      date.getMonth() + 1
+    ).padStart(2, 0)}.${date.getFullYear()}`;
 }
 
 function saveParseStringToBoolean(maybeBoolean) {
