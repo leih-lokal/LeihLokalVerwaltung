@@ -17,6 +17,7 @@ import {
   activeRentalsForCustomerSelector,
   customerAttributeStartsWithIgnoreCaseSelector,
   customerById,
+  itemById,
   customerIdStartsWithSelector,
   itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
   itemIdStartsWithAndNotDeletedSelector,
@@ -184,6 +185,15 @@ export default {
      */
     context.contextVars.initialItemId = context.doc.item_id;
     context.contextVars.initialItemName = context.doc.item_name;
+
+    if (context.doc.item_id) {
+      Database.fetchDocsBySelector(itemById(context.doc.item_id), [
+        "id",
+        "name",
+        "deposit",
+        "exists_more_than_once",
+      ]).then((items) => updateItemOfRental(context, items[0]));
+    }
   },
   footerButtons: (context) => [
     {
