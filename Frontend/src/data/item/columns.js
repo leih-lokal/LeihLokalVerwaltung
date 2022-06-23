@@ -1,7 +1,10 @@
 import { saveParseTimestampToString } from "../../utils/utils.js";
 import Database from "../../database/Database";
+import ColorDefs from "../../components/Input/ColorDefs.js";
 
-const backgroundColor = async (customer) => customer.highlight;
+const backgroundColor = async (item) => item.highlight;
+const backgroundColorStatus = async (item) =>
+  item.status == "reserved" ? ColorDefs.ITEM_RESERVED : item.highlight;
 
 function countRentals(item_id) {
   const selectors = [
@@ -95,7 +98,7 @@ export default [
       if (value === "reserved") return "reserviert";
       if (value === "onbackorder") return "nicht verleihbar";
     },
-    backgroundColor,
+    backgroundColor: backgroundColorStatus,
   },
 
   {
