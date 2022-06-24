@@ -54,7 +54,7 @@ class WoocommerceClient {
 
   _translateItemAttributesForWc(item) {
     const translateStatus = (status) =>
-      status === "reserved" || status === "onbackorder" ? "outofstock" : status;
+      status === "reserved" ? "outofstock" : status;
 
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
     const hasReturnDateInFuture = item.expected_return_date ? true : false;
