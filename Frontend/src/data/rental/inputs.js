@@ -63,13 +63,15 @@ function suggestReceivingEmployee(context) {
 }
 
 const updateItemOfRental = (context, item) => {
-  context.updateDoc({
-    item_id: item.id,
-    item_name: item.name,
-    deposit: item.deposit,
-  });
-  updateToggleStatus(context, item.exists_more_than_once);
-  showNotificationsForItem(item);
+  if (context.doc.item_id !== item.id) {
+    context.updateDoc({
+      item_id: item.id,
+      item_name: item.name,
+      deposit: item.deposit,
+    });
+    updateToggleStatus(context, item.exists_more_than_once);
+    showNotificationsForItem(item);
+  }
 };
 
 const updateCustomerOfRental = (context, customer) => {
