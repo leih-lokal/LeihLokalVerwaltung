@@ -324,6 +324,7 @@ export default {
       props: {
         quickset: { 7: "1 Woche", 14: "2 Wochen", 21: "3 Wochen" },
         container: (context) => context.container,
+        showAlertOnPastDateSelection: true,
       },
     },
     {

@@ -4,6 +4,7 @@
   import {
     saveParseTimestampToString,
     millisAtStartOfDay,
+    millisAtStartOfToday,
   } from "../../utils/utils";
   import { createEventDispatcher } from "svelte";
   import ButtonTight from "./ButtonTight.svelte";
@@ -22,6 +23,7 @@
   export let quickset = {};
   export let value = 0;
   export let disabled = false;
+  export let showAlertOnPastDateSelection = false;
 
   function addDays(days) {
     let date = new Date();
@@ -46,6 +48,14 @@
       if (millisAtStartOfDay(value) !== millisAtStartOfDay(newTimeMillis)) {
         value = millisAtStartOfDay(newTimeMillis);
         dispatch("change", date);
+      }
+      if (
+        showAlertOnPastDateSelection &&
+        millisAtStartOfDay(newTimeMillis) < millisAtStartOfToday()
+      ) {
+        alert(
+          "Achtung: Dieses Datum liegt in der Vergangenheit, bitte prüfe ob es korrekt ist."
+        );
       }
     }}
     format={"#{d}.#{m}.#{Y}"}
