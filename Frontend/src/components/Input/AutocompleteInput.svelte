@@ -22,7 +22,7 @@
   <AutoComplete
     delay={150}
     {searchFunction}
-    textCleanFunction={(text) => (value = text)}
+    cleanUserText={onlyNumbers}
     labelFunction={(item) => {
       if (typeof item === "undefined") return "";
       const values = Object.values(item);
