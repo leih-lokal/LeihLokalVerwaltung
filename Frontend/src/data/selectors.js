@@ -19,7 +19,7 @@ const itemIdStartsWithAndNotDeletedSelector = (searchValue) =>
 const customerAttributeStartsWithIgnoreCaseSelector = (field, searchValue) =>
   Database.selectorBuilder()
     .withField(field)
-    .startsWithIgnoreCase(searchValue)
+    .startsWithIgnoreCaseAndDiacritics(searchValue)
     .withDocType("customer")
     .build();
 
