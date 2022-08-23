@@ -184,7 +184,7 @@
   {indicateSort}
   onLoadDataErrorText={(error) => {
     if (error.status === 401) {
-      return "Nutzer oder Passwort für die Datenbank ist nicht korrekt. Bitte in den Einstellungen (Zahnrad rechts oben) überprüfen.";
+      return "Benutzername oder Passwort für die Datenbank ist nicht korrekt. Bitte in den Einstellungen (Zahnrad rechts oben) überprüfen.";
     } else {
       return `Keine Verbindung zur Datenbank. <br />${
         error.hasOwnProperty("message") ? error.message : ""
