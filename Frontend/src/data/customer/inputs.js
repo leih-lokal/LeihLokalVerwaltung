@@ -10,7 +10,7 @@ import onDelete from "./onDelete";
 import initialValues from "./initialValues";
 
 export default {
-  title: (context) => `Nutzer ${context.createNew ? "anlegen" : "bearbeiten"}`,
+  title: (context) => `Nutzer:in ${context.createNew ? "anlegen" : "bearbeiten"}`,
   initialValues,
   footerButtons: (context) => [
     {
@@ -22,12 +22,12 @@ export default {
       onClick: () => onDelete(context.doc, context.closePopup),
       color: "red",
       hidden: context.createNew,
-      loadingText: "Nutzer wird gelöscht",
+      loadingText: "Nutzer:in wird gelöscht",
     },
     {
       text: "Speichern",
       onClick: () => onSave(context.doc, context.closePopup, context.createNew),
-      loadingText: "Nutzer wird gespeichert",
+      loadingText: "Nutzer:in wird gespeichert",
     },
   ],
   inputs: [

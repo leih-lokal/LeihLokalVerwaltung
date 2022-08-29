@@ -74,14 +74,14 @@
     </div>
     <div class="row">
       <div class="col-25">
-        <label for="couchdbuser">Nutzer</label>
+        <label for="couchdbuser">Benutzername</label>
       </div>
       <div class="col-75">
         <input
           bind:value={$settingsStore.couchdbUser}
           id="couchdbuser"
           type="text"
-          placeholder="Nutzer"
+          placeholder="Benutzername"
         />
       </div>
     </div>
