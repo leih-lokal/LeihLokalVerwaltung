@@ -1,7 +1,6 @@
 <script>
   import AutoComplete from "simple-svelte-autocomplete";
   import { onMount } from "svelte";
-  import { invalid_attribute_name_character } from "svelte/internal";
   import { restrictInputToNumbers } from "../../actions/RestrictInputToNumbers";
 
   export let noResultsText;
