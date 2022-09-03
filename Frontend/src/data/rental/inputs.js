@@ -114,7 +114,7 @@ const showNotificationsForItem = async (item) => {
   }
 };
 
-let sortItemByIdOrName = (itemA, itemB, query) => {
+let sortItemByIdOrName = (itemA, itemB) => {
   // check if itemX exists at all
   if ((itemA == undefined) | (itemB == undefined)) {
     return 0;
@@ -260,7 +260,6 @@ export default {
         localSorting: true,
         sortByMatchedKeywords: true,
         itemSortFunction: () => sortItemByIdOrName,
-        localFiltering: true,
         valueField: "id",
         onlyNumbers: true,
         searchFunction: (context) => (searchTerm) =>
