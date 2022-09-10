@@ -114,6 +114,29 @@ const showNotificationsForItem = async (item) => {
   }
 };
 
+let sortItemByIdOrName = (itemA, itemB) => {
+  // check if itemX exists at all
+  if ((itemA == undefined) | (itemB == undefined)) {
+    return 0;
+  }
+  // if has id and id is numerical compare id
+  if (
+    (itemA.id !== undefined) &
+    (itemB.id !== undefined) &
+    !(isNaN(itemA.id) | isNaN(itemB.id))
+  ) {
+    return itemA.id - itemB.id;
+  }
+
+  // maybe itemA and itemB themselve are numerical?
+  if (!(isNaN(itemA) | isNaN(itemB))) {
+    return itemA - itemB;
+  }
+
+  // inputs are not numerically sortable
+  return 0;
+};
+
 const showNotificationsForCustomer = async (customerId) => {
   Database.fetchAllDocsBySelector(
     activeRentalsForCustomerSelector(customerId),
@@ -234,6 +257,9 @@ export default {
       component: AutocompleteInput,
       nobind: true,
       props: {
+        localSorting: true,
+        sortByMatchedKeywords: true,
+        itemSortFunction: () => sortItemByIdOrName,
         valueField: "id",
         onlyNumbers: true,
         searchFunction: (context) => (searchTerm) =>
@@ -346,6 +372,10 @@ export default {
       component: AutocompleteInput,
       nobind: true,
       props: {
+        localSorting: true,
+        sortByMatchedKeywords: true,
+        itemSortFunction: () => sortItemByIdOrName,
+        localFiltering: true,
         valueField: "id",
         onlyNumbers: true,
         searchFunction: (context) => (searchTerm) =>
