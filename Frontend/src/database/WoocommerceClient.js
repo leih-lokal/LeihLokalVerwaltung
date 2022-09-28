@@ -58,7 +58,7 @@ class WoocommerceClient {
 
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
     const isAvailableAndHasReturnDateInFuture =
-      item.expected_return_date && item.status != "instock" ? true : false;
+      item.expected_return_date && item.status == "outofstock" ? true : false;
 
     return {
       name: item.name,
