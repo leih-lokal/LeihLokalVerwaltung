@@ -34,7 +34,14 @@ class WoocommerceClientMock {
   }
 
   _translateItemAttributesForWc(item) {
-    console.log(item.expected_return_date);
+    const isAvailableAndHasReturnDateInFuture =
+      item.expected_return_date && item.status != "instock" ? true : false;
+
+    console.log(
+      "expected return date",
+      item.expected_return_date,
+      isAvailableAndHasReturnDateInFuture
+    );
   }
 
   async updateItem(item) {
