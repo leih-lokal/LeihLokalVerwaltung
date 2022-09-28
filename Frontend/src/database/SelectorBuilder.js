@@ -4,6 +4,32 @@ class SelectorBuilder {
     this.currentFieldName = "";
   }
 
+  regexIgnoreCaseAndDiactricis(content) {
+    // returns a regex with content that has diacricits ignored
+    let accentGroups = [
+      "aâãäåæ",
+      "eéèêë",
+      "iíìîï",
+      "oóòôõöø",
+      "uúùûü",
+      "cç",
+      "nñ",
+      "yýÿ",
+    ];
+
+    let regex = content;
+    let accentGroup;
+    let accent;
+    for (accentGroup of accentGroups) {
+      for (accent of accentGroup) {
+        if (content.includes(accent)) {
+          regex = regex.replace(accent, `[${accentGroup}]`);
+        }
+      }
+    }
+    return "(?i)" + regex;
+  }
+
   regexIgnoreCase(content) {
     return "(?i)" + content;
   }
@@ -26,6 +52,15 @@ class SelectorBuilder {
     this.selectors.push({
       [this.currentFieldName]: {
         $regex: this.regexIgnoreCase(value),
+      },
+    });
+    return this;
+  }
+
+  startsWithIgnoreCaseAndDiacritics(value) {
+    this.selectors.push({
+      [this.currentFieldName]: {
+        $regex: this.regexIgnoreCaseAndDiactricis("^" + value),
       },
     });
     return this;

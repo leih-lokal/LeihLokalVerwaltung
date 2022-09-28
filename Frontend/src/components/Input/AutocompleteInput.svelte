@@ -12,6 +12,10 @@
   export let onlyNumbers = false;
   export let onSelected = () => {};
   export let valueField;
+  export let itemSortFunction;
+  export let localFiltering;
+  export let sortByMatchedKeywords;
+  export let localSorting;
 
   onMount(() =>
     restrictInputToNumbers(document.getElementById(id), onlyNumbers)
@@ -44,9 +48,12 @@
     inputId={id}
     {noResultsText}
     {disabled}
+    {localSorting}
     hideArrow={true}
+    {sortByMatchedKeywords}
+    {itemSortFunction}
     localSearch={false}
-    localFiltering={false}
+    {localFiltering}
     valueFieldName={valueField}
     selectedItem={{ attr: value }}
     html5autocomplete={false}

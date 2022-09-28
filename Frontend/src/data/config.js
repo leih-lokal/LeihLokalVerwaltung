@@ -17,7 +17,7 @@ export default [
     columns: customerColumns,
     filters: customerFilters,
     docType: "customer",
-    title: "Nutzer",
+    title: "Nutzer:innen",
   },
   {
     route: "/items",

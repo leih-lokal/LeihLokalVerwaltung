@@ -114,6 +114,29 @@ const showNotificationsForItem = async (item) => {
   }
 };
 
+let sortItemByIdOrName = (itemA, itemB) => {
+  // check if itemX exists at all
+  if ((itemA == undefined) | (itemB == undefined)) {
+    return 0;
+  }
+  // if has id and id is numerical compare id
+  if (
+    (itemA.id !== undefined) &
+    (itemB.id !== undefined) &
+    !(isNaN(itemA.id) | isNaN(itemB.id))
+  ) {
+    return itemA.id - itemB.id;
+  }
+
+  // maybe itemA and itemB themselve are numerical?
+  if (!(isNaN(itemA) | isNaN(itemB))) {
+    return itemA - itemB;
+  }
+
+  // inputs are not numerically sortable
+  return 0;
+};
+
 const showNotificationsForCustomer = async (customerId) => {
   Database.fetchAllDocsBySelector(
     activeRentalsForCustomerSelector(customerId),
@@ -123,14 +146,14 @@ const showNotificationsForCustomer = async (customerId) => {
     .then((activeRentals) => {
       if (activeRentals.length > 0 && activeRentals.length < 3) {
         notifier.warning(
-          `Nutzer hat schon diese Gegenstände ausgeliehen: ${activeRentals.join(
+          `Nutzer:in hat schon diese Gegenstände ausgeliehen: ${activeRentals.join(
             ", "
           )}`,
           6000
         );
       } else if (activeRentals.length >= 3) {
         notifier.danger(
-          `Nutzer hat schon mehr als 2 Gegenstände ausgeliehen: ${activeRentals.join(
+          `Nutzer:in hat schon mehr als 2 Gegenstände ausgeliehen: ${activeRentals.join(
             ", "
           )}`,
           6000
@@ -160,7 +183,7 @@ const showNotificationsForCustomer = async (customerId) => {
         results[0]["highlight"]
       );
       notifier.info(
-        "Dieser Nutzer wurde farblich markiert: " + colorDescription,
+        "Diese/r Nutzer:in wurde farblich markiert: " + colorDescription,
         { persist: true }
       );
     }
@@ -234,6 +257,9 @@ export default {
       component: AutocompleteInput,
       nobind: true,
       props: {
+        localSorting: true,
+        sortByMatchedKeywords: true,
+        itemSortFunction: () => sortItemByIdOrName,
         valueField: "id",
         onlyNumbers: true,
         searchFunction: (context) => (searchTerm) =>
@@ -342,10 +368,14 @@ export default {
     {
       id: "customer_id",
       label: "Nr",
-      group: "Nutzer",
+      group: "Nutzer:in",
       component: AutocompleteInput,
       nobind: true,
       props: {
+        localSorting: true,
+        sortByMatchedKeywords: true,
+        itemSortFunction: () => sortItemByIdOrName,
+        localFiltering: true,
         valueField: "id",
         onlyNumbers: true,
         searchFunction: (context) => (searchTerm) =>
@@ -355,7 +385,7 @@ export default {
           ),
         suggestionFormat: (context) => (id, firstname, lastname) =>
           `${id}: ${firstname} ${lastname}`,
-        noResultsText: "Kein Nutzer mit dieser Nummer",
+        noResultsText: "Kein/e Nutzer:in mit dieser Nummer",
         onSelected: (context) => (selectedCustomer) => {
           updateCustomerOfRental(context, selectedCustomer);
         },
@@ -364,7 +394,7 @@ export default {
     {
       id: "customer_name",
       label: "Nachname",
-      group: "Nutzer",
+      group: "Nutzer:in",
       component: AutocompleteInput,
       nobind: true,
       props: {
@@ -379,7 +409,7 @@ export default {
           ),
         suggestionFormat: (context) => (id, firstname, lastname) =>
           `${id}: ${firstname} ${lastname}`,
-        noResultsText: "Kein Nutzer mit diesem Name",
+        noResultsText: "Kein/e Nutzer:in mit diesem Name",
         onSelected: (context) => (selectedCustomer) => {
           updateCustomerOfRental(context, selectedCustomer);
         },

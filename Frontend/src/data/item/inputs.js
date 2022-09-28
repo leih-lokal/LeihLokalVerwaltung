@@ -226,5 +226,14 @@ export default {
         disabled: isDeleted,
       },
     },
+    {
+      id: "internal_note",
+      label: "Interne Notiz",
+      group: "Status",
+      component: TextInput,
+      props: {
+        multiline: true,
+      },
+    },
   ],
 };

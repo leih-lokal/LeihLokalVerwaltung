@@ -152,7 +152,7 @@
       labels,
       datasets: [
         {
-          label: "Aktive Nutzer (innerhalb der letzten 3 Monate)",
+          label: "Aktive Nutzer:innen (innerhalb der letzten 3 Monate)",
           fill: true,
           lineTension: 0.3,
           backgroundColor: "rgba(184, 185, 210, .3)",
@@ -194,7 +194,7 @@
           data: numberOfRentalsCountsPerMonth,
         },
         {
-          label: "Neue Nutzer",
+          label: "Neue Nutzer:innen",
           fill: true,
           lineTension: 0.3,
           backgroundColor: "rgba(71, 225, 167, 0.3)",

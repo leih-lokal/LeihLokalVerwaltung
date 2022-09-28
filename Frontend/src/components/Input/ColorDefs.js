@@ -4,6 +4,8 @@ const ColorDefs = Object.freeze({
   HIGHLIGHT_BLUE: "rgb(45, 144, 224)",
   HIGHLIGHT_YELLOW: "rgb(247, 239, 10)",
 
+  ITEM_RESERVED: "rgb(255, 155, 25)",
+
   RENTAL_RETURNED_TODAY_GREEN: "rgb(214, 252, 208)",
   RENTAL_LATE_RED: "rgb(240, 200, 200)",
   RENTAL_TO_RETURN_TODAY_BLUE: "rgb(160, 200, 250)",

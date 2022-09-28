@@ -18,9 +18,9 @@ describe("Navigation", function () {
     );
   });
 
-  it("redirects to '/customers' when 'Nutzer' is clicked", async () => {
+  it("redirects to '/customers' when 'Nutzer:innen' is clicked", async () => {
     await driver.get("http://localhost:5000/#/items");
-    await getElementByText("Nutzer").click();
+    await getElementByText("Nutzer:innen").click();
     expect(await driver.getCurrentUrl()).to.equal(
       "http://localhost:5000/#/customers"
     );
@@ -42,9 +42,9 @@ describe("Navigation", function () {
     );
   });
 
-  it("redirects to '/customers' when 'Nutzer' is clicked", async () => {
+  it("redirects to '/customers' when 'Nutzer:innen' is clicked", async () => {
     await driver.get("http://localhost:5000/#/items");
-    await getElementByText("Nutzer").click();
+    await getElementByText("Nutzer:innen").click();
     expect(await driver.getCurrentUrl()).to.equal(
       "http://localhost:5000/#/customers"
     );
@@ -55,9 +55,9 @@ describe("Navigation", function () {
     expect(
       await getElementByText("Leihvorgänge").getCssValue("color")
     ).to.equal("rgba(255, 205, 88, 1)");
-    expect(await getElementByText("Nutzer").getCssValue("color")).to.equal(
-      "rgba(255, 255, 255, 1)"
-    );
+    expect(
+      await getElementByText("Nutzer:innen").getCssValue("color")
+    ).to.equal("rgba(255, 255, 255, 1)");
     expect(await getElementByText("Gegenstände").getCssValue("color")).to.equal(
       "rgba(255, 255, 255, 1)"
     );
@@ -68,22 +68,22 @@ describe("Navigation", function () {
     expect(
       await getElementByText("Leihvorgänge").getCssValue("color")
     ).to.equal("rgba(255, 255, 255, 1)");
-    expect(await getElementByText("Nutzer").getCssValue("color")).to.equal(
-      "rgba(255, 255, 255, 1)"
-    );
+    expect(
+      await getElementByText("Nutzer:innen").getCssValue("color")
+    ).to.equal("rgba(255, 255, 255, 1)");
     expect(await getElementByText("Gegenstände").getCssValue("color")).to.equal(
       "rgba(255, 205, 88, 1)"
     );
   });
 
-  it("highlights 'Nutzer' in navbar", async () => {
+  it("highlights 'Nutzer:innen' in navbar", async () => {
     await driver.get("http://localhost:5000/#/customers");
     expect(
       await getElementByText("Leihvorgänge").getCssValue("color")
     ).to.equal("rgba(255, 255, 255, 1)");
-    expect(await getElementByText("Nutzer").getCssValue("color")).to.equal(
-      "rgba(255, 205, 88, 1)"
-    );
+    expect(
+      await getElementByText("Nutzer:innen").getCssValue("color")
+    ).to.equal("rgba(255, 205, 88, 1)");
     expect(await getElementByText("Gegenstände").getCssValue("color")).to.equal(
       "rgba(255, 255, 255, 1)"
     );
