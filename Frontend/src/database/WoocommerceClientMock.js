@@ -34,7 +34,14 @@ class WoocommerceClientMock {
   }
 
   _translateItemAttributesForWc(item) {
-    console.log(item.expected_return_date);
+    const isRentedAndHasReturnDateInFuture =
+      item.expected_return_date && item.status == "outofstock" ? true : false;
+
+    console.log(
+      "expected return date",
+      item.expected_return_date,
+      isRentedAndHasReturnDateInFuture
+    );
   }
 
   async updateItem(item) {

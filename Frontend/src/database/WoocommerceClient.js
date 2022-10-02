@@ -57,7 +57,8 @@ class WoocommerceClient {
       status === "reserved" ? "outofstock" : status;
 
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
-    const hasReturnDateInFuture = item.expected_return_date ? true : false;
+    const isRentedAndHasReturnDateInFuture =
+      item.expected_return_date && item.status == "outofstock" ? true : false;
 
     return {
       name: item.name,
@@ -97,7 +98,9 @@ class WoocommerceClient {
         },
         {
           key: "zuruckerwartet",
-          value: hasReturnDateInFuture ? item.expected_return_date : "",
+          value: isRentedAndHasReturnDateInFuture
+            ? item.expected_return_date
+            : "",
         },
       ],
     };
