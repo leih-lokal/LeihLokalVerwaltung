@@ -260,16 +260,6 @@ class Database {
     });
     this.queryPaginatedDocsCache.set(cacheKey, result);
 
-    // execute queries defined in columns
-    const columnsWithExtraQuery = columns.filter((column) =>
-      column.hasOwnProperty("queryDatabase")
-    );
-    for (const column of columnsWithExtraQuery) {
-      for (const doc of result.docs) {
-        doc[column.key] = await column.queryDatabase(this, doc);
-      }
-    }
-
     // callback if doc updated
     this.listenForChanges(() => {
       this.queryPaginatedDocsCache.clear();
