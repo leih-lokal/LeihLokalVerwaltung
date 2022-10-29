@@ -10,29 +10,34 @@ import rentalColumns from "./rental/columns";
 import rentalInputs from "./rental/inputs";
 import rentalFilters from "./rental/filters";
 
-export default [
-  {
-    route: "/customers",
-    inputs: customerInputs,
-    columns: customerColumns,
-    filters: customerFilters,
-    docType: "customer",
-    title: "Nutzer:innen",
-  },
-  {
-    route: "/items",
-    inputs: itemInputs,
-    columns: itemColumns,
-    filters: itemFilters,
-    docType: "item",
-    title: "Gegenstände",
-  },
-  {
-    route: "/rentals",
-    inputs: rentalInputs,
-    columns: rentalColumns,
-    filters: rentalFilters,
-    docType: "rental",
-    title: "Leihvorgänge",
-  },
-];
+export default {
+  tables: [
+    {
+      route: "/customers",
+      inputs: customerInputs,
+      columns: customerColumns,
+      filters: customerFilters,
+      docType: "customer",
+      title: "Nutzer:innen",
+    },
+    {
+      route: "/items",
+      inputs: itemInputs,
+      columns: itemColumns,
+      filters: itemFilters,
+      docType: "item",
+      title: "Gegenstände",
+    },
+    {
+      route: "/rentals",
+      inputs: rentalInputs,
+      columns: rentalColumns,
+      filters: rentalFilters,
+      docType: "rental",
+      title: "Leihvorgänge",
+    },
+  ],
+
+  // first location is set as default
+  locations: ["Oststadt", "Weststadt"],
+};

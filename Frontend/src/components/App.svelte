@@ -14,7 +14,7 @@
   import Dashboard from "./Dashboard/Dashboard.svelte";
 
   const routes = new Map();
-  config.forEach((tableViewConfig) =>
+  config.tables.forEach((tableViewConfig) =>
     routes.set(
       tableViewConfig.route,
       wrap({
@@ -62,7 +62,7 @@
 <NotificationDisplay />
 <div class="container">
   <Navbar
-    tabs={config.map((tableEditorConfig) => ({
+    tabs={config.tables.map((tableEditorConfig) => ({
       title: tableEditorConfig.title,
       route: tableEditorConfig.route,
     }))}

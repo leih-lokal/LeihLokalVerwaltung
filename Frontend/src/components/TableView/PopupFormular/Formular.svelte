@@ -2,6 +2,7 @@
   import { afterUpdate, onMount } from "svelte";
   import Footer from "./Footer.svelte";
   import InputGroup from "./InputGroup.svelte";
+  import globalConfig from "../../../data/config";
 
   export let config = {};
   export let doc = {};
@@ -27,6 +28,7 @@
         updateDoc: (updatedDoc) => (doc = { ...doc, ...updatedDoc }),
         container: inputContainer,
         contextVars,
+        config: globalConfig,
       });
     } else {
       return val;
