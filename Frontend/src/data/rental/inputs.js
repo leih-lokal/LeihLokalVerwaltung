@@ -364,7 +364,12 @@ export default {
         container: (context) => context.container,
       },
     },
-
+    {
+      id: "allow_self_extension",
+      label: "Verlängerung durch Nutzer erlauben",
+      group: "Zeitraum",
+      component: Checkbox
+    },
     {
       id: "customer_id",
       label: "Nr",
