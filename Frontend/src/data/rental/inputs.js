@@ -381,7 +381,8 @@ export default {
         searchFunction: (context) => (searchTerm) =>
           Database.fetchDocsBySelector(
             customerIdStartsWithSelector(searchTerm),
-            ["id", "firstname", "lastname"]
+            ["id", "firstname", "lastname"],
+            ["id"]
           ),
         suggestionFormat: (context) => (id, firstname, lastname) =>
           `${id}: ${firstname} ${lastname}`,

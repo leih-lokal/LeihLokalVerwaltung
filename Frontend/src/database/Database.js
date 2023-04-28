@@ -288,11 +288,12 @@ class Database {
       .then((result) => result.rows.map((row) => row.doc));
   }
 
-  fetchDocsBySelector(selector, fields) {
+  fetchDocsBySelector(selector, fields, sort=[]) {
     return this.findCached({
       limit: 10,
-      fields: fields,
-      selector: selector,
+      fields,
+      selector,
+      sort
     }).then((result) => result.docs);
   }
 
