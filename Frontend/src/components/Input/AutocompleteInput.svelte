@@ -24,7 +24,7 @@
 
 <div class="container">
   <AutoComplete
-    delay={150}
+    delay={500}
     {searchFunction}
     textCleanFunction={(text) => (value = text)}
     labelFunction={(item) => {
