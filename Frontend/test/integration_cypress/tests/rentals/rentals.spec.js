@@ -284,15 +284,15 @@ context("rentals", () => {
         newRental.to_return_on
       );
 
-      cy.get("#item_id").type(newRental.item_id).wait(200);
+      cy.get("#item_id").type(newRental.item_id).wait(550);
       cy.get(".autocomplete-list-item").contains(newRental.item_id).click();
-      cy.get("#item_name").clear().type(newRental.item_name).wait(200);
+      cy.get("#item_name").clear().type(newRental.item_name).wait(550);
       cy.get(".autocomplete-list-item").contains(newRental.item_name).click();
-      cy.get("#customer_id").clear().type(newRental.customer_id).wait(200);
+      cy.get("#customer_id").clear().type(newRental.customer_id).wait(550);
       cy.get(".autocomplete-list-item")
         .contains(newRental.customer_name)
         .click();
-      cy.get("#customer_name").clear().type(newRental.customer_name).wait(200);
+      cy.get("#customer_name").clear().type(newRental.customer_name).wait(550);
       cy.get(".autocomplete-list-item")
         .contains(newRental.customer_name)
         .click();
