@@ -78,7 +78,9 @@ class WoocommerceClient {
         .split(", ")
         .filter((category) => category in WC_CATEGORIES)
         .map((category) => WC_CATEGORIES[category]),
-      short_description: `<div class="hidden">Art.Nr.: ${item.id}</div>${
+        // line break after closing div below is intended
+      short_description: `<div class="hidden">Art.Nr.: ${item.id}</div>
+      ${
         item.description ?? ""
       }<br /> ${
         hasSynonyms ? `<small>(Synonyme: ${item.synonyms})</small>` : ""
