@@ -1,7 +1,9 @@
-import TextInput from "../../components/Input/TextInput.svelte";
+import { notifier } from "@beyonk/svelte-notifications";
+import { get } from "svelte/store";
 import AutocompleteInput from "../../components/Input/AutocompleteInput.svelte";
-import DateInput from "../../components/Input/DateInput.svelte";
 import Checkbox from "../../components/Input/Checkbox.svelte";
+import DateInput from "../../components/Input/DateInput.svelte";
+import TextInput from "../../components/Input/TextInput.svelte";
 import Database from "../../database/ENV_DATABASE";
 import onSave from "./onSave";
 import { onReturnAndSave } from "./onSave";
@@ -11,18 +13,18 @@ import {
   itemColorToDescription,
 } from "../../components/Input/ColorDefs";
 import { recentEmployeesStore } from "../../utils/stores";
-import initialValues from "./initialValues";
-import { notifier } from "@beyonk/svelte-notifications";
-import { get } from "svelte/store";
 import {
-  customerIdStartsWithSelector,
-  itemIdStartsWithAndNotDeletedSelector,
-  customerAttributeStartsWithIgnoreCaseSelector,
-  itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
   activeRentalsForCustomerSelector,
+  customerAttributeStartsWithIgnoreCaseSelector,
   customerById,
   itemById,
+  customerIdStartsWithSelector,
+  itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
+  itemIdStartsWithAndNotDeletedSelector,
 } from "../selectors";
+import initialValues from "./initialValues";
+import onDelete from "./onDelete";
+import onSave, { onReturnAndSave } from "./onSave";
 
 /**
  * Whether the toggle for updateStatusOnWebsite is hidden.

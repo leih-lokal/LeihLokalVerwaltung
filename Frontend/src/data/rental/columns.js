@@ -1,10 +1,10 @@
-import {
-  saveParseTimestampToHumanReadableString,
-  millisAtStartOfToday,
-} from "../../utils/utils.js";
-import { customerById, itemById } from "../selectors";
 import COLORS from "../../components/Input/ColorDefs";
 import Database from "../../database/ENV_DATABASE";
+import {
+  millisAtStartOfToday,
+  saveParseTimestampToHumanReadableString,
+} from "../../utils/utils.js";
+import { customerById, itemById } from "../selectors";
 
 const hasReturnDate = (rental) => rental.returned_on && rental.returned_on > 0;
 const hasBeenReturnedToday = (rental) =>
@@ -15,7 +15,8 @@ const shouldBeReturnedToday = (rental) =>
   !hasReturnDate(rental);
 const shouldHaveBeenReturnedBeforeTodayAndIsNotReturned = (rental) =>
   rental.to_return_on &&
-  (!hasReturnDate(rental) && rental.to_return_on < millisAtStartOfToday());
+  !hasReturnDate(rental) &&
+  rental.to_return_on < millisAtStartOfToday();
 
 const rentalHighlight = async (rental) => {
   if (hasBeenReturnedToday(rental)) {

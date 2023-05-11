@@ -1,6 +1,6 @@
-import Database from "../../database/ENV_DATABASE";
 import { notifier } from "@beyonk/svelte-notifications";
 import Logger from "js-logger";
+import Database from "../../database/ENV_DATABASE";
 
 export default async (rental, closePopup) => {
   if (confirm("Soll dieser Leihvorgang wirklich gelöscht werden?")) {
