@@ -70,7 +70,7 @@
     "selenium-webdriver": "^4.1.1",
     "simple-svelte-autocomplete": "^2.4.0",
     "sirv-cli": "^1.0.14",
-    "svelte": "^3.42.4",
+    "svelte": "^3.52.0",
     "svelte-chartjs": "^1.1.1",
     "svelte-checkbox": "^1.0.1",
     "svelte-component-double": "^0.8.0",
@@ -80,7 +80,7 @@
     "svelte-loading-spinners": "^0.1.7",
     "svelte-select": "^4.4.0",
     "svelte-simple-modal": "1.3.4",
-    "svelte-spa-router": "^3.2.0",
+    "svelte-spa-router": "^3.3.0",
     "uuid": "^8.3.2",
     "wait-on": "^6.0.0"
   }

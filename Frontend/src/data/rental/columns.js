@@ -15,7 +15,8 @@ const shouldBeReturnedToday = (rental) =>
   !hasReturnDate(rental);
 const shouldHaveBeenReturnedBeforeTodayAndIsNotReturned = (rental) =>
   rental.to_return_on &&
-  (!hasReturnDate(rental) && rental.to_return_on < millisAtStartOfToday());
+  !hasReturnDate(rental) &&
+  rental.to_return_on < millisAtStartOfToday();
 
 const rentalHighlight = async (rental) => {
   if (hasBeenReturnedToday(rental)) {

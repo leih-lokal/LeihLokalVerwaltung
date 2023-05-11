@@ -1,3 +1,6 @@
+import { get } from "svelte/store";
+import { settingsStore } from "../../utils/settingsStore";
+
 export default {
   filters: {
     "nicht gelöscht": {
@@ -96,6 +99,17 @@ export default {
         },
       },
     },
+    "In dieser Filiale": {
+      required_fields: ["location"],
+      selectors: {
+        location: {
+          $eq: get(settingsStore).location,
+        },
+        location: {
+          $exists: false,
+        },
+      },
+    },
   },
-  activeByDefault: ["nicht gelöscht"],
+  activeByDefault: ["nicht gelöscht", "In dieser Filiale"],
 };

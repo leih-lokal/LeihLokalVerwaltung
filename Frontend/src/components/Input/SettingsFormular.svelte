@@ -4,6 +4,8 @@
   import Database from "../../database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { onDestroy } from "svelte";
+  import SelectInput from "./SelectInput.svelte";
+  import config from "../../data/config";
 
   let prevValue;
   let timer;
@@ -154,6 +156,30 @@
           id="wcsecret"
           type="password"
           placeholder="Secret"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25">
+        <h2>Filiale</h2>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25">
+        <label for="location">Filiale</label>
+      </div>
+      <div class="col-75">
+        <SelectInput
+          bind:value={$settingsStore.location}
+          id="location"
+          selectionOptions={config.locations.map((location) => ({
+            value: location,
+            label: location,
+          }))}
+          isMulti={false}
+          isCreatable={false}
         />
       </div>
     </div>

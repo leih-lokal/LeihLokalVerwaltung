@@ -227,6 +227,24 @@ export default {
       },
     },
     {
+      id: "location",
+      label: "Filiale",
+      group: "Status",
+      component: SelectInput,
+      props: {
+        selectionOptions: (context) =>
+          context.config.locations.map((location) => ({
+            value: location,
+            label: location,
+          })),
+        isClearable: true,
+        value: (context) => context.value ?? context.config.locations[0],
+        isMulti: false,
+        isCreatable: false,
+        disabled: isDeleted,
+      },
+    },
+    {
       id: "internal_note",
       label: "Interne Notiz",
       group: "Status",

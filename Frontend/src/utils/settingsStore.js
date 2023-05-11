@@ -12,6 +12,7 @@ const defaultSettings = {
   wcUrl: "https://www.buergerstiftung-karlsruhe.de/wp-json/wc/v3",
   wcKey: "",
   wcSecret: "",
+  location: "Oststadt",
 };
 
 const settingsKeys = Object.keys(defaultSettings);
