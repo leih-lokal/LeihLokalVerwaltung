@@ -2,7 +2,13 @@ import Database from "../../database/ENV_DATABASE";
 import { notifier } from "@beyonk/svelte-notifications";
 import Logger from "js-logger";
 
-export default async (customer, closePopup, createNew) => {
+export default async (customer, closePopup, createNew, formRef) => {
+  if (!formRef.wasChecked && !formRef.checkValidity()) {
+    formRef.wasChecked = true;
+    notifier.warning('Einige benötigte Felder sind nicht (korrekt) ausgefüllt. Trotzdem speichern?');
+    return;
+  }
+
   if (
     await Database.fetchByIdAndType(customer.id, "customer").then((results) => {
       if (createNew) {

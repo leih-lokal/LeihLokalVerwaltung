@@ -38,8 +38,8 @@ export default {
     {
       text: "Speichern",
       onClick: context.createNew
-        ? () => onCreate(context.doc, context.closePopup)
-        : () => onUpdate(context.doc, context.closePopup),
+        ? () => onCreate(context.doc, context.closePopup, context.form)
+        : () => onUpdate(context.doc, context.closePopup, context.form),
       loadingText: "Gegenstand wird gespeichert",
     },
   ],
@@ -50,7 +50,9 @@ export default {
       group: "Bezeichnung",
       component: TextInput,
       props: {
+        required: true,
         onlyNumbers: true,
+        pattern: "[0-9]+",
         disabled: isDeleted,
       },
     },
@@ -60,6 +62,7 @@ export default {
       group: "Bezeichnung",
       component: TextInput,
       props: {
+        required: true,
         disabled: isDeleted,
       },
     },

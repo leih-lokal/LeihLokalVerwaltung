@@ -5,7 +5,13 @@ import columns from "./columns";
 import { setNumericValuesDefault0 } from "../utils";
 import Logger from "js-logger";
 
-export default async (item, closePopup) => {
+export default async (item, closePopup, formRef) => {
+  if (!formRef.wasChecked && !formRef.checkValidity()) {
+    formRef.wasChecked = true;
+    notifier.warning('Einige benötigte Felder sind nicht (korrekt) ausgefüllt. Trotzdem speichern?');
+    return;
+  }
+
   if (
     await Database.fetchByIdAndType(item.id, "item").then((results) =>
       results.some((result) => result._id !== item._id)

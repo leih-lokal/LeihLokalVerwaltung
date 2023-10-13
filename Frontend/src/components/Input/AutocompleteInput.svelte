@@ -9,6 +9,7 @@
   export let value;
   export let suggestionFormat;
   export let disabled;
+  export let required;
   export let onlyNumbers = false;
   export let onSelected = () => {};
   export let valueField;
@@ -55,6 +56,7 @@
     valueFieldName={valueField}
     selectedItem={{ attr: value }}
     html5autocomplete={false}
+    {required}
   />
 </div>
 
@@ -67,5 +69,10 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     height: 2.5rem;
+  }
+
+  :global(.autocomplete-input:invalid) {
+    background: #fbe9e7;
+    border: 1px solid #ffccbc !important;
   }
 </style>

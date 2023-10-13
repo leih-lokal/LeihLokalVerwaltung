@@ -257,6 +257,7 @@ export default {
       component: AutocompleteInput,
       nobind: true,
       props: {
+        required: true,
         localSorting: true,
         sortByMatchedKeywords: true,
         itemSortFunction: () => sortItemByIdOrName,
@@ -372,6 +373,7 @@ export default {
       component: AutocompleteInput,
       nobind: true,
       props: {
+        required: true,
         localSorting: true,
         sortByMatchedKeywords: true,
         itemSortFunction: () => sortItemByIdOrName,
@@ -423,6 +425,8 @@ export default {
       group: "Pfand",
       component: TextInput,
       props: {
+        required: true,
+        pattern: "[0-9]+",
         onlyNumbers: true,
       },
     },
@@ -445,6 +449,7 @@ export default {
       group: "Mitarbeiter",
       component: TextInput,
       props: {
+        required: true,
         quickset: getRecentEmployees,
       },
     },

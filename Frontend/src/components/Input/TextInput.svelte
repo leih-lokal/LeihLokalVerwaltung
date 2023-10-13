@@ -1,11 +1,12 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
-  import { restrictInputToNumbers } from "../../actions/RestrictInputToNumbers";
   import ButtonTight from "./ButtonTight.svelte";
 
   export let id = "";
   export let readonly = false;
   export let value = "";
+  export let required = false;
+  export let pattern = null;
   export let disabled = false;
   export let multiline = false;
   export let onlyNumbers = false;
@@ -27,35 +28,37 @@
   }
 </script>
 
-<form autocomplete="off">
-  {#if multiline}
-    <textarea
-      bind:this={textAreaRef}
-      type="text"
-      bind:value
-      {id}
-      name={id}
-      {readonly}
-      {disabled}
-      on:input={(event) => {
-        resizeTextArea();
-        dispatch("change", event.target.value);
-      }}
-    />
-  {:else}
-    <input
-      type="text"
-      bind:value
-      {id}
-      name={id}
-      {readonly}
-      {disabled}
-      on:keydown={(event) =>
-        event.key === "Enter" ? event.preventDefault() : event}
-      on:input={(event) => dispatch("change", event.target.value)}
-    />
-  {/if}
-</form>
+{#if multiline}
+  <textarea
+    bind:this={textAreaRef}
+    type="text"
+    bind:value
+    {id}
+    name={id}
+    {readonly}
+    {disabled}
+    {required}
+    {pattern}
+    on:input={(event) => {
+      resizeTextArea();
+      dispatch("change", event.target.value);
+    }}
+  />
+{:else}
+  <input
+    type="text"
+    bind:value
+    {id}
+    name={id}
+    {readonly}
+    {disabled}
+    {required}
+    {pattern}
+    on:keydown={(event) =>
+      event.key === "Enter" ? event.preventDefault() : event}
+    on:input={(event) => dispatch("change", event.target.value)}
+  />
+{/if}
 
 {#each Object.entries(quickset) as [target, text]}
   <ButtonTight
@@ -67,13 +70,19 @@
 {/each}
 
 <style>
-  input[type="text"] {
+  input {
     width: 100% !important;
     padding: 0 0.7rem 0 0.7rem !important;
     border: 1px solid #ccc !important;
     border-radius: 4px !important;
     resize: vertical !important;
     height: 2rem !important;
+    border-radius: 4px;
+  }
+
+  input:invalid {
+    background: #fbe9e7;
+    border: 1px solid #ffccbc !important;
   }
 
   textarea {

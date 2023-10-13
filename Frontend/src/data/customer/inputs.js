@@ -26,7 +26,7 @@ export default {
     },
     {
       text: "Speichern",
-      onClick: () => onSave(context.doc, context.closePopup, context.createNew),
+      onClick: () => onSave(context.doc, context.closePopup, context.createNew, context.form),
       loadingText: "Nutzer:in wird gespeichert",
     },
   ],
@@ -37,6 +37,8 @@ export default {
       group: "ID und Name",
       component: TextInput,
       props: {
+        pattern: "[0-9]+",
+        required: true,
         onlyNumbers: true,
       },
     },
@@ -45,12 +47,14 @@ export default {
       label: "Vorname",
       group: "ID und Name",
       component: TextInput,
+      props: { required: true },
     },
     {
       id: "lastname",
       label: "Nachname",
       group: "ID und Name",
       component: TextInput,
+      props: { required: true },
     },
     {
       id: "street",
@@ -58,6 +62,7 @@ export default {
       group: "Adresse",
       component: AutocompleteInput,
       props: {
+        required: true,
         searchFunction: (context) => (searchTerm) =>
           Database.fetchUniqueCustomerFieldValues("street", searchTerm),
         noResultsText: "Straße noch nicht in Datenbank",
@@ -69,6 +74,7 @@ export default {
       label: "Hausnummer",
       group: "Adresse",
       component: TextInput,
+      props: { required: true },
     },
     {
       id: "postal_code",
@@ -76,6 +82,7 @@ export default {
       group: "Adresse",
       component: AutocompleteInput,
       props: {
+        required: true,
         onlyNumbers: true,
         searchFunction: (context) => (searchTerm) =>
           Database.fetchUniqueCustomerFieldValues(
@@ -84,7 +91,6 @@ export default {
             true
           ),
         valueField: "postal_code",
-
         noResultsText: "PLZ noch nicht in Datenbank",
       },
     },
@@ -94,6 +100,7 @@ export default {
       group: "Adresse",
       component: AutocompleteInput,
       props: {
+        required: true,
         searchFunction: (context) => (searchTerm) =>
           Database.fetchUniqueCustomerFieldValues("city", searchTerm),
         valueField: "city",
@@ -105,6 +112,10 @@ export default {
       label: "E-Mail",
       group: "Kontakt",
       component: TextInput,
+      props: {
+        required: true,
+        pattern: ".+@.+\.[a-zA-Z]+",
+      }
     },
     {
       id: "telephone_number",

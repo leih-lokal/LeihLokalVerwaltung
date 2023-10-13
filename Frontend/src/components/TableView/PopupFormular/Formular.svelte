@@ -15,13 +15,17 @@
   let footerButtonsWithContext;
   let contextVars = {};
 
+  let formRef;
+
   // needs to be reactive so that the injected context is updated when doc changes
   $: doc, (footerButtonsWithContext = injectContext(config.footerButtons));
+  $: formRef, (footerButtonsWithContext = injectContext(config.footerButtons));
 
   const injectContext = (val) => {
     if (typeof val === "function") {
       return val({
         doc,
+        form: formRef,
         createNew,
         closePopup,
         updateDoc: (updatedDoc) => (doc = { ...doc, ...updatedDoc }),
@@ -76,36 +80,40 @@
   <h1 class="header">{title}</h1>
   <div class="contentContainer">
     <div class="content" bind:this={inputContainer}>
-      {#each groups.filter( (group) => groupedInputs[group].some((input) => !isHidden(input)) ) as group}
-        <InputGroup title={group}>
-          {#each groupedInputs[group].filter((input) => !isHidden(input)) as input}
-            <row>
-              {#if input.label && input.label.length > 0}
-                <div class="col-label">
-                  <label for={input.id}>{input.label}</label>
-                </div>
-              {/if}
-              <div class="col-input">
-                {#if input.nobind}
-                  <svelte:component
-                    this={input.component}
-                    value={doc[input.id]}
-                    {...input.props}
-                    id={input.id}
-                  />
-                {:else}
-                  <svelte:component
-                    this={input.component}
-                    {...input.props}
-                    id={input.id}
-                    bind:value={doc[input.id]}
-                  />
+      <form autocomplete="off" bind:this={formRef}>
+        {#each groups.filter( (group) => groupedInputs[group].some((input) => !isHidden(input)) ) as group}
+          <InputGroup title={group}>
+            {#each groupedInputs[group].filter((input) => !isHidden(input)) as input}
+              <row>
+                {#if input.label && input.label.length > 0}
+                  <div class="col-label">
+                    <label for={input.id}>{input.label}</label>
+                  </div>
                 {/if}
-              </div>
-            </row>
-          {/each}
-        </InputGroup>
-      {/each}
+                <div class="col-input">
+                  {#if input.nobind}
+                    <svelte:component
+                      this={input.component}
+                      value={doc[input.id]}
+                      {...input.props}
+                      id={input.id}
+                      on:change={() => (formRef.wasChecked = false)}
+                    />
+                  {:else}
+                    <svelte:component
+                      this={input.component}
+                      {...input.props}
+                      id={input.id}
+                      bind:value={doc[input.id]}
+                      on:change={() => (formRef.wasChecked = false)}
+                    />
+                  {/if}
+                </div>
+              </row>
+            {/each}
+          </InputGroup>
+        {/each}
+      </form>
     </div>
   </div>
   <div class="footer">

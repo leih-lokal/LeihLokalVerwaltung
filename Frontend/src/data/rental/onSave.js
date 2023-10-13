@@ -81,7 +81,14 @@ export async function onReturnAndSave(context, employee) {
 }
 
 export default async function onSave(context) {
-  const { doc, closePopup, createNew, contextVars } = context;
+  const { doc, closePopup, createNew, contextVars, form } = context;
+
+  if (!form.wasChecked && !form.checkValidity()) {
+    form.wasChecked = true;
+    notifier.warning('Einige benötigte Felder sind nicht (korrekt) ausgefüllt. Trotzdem speichern?');
+    return;
+  }
+
   setNumericValuesDefault0(doc, columns);
   // item changed, reset initial item to status available
   if (
