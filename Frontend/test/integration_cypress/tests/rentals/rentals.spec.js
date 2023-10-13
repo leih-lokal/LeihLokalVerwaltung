@@ -316,7 +316,7 @@ context("rentals", () => {
 
     it("Creates rental with default values", () => {
       cy.contains("+").click();
-      cy.get(".footer").contains("Speichern").click();
+      cy.get(".footer").contains("Speichern").click().click();
       cy.get("thead").contains("Ausgegeben").click().click();
       cy.contains("Leihvorgang gespeichert").then(() =>
         cy.expectDisplaysTableData(expectedData.createdRentalWithDefaultValues)

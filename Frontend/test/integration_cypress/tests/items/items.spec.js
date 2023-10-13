@@ -304,6 +304,7 @@ context("items", () => {
       cy.get(".footer")
         .contains("Speichern")
         .click()
+        .click()
         .then(waitForPopupToClose)
         .then(() => cy.get("thead").contains("Id").click())
         .then(() => {
