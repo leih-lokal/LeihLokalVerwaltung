@@ -13,6 +13,7 @@
 <div class="footer">
   {#each buttons.filter((button) => !button.hidden) as button}
     <Button
+      type="button"
       disabled={button.disabled ?? false}
       on:click={async (event) => {
         button.disabled = true;

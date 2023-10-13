@@ -80,7 +80,11 @@
   <h1 class="header">{title}</h1>
   <div class="contentContainer">
     <div class="content" bind:this={inputContainer}>
-      <form autocomplete="off" bind:this={formRef}>
+      <form
+        autocomplete="off"
+        bind:this={formRef}
+        onsubmit="event.preventDefault()"
+      >
         {#each groups.filter( (group) => groupedInputs[group].some((input) => !isHidden(input)) ) as group}
           <InputGroup title={group}>
             {#each groupedInputs[group].filter((input) => !isHidden(input)) as input}
