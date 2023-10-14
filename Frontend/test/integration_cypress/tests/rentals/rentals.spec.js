@@ -301,6 +301,7 @@ context("rentals", () => {
 
       cy.get(".footer").contains("Speichern").click()
 
+      cy.wait(1000);
       waitForPopupToClose();
 
       cy.get("thead").contains("Ausgegeben").click().click();
@@ -315,10 +316,11 @@ context("rentals", () => {
         .should("contain", '"status":"outofstock"');
     });
 
-    it.only("Creates rental with default values", () => {
+    it("Creates rental with default values", () => {
       cy.contains("+").click();
       cy.get(".footer").contains("Speichern").click().click();
 
+      cy.wait(1000);
       waitForPopupToClose();
 
       cy.get("thead").contains("Ausgegeben").click().click();

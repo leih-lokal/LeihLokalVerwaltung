@@ -10,8 +10,11 @@ export default {
             Database.fetchDocsBySelector({ $and: [ { type: 'customer', id: { $or: customerIds } } ] }, ['id', '_rev', 'highlight'], [], data.length * 10),
         ])
         data.forEach(r => {
-            r.item_highlight = results[0].toSorted((a, b) => a._rev.localeCompare(b._rev)).findLast(i => i.id === r.item_id)?.highlight || ''
-            r.customer_highlight = results[1].toSorted((a, b) => a._rev.localeCompare(b._rev)).findLast(c => c.id === r.customer_id)?.highlight || ''
+            results[0].sort((a, b) => a._rev.localeCompare(b._rev))
+            results[1].sort((a, b) => a._rev.localeCompare(b._rev))
+
+            r.item_highlight = results[0].findLast(i => i.id === r.item_id)?.highlight || ''
+            r.customer_highlight = results[1].findLast(c => c.id === r.customer_id)?.highlight || ''
         })
         return data
     }
