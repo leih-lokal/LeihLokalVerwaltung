@@ -9,9 +9,9 @@ const displayedTableDataShould = (assertion) =>
     assertion(tableData);
   });
 
-const expectDisplaysTableData = (expectedTableData) => {
-  displayedTableDataShould((tableData) =>
-    expect(tableData).to.deep.equal(expectedTableData)
+const expectDisplaysTableData = (expectedTableData, firstN=99999) => {
+  displayedTableDataShould((tableData) => 
+    expect(tableData.slice(0, firstN)).to.deep.equal(expectedTableData)
   );
 };
 

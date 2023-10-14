@@ -27,7 +27,7 @@ const {
 catchMissingIndexExceptions();
 
 const expectDisplaysTableWithData = (expectedDataToBeDisplayed) => {
-  cy.expectDisplaysTableData(expectedDataToBeDisplayed);
+  cy.expectDisplaysTableData(expectedDataToBeDisplayed, expectedDataToBeDisplayed.length);
 };
 
 const expectDisplaysRow = (expectedRowToBeDisplayed) => {

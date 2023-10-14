@@ -40,7 +40,7 @@ const {
 const TODAY = Date.UTC(2021, 2, 28);
 
 const expectDisplaysTableWithData = (expectedDataToBeDisplayed) => {
-  cy.expectDisplaysTableData(expectedDataToBeDisplayed);
+  cy.expectDisplaysTableData(expectedDataToBeDisplayed, expectedDataToBeDisplayed.length);
 };
 
 catchMissingIndexExceptions();

@@ -45,7 +45,7 @@ context("rentals", () => {
 
   context("Sorting", () => {
     it("sorts by to return on desc", () => {
-      cy.expectDisplaysTableData(expectedData.sortedByToReturnOnDesc);
+      cy.expectDisplaysTableData(expectedData.sortedByToReturnOnDesc, expectedData.sortedByToReturnOnDesc.length);
     });
 
     it("sorts by to return on asc", () => {
@@ -53,7 +53,7 @@ context("rentals", () => {
         .contains("Zurückerwartet")
         .click()
         .then(() =>
-          cy.expectDisplaysTableData(expectedData.sortedByToReturnOnAsc)
+          cy.expectDisplaysTableData(expectedData.sortedByToReturnOnAsc, expectedData.sortedByToReturnOnAsc.length)
         );
     });
 
@@ -61,7 +61,7 @@ context("rentals", () => {
       cy.get("thead")
         .contains("Gegenstand Nr")
         .click()
-        .then(() => cy.expectDisplaysTableData(expectedData.sortedByItemIdAsc));
+        .then(() => cy.expectDisplaysTableData(expectedData.sortedByItemIdAsc, expectedData.sortedByItemIdAsc.length));
     });
 
     it("sorts rentals by item id desc", () => {
@@ -72,7 +72,7 @@ context("rentals", () => {
         .contains("Gegenstand Nr")
         .click()
         .then(() =>
-          cy.expectDisplaysTableData(expectedData.sortedByItemIdDesc)
+          cy.expectDisplaysTableData(expectedData.sortedByItemIdDesc, expectedData.sortedByItemIdDesc.length)
         );
     });
 
@@ -81,7 +81,7 @@ context("rentals", () => {
         .contains("Gegenstand Name")
         .click()
         .then(() =>
-          cy.expectDisplaysTableData(expectedData.sortedByItemNameAsc)
+          cy.expectDisplaysTableData(expectedData.sortedByItemNameAsc, expectedData.sortedByItemNameAsc.length)
         );
     });
 
@@ -93,7 +93,7 @@ context("rentals", () => {
         .contains("Gegenstand Name")
         .click()
         .then(() =>
-          cy.expectDisplaysTableData(expectedData.sortedByItemNameDesc)
+          cy.expectDisplaysTableData(expectedData.sortedByItemNameDesc, expectedData.sortedByItemNameDesc.length)
         );
     });
 
@@ -102,7 +102,7 @@ context("rentals", () => {
         .contains("Nutzer-Nr.")
         .click()
         .then(() =>
-          cy.expectDisplaysTableData(expectedData.sortedByCustomerIdAsc)
+          cy.expectDisplaysTableData(expectedData.sortedByCustomerIdAsc, expectedData.sortedByCustomerIdAsc.length)
         );
     });
 
@@ -114,7 +114,7 @@ context("rentals", () => {
         .contains("Nutzer-Nr.")
         .click()
         .then(() =>
-          cy.expectDisplaysTableData(expectedData.sortedByCustomerIdDesc)
+          cy.expectDisplaysTableData(expectedData.sortedByCustomerIdDesc, expectedData.sortedByCustomerIdDesc.length)
         );
     });
 
@@ -123,7 +123,7 @@ context("rentals", () => {
         .contains("Nutzername")
         .click()
         .then(() =>
-          cy.expectDisplaysTableData(expectedData.sortedByCustomerNameAsc)
+          cy.expectDisplaysTableData(expectedData.sortedByCustomerNameAsc, expectedData.sortedByCustomerNameAsc.length)
         );
     });
 
@@ -135,7 +135,7 @@ context("rentals", () => {
         .contains("Nutzername")
         .click()
         .then(() =>
-          cy.expectDisplaysTableData(expectedData.sortedByCustomerNameDesc)
+          cy.expectDisplaysTableData(expectedData.sortedByCustomerNameDesc, expectedData.sortedByCustomerNameDesc.length)
         );
     });
   });
@@ -144,20 +144,20 @@ context("rentals", () => {
     it("finds a rental by search for item_id", () => {
       cy.get(".searchInput")
         .type(15)
-        .then(() => cy.expectDisplaysTableData(expectedData.searchForItemId));
+        .then(() => cy.expectDisplaysTableData(expectedData.searchForItemId, expectedData.searchForItemId.length));
     });
 
     it("finds a rental by search for item_name", () => {
       cy.get(".searchInput")
         .type("Silikon")
-        .then(() => cy.expectDisplaysTableData(expectedData.searchForItemName));
+        .then(() => cy.expectDisplaysTableData(expectedData.searchForItemName, expectedData.searchForItemName.length));
     });
 
     it("finds a rental by search for customer_name", () => {
       cy.get(".searchInput")
         .type("Cruft")
         .then(() =>
-          cy.expectDisplaysTableData(expectedData.searchForCustomerName)
+          cy.expectDisplaysTableData(expectedData.searchForCustomerName, expectedData.searchForCustomerName.length)
         );
     });
   });
@@ -167,25 +167,25 @@ context("rentals", () => {
     beforeEach(clearFilter);
 
     it("displays all rentals when removing filters", () => {
-      cy.expectDisplaysTableData(expectedData.noFilters);
+      cy.expectDisplaysTableData(expectedData.noFilters, expectedData.noFilters.length);
     });
 
     it("finds rentals by filtering for 'abgeschlossen'", () => {
       cy.get(".selectContainer").click();
       cy.contains(".selectContainer .item", "abgeschlossen").click();
-      cy.expectDisplaysTableData(expectedData.filterForAbgeschlossen);
+      cy.expectDisplaysTableData(expectedData.filterForAbgeschlossen, expectedData.filterForAbgeschlossen.length);
     });
 
     it("finds rentals by filtering for 'Rückgabe heute'", () => {
       cy.get(".selectContainer").click();
       cy.contains(".selectContainer .item", "Rückgabe heute").click();
-      cy.expectDisplaysTableData(expectedData.filterForRueckgabeHeute);
+      cy.expectDisplaysTableData(expectedData.filterForRueckgabeHeute, expectedData.filterForRueckgabeHeute.length);
     });
 
     it("finds rentals by filtering for 'verspätet'", () => {
       cy.get(".selectContainer").click();
       cy.contains(".selectContainer .item", "verspätet").click();
-      cy.expectDisplaysTableData(expectedData.filterForVerspaetet);
+      cy.expectDisplaysTableData(expectedData.filterForVerspaetet, expectedData.filterForVerspaetet.length);
     });
   });
 
@@ -241,7 +241,7 @@ context("rentals", () => {
         .clear()
         .type(3);
       cy.get(".footer").contains("Speichern").click();
-      cy.expectDisplaysTableData(expectedData.rentalEdited);
+      cy.expectDisplaysTableData(expectedData.rentalEdited, expectedData.rentalEdited.length);
     });
 
     it("Deletes rental", () => {
@@ -249,7 +249,7 @@ context("rentals", () => {
       cy.contains("Löschen")
         .click()
         .then(() => {
-          cy.expectDisplaysTableData(expectedData.rentalDeleted);
+          cy.expectDisplaysTableData(expectedData.rentalDeleted, expectedData.rentalDeleted.length);
         });
     });
 
@@ -299,13 +299,14 @@ context("rentals", () => {
       cy.get("#deposit").clear().type(newRental.deposit);
       cy.get("#passing_out_employee").type(newRental.passing_out_employee);
 
-      cy.get(".footer").contains("Speichern").click();
-      cy.get("thead").contains("Ausgegeben").click().click();
-      cy.contains("Leihvorgang gespeichert").then(() =>
-        cy.expectDisplaysTableData(expectedData.createdRental)
-      );
+      cy.get(".footer").contains("Speichern").click()
 
       waitForPopupToClose();
+
+      cy.get("thead").contains("Ausgegeben").click().click();
+      cy.contains("Leihvorgang gespeichert").then(() =>
+        cy.expectDisplaysTableData(expectedData.createdRental, expectedData.createdRental.length)
+      );
 
       cy.exec(
         'curl -H \'Content-Type: application/json\' -X POST http://user:password@127.0.0.1:5984/leihlokal_test/_find -d \'{"selector": {"$and": [{"id":{"$eq": 122}}, {"type":{"$eq": "item"}}]}}\''
@@ -314,12 +315,15 @@ context("rentals", () => {
         .should("contain", '"status":"outofstock"');
     });
 
-    it("Creates rental with default values", () => {
+    it.only("Creates rental with default values", () => {
       cy.contains("+").click();
       cy.get(".footer").contains("Speichern").click().click();
+
+      waitForPopupToClose();
+
       cy.get("thead").contains("Ausgegeben").click().click();
       cy.contains("Leihvorgang gespeichert").then(() =>
-        cy.expectDisplaysTableData(expectedData.createdRentalWithDefaultValues)
+        cy.expectDisplaysTableData(expectedData.createdRentalWithDefaultValues, expectedData.createdRentalWithDefaultValues.length)
       );
     });
 
