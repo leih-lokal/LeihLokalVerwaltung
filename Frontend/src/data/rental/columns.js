@@ -2,9 +2,7 @@ import {
   saveParseTimestampToHumanReadableString,
   millisAtStartOfToday,
 } from "../../utils/utils.js";
-import { customerById, itemById } from "../selectors";
 import COLORS from "../../components/Input/ColorDefs";
-import Database from "../../database/ENV_DATABASE";
 
 const hasReturnDate = (rental) => rental.returned_on && rental.returned_on > 0;
 const hasBeenReturnedToday = (rental) =>
@@ -27,19 +25,19 @@ const rentalHighlight = async (rental) => {
   }
 };
 
-const customerHighlight = (rental) =>
-  Database.fetchDocsBySelector(customerById(rental.customer_id)).then(
-    (customers) => customers[0] && customers[0].highlight
-  );
-const itemHighlight = (rental) =>
-  Database.fetchDocsBySelector(itemById(rental.item_id)).then(
-    (items) => items[0] && items[0].highlight
-  );
+const customerHighlight = (rental) => {
+  return Promise.resolve(rental.customer_highlight)
+}
+const itemHighlight = (rental) => {
+  return Promise.resolve(rental.item_highlight)
+}
 
 const highlightByPriority = (highlightFunctions) => (rental) =>
   Promise.all(
     highlightFunctions.map((highlightFunction) => highlightFunction(rental))
-  ).then((highlightColors) => highlightColors.find((color) => color));
+  ).then((highlightColors) => {
+    return highlightColors.find((color) => color)
+  });
 
 export default [
   {

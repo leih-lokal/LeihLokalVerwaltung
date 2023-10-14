@@ -24,6 +24,7 @@
           filters: tableViewConfig.filters,
           docType: tableViewConfig.docType,
           inputs: tableViewConfig.inputs,
+          onData: tableViewConfig.onData,
         },
       })
     )

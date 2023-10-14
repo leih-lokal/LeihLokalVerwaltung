@@ -12,7 +12,7 @@
   export let filters = {};
   export let docType = "";
   export let inputs = [];
-
+  export let onData = null;
   let columnsToDisplay = [];
   $: columnsToDisplay = columns.filter((column) => !column.hideInTable);
 
@@ -54,7 +54,11 @@
             if (rowsOnLastPage > 0) numberOfPages += 1;
             return numberOfPages;
           });
+
           return data.docs;
+        })
+        .then((data) => {
+          return onData ? onData(data) : data;
         })
         .catch((error) => {
           Logger.error(error);
@@ -74,7 +78,7 @@
   };
 
   let actualRowsFittingOnPage = false;
-  let rowsPerPage = maxRowsThatMightFitOnPage();
+  let rowsPerPage = 25; // maxRowsThatMightFitOnPage();
   let popupFormular;
   let searchInputRef;
   let loadData = Promise.resolve();
@@ -124,7 +128,8 @@
             (tableRowElement.getBoundingClientRect().height + rowBorderSpacing)
         );
         if (rowsPerPage !== actualRowsFittingOnPage) {
-          rowsPerPage = actualRowsFittingOnPage;
+          // disabled, because was causing unnecessary refreshing and didn't add too much value
+          //rowsPerPage = actualRowsFittingOnPage;
         }
       }
     }

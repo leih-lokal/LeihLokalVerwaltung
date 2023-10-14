@@ -16,7 +16,7 @@ class Database {
     // cache for query that returns docs on a page
     this.queryPaginatedDocsCache = new Cache({ max: 50 });
     // cache for other queries
-    this.cache = new Cache({ max: 500 });
+    this.cache = new Cache({ max: 5000 });
   }
 
   cancelAllListeners() {
@@ -126,6 +126,27 @@ class Database {
       },
     }).then((result) => result.docs.length);
     return countPromise;
+  }
+
+  async countDocsBatch(selectors, mappingKey) {
+    const result = await this.findCached({
+      limit: 99999999,
+      fields: ['_id', mappingKey],
+      selector: {
+        $or: selectors
+      }
+    })
+
+    const counts = {}
+
+    result.docs.forEach(d => {
+      if (!counts[d[mappingKey]]) {
+        counts[d[mappingKey]] = 0
+      }
+      counts[d[mappingKey]] += 1
+    })
+
+    return counts
   }
 
   async createView(name, mapFun, reduceFun) {
@@ -288,9 +309,9 @@ class Database {
       .then((result) => result.rows.map((row) => row.doc));
   }
 
-  fetchDocsBySelector(selector, fields, sort=[]) {
+  fetchDocsBySelector(selector, fields, sort=[], limit=10) {
     return this.findCached({
-      limit: 10,
+      limit,
       fields,
       selector,
       sort

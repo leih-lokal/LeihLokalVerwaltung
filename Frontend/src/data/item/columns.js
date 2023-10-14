@@ -103,10 +103,9 @@ export default [
 
   {
     title: "Anzahl Ausleihen",
-    key: "id",
+    key: "rental_count",
     search: "exclude",
     disableSort: true,
-    display: countRentals,
     displayExport: (allDocs, item_id) =>
       allDocs.filter((doc) => doc.type === "rental" && doc.item_id === item_id)
         .length,

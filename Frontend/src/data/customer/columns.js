@@ -2,20 +2,8 @@ import {
   saveParseStringToBoolean,
   saveParseTimestampToString,
 } from "../../utils/utils.js";
-import Database from "../../database/ENV_DATABASE";
-import { activeRentalsForCustomerSelector } from "../selectors";
 
 const backgroundColor = async (customer) => customer.highlight;
-
-function countRentals(customer_id) {
-  const selectors = [
-    {
-      customer_id: customer_id,
-      type: "rental",
-    },
-  ];
-  return Database.countDocs(selectors);
-}
 
 export default [
   {
@@ -128,11 +116,9 @@ export default [
   },
   {
     title: "Aktive Ausleihen",
-    key: "id",
+    key: "active_rental_count",
     search: "exclude",
     disableSort: true,
-    display: async (customer_id) =>
-      Database.countDocs([activeRentalsForCustomerSelector(customer_id)]),
     displayExport: (allDocs, customer_id) =>
       allDocs.filter(
         (doc) =>
@@ -144,10 +130,9 @@ export default [
   },
   {
     title: "Ausleihen Insgesamt",
-    key: "id",
+    key: "rental_count",
     search: "exclude",
     disableSort: true,
-    display: countRentals,
     displayExport: (allDocs, customer_id) =>
       allDocs.filter(
         (doc) => doc.type === "rental" && doc.customer_id === customer_id
