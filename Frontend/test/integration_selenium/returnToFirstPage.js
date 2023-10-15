@@ -25,7 +25,7 @@ describe("Return to first page", function () {
   it("returns to first page when searching", async () => {
     await driver.get("http://localhost:5000/#/items");
     await gotoSecondPage();
-    await getElementByCss(".searchInput").sendKeys("en");
+    await getElementByCss(".searchInput").sendKeys("in");
     await sleep(800);
     await expectToBeOnPage(1);
   });

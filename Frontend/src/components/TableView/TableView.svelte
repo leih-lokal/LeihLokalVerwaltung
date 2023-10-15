@@ -92,6 +92,7 @@
   let sort;
   let indicateSort;
   $: innerHeight, (actualRowsFittingOnPage = false);
+  $: sortByColKey, sortReverse, searchTerm, activeFilters, goToFirstPage();
   $: currentPage,
     sortByColKey,
     sortReverse,
@@ -100,7 +101,6 @@
     innerHeight,
     rowsPerPage,
     refresh();
-  $: sortByColKey, sortReverse, searchTerm, activeFilters, goToFirstPage();
   $: indicateSort = columnsToDisplay.map((col) => {
     if (col.key === sortByColKey) {
       return sortReverse ? "up" : "down";
