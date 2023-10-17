@@ -6,16 +6,6 @@ const backgroundColor = async (item) => item.highlight;
 const backgroundColorStatus = async (item) =>
   item.status == "reserved" ? ColorDefs.ITEM_RESERVED : item.highlight;
 
-function countRentals(item_id) {
-  const selectors = [
-    {
-      item_id: item_id,
-      type: "rental",
-    },
-  ];
-  return Database.countDocs(selectors);
-}
-
 export default [
   {
     title: "Id",

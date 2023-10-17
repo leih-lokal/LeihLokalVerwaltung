@@ -52,8 +52,6 @@
   .tablecontainer {
     height: 100%;
     overflow-x: scroll;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
   }
 
   .tablecontainer::-webkit-scrollbar {
