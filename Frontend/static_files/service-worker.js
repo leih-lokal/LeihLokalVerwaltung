@@ -16,6 +16,7 @@ function shouldCache(request) {
     request.method === "GET" &&
     !request.url.includes(":6984") &&
     !request.url.includes(":5984") &&
+    !request.url.includes('db.leihlokal-ka.de') &&
     request.url.indexOf("chrome-extension") !== 0
   );
 }
