@@ -23,7 +23,7 @@ class SelectorBuilder {
     for (accentGroup of accentGroups) {
       for (accent of accentGroup) {
         if (content.includes(accent)) {
-          regex = regex.replace(accent, `[${accentGroup}]`);
+          regex = regex.replace(accent, `(?:${accentGroup.split('').join('|')})`);
         }
       }
     }
