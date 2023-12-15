@@ -137,16 +137,7 @@ class Database {
       }
     })
 
-    const counts = {}
-
-    result.docs.forEach(d => {
-      if (!counts[d[mappingKey]]) {
-        counts[d[mappingKey]] = 0
-      }
-      counts[d[mappingKey]] += 1
-    })
-
-    return counts
+    return this.countByKey(result.docs, mappingKey)
   }
 
   async createView(name, mapFun, reduceFun) {
@@ -362,6 +353,19 @@ class Database {
     return Array.from(uniqueValues).map((uniqueValue) => ({
       [field]: uniqueValue,
     }));
+  }
+
+  countByKey(docs, key) {
+    const counts = {}
+
+    docs.forEach(d => {
+      if (!counts[d[key]]) {
+        counts[d[key]] = 0
+      }
+      counts[d[key]] += 1
+    })
+
+    return counts
   }
 }
 
