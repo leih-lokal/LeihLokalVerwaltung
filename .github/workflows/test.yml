@@ -33,7 +33,7 @@ jobs:
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb
 
       - name: Start CouchDB
-        run: docker-compose up -d couchdb
+        run: docker compose up -d couchdb
 
       - name: Wait for CouchDB
         uses: iFaxity/wait-on-action@v1
@@ -42,7 +42,7 @@ jobs:
           delay: 500
 
       - name: Insert Testdata
-        run: docker-compose up testdata_generator
+        run: docker compose up testdata_generator
 
       - name: Run cypress integration tests
         uses: cypress-io/github-action@v2
