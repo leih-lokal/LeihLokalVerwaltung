@@ -48,6 +48,30 @@ export default {
         },
       },
     },
+    "verschollen": {
+      required_fields: ["status"],
+      selectors: {
+        status: {
+          $eq: "lost",
+        },
+      },
+    },
+    "in Reparatur": {
+      required_fields: ["status"],
+      selectors: {
+        status: {
+          $eq: "repairing",
+        },
+      },
+    },
+    "zu verkaufen": {
+      required_fields: ["status"],
+      selectors: {
+        status: {
+          $eq: "forsale",
+        },
+      },
+    },
     "Kategorie Küche": {
       required_fields: ["category"],
       selectors: {

@@ -89,9 +89,12 @@ const showNotificationsForItem = async (item) => {
     outofstock: "verliehen",
     reserved: "reserviert",
     onbackorder: "temporär nicht verfügbar / in Reparatur",
+    lost: "verschollen",
+    repairing: "in Reparatur",
+    forsale: "zu verkaufen",
   };
   var status = statusMapping[item.status];
-  if (["outofstock", "reserved", "onbackorder"].includes(item.status)) {
+  if (["outofstock", "reserved", "onbackorder", "lost", "repairing", "forsale"].includes(item.status)) {
     notifier.danger(
       `${item.name} (${item.id}) ist nicht verfügbar, hat Status: ${status}`,
       10000
