@@ -53,8 +53,11 @@ class WoocommerceClient {
   }
 
   _translateItemAttributesForWc(item) {
-    const translateStatus = (status) =>
-      status === "reserved" ? "outofstock" : status;
+    const translateStatus = (status) => {
+      if (["reserved"].includes(status)) return "outofstock";
+      if (["lost", "repairing", "forsale"].includes(status)) return "onbackorder";
+      return status;
+    }
 
     const hasSynonyms = item.synonyms && item.synonyms.trim().length > 0;
     const isRentedAndHasReturnDateInFuture =
