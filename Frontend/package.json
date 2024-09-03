@@ -54,7 +54,7 @@
     "jest": "^27.1.0",
     "jest-svelte-events": "^1.0.5",
     "js-logger": "^1.6.1",
-    "lru-cache": "^7.7.1",
+    "lru-cache": "^11.0.0",
     "patch-package": "^6.4.7",
     "mocha": "^9.2.0",
     "pouchdb-browser": "^7.2.1",
