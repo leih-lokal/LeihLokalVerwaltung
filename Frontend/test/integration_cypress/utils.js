@@ -8,7 +8,7 @@ const waitForPopupToClose = () =>
 const clearFilter = () => cy.get(".multiSelectItem_clear").click();
 
 const resetTestData = () =>
-  cy.exec("docker-compose up testdata_generator", {
+  cy.exec("docker compose up testdata_generator", {
     timeout: 120000,
   });
 

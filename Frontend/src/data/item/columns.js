@@ -87,6 +87,9 @@ export default [
       if (value === "outofstock") return "verliehen";
       if (value === "reserved") return "reserviert";
       if (value === "onbackorder") return "nicht verleihbar";
+      if (value === "lost") return "verschollen";
+      if (value === "repairing") return "in Reparatur";
+      if (value === "forsale") return "zu verkaufen";
     },
     backgroundColor: backgroundColorStatus,
   },
