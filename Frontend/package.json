@@ -8,7 +8,7 @@
     "build:cypress": "cross-env NODE_ENV=cypress rollup -c",
     "build:clean": "rm -rf public/*",
     "build:all": "npm run build:clean && npm run build && OUTPUT_DIR=public/demo npm run build:demo",
-    "dev": "cross-env NODE_ENV=dev rollup -c -w",
+    "dev": "cross-env NODE_ENV=dev SERVICE_WORKER_DISABLED=true rollup -c -w",
     "dev:mock_all": "cross-env NODE_ENV=dev_mock_all SERVICE_WORKER_DISABLED=true rollup -c -w",
     "dev:mock_db": "cross-env NODE_ENV=dev_mock_db SERVICE_WORKER_DISABLED=true rollup -c -w",
     "dev:mock_wc": "cross-env NODE_ENV=dev_mock_wc SERVICE_WORKER_DISABLED=true rollup -c -w",
