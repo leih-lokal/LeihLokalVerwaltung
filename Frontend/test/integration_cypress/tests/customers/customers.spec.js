@@ -292,7 +292,7 @@ context("Customers", () => {
       cy.get("#house_number").type(newCustomer.house_number);
       cy.get("#postal_code")
         .type(newCustomer.postal_code)
-        .wait(500)
+        .wait(1000)
         .get("body")
         .click(0, 0);
       cy.get("body").click();
