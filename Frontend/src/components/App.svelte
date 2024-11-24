@@ -26,21 +26,21 @@
           inputs: tableViewConfig.inputs,
           onData: tableViewConfig.onData,
         },
-      })
-    )
+      }),
+    ),
   );
   routes.set("/logs", LogView);
   routes.set(
     "/settings",
     wrap({
       component: Settings,
-    })
+    }),
   );
   routes.set(
     "/start",
     wrap({
       component: Dashboard,
-    })
+    }),
   );
   routes.set(
     "*",
@@ -52,7 +52,7 @@
           return false;
         },
       ],
-    })
+    }),
   );
 
   Database.onConnected(createIndex);
