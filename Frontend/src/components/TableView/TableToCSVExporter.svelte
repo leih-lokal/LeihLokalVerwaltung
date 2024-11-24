@@ -25,21 +25,25 @@
   const delimiter = ";";
 
   function convertToCSV(items) {
+    const exportableColumns = columns[itemType].filter(
+      (col) => !col.hasOwnProperty("noExport") || !col.noExport,
+    );
+
     let csvString =
-      columns[itemType].map((col) => col.title).join(delimiter) + "\r\n";
+      exportableColumns.map((col) => col.title).join(delimiter) + "\r\n";
     items
       .filter((item) => item.type === itemType)
       .forEach((item) => {
         let csvValues = [];
-        for (const column of columns[itemType]) {
+        for (const column of exportableColumns) {
           let key = column.key;
           let value = item.hasOwnProperty(key) ? item[key] : "";
 
           // calculate and format value for display
           if (column.displayExport) {
-            value = column.displayExport(items, value);
+            value = column.displayExport(items, item.id);
           } else if (column.display) {
-            value = column.display(value);
+            value = column.display(value); // TODO: display might be an async function -> await
           }
 
           // remove csv delimiters and line breaks from data
