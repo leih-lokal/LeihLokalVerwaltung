@@ -84,8 +84,10 @@ export default async function onSave(context) {
   const { doc, closePopup, createNew, contextVars, form } = context;
 
   if (!form.wasChecked && !form.checkValidity()) {
-    form.wasChecked = true;
-    notifier.warning('Einige benötigte Felder sind nicht (korrekt) ausgefüllt. Trotzdem speichern?');
+    // "Soft-require" temporarily disabled -> mandatorily require all required fields for rentals
+    // form.wasChecked = true;
+    // notifier.warning('Einige benötigte Felder sind nicht (korrekt) ausgefüllt. Trotzdem speichern?');
+    notifier.danger('Nicht alle benötigten Felder sind (korrekt) ausgefüllt.', 3000)
     return;
   }
 

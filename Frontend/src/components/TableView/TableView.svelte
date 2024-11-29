@@ -12,7 +12,7 @@
   export let filters = {};
   export let docType = "";
   export let inputs = [];
-  export let onData = null;
+  export let onData = null; // optional async callback function
   let columnsToDisplay = [];
   $: columnsToDisplay = columns.filter((column) => !column.hideInTable);
 
@@ -29,10 +29,10 @@
   const refresh = () => {
     if (!popupIsOpen) {
       refreshWhenPopupCloses = false;
-      loadData = Database.query(
+      tableData = Database.query(
         {
           filters: activeFilters.map(
-            (filterName) => filters.filters[filterName]
+            (filterName) => filters.filters[filterName],
           ),
           columns,
           searchTerm,
@@ -44,7 +44,7 @@
         },
 
         // query again if a doc was created / deleted / updated
-        refresh
+        refresh,
       )
         .then((data) => {
           searchInputRef?.focusSearchInput();
@@ -81,7 +81,7 @@
   let rowsPerPage = 25; // maxRowsThatMightFitOnPage();
   let popupFormular;
   let searchInputRef;
-  let loadData = Promise.resolve();
+  let tableData = Promise.resolve();
   let numberOfPagesPromise = new Promise(() => {});
   let searchTerm = "";
   let currentPage = 0;
@@ -111,7 +111,7 @@
 
   afterUpdate(async () => {
     if (actualRowsFittingOnPage === false) {
-      await loadData;
+      await tableData;
 
       const paginationElement = document.querySelector(".pagination");
       const tableHeaderElement = document.querySelector("thead");
@@ -125,7 +125,7 @@
 
         actualRowsFittingOnPage = Math.floor(
           tableBodyHeight /
-            (tableRowElement.getBoundingClientRect().height + rowBorderSpacing)
+            (tableRowElement.getBoundingClientRect().height + rowBorderSpacing),
         );
         if (rowsPerPage !== actualRowsFittingOnPage) {
           // disabled, because was causing unnecessary refreshing and didn't add too much value
@@ -181,10 +181,10 @@
 <Table
   {rowHeight}
   columns={columnsToDisplay}
-  {loadData}
+  loadData={tableData}
   cellBackgroundColorsFunction={(customer) =>
     Promise.all(
-      columnsToDisplay.map((column) => column.backgroundColor(customer))
+      columnsToDisplay.map((column) => column.backgroundColor(customer)),
     )}
   {indicateSort}
   onLoadDataErrorText={(error) => {
@@ -204,7 +204,7 @@
         createNew: false,
         config: inputs,
       },
-      onPopupClosed
+      onPopupClosed,
     );
   }}
   on:colHeaderClicked={(event) => {
@@ -226,7 +226,7 @@
         createNew: true,
         config: inputs,
       },
-      onPopupClosed
+      onPopupClosed,
     );
   }}
 />

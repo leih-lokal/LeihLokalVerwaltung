@@ -1,5 +1,4 @@
 import { saveParseTimestampToString } from "../../utils/utils.js";
-import Database from "../../database/Database";
 import ColorDefs from "../../components/Input/ColorDefs.js";
 
 const backgroundColor = async (item) => item.highlight;
@@ -99,9 +98,7 @@ export default [
     key: "rental_count",
     search: "exclude",
     disableSort: true,
-    displayExport: (allDocs, item_id) =>
-      allDocs.filter((doc) => doc.type === "rental" && doc.item_id === item_id)
-        .length,
+    displayExport: (allDocs, item_id) => allDocs.filter((doc) => doc.type === "rental" && doc.item_id === item_id).length,
     backgroundColor,
   },
 ];

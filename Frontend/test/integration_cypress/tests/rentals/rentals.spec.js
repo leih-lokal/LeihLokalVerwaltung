@@ -316,17 +316,13 @@ context("rentals", () => {
         .should("contain", '"status":"outofstock"');
     });
 
-    it("Creates rental with default values", () => {
+    it("Fails to create rental if not all required fields are filled", () => {
       cy.contains("+").click();
-      cy.get(".footer").contains("Speichern").click().click();
-
+      cy.get('.toast').should('not.exist')
+      cy.get(".footer").contains("Speichern").click();
+      cy.get('.toast').should('exist')
       cy.wait(1000);
-      waitForPopupToClose();
-
-      cy.get("thead").contains("Ausgegeben").click().click();
-      cy.contains("Leihvorgang gespeichert").then(() =>
-        cy.expectDisplaysTableData(expectedData.createdRentalWithDefaultValues, expectedData.createdRentalWithDefaultValues.length)
-      );
+      cy.get('h1').contains('Leihvorgang anlegen').should('exist')
     });
 
     it("Marks item instock when returned", () => {
