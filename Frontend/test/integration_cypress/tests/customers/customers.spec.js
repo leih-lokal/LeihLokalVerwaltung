@@ -255,6 +255,7 @@ context("Customers", () => {
     });
 
     it("Creates customer", () => {
+      // Note: this test keeps failing randomly, because sometimes city doesn't seem to be saved corretly (empty string instead of "Karlsruhe")
       const newCustomer = {
         id: "101",
         lastname: "lastname",
@@ -286,7 +287,7 @@ context("Customers", () => {
       cy.get("#subscribed_to_newsletter").click();
       cy.get("#street")
         .type(newCustomer.street)
-        .wait(500)
+        .wait(1000)
         .get("body")
         .click(0, 0);
       cy.get("#house_number").type(newCustomer.house_number);
@@ -296,7 +297,7 @@ context("Customers", () => {
         .get("body")
         .click(0, 0);
       cy.get("body").click();
-      cy.get("#city").type(newCustomer.city);
+      cy.get("#city").type(newCustomer.city).wait(1000);
       cy.get("#remark").type(newCustomer.remark);
 
       cy.get(".footer")
