@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Cache node_modules
         id: cache-node-modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: Frontend/node_modules
           key: node-modules-${{ hashFiles('Frontend/package-lock.json') }}
@@ -45,7 +45,7 @@ jobs:
         run: docker compose up testdata_generator
 
       - name: Run cypress integration tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v6
         with:
           working-directory: "./Frontend"
           command: npm run integration_test_cypress:run
@@ -53,7 +53,7 @@ jobs:
           record: true
 
       - name: Upload cypress failure screenshots
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots
