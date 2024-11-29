@@ -1,0 +1,17 @@
+{
+  "name": "LeihLokal Verwaltung",
+  "short_name": "LeihLokal",
+  "theme_color": "#008cba",
+  "background_color": "#008cba",
+  "display": "standalone",
+  "start_url": "index.html",
+  "icons": [
+    {
+      "src": "leihlokal.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    }
+  ],
+  "splash_pages": null
+}
