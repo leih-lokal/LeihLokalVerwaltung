@@ -316,18 +316,13 @@ context("rentals", () => {
         .should("contain", '"status":"outofstock"');
     });
 
-    // TODO: fix this test case to check that rental cannot be saved because required values missing (see change at 50870f56234b9223ab85b3671f000b322f709276)
-    it.skip("Creates rental with default values", () => {
+    it("Fails to create rental if not all required fields are filled", () => {
       cy.contains("+").click();
-      cy.get(".footer").contains("Speichern").click().click();
-
+      cy.get('.toast').should('not.exist')
+      cy.get(".footer").contains("Speichern").click();
+      cy.get('.toast').should('exist')
       cy.wait(1000);
-      waitForPopupToClose();
-
-      cy.get("thead").contains("Ausgegeben").click().click();
-      cy.contains("Leihvorgang gespeichert").then(() =>
-        cy.expectDisplaysTableData(expectedData.createdRentalWithDefaultValues, expectedData.createdRentalWithDefaultValues.length)
-      );
+      cy.get('h1').contains('Leihvorgang anlegen').should('exist')
     });
 
     it("Marks item instock when returned", () => {
