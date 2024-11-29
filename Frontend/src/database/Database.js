@@ -367,6 +367,25 @@ class Database {
 
     return counts
   }
+
+  // Domain-specific queries
+
+  getRentalsByEntity(entity, entityIds, fields) {
+    if (!entityIds || !entityIds.length) return Promise.resolve({ docs: [] })
+
+    entityIds.sort((a, b) =>  a - b)
+
+    const select = {
+      $and: [
+        { [`${entity}_id`]: { $in: entityIds } },
+        { [`${entity}_id`]: { $gte: entityIds[0] }},
+        { [`${entity}_id`]: { $lte: entityIds[entityIds.length - 1] } },
+        { type: 'rental' },
+      ]
+    }
+
+    return this.fetchAllDocsBySelector(select, fields)
+  }
 }
 
 export default new Database();

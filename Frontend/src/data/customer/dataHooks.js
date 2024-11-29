@@ -9,9 +9,7 @@ export default {
         const activeRentalCountResolvers = data.map(() => Promise.withResolvers())
 
         async function fetchAll() {
-          const rentalCountSelectors = {$or: data.map(c => ({$and: [{ customer_id: c.id, type: "rental" }]}))}
-
-          const allRentals = await Database.fetchAllDocsBySelector(rentalCountSelectors, ['customer_id', 'returned_on'])
+          const allRentals = await Database.getRentalsByEntity('customer', data.map(c => c.id), ['customer_id', 'returned_on'])
           const activeRentals = allRentals.filter(r => r.returned_on === 0)
   
           const allRentalsCount = Database.countByKey(allRentals, 'customer_id')

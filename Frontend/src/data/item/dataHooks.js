@@ -7,8 +7,8 @@ export default {
         const rentalCountResolvers = data.map(() => Promise.withResolvers())
 
         async function fetchAll() {
-          const rentalCountSelectors = data.map(c => ({$and: [{ item_id: c.id, type: "rental" }]}))
-          const counts = await Database.countDocsBatch(rentalCountSelectors, 'item_id')
+          const allRentals = await Database.getRentalsByEntity('item', data.map(i => i.id), ['item_id'])
+          const counts = Database.countByKey(allRentals, 'item_id')
           data.forEach((e, i) => rentalCountResolvers[i].resolve(counts[e.id] || 0))
         }
 
