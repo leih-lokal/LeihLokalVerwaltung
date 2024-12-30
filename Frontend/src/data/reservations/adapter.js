@@ -8,9 +8,9 @@ export async function query(opts) {
     if (!api.initialized) await api.init()
 
     if (opts.sortBy instanceof Array && opts.sortBy.length) opts.sortBy = opts.sortBy[0]  // TODO
-    if (opts.sortBy !== 'pickup') console.log('Only supported sorting for reservations is "pickup"')  // TODO
+    if (opts.sortBy !== 'pickup') console.warn('Only supported sorting for reservations is "pickup"')  // TODO
 
-    const data = await api.listReservations(
+    const data = await api.findReservations(
         opts.currentPage + 1,  // page
         opts.rowsPerPage,  // pageSize,
         {
