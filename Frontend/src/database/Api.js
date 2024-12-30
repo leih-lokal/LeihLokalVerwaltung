@@ -27,6 +27,14 @@ class ApiClient {
             filters.itemIds = (await this.findItems(1, 9999, { query: filters.query }, true)).items.map(i => i.id)
         }
 
+        const params = new URLSearchParams()
+        params.append('filter', this.#buildReservationFilters(filters))
+        params.append('expand', 'items')
+        params.append('fields', '*,expand.items.iid,expand.items.name')
+        params.append('sort', `${sort === 'desc' ? '-' : ''}pickup,created`)
+        params.append('page', page)
+        params.append('perPage', pageSize)
+
         const url = `${this.baseUrl}/collections/reservation/records?${params.toString()}`
         const res = await this.#fetch(url, { headers: this.#defaultHeaders() })
         return await res.json()
@@ -77,6 +85,9 @@ class ApiClient {
             subFilterParts.push(...filters.itemIds.map(id => `items~'${id}'`))  // https://github.com/pocketbase/pocketbase/discussions/2332#discussioncomment-5678405
         }
         if (filters.query) {
+            if (/[a-z]/i.test(filters.query) && filters.query.length < 3) {
+                filters.query = window.crypto.randomUUID()  // impossible query
+            }
             subFilterParts.push(`customer_iid~'${filters.query}'`)
             subFilterParts.push(`customer_name~'${filters.query}'`)
         }
@@ -90,6 +101,9 @@ class ApiClient {
     #buildItemFilters(filters = {}) {
         const filterParts = []
         if (filters.query) {
+            if (/[a-z]/i.test(filters.query) && filters.query.length < 3) {
+                filters.query = window.crypto.randomUUID()  // impossible query
+            }
             const queryFilterParts = []
             queryFilterParts.push(`iid~'${filters.query}'`)
             queryFilterParts.push(`name~'${filters.query}'`)
