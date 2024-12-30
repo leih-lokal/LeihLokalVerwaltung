@@ -35,6 +35,14 @@ function saveParseTimestampToHumanReadableString(millis) {
     ).padStart(2, 0)}.${date.getFullYear()}`;
 }
 
+function saveParseTimestampToDatetimeString(millis) {
+  const date = new Date(millis)
+  let formatted = saveParseTimestampToHumanReadableString(millisAtStartOfDay(date.getTime()))
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+  return `${formatted} um ${hours}:${minutes} Uhr`
+}
+
 function saveParseStringToBoolean(maybeBoolean) {
   return ["true", "ja"].includes(String(maybeBoolean).toLowerCase());
 }
@@ -57,16 +65,16 @@ function daysBetween(date1, date2) {
   return Math.round(differenceMs / ONE_DAY);
 }
 
-function isElementInViewport (el) {
+function isElementInViewport(el) {
   if (typeof jQuery === "function" && el instanceof jQuery) {
-      el = el[0];
+    el = el[0];
   }
   const rect = el.getBoundingClientRect();
   return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /* or $(window).height() */
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth) /* or $(window).width() */
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /* or $(window).height() */
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth) /* or $(window).width() */
   );
 }
 
@@ -77,4 +85,5 @@ export {
   millisAtStartOfToday,
   millisAtStartOfDay,
   isElementInViewport,
+  saveParseTimestampToDatetimeString,
 };

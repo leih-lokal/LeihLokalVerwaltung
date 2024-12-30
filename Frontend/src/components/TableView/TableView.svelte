@@ -11,14 +11,15 @@
   export let columns = [];
   export let filters = {};
   export let docType = "";
-  export let inputs = [];
+  export let inputs = {};
   export let onData = null; // optional async callback function
+  export let query = null;
   let columnsToDisplay = [];
   $: columnsToDisplay = columns.filter((column) => !column.hideInTable);
+  $: useRestApi = !!query;
+  $: isEditable = inputs && Object.keys(inputs).length;
 
   const rowHeight = 40;
-  const maxRowsThatMightFitOnPage = () =>
-    Math.floor((window.innerHeight - 230) / rowHeight);
   let popupIsOpen = false;
   let refreshWhenPopupCloses = false;
   const onPopupClosed = () => {
@@ -29,31 +30,56 @@
   const refresh = () => {
     if (!popupIsOpen) {
       refreshWhenPopupCloses = false;
-      tableData = Database.query(
-        {
-          filters: activeFilters.map(
-            (filterName) => filters.filters[filterName],
-          ),
-          columns,
-          searchTerm,
+
+      let dataQuery;
+
+      if (useRestApi) {
+        const mergedFilters = activeFilters
+          .map((filterName) => filters.filters[filterName])
+          .reduce((acc, cur) => ({ ...acc, ...cur }), {});
+
+        dataQuery = query({
           currentPage,
           rowsPerPage,
           sortBy: sort,
           sortReverse,
-          docType,
-        },
+          searchTerm,
+          filters: mergedFilters,
+        });
+      } else {
+        dataQuery = Database.query(
+          {
+            filters: activeFilters.map(
+              (filterName) => filters.filters[filterName],
+            ),
+            columns,
+            searchTerm,
+            currentPage,
+            rowsPerPage,
+            sortBy: sort,
+            sortReverse,
+            docType,
+          },
 
-        // query again if a doc was created / deleted / updated
-        refresh,
-      )
+          // query again if a doc was created / deleted / updated
+          refresh,
+        );
+      }
+
+      tableData = dataQuery
         .then((data) => {
           searchInputRef?.focusSearchInput();
-          numberOfPagesPromise = data.count.then((count) => {
-            const rowsOnLastPage = count % rowsPerPage;
-            let numberOfPages = (count - rowsOnLastPage) / rowsPerPage;
-            if (rowsOnLastPage > 0) numberOfPages += 1;
-            return numberOfPages;
-          });
+
+          if (data.hasOwnProperty("totalPages")) {
+            numberOfPagesPromise = Promise.resolve(data.totalPages);
+          } else {
+            numberOfPagesPromise = data.count.then((count) => {
+              const rowsOnLastPage = count % rowsPerPage;
+              let numberOfPages = (count - rowsOnLastPage) / rowsPerPage;
+              if (rowsOnLastPage > 0) numberOfPages += 1;
+              return numberOfPages;
+            });
+          }
 
           return data.docs;
         })
@@ -197,6 +223,7 @@
     }
   }}
   on:rowClicked={(event) => {
+    if (!isEditable) return;
     popupIsOpen = true;
     popupFormular.show(
       {
@@ -218,15 +245,17 @@
 
 <Pagination {numberOfPagesPromise} bind:currentPage />
 
-<AddNewDocButton
-  on:click={() => {
-    popupIsOpen = true;
-    popupFormular.show(
-      {
-        createNew: true,
-        config: inputs,
-      },
-      onPopupClosed,
-    );
-  }}
-/>
+{#if isEditable}
+  <AddNewDocButton
+    on:click={() => {
+      popupIsOpen = true;
+      popupFormular.show(
+        {
+          createNew: true,
+          config: inputs,
+        },
+        onPopupClosed,
+      );
+    }}
+  />
+{/if}

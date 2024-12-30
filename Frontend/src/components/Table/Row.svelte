@@ -27,7 +27,7 @@
       newCellBackgroundColors.push("");
     }
     cellBackgroundColors = newCellBackgroundColors.map((newColor) =>
-      newColor && newColor != "" ? newColor : defaultBackgroundColor
+      newColor && newColor != "" ? newColor : defaultBackgroundColor,
     );
   });
 </script>
@@ -35,8 +35,9 @@
 <tr on:click style={`height: ${rowHeight}px;`}>
   {#each columns as col, i}
     <Cell
-      {rowHeight}
+      rowHeight={col.minRowHeight ? col.minRowHeight(item[col.key]) : rowHeight}
       isImage={col.isImageUrl}
+      safeHtml={col.safeHtml}
       valueFunction={() => displayValue(col, item)}
       backgroundColor={cellBackgroundColors[i]}
     />

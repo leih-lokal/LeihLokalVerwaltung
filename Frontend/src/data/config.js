@@ -13,6 +13,10 @@ import rentalInputs from "./rental/inputs";
 import rentalFilters from "./rental/filters";
 import rentalDataHooks from "./rental/dataHooks";
 
+import reservationColumns from "./reservations/columns";
+import reservationFilters from "./reservations/filters";
+import * as reservationAdapter from "./reservations/adapter";
+
 export default [
   {
     route: "/customers",
@@ -41,4 +45,11 @@ export default [
     title: "Leihvorgänge",
     onData: rentalDataHooks.onDataLoaded,
   },
+  {
+    route: "/reservations",
+    columns: reservationColumns,
+    filters: reservationFilters,
+    title: "Reservierungen",
+    adapter: reservationAdapter,
+  }
 ];

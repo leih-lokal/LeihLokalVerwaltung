@@ -1,6 +1,7 @@
 <script>
   export let backgroundColor = "white";
   export let isImage = false;
+  export let safeHtml = false;
   export let valueFunction = async () => "";
   export let rowHeight = 40;
 
@@ -44,7 +45,11 @@
       {/if}
     {:else}
       <div class="cell" style={`max-height: ${rowHeight}px;`}>
-        {value}
+        {#if safeHtml}
+          {@html value}
+        {:else}
+          {value}
+        {/if}
       </div>
     {/if}
   {/await}

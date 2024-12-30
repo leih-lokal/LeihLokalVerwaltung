@@ -25,6 +25,7 @@
           docType: tableViewConfig.docType,
           inputs: tableViewConfig.inputs,
           onData: tableViewConfig.onData,
+          query: tableViewConfig.adapter?.query,
         },
       }),
     ),
