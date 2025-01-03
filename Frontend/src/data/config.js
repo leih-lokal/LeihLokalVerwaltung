@@ -14,6 +14,7 @@ import rentalFilters from "./rental/filters";
 import rentalDataHooks from "./rental/dataHooks";
 
 import reservationColumns from "./reservations/columns";
+import reservationInputs from "./reservations/inputs";
 import reservationFilters from "./reservations/filters";
 import * as reservationAdapter from "./reservations/adapter";
 
@@ -48,6 +49,7 @@ export default [
   {
     route: "/reservations",
     columns: reservationColumns,
+    inputs: reservationInputs,
     filters: reservationFilters,
     title: "Reservierungen",
     adapter: reservationAdapter,

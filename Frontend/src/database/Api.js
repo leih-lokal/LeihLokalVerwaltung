@@ -30,7 +30,7 @@ class ApiClient {
         const params = new URLSearchParams()
         params.append('filter', this.#buildReservationFilters(filters))
         params.append('expand', 'items')
-        params.append('fields', '*,expand.items.iid,expand.items.name')
+        params.append('fields', '*,expand.items.iid,expand.items.name,expand.items.id')
         params.append('sort', `${sort === 'desc' ? '-' : ''}pickup,created`)
         params.append('page', page)
         params.append('perPage', pageSize)
@@ -100,6 +100,7 @@ class ApiClient {
 
     #buildItemFilters(filters = {}) {
         const filterParts = []
+        if (filters.hasOwnProperty('status') && filters.status !== undefined) filterParts.push(`status='${filters.status}'`)
         if (filters.query) {
             if (/[a-z]/i.test(filters.query) && filters.query.length < 3) {
                 filters.query = window.crypto.randomUUID()  // impossible query
