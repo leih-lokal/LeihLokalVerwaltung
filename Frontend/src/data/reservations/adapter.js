@@ -56,3 +56,10 @@ export async function create(reservation) {
     setTimeout(() => state.onEntityUpdate())
     return res;
 }
+
+export async function remove(reservation) {
+    if (!api.initialized) await api.init()
+    const res = await api.deleteReservation(reservation)
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}

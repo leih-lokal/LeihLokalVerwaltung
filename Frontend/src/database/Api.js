@@ -73,6 +73,13 @@ class ApiClient {
         return await res.json()
     }
 
+    async deleteReservation(id) {
+        return await this.#fetch(`${this.baseUrl}/collections/reservation/records/${id}`, {
+            method: 'DELETE',
+            headers: this.#defaultHeaders(),
+        })
+    }
+
     // Items
     async findItems(page = 1, pageSize = 30, filters = {}, idsOnly = false) {
         const params = new URLSearchParams()

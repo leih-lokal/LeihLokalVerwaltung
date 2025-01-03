@@ -1,9 +1,10 @@
 import { notifier } from "@beyonk/svelte-notifications";
 import Logger from "js-logger";
+import { remove } from './adapter.js'
 
 export default (reservation, closePopup) => {
   if (confirm("Soll diese Reservierung wirklich gelöscht werden?")) {
-    return Promise.reject()  // TODO!
+    return remove(reservation.id)
       .then(() => notifier.success("Reservierung gelöscht!"))
       .then(closePopup)
       .catch((error) => {
