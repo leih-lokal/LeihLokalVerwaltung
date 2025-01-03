@@ -1,10 +1,11 @@
-function saveParseTimestampToString(millis) {
+function saveParseTimestampToString(millis, withTime) {
   const date = new Date(millis);
   if (isNaN(date) || date.getTime() === 0) return "";
-  else
-    return `${String(date.getDate()).padStart(2, 0)}.${String(
-      date.getMonth() + 1
-    ).padStart(2, 0)}.${date.getFullYear()}`;
+  else {
+    let fmt = `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(2, 0)}.${date.getFullYear()}`;
+    if (withTime) fmt += ` ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+    return fmt
+  }
 }
 
 function saveParseTimestampToHumanReadableString(millis) {
@@ -30,9 +31,7 @@ function saveParseTimestampToHumanReadableString(millis) {
   } else if (dayDiff <= 7 && dayDiff > 0) {
     return `In ${dayDiff} Tagen`;
   } else
-    return `${String(date.getDate()).padStart(2, 0)}.${String(
-      date.getMonth() + 1
-    ).padStart(2, 0)}.${date.getFullYear()}`;
+    return `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(2, 0)}.${date.getFullYear()}`;
 }
 
 function saveParseTimestampToDatetimeString(millis) {

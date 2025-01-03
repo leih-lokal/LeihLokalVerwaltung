@@ -23,6 +23,7 @@
   export let quickset = {};
   export let value = 0;
   export let disabled = false;
+  export let time = false;
   export let showAlertOnPastDateSelection = false;
 
   function addDays(days) {
@@ -35,46 +36,62 @@
 {#if disabled}
   <input
     type="text"
-    value={value === 0 ? "-" : saveParseTimestampToString(value)}
+    value={value === 0 ? "-" : saveParseTimestampToString(value, time)}
     disabled={true}
   />
 {:else}
-  <DatePicker
-    selected={value === 0 ? new Date() : new Date(value)}
-    on:date-selected={(event) => {
-      const date = event.detail.date;
-      const newTimeMillis =
-        date.getTime() - getTimeZoneOffsetMs(date.getTime());
-      if (millisAtStartOfDay(value) !== millisAtStartOfDay(newTimeMillis)) {
-        value = millisAtStartOfDay(newTimeMillis);
-        dispatch("change", date);
-      }
-      if (
-        showAlertOnPastDateSelection &&
-        millisAtStartOfDay(newTimeMillis) < millisAtStartOfToday()
-      ) {
-        alert(
-          "Achtung: Dieses Datum liegt in der Vergangenheit, bitte prüfe ob es korrekt ist."
-        );
-      }
-    }}
-    format={"#{d}.#{m}.#{Y}"}
-    start={new Date(2018, 1, 1)}
-    end={inTwoMonths()}
-    continueText={"Speichern"}
-  >
-    <input
-      type="text"
-      value={value === 0 ? "-" : saveParseTimestampToString(value)}
-    />
-    <ClearInputButton
-      on:click={() => {
-        value = 0;
-        dispatch("change", undefined);
+  <div>
+    <DatePicker
+      selected={value === 0 ? new Date() : new Date(value)}
+      on:date-selected={(event) => {
+        const date = event.detail.date;
+
+        if (time) {
+          value = date;
+          dispatch("change", date);
+          if (showAlertOnPastDateSelection && date < new Date()) {
+            alert(
+              "Achtung: Dieses Datum liegt in der Vergangenheit, bitte prüfe ob es korrekt ist.",
+            );
+          }
+        } else {
+          const newTimeMillis =
+            date.getTime() - getTimeZoneOffsetMs(date.getTime());
+          if (millisAtStartOfDay(value) !== millisAtStartOfDay(newTimeMillis)) {
+            value = millisAtStartOfDay(newTimeMillis);
+            dispatch("change", date);
+          }
+          if (
+            showAlertOnPastDateSelection &&
+            millisAtStartOfDay(newTimeMillis) < millisAtStartOfToday()
+          ) {
+            alert(
+              "Achtung: Dieses Datum liegt in der Vergangenheit, bitte prüfe ob es korrekt ist.",
+            );
+          }
+        }
       }}
-      visible={value !== 0}
-    />
-  </DatePicker>
+      {time}
+      format={"DD.MM.YYYY HH:mm"}
+      start={new Date(2018, 1, 1)}
+      end={inTwoMonths()}
+      minuteStep={10}
+      continueText={"Auswählen"}
+      class="datetime-picker"
+    >
+      <input
+        type="text"
+        value={value === 0 ? "-" : saveParseTimestampToString(value, time)}
+      />
+      <ClearInputButton
+        on:click={() => {
+          value = 0;
+          dispatch("change", undefined);
+        }}
+        visible={value !== 0}
+      />
+    </DatePicker>
+  </div>
 {/if}
 
 {#each Object.entries(quickset) as [days, text]}
@@ -82,6 +99,10 @@
 {/each}
 
 <style>
+  :global(.calendar input) {
+    letter-spacing: 8px !important;
+  }
+
   input {
     width: 100%;
     padding: 0.2rem 0.7rem 0.2rem 0.7rem;
