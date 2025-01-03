@@ -1,3 +1,11 @@
+const RESERVATION_ALLOWED_FIELDS = [
+    'customer_iid', 'customer_name', 'customer_phone', 'customer_email', 'is_new_customer', 'comments', 'done', 'items', 'pickup',
+]
+
+function filterObject(obj, keys) {
+    return Object.fromEntries(keys.map(k => [k, obj[k]]))
+}
+
 class ApiClient {
     constructor(baseUrl = 'http://localhost:8090/api', username = 'ferdinand@muetsch.io', password = 'abc123') {
         // singleton
@@ -47,6 +55,24 @@ class ApiClient {
         })
     }
 
+    async createReservation(payload) {
+        const res = await this.#fetch(`${this.baseUrl}/collections/reservation/records`, {
+            method: 'POST',
+            body: filterObject(payload, RESERVATION_ALLOWED_FIELDS),
+            headers: this.#defaultHeaders(),
+        })
+        return await res.json()
+    }
+
+    async updateReservation(id, payload) {
+        const res = await this.#fetch(`${this.baseUrl}/collections/reservation/records/${id}`, {
+            method: 'PATCH',
+            body: filterObject(payload, RESERVATION_ALLOWED_FIELDS),
+            headers: this.#defaultHeaders(),
+        })
+        return await res.json()
+    }
+
     // Items
     async findItems(page = 1, pageSize = 30, filters = {}, idsOnly = false) {
         const params = new URLSearchParams()
@@ -60,12 +86,11 @@ class ApiClient {
         return await res.json()
     }
 
-
     // Internal API calls
 
     async #authenticate(username, password) {
         const res = await this.#fetch(`${this.baseUrl}/collections/_superusers/auth-with-password`, {
-            method: 'post',
+            method: 'POST',
             body: { identity: username, password },
             headers: this.#defaultHeaders(),
         })
@@ -134,7 +159,8 @@ class ApiClient {
         clearTimeout(id)
 
         if (!response.ok) {
-            throw new Error(`Got ${response.status} response status`)
+            const msg = (await response.json())?.message || `Got ${response.status} response status`
+            throw new Error(msg)
         }
 
         return response;

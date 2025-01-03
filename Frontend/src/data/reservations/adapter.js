@@ -2,7 +2,24 @@
 
 import ApiClient from '../../database/Api'
 
+class AdapterState {
+    constructor() {
+        // singleton
+        if (AdapterState._instance) {
+            return AdapterState._instance
+        }
+        AdapterState._instance = this
+
+        this.onEntityUpdate = () => { }
+    }
+}
+
 const api = new ApiClient()
+const state = new AdapterState()
+
+export function registerOnUpdate(cb) {
+    state.onEntityUpdate = cb
+}
 
 export async function query(opts) {
     if (!api.initialized) await api.init()
@@ -24,4 +41,18 @@ export async function query(opts) {
         totalPages: data.totalPages,
         docs: data.items,
     }
+}
+
+export async function update(reservation) {
+    if (!api.initialized) await api.init()
+    const res = await api.updateReservation(reservation.id, reservation)
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}
+
+export async function create(reservation) {
+    if (!api.initialized) await api.init()
+    const res = await api.createReservation(reservation)
+    setTimeout(() => state.onEntityUpdate())
+    return res;
 }

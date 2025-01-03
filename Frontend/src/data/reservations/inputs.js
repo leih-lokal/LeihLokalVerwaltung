@@ -28,7 +28,7 @@ const updateAddReservationItem = (context, item) => {
   if (selectedItemsPrev.find(i => i.id === item.id)) return
   const selectedItems = [...selectedItemsPrev, item]
 
-  selectedItemOptions.splice()
+  selectedItemOptions.splice(0, selectedItemOptions.length)
   selectedItemOptions.push(...selectedItems.map(item => ({
     value: item.id,
     label: `${String(item.iid).padStart(4, "0")} - ${item.name}`,
@@ -43,8 +43,12 @@ export default {
   title: (context) => `Reservierung ${context.createNew ? "anlegen" : "bearbeiten"}`,
   initialValues,
   onMount: (context) => () => {
-    context.doc.item_ids = context.doc.items.join(', ')
-    context.doc.expand.items.forEach(item => updateAddReservationItem(context, item))
+    selectedItemOptions.splice(0, selectedItemOptions.length)
+
+    if (!context.createNew) {
+      context.doc.item_ids = context.doc.items.join(', ')
+      context.doc.expand.items.forEach(item => updateAddReservationItem(context, item))
+    }
   },
   footerButtons: (context) => [
     {
@@ -60,7 +64,9 @@ export default {
     },
     {
       text: "Speichern",
-      onClick: () => onSave(context.doc, context.closePopup, context.createNew, context.form),
+      onClick: () => {
+        onSave(context.doc, context.closePopup, context.createNew, context.form)
+      },
       loadingText: "Reservierung wird gespeichert",
     },
   ],

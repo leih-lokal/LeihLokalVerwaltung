@@ -13,10 +13,10 @@
   export let docType = "";
   export let inputs = {};
   export let onData = null; // optional async callback function
-  export let query = null;
+  export let adapter = null;
   let columnsToDisplay = [];
   $: columnsToDisplay = columns.filter((column) => !column.hideInTable);
-  $: useRestApi = !!query;
+  $: useRestApi = !!adapter;
   $: isEditable = inputs && Object.keys(inputs).length;
 
   const rowHeight = 40;
@@ -34,11 +34,13 @@
       let dataQuery;
 
       if (useRestApi) {
+        adapter.registerOnUpdate(refresh);
+
         const mergedFilters = activeFilters
           .map((filterName) => filters.filters[filterName])
           .reduce((acc, cur) => ({ ...acc, ...cur }), {});
 
-        dataQuery = query({
+        dataQuery = adapter.query({
           currentPage,
           rowsPerPage,
           sortBy: sort,
