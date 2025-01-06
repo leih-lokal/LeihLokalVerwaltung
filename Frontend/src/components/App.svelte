@@ -12,6 +12,7 @@
   import Logger from "./Logging/Logger.svelte";
   import LogView from "./Logging/LogView.svelte";
   import Dashboard from "./Dashboard/Dashboard.svelte";
+  import { getApiClient } from "../utils/api";
 
   const routes = new Map();
   config.forEach((tableViewConfig) =>
@@ -58,6 +59,7 @@
 
   Database.onConnected(createIndex);
   Database.connect();
+  getApiClient(true);
 </script>
 
 <Logger />

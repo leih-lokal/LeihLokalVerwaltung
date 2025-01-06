@@ -1,6 +1,6 @@
 // Adapter to mediate between the new REST API client and legacy table view logic
 
-import ApiClient from '../../database/Api'
+import { getApiClient } from '../../utils/api'
 
 class AdapterState {
     constructor() {
@@ -14,7 +14,7 @@ class AdapterState {
     }
 }
 
-const api = new ApiClient()
+const api = getApiClient()
 const state = new AdapterState()
 
 export function registerOnUpdate(cb) {

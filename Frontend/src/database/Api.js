@@ -7,7 +7,7 @@ function filterObject(obj, keys) {
 }
 
 class ApiClient {
-    constructor(baseUrl = 'http://localhost:8090/api', username = 'ferdinand@muetsch.io', password = 'abc123') {
+    constructor(baseUrl = 'http://localhost:8090/api', username = 'ferdinand@muetsch.io', password = '') {
         // singleton
         if (ApiClient._instance) {
             return ApiClient._instance
@@ -24,6 +24,15 @@ class ApiClient {
     async init() {
         await this.#authenticate(this.username, this.password)
         this.initialized = true
+    }
+
+    updateInstance(baseUrl, username, password) {
+        this.baseUrl = baseUrl
+        this.username = username
+        this.password = password
+        this.apiToken = null
+        this.initialized = false
+        return this
     }
 
     // Reservations

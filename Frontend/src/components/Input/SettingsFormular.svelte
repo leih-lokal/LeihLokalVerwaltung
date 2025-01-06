@@ -4,6 +4,7 @@
   import Database from "../../database/ENV_DATABASE";
   import { notifier } from "@beyonk/svelte-notifications";
   import { onDestroy } from "svelte";
+  import { getApiClient } from "../../utils/api";
 
   let prevValue;
   let timer;
@@ -18,6 +19,7 @@
   const onSettingsChanged = () => {
     localStorage.removeItem("stats");
     Database.connect();
+    getApiClient(true);
     notifier.success("Einstellungen gespeichert!", 1500);
   };
 
@@ -108,6 +110,51 @@
           id="couchdbname"
           type="text"
           placeholder="Datenbank Name"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25">
+        <h2>Backend API</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="apiUrl">Host</label>
+      </div>
+      <div class="col-75">
+        <input
+          bind:value={$settingsStore.apiUrl}
+          id="apiUrl"
+          type="text"
+          placeholder="/api"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="apiUser">Benutzername</label>
+      </div>
+      <div class="col-75">
+        <input
+          bind:value={$settingsStore.apiUser}
+          id="apiUser"
+          type="text"
+          placeholder="user@example.rg"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="apiPassword">Passwort</label>
+      </div>
+      <div class="col-75">
+        <input
+          bind:value={$settingsStore.apiPassword}
+          id="apiPassword"
+          type="password"
+          placeholder="Passwort"
         />
       </div>
     </div>

@@ -9,8 +9,9 @@ import onSave from "./onSave";
 import onDelete from "./onDelete";
 import initialValues from "./initialValues";
 import { customerIdStartsWithSelector } from "../selectors";
+import { getApiClient } from "../../utils/api";
 
-const api = new ApiClient()
+const api = getApiClient()
 
 const selectedItemOptions = []  // { value, label, _ref }
 
