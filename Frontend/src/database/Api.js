@@ -37,7 +37,7 @@ class ApiClient {
 
     // Reservations
 
-    async findReservations(page = 1, pageSize = 30, filters = {}, sort = 'desc') {
+    async findReservations(page = 1, pageSize = 30, filters = {}, sort = { keys: ['pickup', 'created'], dir: 'desc' }) {
         if (filters.query) {
             // we can't filter on relation fields, so need two separate queries here
             // see https://github.com/pocketbase/pocketbase/discussions/5036
@@ -48,7 +48,7 @@ class ApiClient {
         params.append('filter', this.#buildReservationFilters(filters))
         params.append('expand', 'items')
         params.append('fields', '*,expand.items.iid,expand.items.name,expand.items.id')
-        params.append('sort', `${sort === 'desc' ? '-' : ''}pickup,created`)
+        params.append('sort', sortParams(sort.keys, sort.dir))
         params.append('page', page)
         params.append('perPage', pageSize)
 
@@ -90,9 +90,11 @@ class ApiClient {
     }
 
     // Items
-    async findItems(page = 1, pageSize = 30, filters = {}, idsOnly = false) {
+
+    async findItems(page = 1, pageSize = 30, filters = {}, sort = { keys: ['iid'], dir: 'asc' }, idsOnly = false) {
         const params = new URLSearchParams()
         params.append('filter', this.#buildItemFilters(filters))
+        params.append('sort', sortParams(sort.keys, sort.dir))
         params.append('page', page)
         params.append('perPage', pageSize)
         if (idsOnly) params.append('fields', 'id')
@@ -149,6 +151,9 @@ class ApiClient {
             const queryFilterParts = []
             queryFilterParts.push(`iid~'${filters.query}'`)
             queryFilterParts.push(`name~'${filters.query}'`)
+            queryFilterParts.push(`brand~'${filters.query}'`)
+            queryFilterParts.push(`model~'${filters.query}'`)
+            // TODO: category filters
             filterParts.push(`(${queryFilterParts.join(' || ')})`)
         }
         if (!filterParts.length) return ''
@@ -156,6 +161,10 @@ class ApiClient {
     }
 
     // Misc
+
+    resolveImageUrl(recordType, recordId, filename) {
+        return `${this.baseUrl}/files/${recordType}/${recordId}/${filename}`
+    }
 
     // timeoutable fetch from https://dmitripavlutin.com/timeout-fetch-request/
     async #fetch(resource, options = {}) {
@@ -192,6 +201,11 @@ class ApiClient {
         }
         return headers
     }
+}
+
+function sortParams(keys = [], dir = 'asc') {
+    if (dir === 'desc') keys = keys.map(k => `-${k}`)
+    return keys.join(',')
 }
 
 export default ApiClient

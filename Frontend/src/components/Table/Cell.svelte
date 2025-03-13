@@ -41,7 +41,7 @@
   {#await valueFunction() then value}
     {#if isImage}
       {#if value && value !== ""}
-        <img src={value} alt="item" />
+        <img src={value} alt="item" class="cell-image" />
       {/if}
     {:else}
       <div class="cell" style={`max-height: ${rowHeight}px;`}>
@@ -72,6 +72,7 @@
     left: 25vw;
     top: 25vh;
     z-index: 1;
+    aspect-ratio: auto;
   }
 
   td {
@@ -79,5 +80,9 @@
     padding: 0px;
     padding-left: 2px;
     padding-right: 2px;
+  }
+
+  .cell-image {
+    aspect-ratio: 1 / 1;
   }
 </style>

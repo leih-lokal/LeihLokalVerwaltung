@@ -1,6 +1,6 @@
 import {
-  saveParseStringToBoolean,
-  saveParseTimestampToString,
+  parseStringToBoolean,
+  parseTimestampToString,
 } from "../../utils/utils.js";
 
 const backgroundColor = async (customer) => customer.highlight;
@@ -53,14 +53,14 @@ export default [
   {
     title: "Beitritt",
     key: "registration_date",
-    display: (value) => saveParseTimestampToString(value),
+    display: (value) => parseTimestampToString(value),
     search: "exclude",
     backgroundColor,
   },
   {
     title: "Verlängert am",
     key: "renewed_on",
-    display: (value) => saveParseTimestampToString(value),
+    display: (value) => parseTimestampToString(value),
     search: "exclude",
     backgroundColor,
   },
@@ -104,7 +104,7 @@ export default [
   {
     title: "Newsletter",
     key: "subscribed_to_newsletter",
-    display: (value) => (saveParseStringToBoolean(value) ? "Ja" : "Nein"),
+    display: (value) => (parseStringToBoolean(value) ? "Ja" : "Nein"),
     search: "exclude",
     backgroundColor,
   },

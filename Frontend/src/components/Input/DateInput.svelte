@@ -2,7 +2,7 @@
   import DatePicker from "@beyonk/svelte-datepicker/src/components/DatePicker.svelte";
   import ClearInputButton from "./ClearInputButton.svelte";
   import {
-    saveParseTimestampToString,
+    parseTimestampToString,
     millisAtStartOfDay,
     millisAtStartOfToday,
   } from "../../utils/utils";
@@ -36,7 +36,7 @@
 {#if disabled}
   <input
     type="text"
-    value={value === 0 ? "-" : saveParseTimestampToString(value, time)}
+    value={value === 0 ? "-" : parseTimestampToString(value, time)}
     disabled={true}
   />
 {:else}
@@ -81,7 +81,7 @@
     >
       <input
         type="text"
-        value={value === 0 ? "-" : saveParseTimestampToString(value, time)}
+        value={value === 0 ? "-" : parseTimestampToString(value, time)}
       />
       <ClearInputButton
         on:click={() => {

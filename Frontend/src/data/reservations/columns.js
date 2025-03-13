@@ -1,4 +1,4 @@
-import { saveParseTimestampToDatetimeString } from '../../utils/utils.js'
+import { parseTimestampToDatetimeString } from '../../utils/utils.js'
 import ColorDefs from '../../components/Input/ColorDefs.js'
 
 const backgroundColor = async (reservation) => reservation.done ? ColorDefs.HIGHLIGHT_GREEN : ''
@@ -8,14 +8,12 @@ export default [
         title: 'Nutzer Nr',
         key: 'customer_iid',
         numeric: true,
-        disableSort: true,
         display: (value) => value ? String(value).padStart(4, '0') : '-',
         backgroundColor,
     },
     {
         title: 'Nutzer Name',
         key: 'customer_name',
-        disableSort: true,
         backgroundColor,
     },
     {
@@ -41,7 +39,7 @@ export default [
         title: 'Abholungstermin',
         key: 'pickup',
         initialSort: 'desc',
-        display: (value) => saveParseTimestampToDatetimeString(value),
+        display: (value) => parseTimestampToDatetimeString(value),
         backgroundColor,
     },
     {

@@ -8,7 +8,7 @@ import { itemById } from "../selectors";
 import Logger from "js-logger";
 import {
   millisAtStartOfToday,
-  saveParseTimestampToString,
+  parseTimestampToString,
 } from "../../utils/utils";
 
 
@@ -46,7 +46,7 @@ const getExpReturnDate = (item, rental) => {
   if (item.status === "reserved") {
     expReturnDate = "Reserviert und noch nicht abgeholt";
   } else if (hasReturnDateInFuture) {
-    expReturnDate = saveParseTimestampToString(rental.to_return_on);
+    expReturnDate = parseTimestampToString(rental.to_return_on);
   }
   return expReturnDate;
 };
@@ -57,8 +57,7 @@ const updateItemStatus = async (item, status, rental) => {
   await Database.updateDoc(item);
   await WoocommerceClient.updateItem(item);
   notifier.success(
-    `'${item.name}' wurde als ${
-      item.status === "instock" ? "verfügbar" : "verliehen"
+    `'${item.name}' wurde als ${item.status === "instock" ? "verfügbar" : "verliehen"
     } markiert.`
   );
 };

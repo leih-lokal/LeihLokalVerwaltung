@@ -1,5 +1,8 @@
-import { saveParseTimestampToString } from "../../utils/utils.js";
+import { parseTimestampToString } from "../../utils/utils.js";
 import ColorDefs from "../../components/Input/ColorDefs.js";
+import { getApiClient } from '../../utils/api'
+
+const apiClient = getApiClient()
 
 const backgroundColor = async (item) => item.highlight;
 const backgroundColorStatus = async (item) =>
@@ -8,18 +11,20 @@ const backgroundColorStatus = async (item) =>
 export default [
   {
     title: "Id",
-    key: "id",
+    key: "iid",
     numeric: true,
     display: (value) => String(value).padStart(4, "0"),
     search: "from_beginning",
+    initialSort: 'asc',
     backgroundColor,
   },
   {
     title: "Bild",
-    key: "image",
-    isImageUrl: true,
-    search: "exclude",
+    key: "images",
     disableSort: true,
+    isImageUrl: true,
+    disableSort: true,
+    display: (value, record) => value.length ? apiClient.resolveImageUrl('item', record.id, value[0]) : null,
     backgroundColor,
   },
   {
@@ -30,42 +35,42 @@ export default [
   {
     title: "Marke",
     key: "brand",
+    disableSort: true,
     backgroundColor,
   },
   {
     title: "Typbezeichnung",
-    key: "itype",
+    key: "model",
+    disableSort: true,
     backgroundColor,
   },
   {
     title: "Kategorie",
     key: "category",
-    search: "exclude",
+    display: (value) => value?.join(', ') || '-',
     backgroundColor,
   },
   {
     title: "Pfand",
     key: "deposit",
-    search: "exclude",
     backgroundColor,
   },
   {
     title: "Anzahl Teile",
     key: "parts",
-    search: "exclude",
+    disableSort: true,
     backgroundColor,
   },
   {
     title: "Erfasst am",
-    key: "added",
-    display: (value) => saveParseTimestampToString(value),
-    search: "exclude",
+    key: "added_on",
+    display: (value) => parseTimestampToString(value),
     backgroundColor,
   },
   {
     title: "Beschreibung",
     key: "description",
-    search: "exclude",
+    disableSort: true,
     disableSort: true,
     backgroundColor,
   },
@@ -79,7 +84,6 @@ export default [
   {
     title: "Status",
     key: "status",
-    search: "exclude",
     display: (value) => {
       if (value === "deleted") return "gelöscht";
       if (value === "instock") return "verfügbar";
@@ -96,7 +100,6 @@ export default [
   {
     title: "Anzahl Ausleihen",
     key: "rental_count",
-    search: "exclude",
     disableSort: true,
     displayExport: (allDocs, item_id) => allDocs.filter((doc) => doc.type === "rental" && doc.item_id === item_id).length,
     backgroundColor,

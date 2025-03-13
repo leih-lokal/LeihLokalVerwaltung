@@ -16,7 +16,9 @@
     if (!(col.key in item)) {
       return "";
     } else {
-      return col.display ? await col.display(item[col.key]) : item[col.key];
+      return col.display
+        ? await col.display(item[col.key], item)
+        : item[col.key];
     }
   };
 

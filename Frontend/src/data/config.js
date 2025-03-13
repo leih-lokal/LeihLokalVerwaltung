@@ -17,6 +17,7 @@ import reservationColumns from "./reservations/columns";
 import reservationInputs from "./reservations/inputs";
 import reservationFilters from "./reservations/filters";
 import * as reservationAdapter from "./reservations/adapter";
+import * as itemAdapter from "./item/adapter";
 
 export default [
   {
@@ -35,6 +36,7 @@ export default [
     filters: itemFilters,
     docType: "item",
     title: "Gegenstände",
+    adapter: itemAdapter,
     onData: itemDataHooks.onDataLoaded,
   },
   {

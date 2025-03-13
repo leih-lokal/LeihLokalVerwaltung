@@ -1,5 +1,5 @@
 import {
-  saveParseTimestampToHumanReadableString,
+  parseTimestampToHumanReadableString,
   millisAtStartOfToday,
 } from "../../utils/utils.js";
 import COLORS from "../../components/Input/ColorDefs";
@@ -66,21 +66,21 @@ export default [
     key: "rented_on",
     search: "exclude",
     sort: ["rented_on", "customer_name"],
-    display: (value) => saveParseTimestampToHumanReadableString(value),
+    display: (value) => parseTimestampToHumanReadableString(value),
     backgroundColor: highlightByPriority([rentalHighlight]),
   },
   {
     title: "Verlängert",
     key: "extended_on",
     search: "exclude",
-    display: (value) => saveParseTimestampToHumanReadableString(value),
+    display: (value) => parseTimestampToHumanReadableString(value),
     backgroundColor: highlightByPriority([rentalHighlight]),
   },
   {
     title: "Zurückerwartet",
     key: "to_return_on",
     search: "exclude",
-    display: (value) => saveParseTimestampToHumanReadableString(value),
+    display: (value) => parseTimestampToHumanReadableString(value),
     sort: ["returned_on", "to_return_on", "customer_name"],
     backgroundColor: highlightByPriority([rentalHighlight]),
     initialSort: "asc",
@@ -119,7 +119,7 @@ export default [
     title: "Zurückgegeben",
     key: "returned_on",
     search: "exclude",
-    display: (value) => saveParseTimestampToHumanReadableString(value),
+    display: (value) => parseTimestampToHumanReadableString(value),
     backgroundColor: highlightByPriority([rentalHighlight]),
   },
   {

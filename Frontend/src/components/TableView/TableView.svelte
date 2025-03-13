@@ -131,7 +131,7 @@
     refresh();
   $: indicateSort = columnsToDisplay.map((col) => {
     if (col.key === sortByColKey) {
-      return sortReverse ? "up" : "down";
+      return sortReverse ? "down" : "up";
     } else {
       return "";
     }

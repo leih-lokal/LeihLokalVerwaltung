@@ -1,4 +1,4 @@
-function saveParseTimestampToString(millis, withTime) {
+function parseTimestampToString(millis, withTime) {
   const date = new Date(millis);
   if (isNaN(date) || date.getTime() === 0) return "";
   else {
@@ -8,7 +8,7 @@ function saveParseTimestampToString(millis, withTime) {
   }
 }
 
-function saveParseTimestampToHumanReadableString(millis) {
+function parseTimestampToHumanReadableString(millis) {
   const date = new Date(millis);
   let dayDiff = daysBetween(millis, millisAtStartOfToday());
 
@@ -34,15 +34,15 @@ function saveParseTimestampToHumanReadableString(millis) {
     return `${String(date.getDate()).padStart(2, 0)}.${String(date.getMonth() + 1).padStart(2, 0)}.${date.getFullYear()}`;
 }
 
-function saveParseTimestampToDatetimeString(millis) {
+function parseTimestampToDatetimeString(millis) {
   const date = new Date(millis)
-  let formatted = saveParseTimestampToHumanReadableString(millisAtStartOfDay(date.getTime()))
+  let formatted = parseTimestampToHumanReadableString(millisAtStartOfDay(date.getTime()))
   const hours = date.getHours().toString().padStart(2, '0')
   const minutes = date.getMinutes().toString().padStart(2, '0')
   return `${formatted} um ${hours}:${minutes} Uhr`
 }
 
-function saveParseStringToBoolean(maybeBoolean) {
+function parseStringToBoolean(maybeBoolean) {
   return ["true", "ja"].includes(String(maybeBoolean).toLowerCase());
 }
 
@@ -78,11 +78,11 @@ function isElementInViewport(el) {
 }
 
 export {
-  saveParseTimestampToHumanReadableString,
-  saveParseTimestampToString,
-  saveParseStringToBoolean,
+  parseTimestampToHumanReadableString as parseTimestampToHumanReadableString,
+  parseTimestampToString,
+  parseStringToBoolean as parseStringToBoolean,
   millisAtStartOfToday,
   millisAtStartOfDay,
   isElementInViewport,
-  saveParseTimestampToDatetimeString,
+  parseTimestampToDatetimeString as parseTimestampToDatetimeString,
 };

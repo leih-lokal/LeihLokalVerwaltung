@@ -24,7 +24,7 @@ export function registerOnUpdate(cb) {
 export async function query(opts) {
     if (!api.initialized) await api.init()
 
-    const data = await api.findReservations(
+    const data = await api.findItems(
         opts.currentPage + 1,  // page
         opts.rowsPerPage,  // pageSize,
         {
@@ -34,32 +34,12 @@ export async function query(opts) {
         {
             keys: opts.sortBy instanceof Array ? opts.sortBy : [opts.sortBy],
             dir: opts.sortReverse ? 'desc' : 'asc',
-        }
+        },
+        false
     )
 
     return {
         totalPages: data.totalPages,
         docs: data.items,
     }
-}
-
-export async function update(reservation) {
-    if (!api.initialized) await api.init()
-    const res = await api.updateReservation(reservation.id, reservation)
-    setTimeout(() => state.onEntityUpdate())
-    return res;
-}
-
-export async function create(reservation) {
-    if (!api.initialized) await api.init()
-    const res = await api.createReservation(reservation)
-    setTimeout(() => state.onEntityUpdate())
-    return res;
-}
-
-export async function remove(reservation) {
-    if (!api.initialized) await api.init()
-    const res = await api.deleteReservation(reservation)
-    setTimeout(() => state.onEntityUpdate())
-    return res;
 }
