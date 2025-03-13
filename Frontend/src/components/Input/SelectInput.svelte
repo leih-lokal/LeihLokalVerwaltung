@@ -14,16 +14,17 @@
     return values.map(
       (value) =>
         selectionOptions.find(
-          (item) => item === value || item.value === value
-        ) || value
+          (item) => item === value || item.value === value,
+        ) || value,
     );
   };
 
   const selectedValuesFromString = (valueString) => {
+    if (value instanceof Array) return valueString;
     let selectedValues = [];
     if (valueString !== "") {
       selectedValues = valuesToOptions(
-        isMulti ? valueString.split(", ") : [valueString]
+        isMulti ? valueString.split(", ") : [valueString],
       );
     }
     if (!isMulti) {

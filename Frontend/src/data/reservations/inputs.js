@@ -4,7 +4,6 @@ import DateInput from "../../components/Input/DateInput.svelte";
 import SelectInput from "../../components/Input/SelectInput.svelte";
 import Checkbox from "../../components/Input/Checkbox.svelte";
 import Database from "../../database/ENV_DATABASE";
-import ApiClient from "../../database/Api";
 import onSave from "./onSave";
 import onDelete from "./onDelete";
 import initialValues from "./initialValues";

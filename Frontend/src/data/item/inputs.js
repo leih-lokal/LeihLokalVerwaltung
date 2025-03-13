@@ -1,19 +1,20 @@
 import TextInput from "../../components/Input/TextInput.svelte";
-import DateInput from "../../components/Input/DateInput.svelte";
+import ImageUpload from "../../components/Input/ImageUpload.svelte";
 import SelectInput from "../../components/Input/SelectInput.svelte";
-import Checkbox from "../../components/Input/Checkbox.svelte";
 import ColorDefs from "../../components/Input/ColorDefs";
-import onCreate from "./onCreate";
 import onDelete from "./onDelete";
-import onUpdate from "./onUpdate";
 import onRestore from "./onRestore";
+import onSave from "./onSave";
 import initialValues from "./initialValues";
+import { getApiClient } from "../../utils/api";
 
+const api = getApiClient()
+
+const isEditing = (context) => !context.createNew
 const isDeleted = (context) => context.doc.status === "deleted";
 
 export default {
-  title: (context) =>
-    `Gegenstand ${context.createNew ? "anlegen" : "bearbeiten"}`,
+  title: (context) => `Gegenstand ${context.createNew ? "anlegen" : "bearbeiten"}`,
   initialValues,
   height: "20rem",
   footerButtons: (context) => [
@@ -37,15 +38,15 @@ export default {
     },
     {
       text: "Speichern",
-      onClick: context.createNew
-        ? () => onCreate(context.doc, context.closePopup, context.form)
-        : () => onUpdate(context.doc, context.closePopup, context.form),
+      onClick: () => {
+        onSave(context.doc, context.closePopup, context.createNew, context.form)
+      },
       loadingText: "Gegenstand wird gespeichert",
     },
   ],
   inputs: [
     {
-      id: "id",
+      id: "iid",
       label: "Nr",
       group: "Bezeichnung",
       component: TextInput,
@@ -53,7 +54,7 @@ export default {
         required: true,
         onlyNumbers: true,
         pattern: "[0-9]+",
-        disabled: isDeleted,
+        disabled: (ctx) => isDeleted(ctx) || isEditing(ctx),
       },
     },
     {
@@ -76,7 +77,7 @@ export default {
       },
     },
     {
-      id: "itype",
+      id: "model",
       label: "Typbezeichnung",
       group: "Bezeichnung",
       component: TextInput,
@@ -98,6 +99,7 @@ export default {
           "Kinder",
           "Freizeit",
           "Heimwerker",
+          "Sonstige",
         ],
         isCreatable: false,
         isMulti: true,
@@ -115,13 +117,12 @@ export default {
       },
     },
     {
-      id: "added",
-      label: "Erfasst am",
+      id: "packaging",
+      label: "Verpackung",
       group: "Eigenschaften",
-      component: DateInput,
+      component: TextInput,
       props: {
         disabled: isDeleted,
-        container: (context) => context.container,
       },
     },
     {
@@ -147,22 +148,31 @@ export default {
         disabled: isDeleted,
       },
     },
-
+    {
+      id: "manual",
+      label: "Anleitung",
+      group: "Beschreibung",
+      component: TextInput,
+      props: {
+        disabled: isDeleted,
+      },
+    },
     {
       id: "parts",
       label: "Anzahl Teile",
       group: "Eigenschaften",
       component: TextInput,
       props: {
+        onlyNumbers: true,
         disabled: isDeleted,
       },
     },
-
+    // value of this will be an array of urls for retrieved objects and a FileList after a new file has been chosen, hacky hack hack
     {
-      id: "image",
+      id: "images",
       label: "Bild",
       group: "Bild",
-      component: TextInput,
+      component: ImageUpload,
       props: {
         disabled: isDeleted,
       },
@@ -190,16 +200,17 @@ export default {
       },
     },
     {
-      id: "exists_more_than_once",
-      label: "Mehrmals vorhanden",
+      id: "copies",
+      label: "Anzahl Exemplare",
       group: "Status",
-      component: Checkbox,
+      component: TextInput,
       props: {
+        onlyNumbers: true,
         disabled: isDeleted,
       },
     },
     {
-      id: "highlight",
+      id: "highlight_color",
       label: "Markieren",
       group: "Status",
       component: SelectInput,

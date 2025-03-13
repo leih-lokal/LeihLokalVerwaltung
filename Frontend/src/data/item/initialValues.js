@@ -1,26 +1,23 @@
-import { millisAtStartOfToday } from "../../utils/utils";
-import Database from "../../database/ENV_DATABASE";
-
 // initial values for new customers
 
+import { getApiClient } from "../../utils/api";
+
+const apiClient = getApiClient()
+
 export default {
-  id: () => Database.nextUnusedId("item"),
-  added: () => millisAtStartOfToday(),
+  iid: () => apiClient.getNextItemId(),
   status: () => "instock",
-  type: () => "item",
   name: () => "",
   brand: () => "",
-  itype: () => "",
+  model: () => "",
   category: () => "",
   deposit: () => "",
   parts: () => "",
-  exists_more_than_once: () => false,
+  copies: () => 1,
   manual: () => "",
-  package: () => "",
-  wc_url: () => "",
-  wc_id: () => "",
-  image: () => "",
-  highlight: () => "",
+  packaging: () => "",
+  images: () => [],
+  highlight_color: () => "",
   synonyms: () => "",
   description: () => "",
 };

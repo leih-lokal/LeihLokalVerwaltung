@@ -43,3 +43,35 @@ export async function query(opts) {
         docs: data.items,
     }
 }
+
+export async function update(item) {
+    if (!api.initialized) await api.init()
+    const res = await api.updateItem(item.id, sanitizeItem(item))
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}
+
+export async function create(item) {
+    if (!api.initialized) await api.init()
+    const res = await api.createItem(sanitizeItem(item))
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}
+
+export async function remove(item) {
+    if (!api.initialized) await api.init()
+    const res = await api.deleteItem(item)
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}
+
+function sanitizeItem(item) {
+    item = { ...item }
+    if (!(item.category instanceof Array)) item.category = item.category.split(',').map(c => c.trim())
+    if (item.images instanceof Array) item.images = item.images.map(url => {
+        const isUrl = s => s.includes('/')
+        if (isUrl(url)) url = url.split('/').at(-1)  // keep file name only
+        return url
+    })
+    return item
+}

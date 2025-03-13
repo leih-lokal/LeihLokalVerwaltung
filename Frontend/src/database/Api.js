@@ -1,5 +1,11 @@
+// TODO: refactor to use pocketbase js sdk!
+
 const RESERVATION_ALLOWED_FIELDS = [
     'customer_iid', 'customer_name', 'customer_phone', 'customer_email', 'is_new_customer', 'comments', 'done', 'items', 'pickup',
+]
+
+const ITEM_ALLOWED_FIELDS = [
+    'iid', 'name', 'description', 'status', 'deposit', 'synonyms', 'category', 'brand', 'model', 'packaging', 'manual', 'parts', 'copies', 'highlight_color', 'internal_note', 'images'
 ]
 
 function filterObject(obj, keys) {
@@ -91,6 +97,31 @@ class ApiClient {
 
     // Items
 
+    async getItemByIid(iid) {
+        const params = new URLSearchParams()
+        params.append('filter', `(iid='${iid}')`)
+        params.append('perPage', 1)
+        params.append('skipTotal', true)
+
+        const url = `${this.baseUrl}/collections/item/records?${params.toString()}`
+        const res = await this.#fetch(url, { headers: this.#defaultHeaders() })
+        const data = await res.json()
+
+        return data.items.length ? this.postprocessItem(data.items[0]) : null
+    }
+
+    async getNextItemId() {
+        const params = new URLSearchParams()
+        params.append('perPage', 1)
+        params.append('sort', '-iid')
+        params.append('skipTotal', true)
+
+        const url = `${this.baseUrl}/collections/item/records?${params.toString()}`
+        const res = await this.#fetch(url, { headers: this.#defaultHeaders() })
+        const data = await res.json()
+        return data.items.length ? data.items[0].iid + 1 : 1
+    }
+
     async findItems(page = 1, pageSize = 30, filters = {}, sort = { keys: ['iid'], dir: 'asc' }, idsOnly = false) {
         const params = new URLSearchParams()
         params.append('filter', this.#buildItemFilters(filters))
@@ -101,7 +132,37 @@ class ApiClient {
 
         const url = `${this.baseUrl}/collections/item/records?${params.toString()}`
         const res = await this.#fetch(url, { headers: this.#defaultHeaders() })
+        const data = await res.json()
+
+        return {
+            ...data,
+            items: data.items.map(i => this.postprocessItem(i))
+        }
+    }
+
+    async createItem(payload) {
+        const res = await this.#fetch(`${this.baseUrl}/collections/item/records`, {
+            method: 'POST',
+            body: jsonToFormData(payload),
+            headers: this.#defaultHeadersNoContentType(),
+        })
         return await res.json()
+    }
+
+    async updateItem(id, payload) {
+        const res = await this.#fetch(`${this.baseUrl}/collections/item/records/${id}`, {
+            method: 'PATCH',
+            body: jsonToFormData(payload),
+            headers: this.#defaultHeadersNoContentType(),
+        })
+        return await res.json()
+    }
+
+    async deleteItem(id) {
+        return await this.#fetch(`${this.baseUrl}/collections/item/records/${id}`, {
+            method: 'DELETE',
+            headers: this.#defaultHeaders(),
+        })
     }
 
     // Internal API calls
@@ -175,6 +236,14 @@ class ApiClient {
         return `(${filterParts.join(' && ')})`
     }
 
+    // Postprocessors
+    postprocessItem(item) {
+        return {
+            ...item,
+            images: item.images.map(f => this.resolveImageUrl('item', item.id, f))
+        }
+    }
+
     // Misc
 
     resolveImageUrl(recordType, recordId, filename) {
@@ -188,7 +257,7 @@ class ApiClient {
         const controller = new AbortController()
         const id = setTimeout(() => controller.abort(), timeout)
 
-        if (options.body && typeof options.body !== 'string') {
+        if (options.body && typeof options.body !== 'string' && !(options.body instanceof FormData)) {
             options.body = JSON.stringify(options.body)
         }
 
@@ -207,8 +276,11 @@ class ApiClient {
     }
 
     #defaultHeaders() {
+        return { ...this.#defaultHeadersNoContentType(), 'Content-Type': 'application/json' }
+    }
+
+    #defaultHeadersNoContentType() {
         const headers = {
-            'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
         if (this.apiToken) {
@@ -218,9 +290,23 @@ class ApiClient {
     }
 }
 
+// Other utils
+
 function sortParams(keys = [], dir = 'asc') {
     if (dir === 'desc') keys = keys.map(k => `-${k}`)
     return keys.join(',')
+}
+
+function jsonToFormData(payload) {
+    const data = new FormData()
+    Object.entries(filterObject(payload, ITEM_ALLOWED_FIELDS))
+        .forEach(e => {
+            if (!(e[1] instanceof Array) && !(e[1] instanceof FileList)) e[1] = [e[1]]
+            for (let val of e[1]) {
+                data.append(e[0], val)
+            }
+        })
+    return data
 }
 
 export default ApiClient

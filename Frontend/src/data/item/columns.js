@@ -1,12 +1,9 @@
 import { parseTimestampToString } from "../../utils/utils.js";
 import ColorDefs from "../../components/Input/ColorDefs.js";
-import { getApiClient } from '../../utils/api'
 
-const apiClient = getApiClient()
-
-const backgroundColor = async (item) => item.highlight;
+const backgroundColor = async (item) => item.highlight_color;
 const backgroundColorStatus = async (item) =>
-  item.status == "reserved" ? ColorDefs.ITEM_RESERVED : item.highlight;
+  item.status == "reserved" ? ColorDefs.ITEM_RESERVED : item.highlight_color;
 
 export default [
   {
@@ -24,7 +21,7 @@ export default [
     disableSort: true,
     isImageUrl: true,
     disableSort: true,
-    display: (value, record) => value.length ? apiClient.resolveImageUrl('item', record.id, value[0]) : null,
+    display: (value, record) => value.length ? value[0] : null,
     backgroundColor,
   },
   {
