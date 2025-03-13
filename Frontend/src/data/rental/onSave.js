@@ -1,7 +1,6 @@
 import Database from "../../database/ENV_DATABASE";
 import { recentEmployeesStore } from "../../utils/stores";
 import { notifier } from "@beyonk/svelte-notifications";
-import WoocommerceClient from "../../database/ENV_WC_CLIENT";
 import columns from "./columns";
 import { setNumericValuesDefault0 } from "../utils";
 import { itemById } from "../selectors";
@@ -10,7 +9,9 @@ import {
   millisAtStartOfToday,
   parseTimestampToString,
 } from "../../utils/utils";
+import { getApiClient } from "../../utils/api";
 
+const apiClient = getApiClient()
 
 const fetchItemById = async (itemId) => {
   try {
@@ -51,11 +52,12 @@ const getExpReturnDate = (item, rental) => {
   return expReturnDate;
 };
 
-const updateItemStatus = async (item, status, rental) => {
-  item.status = status;
-  item.expected_return_date = getExpReturnDate(item, rental);
-  await Database.updateDoc(item);
-  await WoocommerceClient.updateItem(item);
+const updateItemStatus = async (item, status) => {
+  const isIid = !isNaN(parseInt(item.id))
+  const realId = isIid ? (await apiClient.getItemByIid(item.id))?.id : item.id
+
+  await apiClient.updateItem(realId, { status })
+
   notifier.success(
     `'${item.name}' wurde als ${item.status === "instock" ? "verfügbar" : "verliehen"
     } markiert.`
@@ -118,7 +120,7 @@ export default async function onSave(context) {
     try {
       const item = await fetchItemById(doc.item_id);
       doc.image = item.image;
-      await updateItemStatus(item, newItemStatus(doc), doc);
+      await updateItemStatus(item, newItemStatus(doc));
     } catch (error) {
       Logger.error(
         `Failed to update status of item with id ${doc.item_id}, ${error}`

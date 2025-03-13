@@ -59,7 +59,7 @@
 
   Database.onConnected(createIndex);
   Database.connect();
-  getApiClient(true);
+  getApiClient(true).init();
 </script>
 
 <Logger />

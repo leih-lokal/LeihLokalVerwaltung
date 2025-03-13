@@ -158,52 +158,6 @@
         />
       </div>
     </div>
-
-    <div class="row">
-      <div class="col-25">
-        <h2>WooCommerce</h2>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-25">
-        <label for="wcurl">URL</label>
-      </div>
-      <div class="col-75">
-        <input
-          bind:value={$settingsStore.wcUrl}
-          id="wcurl"
-          type="text"
-          placeholder="https://"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-25">
-        <label for="wckey">API Key</label>
-      </div>
-      <div class="col-75">
-        <input
-          bind:value={$settingsStore.wcKey}
-          id="wckey"
-          type="text"
-          placeholder="API Key"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-25">
-        <label for="wcsecret">Secret</label>
-      </div>
-      <div class="col-75">
-        <input
-          bind:value={$settingsStore.wcSecret}
-          id="wcsecret"
-          type="password"
-          placeholder="Secret"
-        />
-      </div>
-    </div>
   </div>
 </div>
 

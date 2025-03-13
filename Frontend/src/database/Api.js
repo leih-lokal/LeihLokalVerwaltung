@@ -300,6 +300,7 @@ function sortParams(keys = [], dir = 'asc') {
 function jsonToFormData(payload) {
     const data = new FormData()
     Object.entries(filterObject(payload, ITEM_ALLOWED_FIELDS))
+        .filter(e => e[1] !== undefined)
         .forEach(e => {
             if (!(e[1] instanceof Array) && !(e[1] instanceof FileList)) e[1] = [e[1]]
             for (let val of e[1]) {
