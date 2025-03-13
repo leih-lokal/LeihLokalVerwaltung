@@ -1,124 +1,57 @@
+const STATUSES = [
+  'instock', 'deleted', 'outofstock', 'onbackorder', 'lost', 'repairing', 'forsale', 'reserved',
+]
+
 export default {
   filters: {
     "nicht gelöscht": {
-      required_fields: ["status"],
-      selectors: {
-        status: {
-          $ne: "deleted",
-        },
-      },
+      status: STATUSES.filter(s => s !== 'deleted'),
     },
-    gelöscht: {
-      required_fields: ["status"],
-      selectors: {
-        status: {
-          $eq: "deleted",
-        },
-      },
+    "gelöscht": {
+      status: ['deleted'],
     },
-    verfügbar: {
-      required_fields: ["status"],
-      selectors: {
-        status: {
-          $eq: "instock",
-        },
-      },
+    "verfügbar": {
+      status: ['instock'],
     },
-    ausgeliehen: {
-      required_fields: ["status"],
-      selectors: {
-        status: {
-          $eq: "outofstock",
-        },
-      },
+    "ausgeliehen": {
+      status: ['outofstock'],
     },
-    reserviert: {
-      required_fields: ["status"],
-      selectors: {
-        status: {
-          $eq: "reserved",
-        },
-      },
+    "reserviert": {
+      status: ['reserved'],
     },
     "nicht verleihbar": {
-      required_fields: ["status"],
-      selectors: {
-        status: {
-          $eq: "onbackorder",
-        },
-      },
+      status: ['onbackorder'],
     },
     "verschollen": {
-      required_fields: ["status"],
-      selectors: {
-        status: {
-          $eq: "lost",
-        },
-      },
+      status: ['lost'],
     },
     "in Reparatur": {
-      required_fields: ["status"],
-      selectors: {
-        status: {
-          $eq: "repairing",
-        },
-      },
+      status: ['repairing']
     },
     "zu verkaufen": {
       required_fields: ["status"],
-      selectors: {
-        status: {
-          $eq: "forsale",
-        },
-      },
+      status: ['forsale'],
     },
     "Kategorie Küche": {
-      required_fields: ["category"],
-      selectors: {
-        category: {
-          $eq: "Küche",
-        },
-      },
+      category: ['Küche'],
     },
     "Kategorie Haushalt": {
-      required_fields: ["category"],
-      selectors: {
-        category: {
-          $eq: "Haushalt",
-        },
-      },
+      category: ['Haushalt'],
     },
     "Kategorie Garten": {
-      required_fields: ["category"],
-      selectors: {
-        category: {
-          $eq: "Garten",
-        },
-      },
+      category: ['Garten'],
     },
     "Kategorie Heimwerker": {
-      required_fields: ["category"],
-      selectors: {
-        category: {
-          $eq: "Heimwerker",
-        },
-      },
+      category: ['Heimwerker'],
     },
     "Kategorie Kinder": {
-      required_fields: ["category"],
-      selectors: {
-        category: {
-          $eq: "Kinder",
-        },
-      },
+      category: ['Kinder'],
     },
     "Kategorie Freizeit": {
-      required_fields: ["category"],
-      selectors: {
-        category: {
-          $eq: "Freizeit",
-        },
-      },
+      category: ['Freizeit'],
+    },
+    "Kategorie Sonstige": {
+      category: ['Sonstige'],
     },
   },
   activeByDefault: ["nicht gelöscht"],

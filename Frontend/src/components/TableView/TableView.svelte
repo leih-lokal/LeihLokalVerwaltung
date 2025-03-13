@@ -38,7 +38,18 @@
 
         const mergedFilters = activeFilters
           .map((filterName) => filters.filters[filterName])
-          .reduce((acc, cur) => ({ ...acc, ...cur }), {});
+          .reduce((acc, cur) => {
+            Object.keys(cur).forEach((key) => {
+              if (
+                acc.hasOwnProperty(key) &&
+                acc[key] instanceof Array &&
+                cur[key] instanceof Array
+              )
+                acc[key] = [...acc[key], ...cur[key]];
+              else acc[key] = cur[key];
+            });
+            return acc;
+          }, {});
 
         dataQuery = adapter.query({
           currentPage,

@@ -142,8 +142,23 @@ class ApiClient {
     }
 
     #buildItemFilters(filters = {}) {
+        // TODO: make filter construction generic
         const filterParts = []
-        if (filters.hasOwnProperty('status') && filters.status !== undefined) filterParts.push(`status='${filters.status}'`)
+
+        if (filters.hasOwnProperty('status') && filters.status !== undefined) {
+            const subFilterParts = []
+            if (!(filters.status instanceof Array)) filters.status = [filters.status]
+            filters.status.forEach(f => subFilterParts.push(`status='${f}'`))
+            filterParts.push(`(${subFilterParts.join('||')})`)
+        }
+
+        if (filters.hasOwnProperty('category') && filters.category !== undefined) {
+            const subFilterParts = []
+            if (!(filters.category instanceof Array)) filters.category = [filters.category]
+            filters.category.forEach(f => subFilterParts.push(`category?~'${f}'`))
+            filterParts.push(`(${subFilterParts.join('||')})`)
+        }
+
         if (filters.query) {
             if (/[a-z]/i.test(filters.query) && filters.query.length < 3) {
                 filters.query = window.crypto.randomUUID()  // impossible query
@@ -153,9 +168,9 @@ class ApiClient {
             queryFilterParts.push(`name~'${filters.query}'`)
             queryFilterParts.push(`brand~'${filters.query}'`)
             queryFilterParts.push(`model~'${filters.query}'`)
-            // TODO: category filters
             filterParts.push(`(${queryFilterParts.join(' || ')})`)
         }
+
         if (!filterParts.length) return ''
         return `(${filterParts.join(' && ')})`
     }
