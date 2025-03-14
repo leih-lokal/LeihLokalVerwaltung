@@ -10,7 +10,7 @@ import initialValues from "./initialValues";
 import { customerIdStartsWithSelector } from "../selectors";
 import { getApiClient } from "../../utils/api";
 
-const api = getApiClient()
+const apiClient = getApiClient()
 
 const selectedItemOptions = []  // { value, label, _ref }
 
@@ -147,9 +147,7 @@ export default {
       props: {
         valueField: "id",
         localFiltering: false,
-        searchFunction: (context) => (searchTerm) =>
-          api.findItems(1, 30, { status: 'instock', query: searchTerm }).then(result => result.items)
-        ,
+        searchFunction: (context) => (searchTerm) => apiClient.findItems({ page: 1, pageSize: 30, filters: { status: 'instock', query: searchTerm } }).then(result => result.items),
         suggestionFormat: (context) => ({ iid, name }) => `${String(iid)} - ${name}`,
         noResultsText: "Kein Gegenstand mit dieser ID",
         onSelected: (context) => (selectedItem) => {

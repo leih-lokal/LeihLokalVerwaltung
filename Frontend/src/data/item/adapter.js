@@ -22,18 +22,18 @@ export function registerOnUpdate(cb) {
 }
 
 export async function query(opts) {
-    const data = await api.findItems(
-        (opts.currentPage || 0) + 1,  // page
-        opts.rowsPerPage || 30,  // pageSize,
-        {
+    const data = await api.findItems({
+        page: (opts.currentPage || 0) + 1,
+        pageSize: opts.rowsPerPage || 30,
+        filters: {
             query: opts.searchTerm,
             ...(opts.filters || {}),
         },
-        {
+        sorting: {
             keys: opts.sortBy instanceof Array ? opts.sortBy : [opts.sortBy],
             dir: opts.sortReverse ? 'desc' : 'asc',
         }
-    )
+    })
 
     return {
         totalPages: data.totalPages,

@@ -6,9 +6,6 @@ import onDelete from "./onDelete";
 import onRestore from "./onRestore";
 import onSave from "./onSave";
 import initialValues from "./initialValues";
-import { getApiClient } from "../../utils/api";
-
-const api = getApiClient()
 
 const isEditing = (context) => !context.createNew
 const isDeleted = (context) => context.doc.status === "deleted";

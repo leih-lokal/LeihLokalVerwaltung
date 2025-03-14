@@ -1,4 +1,4 @@
-// TODO: refactor to use pocketbase js sdk!
+import PocketBase from 'pocketbase';
 
 const RESERVATION_ALLOWED_FIELDS = [
     'customer_iid', 'customer_name', 'customer_phone', 'customer_email', 'is_new_customer', 'comments', 'done', 'items', 'pickup',
@@ -13,7 +13,7 @@ function filterObject(obj, keys) {
 }
 
 class ApiClient {
-    constructor(baseUrl = 'http://localhost:8090/api', username = 'ferdinand@muetsch.io', password = '') {
+    constructor(baseUrl = 'http://localhost:8090', username = 'ferdinand@muetsch.io', password = '') {
         // singleton
         if (ApiClient._instance) {
             return ApiClient._instance
@@ -21,10 +21,10 @@ class ApiClient {
         ApiClient._instance = this
 
         this.initializing = Promise.withResolvers()
-        this.baseUrl = baseUrl
+        this.baseUrl = baseUrl.replace('/api', '')
         this.username = username
         this.password = password
-        this.apiToken = null
+        this.pb = new PocketBase(this.baseUrl)
     }
 
     ready() {
@@ -36,7 +36,7 @@ class ApiClient {
     }
 
     async init() {
-        await this.#authenticate(this.username, this.password)
+        if (!this.pb.authStore?.isValid) await this.#authenticate(this.username, this.password)
         this.initializing.resolve()
         this.initializing = null
     }
@@ -51,69 +51,66 @@ class ApiClient {
 
     // Reservations
 
-    async findReservations(page = 1, pageSize = 30, filters = {}, sort = { keys: ['pickup', 'created'], dir: 'desc' }) {
+    async findReservations({ page, pageSize, filters, sorting, fields }) {
         await this.waitForReady()
 
-        if (filters.query) {
-            // we can't filter on relation fields, so need two separate queries here
-            // see https://github.com/pocketbase/pocketbase/discussions/5036
-            filters.itemIds = (await this.findItems(1, 9999, { query: filters.query }, ['id'])).items.map(i => i.id)
-        }
+        const opts = {}
+        opts.fields = fields?.join(',') || '*,expand.items.iid,expand.items.name,expand.items.id'
+        opts.expand = 'items'
+        if (filters) opts.filter = this.#buildReservationFilters(filters)
+        if (sorting) opts.sort = sortParams(sorting.keys, sorting.dir)
 
-        const params = new URLSearchParams()
-        params.append('filter', this.#buildReservationFilters(filters))
-        params.append('expand', 'items')
-        params.append('fields', '*,expand.items.iid,expand.items.name,expand.items.id')
-        params.append('sort', sortParams(sort.keys, sort.dir))
-        params.append('page', page)
-        params.append('perPage', pageSize)
+        const full = pageSize === -1
+        const data = full
+            ? await this.pb.collection('reservation').getFullList(opts)
+            : await this.pb.collection('reservation').getList(page, pageSize, opts)
 
-        const url = `${this.baseUrl}/collections/reservation/records?${params.toString()}`
-        const res = await this.#fetch(url, { headers: this.#defaultHeaders() })
-        return await res.json()
+        return full ? { items: data } : data
     }
 
-    async listActiveReservations(page = 1, pageSize = 30) {
-        await this.waitForReady()
-
-        return this.findReservations(page, pageSize, {
-            after: new Date(),
-            done: false,
+    async findActiveReservations({ page, pageSize }) {
+        return this.findReservations({
+            page, pageSize, filters: {
+                after: new Date(),
+                done: false,
+            }
         })
     }
 
     async createReservation(payload) {
         await this.waitForReady()
-
-        const res = await this.#fetch(`${this.baseUrl}/collections/reservation/records`, {
-            method: 'POST',
-            body: filterObject(payload, RESERVATION_ALLOWED_FIELDS),
-            headers: this.#defaultHeaders(),
-        })
-        return await res.json()
+        return await this.pb.collection('reservation').create(filterObject(payload, RESERVATION_ALLOWED_FIELDS))
     }
 
     async updateReservation(id, payload) {
         await this.waitForReady()
-
-        const res = await this.#fetch(`${this.baseUrl}/collections/reservation/records/${id}`, {
-            method: 'PATCH',
-            body: filterObject(payload, RESERVATION_ALLOWED_FIELDS),
-            headers: this.#defaultHeaders(),
-        })
-        return await res.json()
+        return await this.pb.collection('reservation').update(id, filterObject(payload, RESERVATION_ALLOWED_FIELDS))
     }
 
     async deleteReservation(id) {
         await this.waitForReady()
-
-        return await this.#fetch(`${this.baseUrl}/collections/reservation/records/${id}`, {
-            method: 'DELETE',
-            headers: this.#defaultHeaders(),
-        })
+        return await this.pb.collection('reservation').delete(id)
     }
 
     // Items
+
+    async findItems({ page, pageSize, filters, sorting, fields }) {
+        await this.waitForReady()
+
+        const opts = {}
+        if (fields) opts.fields = fields?.join(',')
+        if (filters) opts.filter = this.#buildItemFilters(filters)
+        if (sorting) opts.sort = sortParams(sorting.keys, sorting.dir)
+
+        const full = pageSize === -1
+        const data = full
+            ? await this.pb.collection('item').getFullList(opts)
+            : await this.pb.collection('item').getList(page, pageSize, opts)
+
+        return full
+            ? { items: data.map(i => this.postprocessItem(i)) }
+            : { ...data, items: data.items.map(i => this.postprocessItem(i)) }
+    }
 
     async getItemByIid(iid) {
         await this.waitForReady()
@@ -125,101 +122,42 @@ class ApiClient {
     async getItemsByIids(iids, fields) {
         await this.waitForReady()
 
-        const filterStr = [...new Set(iids)].map(iid => `iid=${iid}`).join('||')
-        const params = new URLSearchParams()
-        params.append('filter', `(${filterStr})`)
-        params.append('perPage', iids.length)
-        params.append('skipTotal', true)
-        if (fields && fields.length) {
-            params.append('fields', fields.join(','))
+        const opts = {
+            filter: [...new Set(iids)].map(iid => `iid=${iid}`).join('||')
         }
+        if (fields) opts.fields = fields.join(',')
 
-        const url = `${this.baseUrl}/collections/item/records?${params.toString()}`
-        const res = await this.#fetch(url, { headers: this.#defaultHeaders() })
-        const data = await res.json()
-
-        return {
-            ...data,
-            items: data.items.map(i => this.postprocessItem(i))
-        }
+        const data = await this.pb.collection('item').getFullList(opts)
+        return { items: data.map(i => this.postprocessItem(i)) }
     }
 
     async getNextItemId() {
         await this.waitForReady()
 
-        const params = new URLSearchParams()
-        params.append('perPage', 1)
-        params.append('sort', '-iid')
-        params.append('skipTotal', true)
-
-        const url = `${this.baseUrl}/collections/item/records?${params.toString()}`
-        const res = await this.#fetch(url, { headers: this.#defaultHeaders() })
-        const data = await res.json()
-        return data.items.length ? data.items[0].iid + 1 : 1
-    }
-
-    async findItems(page = 1, pageSize = 30, filters = {}, sort = { keys: ['iid'], dir: 'asc' }, fields = []) {
-        await this.waitForReady()
-
-        const params = new URLSearchParams()
-        params.append('filter', this.#buildItemFilters(filters))
-        params.append('sort', sortParams(sort.keys, sort.dir))
-        params.append('page', page)
-        params.append('perPage', pageSize)
-        if (fields && fields.length) {
-            params.append('fields', fields.join(','))
-        }
-
-        const url = `${this.baseUrl}/collections/item/records?${params.toString()}`
-        const res = await this.#fetch(url, { headers: this.#defaultHeaders() })
-        const data = await res.json()
-
-        return {
-            ...data,
-            items: data.items.map(i => this.postprocessItem(i))
-        }
+        const data = await this.pb.collection('item').getFirstListItem('', { sort: '-iid' })
+        return data?.iid + 1 || 1
     }
 
     async createItem(payload) {
         await this.waitForReady()
-
-        const res = await this.#fetch(`${this.baseUrl}/collections/item/records`, {
-            method: 'POST',
-            body: jsonToFormData(payload),
-            headers: this.#defaultHeadersNoContentType(),
-        })
-        return await res.json()
+        if (payload.images instanceof FileList) payload.images = [...payload.images]
+        return await this.pb.collection('item').create(filterObject(payload, ITEM_ALLOWED_FIELDS))
     }
 
     async updateItem(id, payload) {
         await this.waitForReady()
-
-        const res = await this.#fetch(`${this.baseUrl}/collections/item/records/${id}`, {
-            method: 'PATCH',
-            body: jsonToFormData(payload),
-            headers: this.#defaultHeadersNoContentType(),
-        })
-        return await res.json()
+        if (payload.images instanceof FileList) payload.images = [...payload.images]
+        return await this.pb.collection('item').update(id, filterObject(payload, ITEM_ALLOWED_FIELDS))
     }
 
     async deleteItem(id) {
-        await this.waitForReady()
-
-        return await this.#fetch(`${this.baseUrl}/collections/item/records/${id}`, {
-            method: 'DELETE',
-            headers: this.#defaultHeaders(),
-        })
+        return await this.pb.collection('item').delete(id)
     }
 
     // Internal API calls
 
     async #authenticate(username, password) {
-        const res = await this.#fetch(`${this.baseUrl}/collections/_superusers/auth-with-password`, {
-            method: 'POST',
-            body: { identity: username, password },
-            headers: this.#defaultHeaders(),
-        })
-        this.apiToken = (await res.json()).token
+        await this.pb.collection('_superusers').authWithPassword(username, password)
     }
 
     // Filter composition
@@ -296,45 +234,6 @@ class ApiClient {
     resolveImageUrl(recordType, recordId, filename) {
         return `${this.baseUrl}/files/${recordType}/${recordId}/${filename}`
     }
-
-    // timeoutable fetch from https://dmitripavlutin.com/timeout-fetch-request/
-    async #fetch(resource, options = {}) {
-        const { timeout = 5000 } = options
-
-        const controller = new AbortController()
-        const id = setTimeout(() => controller.abort(), timeout)
-
-        if (options.body && typeof options.body !== 'string' && !(options.body instanceof FormData)) {
-            options.body = JSON.stringify(options.body)
-        }
-
-        const response = await fetch(resource, {
-            ...options,
-            signal: controller.signal
-        })
-        clearTimeout(id)
-
-        if (!response.ok) {
-            const msg = (await response.json())?.message || `Got ${response.status} response status`
-            throw new Error(msg)
-        }
-
-        return response;
-    }
-
-    #defaultHeaders() {
-        return { ...this.#defaultHeadersNoContentType(), 'Content-Type': 'application/json' }
-    }
-
-    #defaultHeadersNoContentType() {
-        const headers = {
-            'Accept': 'application/json'
-        }
-        if (this.apiToken) {
-            headers['Authorization'] = `Bearer ${this.apiToken}`
-        }
-        return headers
-    }
 }
 
 // Other utils
@@ -342,19 +241,6 @@ class ApiClient {
 function sortParams(keys = [], dir = 'asc') {
     if (dir === 'desc') keys = keys.map(k => `-${k}`)
     return keys.join(',')
-}
-
-function jsonToFormData(payload) {
-    const data = new FormData()
-    Object.entries(filterObject(payload, ITEM_ALLOWED_FIELDS))
-        .filter(e => e[1] !== undefined)
-        .forEach(e => {
-            if (!(e[1] instanceof Array) && !(e[1] instanceof FileList)) e[1] = [e[1]]
-            for (let val of e[1]) {
-                data.append(e[0], val)
-            }
-        })
-    return data
 }
 
 export default ApiClient

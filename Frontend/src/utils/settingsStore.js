@@ -12,7 +12,7 @@ const defaultSettings = {
   wcUrl: "https://www.buergerstiftung-karlsruhe.de/wp-json/wc/v3",
   wcKey: "",
   wcSecret: "",
-  apiUrl: prod ? "/api" : "http://localhost:8090/api",
+  apiUrl: prod ? "/api" : "http://localhost:8090",
   apiUser: "ferdinand@muetsch.io",
   apiPassword: ""
 };

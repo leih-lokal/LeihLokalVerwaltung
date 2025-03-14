@@ -78,15 +78,13 @@
     }).then((result) => result.docs);
 
     let items = (
-      await apiClient.findItems(
-        1,
-        1_000_000,
-        {
+      await apiClient.findItems({
+        pageSize: -1,
+        filter: {
           status: ITEM_STATUSES.filter((s) => s !== "deleted"),
         },
-        { keys: ["iid"], dir: "asc" },
-        ["id", "iid", "added_on"],
-      )
+        fields: ["id", "iid", "added_on"],
+      })
     ).items;
 
     const timestampLiesInMonthsBefore = (timestamp, before, monthCount) =>
