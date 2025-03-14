@@ -1,11 +1,9 @@
-const STATUSES = [
-  'instock', 'deleted', 'outofstock', 'onbackorder', 'lost', 'repairing', 'forsale', 'reserved',
-]
+import { ITEM_STATUSES } from "./constants";
 
 export default {
   filters: {
     "nicht gelöscht": {
-      status: STATUSES.filter(s => s !== 'deleted'),
+      status: ITEM_STATUSES.filter(s => s !== 'deleted'),
     },
     "gelöscht": {
       status: ['deleted'],

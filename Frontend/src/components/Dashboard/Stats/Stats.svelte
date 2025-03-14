@@ -2,6 +2,10 @@
   import Line from "svelte-chartjs/src/Line.svelte";
   import Database from "../../../database/ENV_DATABASE";
   import LoadingAnimation from "../../LoadingAnimation.svelte";
+  import { getApiClient } from "../../../utils/api";
+  import { ITEM_STATUSES } from "../../../data/item/constants";
+
+  const apiClient = getApiClient();
 
   function startOfMonthMs(timestamp) {
     const date = new Date(timestamp);
@@ -25,7 +29,7 @@
   function cache(stats) {
     localStorage.setItem(
       "stats",
-      JSON.stringify({ timestamp: new Date().getTime(), stats })
+      JSON.stringify({ timestamp: new Date().getTime(), stats }),
     );
   }
 
@@ -57,14 +61,14 @@
             .greaterThan(0)
             .withField("rented_on")
             .greaterThan(0)
-            .buildSelectors()
+            .buildSelectors(),
         )
         .build(),
     }).then((result) =>
       result.docs.map((doc) => ({
         customer_id: doc["customer_id"],
         timestamp: doc["returned_on"] ? doc["returned_on"] : doc["rented_on"],
-      }))
+      })),
     );
 
     let customers = await Database.findCached({
@@ -73,15 +77,17 @@
       selector: Database.selectorBuilder().withDocType("customer").build(),
     }).then((result) => result.docs);
 
-    let items = await Database.findCached({
-      fields: ["added"],
-      limit: 1_000_000,
-      selector: Database.selectorBuilder()
-        .withDocType("item")
-        .withField("status")
-        .isNotEqualTo("deleted")
-        .build(),
-    }).then((result) => result.docs);
+    let items = (
+      await apiClient.findItems(
+        1,
+        1_000_000,
+        {
+          status: ITEM_STATUSES.filter((s) => s !== "deleted"),
+        },
+        { keys: ["iid"], dir: "asc" },
+        ["id", "iid", "added_on"],
+      )
+    ).items;
 
     const timestampLiesInMonthsBefore = (timestamp, before, monthCount) =>
       timestamp < before && timestamp >= addMonths(before, monthCount * -1);
@@ -108,7 +114,7 @@
     ) {
       // timestamp n months ago
       const timestampNMonthsAgo = startOfMonthMs(
-        addMonths(CURRENT_MS, monthsAgo * -1)
+        addMonths(CURRENT_MS, monthsAgo * -1),
       );
 
       const activeCustomerCount = rentals
@@ -117,8 +123,8 @@
           timestampLiesInMonthsBefore(
             rental.timestamp,
             timestampNMonthsAgo,
-            ACTIVE_CUSTOMER_TIMEOUT_MONTHS
-          )
+            ACTIVE_CUSTOMER_TIMEOUT_MONTHS,
+          ),
         )
         .map((rental) => rental.customer_id)
         // unique customer ids
@@ -126,19 +132,19 @@
 
       // number of rentals in month of timestampNMonthsAgo
       const rentalCount = rentals.filter((rental) =>
-        timestampLiesInMonthsBefore(rental.timestamp, timestampNMonthsAgo, 1)
+        timestampLiesInMonthsBefore(rental.timestamp, timestampNMonthsAgo, 1),
       ).length;
 
       const newCustomerCount = customers.filter((customer) =>
         timestampLiesInMonthsBefore(
           customer.registration_date,
           timestampNMonthsAgo,
-          1
-        )
+          1,
+        ),
       ).length;
 
       const itemCount = items.filter(
-        (item) => item.added <= addMonths(CURRENT_MS, monthsAgo * -1)
+        (item) => item.added_on <= addMonths(CURRENT_MS, monthsAgo * -1),
       ).length;
 
       labels.push(monthYearString(addMonths(timestampNMonthsAgo, -1)));
@@ -240,8 +246,6 @@
     cache(stats);
     return stats;
   };
-
-  calcStats();
 </script>
 
 <div class="statscontainer">
