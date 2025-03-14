@@ -5,7 +5,6 @@
     "build": "cross-env NODE_ENV=prod rollup -c",
     "build:test": "cross-env NODE_ENV=test rollup -c",
     "build:demo": "cross-env NODE_ENV=demo rollup -c",
-    "build:cypress": "cross-env NODE_ENV=cypress rollup -c",
     "build:clean": "rm -rf public/*",
     "build:all": "npm run build:clean && npm run build && OUTPUT_DIR=public/demo npm run build:demo",
     "dev": "cross-env NODE_ENV=dev SERVICE_WORKER_DISABLED=true rollup -c -w",
@@ -17,9 +16,6 @@
     "unit_test": "jest --env=jsdom",
     "unit_test:watch": "npm run unit_test -- --watch",
     "unit_test:debug": "node --inspect node_modules/.bin/jest --runInBand --env=jsdom",
-    "integration_test_selenium": "concurrently -k --success first \"npm run test > /dev/null\" \"(wait-on http://localhost:5000/ && node ./node_modules/mocha/bin/mocha --timeout 15000 ./test/integration_selenium)\"",
-    "integration_test_cypress:run": "npm run build:test && cypress run --config-file ./test/integration_cypress/config/config.json -b chromium",
-    "integration_test_cypress:open": "npm run build:test && cypress open --config-file ./test/integration_cypress/config/config.json",
     "postinstall": "patch-package"
   },
   "devDependencies": {
@@ -46,7 +42,6 @@
     "cl-editor": "^2.2.2",
     "concurrently": "^6.2.1",
     "cross-env": "^7.0.3",
-    "cypress": "^8.7.0",
     "dotenv-flow": "^3.2.0",
     "esm": "^3.2.25",
     "fa-svelte": "^3.1.0",
@@ -66,7 +61,6 @@
     "rollup-plugin-node-polyfills": "^0.2.1",
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^7.0.2",
-    "selenium-webdriver": "^4.1.1",
     "simple-svelte-autocomplete": "^2.4.0",
     "sirv-cli": "^1.0.14",
     "svelte": "^3.42.4",
