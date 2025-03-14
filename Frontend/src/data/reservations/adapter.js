@@ -22,8 +22,6 @@ export function registerOnUpdate(cb) {
 }
 
 export async function query(opts) {
-    if (!api.initialized) await api.init()
-
     const data = await api.findReservations(
         opts.currentPage + 1,  // page
         opts.rowsPerPage,  // pageSize,
@@ -44,21 +42,18 @@ export async function query(opts) {
 }
 
 export async function update(reservation) {
-    if (!api.initialized) await api.init()
     const res = await api.updateReservation(reservation.id, reservation)
     setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function create(reservation) {
-    if (!api.initialized) await api.init()
     const res = await api.createReservation(reservation)
     setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function remove(reservation) {
-    if (!api.initialized) await api.init()
     const res = await api.deleteReservation(reservation)
     setTimeout(() => state.onEntityUpdate())
     return res;

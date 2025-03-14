@@ -88,7 +88,7 @@ export default {
             ["id", "firstname", "lastname", "telephone_number", "email"],
             ["id"]
           ),
-        suggestionFormat: (context) => (id, firstname, lastname) => `${id}: ${firstname} ${lastname}`,
+        suggestionFormat: (context) => ({ id, firstname, lastname }) => `${id}: ${firstname} ${lastname}`,
         noResultsText: "Kein/e Nutzer:in mit dieser Nummer",
         onSelected: (context) => (selectedCustomer) => {
           updateReservationCustomer(context, selectedCustomer);
@@ -150,7 +150,7 @@ export default {
         searchFunction: (context) => (searchTerm) =>
           api.findItems(1, 30, { status: 'instock', query: searchTerm }).then(result => result.items)
         ,
-        suggestionFormat: (context) => (...values) => `${String(values[11])} - ${values[17]}`,  // TODO: what the heck?!
+        suggestionFormat: (context) => ({ iid, name }) => `${String(iid)} - ${name}`,
         noResultsText: "Kein Gegenstand mit dieser ID",
         onSelected: (context) => (selectedItem) => {
           updateAddReservationItem(context, selectedItem);

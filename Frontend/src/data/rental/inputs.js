@@ -16,13 +16,14 @@ import { notifier } from "@beyonk/svelte-notifications";
 import { get } from "svelte/store";
 import {
   customerIdStartsWithSelector,
-  itemIdStartsWithAndNotDeletedSelector,
   customerAttributeStartsWithIgnoreCaseSelector,
-  itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector,
   activeRentalsForCustomerSelector,
   customerById,
-  itemById,
 } from "../selectors";
+import * as itemAdapter from "../item/adapter";
+import { getApiClient } from "../../utils/api";
+
+const apiClient = getApiClient()
 
 /**
  * Whether the toggle for updateStatusOnWebsite is hidden.
@@ -63,9 +64,9 @@ function suggestReceivingEmployee(context) {
 }
 
 const updateItemOfRental = (context, item) => {
-  if (context.doc.item_id !== item.id) {
+  if (context.doc.item_id !== item.iid) {
     context.updateDoc({
-      item_id: item.id,
+      item_id: item.iid,
       item_name: item.name,
       deposit: item.deposit,
     });
@@ -96,20 +97,20 @@ const showNotificationsForItem = async (item) => {
   var status = statusMapping[item.status];
   if (["outofstock", "reserved", "onbackorder", "lost", "repairing", "forsale"].includes(item.status)) {
     notifier.danger(
-      `${item.name} (${item.id}) ist nicht verfügbar, hat Status: ${status}`,
+      `${item.name} (${item.iid}) ist nicht verfügbar, hat Status: ${status}`,
       10000
     );
   } else if (item.status == "undefined") {
     notifier.warning(
-      `Fehler beim Statuscheck, ${item.name} (${item.id}) hat Status: ${status}`,
+      `Fehler beim Statuscheck, ${item.name} (${item.iid}) hat Status: ${status}`,
       10000
     );
   }
   // show notification it item is highlighted in a color
-  if (item.highlight && item.highlight !== "") {
-    const colorDescription = itemColorToDescription(item.highlight);
+  if (item.highlight_color && item.highlight_color !== "") {
+    const colorDescription = itemColorToDescription(item.highlight_color);
     notifier.info(
-      `${item.name} (${item.id}) wurde farblich markiert: ${colorDescription}`,
+      `${item.name} (${item.iid}) wurde farblich markiert: ${colorDescription}`,
       {
         persist: true,
       }
@@ -124,11 +125,11 @@ let sortItemByIdOrName = (itemA, itemB) => {
   }
   // if has id and id is numerical compare id
   if (
-    (itemA.id !== undefined) &
-    (itemB.id !== undefined) &
-    !(isNaN(itemA.id) | isNaN(itemB.id))
+    (itemA.iid !== undefined) &
+    (itemB.iid !== undefined) &
+    !(isNaN(itemA.iid) | isNaN(itemB.iid))
   ) {
-    return itemA.id - itemB.id;
+    return itemA.iid - itemB.iid;
   }
 
   // maybe itemA and itemB themselve are numerical?
@@ -213,12 +214,9 @@ export default {
     context.contextVars.initialItemName = context.doc.item_name;
 
     if (context.doc.item_id) {
-      Database.fetchDocsBySelector(itemById(context.doc.item_id), [
-        "id",
-        "name",
-        "deposit",
-        "exists_more_than_once",
-      ]).then((items) => updateItemOfRental(context, items[0]));
+      apiClient.getItemByIid(context.doc.item_id).then(item => {
+        updateItemOfRental(context, item)
+      })
     }
   },
   footerButtons: (context) => [
@@ -234,11 +232,10 @@ export default {
       loadingText: "Leihvorgang wird gelöscht",
     },
     {
-      text: `Zurückgeben ${
-        suggestReceivingEmployee(context)
-          ? `\n(als ${suggestReceivingEmployee(context)})`
-          : ""
-      }`,
+      text: `Zurückgeben ${suggestReceivingEmployee(context)
+        ? `\n(als ${suggestReceivingEmployee(context)})`
+        : ""
+        }`,
       onClick: () =>
         onReturnAndSave(context, suggestReceivingEmployee(context)),
       color: "green",
@@ -264,22 +261,10 @@ export default {
         localSorting: true,
         sortByMatchedKeywords: true,
         itemSortFunction: () => sortItemByIdOrName,
-        valueField: "id",
+        valueField: "iid",
         onlyNumbers: true,
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchDocsBySelector(
-            itemIdStartsWithAndNotDeletedSelector(searchTerm),
-            [
-              "id",
-              "name",
-              "deposit",
-              "exists_more_than_once",
-              "status",
-              "highlight",
-            ]
-          ),
-        suggestionFormat: (context) => (id, item_name) =>
-          `${String(id).padStart(4, "0")}: ${item_name}`,
+        searchFunction: (context) => (searchTerm) => itemAdapter.query({ searchTerm }).then(res => res.docs),
+        suggestionFormat: (context) => ({ iid, name }) => `${String(iid).padStart(4, "0")}: ${name}`,
         noResultsText: "Kein Gegenstand mit dieser Id",
         onSelected: (context) => (selectedItem) => {
           updateItemOfRental(context, selectedItem);
@@ -295,16 +280,8 @@ export default {
       nobind: true,
       props: {
         valueField: "name",
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchDocsBySelector(
-            itemAttributeStartsWithIgnoreCaseAndNotDeletedSelector(
-              "name",
-              searchTerm
-            ),
-            ["id", "name", "deposit", "exists_more_than_once"]
-          ),
-        suggestionFormat: (context) => (id, item_name) =>
-          `${String(id).padStart(4, "0")}: ${item_name}`,
+        searchFunction: (context) => (searchTerm) => itemAdapter.query({ searchTerm }).then(res => res.docs),
+        suggestionFormat: (context) => ({ iid, name }) => `${String(iid).padStart(4, "0")}: ${name}`,
         noResultsText: "Kein Gegenstand mit diesem Name",
         onSelected: (context) => (selectedItem) => {
           updateItemOfRental(context, selectedItem);
@@ -321,8 +298,7 @@ export default {
       props: {
         value: (context) => context.contextVars.updateItemStatus,
         // onChange callback necessary because bind only works for doc attributes
-        onChange: (context) => (value) =>
-          (context.contextVars.updateItemStatus = value),
+        onChange: (context) => (value) => (context.contextVars.updateItemStatus = value),
       },
     },
 
@@ -389,8 +365,7 @@ export default {
             ["id", "firstname", "lastname"],
             ["id"]
           ),
-        suggestionFormat: (context) => (id, firstname, lastname) =>
-          `${id}: ${firstname} ${lastname}`,
+        suggestionFormat: (context) => ({ id, firstname, lastname }) => `${id}: ${firstname} ${lastname}`,
         noResultsText: "Kein/e Nutzer:in mit dieser Nummer",
         onSelected: (context) => (selectedCustomer) => {
           updateCustomerOfRental(context, selectedCustomer);
@@ -413,8 +388,7 @@ export default {
             ),
             ["id", "firstname", "lastname"]
           ),
-        suggestionFormat: (context) => (id, firstname, lastname) =>
-          `${id}: ${firstname} ${lastname}`,
+        suggestionFormat: (context) => ({ id, firstname, lastname }) => `${id}: ${firstname} ${lastname}`,
         noResultsText: "Kein/e Nutzer:in mit diesem Name",
         onSelected: (context) => (selectedCustomer) => {
           updateCustomerOfRental(context, selectedCustomer);

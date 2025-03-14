@@ -19,7 +19,7 @@
   export let localSorting;
 
   onMount(() =>
-    restrictInputToNumbers(document.getElementById(id), onlyNumbers)
+    restrictInputToNumbers(document.getElementById(id), onlyNumbers),
   );
 </script>
 
@@ -35,7 +35,7 @@
       else if (values.length === 1 && Object.keys(item)[0] === "attr")
         return item.attr;
       else if (suggestionFormat) {
-        return suggestionFormat(...values);
+        return suggestionFormat(item);
       } else {
         return item[valueField];
       }

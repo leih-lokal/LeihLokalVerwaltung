@@ -1,5 +1,7 @@
 import Database from "../../database/ENV_DATABASE";
-import ApiClient from "../../database/Api"
+import { getApiClient } from "../../utils/api";
+
+const apiClient = getApiClient()
 
 export default {
     // this function allows to either block entire data table loading by returning a pending promise
@@ -26,10 +28,9 @@ export default {
 
         async function fetchItemHighlights() {
             const itemIds = data.map(d => d.item_id)
-            const select = getSelectQuery('item', itemIds)
-            const result = await Database.fetchDocsBySelector(select, ['id', '_rev', 'highlight'], [], data.length * 10)
+            const result = (await apiClient.getItemsByIids(itemIds, ['iid', 'highlight_color'])).items
             data.forEach((e, i) => {
-                itemHighlightResolvers[i].resolve(result.find(item => item.id === e.item_id)?.highlight || '')
+                itemHighlightResolvers[i].resolve(result.find(item => item.iid === e.item_id)?.highlight_color || '')
             })
         }
 

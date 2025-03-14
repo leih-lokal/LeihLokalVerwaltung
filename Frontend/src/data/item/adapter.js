@@ -22,20 +22,17 @@ export function registerOnUpdate(cb) {
 }
 
 export async function query(opts) {
-    if (!api.initialized) await api.init()
-
     const data = await api.findItems(
-        opts.currentPage + 1,  // page
-        opts.rowsPerPage,  // pageSize,
+        (opts.currentPage || 0) + 1,  // page
+        opts.rowsPerPage || 30,  // pageSize,
         {
             query: opts.searchTerm,
-            ...opts.filters,
+            ...(opts.filters || {}),
         },
         {
             keys: opts.sortBy instanceof Array ? opts.sortBy : [opts.sortBy],
             dir: opts.sortReverse ? 'desc' : 'asc',
-        },
-        false
+        }
     )
 
     return {
@@ -45,21 +42,18 @@ export async function query(opts) {
 }
 
 export async function update(item) {
-    if (!api.initialized) await api.init()
     const res = await api.updateItem(item.id, sanitizeItem(item))
     setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function create(item) {
-    if (!api.initialized) await api.init()
     const res = await api.createItem(sanitizeItem(item))
     setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function remove(item) {
-    if (!api.initialized) await api.init()
     const res = await api.deleteItem(item)
     setTimeout(() => state.onEntityUpdate())
     return res;

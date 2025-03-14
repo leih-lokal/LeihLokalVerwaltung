@@ -15,7 +15,7 @@ const apiClient = getApiClient()
 
 const fetchItemById = async (itemId) => {
   try {
-    return (await Database.fetchDocsBySelector(itemById(itemId)))[0];
+    return await apiClient.getItemByIid(itemId)
   } catch (error) {
     Logger.error(error);
     throw `Failed to load item with id ${itemId}`;
@@ -24,9 +24,7 @@ const fetchItemById = async (itemId) => {
 
 const newItemStatus = (rental) => {
   if (
-    (rental.returned_on &&
-      rental.returned_on !== 0 &&
-      rental.returned_on <= new Date().getTime()) || // already returned
+    (rental.returned_on && rental.returned_on !== 0 && rental.returned_on <= new Date().getTime()) || // already returned
     rental.rented_on > new Date().getTime() // or not yet rented
   ) {
     return "instock";
@@ -119,7 +117,7 @@ export default async function onSave(context) {
   if (contextVars.updateItemStatus) {
     try {
       const item = await fetchItemById(doc.item_id);
-      doc.image = item.image;
+      doc.image = item.images && item.images.length ? item.images[0] : null;
       await updateItemStatus(item, newItemStatus(doc));
     } catch (error) {
       Logger.error(

@@ -20,16 +20,25 @@ class ApiClient {
         }
         ApiClient._instance = this
 
-        this.initialized = false
+        this.initializing = Promise.withResolvers()
         this.baseUrl = baseUrl
         this.username = username
         this.password = password
         this.apiToken = null
     }
 
+    ready() {
+        return !this.initializing
+    }
+
+    async waitForReady() {
+        if (!this.ready()) await this.initializing.promise
+    }
+
     async init() {
         await this.#authenticate(this.username, this.password)
-        this.initialized = true
+        this.initializing.resolve()
+        this.initializing = null
     }
 
     updateInstance(baseUrl, username, password) {
@@ -37,17 +46,18 @@ class ApiClient {
         this.username = username
         this.password = password
         this.apiToken = null
-        this.initialized = false
         return this
     }
 
     // Reservations
 
     async findReservations(page = 1, pageSize = 30, filters = {}, sort = { keys: ['pickup', 'created'], dir: 'desc' }) {
+        await this.waitForReady()
+
         if (filters.query) {
             // we can't filter on relation fields, so need two separate queries here
             // see https://github.com/pocketbase/pocketbase/discussions/5036
-            filters.itemIds = (await this.findItems(1, 9999, { query: filters.query }, true)).items.map(i => i.id)
+            filters.itemIds = (await this.findItems(1, 9999, { query: filters.query }, ['id'])).items.map(i => i.id)
         }
 
         const params = new URLSearchParams()
@@ -64,6 +74,8 @@ class ApiClient {
     }
 
     async listActiveReservations(page = 1, pageSize = 30) {
+        await this.waitForReady()
+
         return this.findReservations(page, pageSize, {
             after: new Date(),
             done: false,
@@ -71,6 +83,8 @@ class ApiClient {
     }
 
     async createReservation(payload) {
+        await this.waitForReady()
+
         const res = await this.#fetch(`${this.baseUrl}/collections/reservation/records`, {
             method: 'POST',
             body: filterObject(payload, RESERVATION_ALLOWED_FIELDS),
@@ -80,6 +94,8 @@ class ApiClient {
     }
 
     async updateReservation(id, payload) {
+        await this.waitForReady()
+
         const res = await this.#fetch(`${this.baseUrl}/collections/reservation/records/${id}`, {
             method: 'PATCH',
             body: filterObject(payload, RESERVATION_ALLOWED_FIELDS),
@@ -89,6 +105,8 @@ class ApiClient {
     }
 
     async deleteReservation(id) {
+        await this.waitForReady()
+
         return await this.#fetch(`${this.baseUrl}/collections/reservation/records/${id}`, {
             method: 'DELETE',
             headers: this.#defaultHeaders(),
@@ -98,19 +116,37 @@ class ApiClient {
     // Items
 
     async getItemByIid(iid) {
+        await this.waitForReady()
+
+        const data = await this.getItemsByIids([iid])
+        return data.items.length ? data.items[0] : null
+    }
+
+    async getItemsByIids(iids, fields) {
+        await this.waitForReady()
+
+        const filterStr = [...new Set(iids)].map(iid => `iid=${iid}`).join('||')
         const params = new URLSearchParams()
-        params.append('filter', `(iid='${iid}')`)
-        params.append('perPage', 1)
+        params.append('filter', `(${filterStr})`)
+        params.append('perPage', iids.length)
         params.append('skipTotal', true)
+        if (fields && fields.length) {
+            params.append('fields', fields.join(','))
+        }
 
         const url = `${this.baseUrl}/collections/item/records?${params.toString()}`
         const res = await this.#fetch(url, { headers: this.#defaultHeaders() })
         const data = await res.json()
 
-        return data.items.length ? this.postprocessItem(data.items[0]) : null
+        return {
+            ...data,
+            items: data.items.map(i => this.postprocessItem(i))
+        }
     }
 
     async getNextItemId() {
+        await this.waitForReady()
+
         const params = new URLSearchParams()
         params.append('perPage', 1)
         params.append('sort', '-iid')
@@ -122,13 +158,17 @@ class ApiClient {
         return data.items.length ? data.items[0].iid + 1 : 1
     }
 
-    async findItems(page = 1, pageSize = 30, filters = {}, sort = { keys: ['iid'], dir: 'asc' }, idsOnly = false) {
+    async findItems(page = 1, pageSize = 30, filters = {}, sort = { keys: ['iid'], dir: 'asc' }, fields = []) {
+        await this.waitForReady()
+
         const params = new URLSearchParams()
         params.append('filter', this.#buildItemFilters(filters))
         params.append('sort', sortParams(sort.keys, sort.dir))
         params.append('page', page)
         params.append('perPage', pageSize)
-        if (idsOnly) params.append('fields', 'id')
+        if (fields && fields.length) {
+            params.append('fields', fields.join(','))
+        }
 
         const url = `${this.baseUrl}/collections/item/records?${params.toString()}`
         const res = await this.#fetch(url, { headers: this.#defaultHeaders() })
@@ -141,6 +181,8 @@ class ApiClient {
     }
 
     async createItem(payload) {
+        await this.waitForReady()
+
         const res = await this.#fetch(`${this.baseUrl}/collections/item/records`, {
             method: 'POST',
             body: jsonToFormData(payload),
@@ -150,6 +192,8 @@ class ApiClient {
     }
 
     async updateItem(id, payload) {
+        await this.waitForReady()
+
         const res = await this.#fetch(`${this.baseUrl}/collections/item/records/${id}`, {
             method: 'PATCH',
             body: jsonToFormData(payload),
@@ -159,6 +203,8 @@ class ApiClient {
     }
 
     async deleteItem(id) {
+        await this.waitForReady()
+
         return await this.#fetch(`${this.baseUrl}/collections/item/records/${id}`, {
             method: 'DELETE',
             headers: this.#defaultHeaders(),
@@ -240,7 +286,8 @@ class ApiClient {
     postprocessItem(item) {
         return {
             ...item,
-            images: item.images.map(f => this.resolveImageUrl('item', item.id, f))
+            images: item.images?.map(f => this.resolveImageUrl('item', item.id, f)),
+            exists_more_than_once: item.copies ? item.copies > 1 : false
         }
     }
 
