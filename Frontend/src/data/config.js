@@ -18,6 +18,7 @@ import reservationInputs from "./reservations/inputs";
 import reservationFilters from "./reservations/filters";
 import * as reservationAdapter from "./reservations/adapter";
 import * as itemAdapter from "./item/adapter";
+import * as customerAdapter from "./customer/adapter";
 
 export default [
   {
@@ -27,6 +28,7 @@ export default [
     filters: customerFilters,
     docType: "customer",
     title: "Nutzer:innen",
+    adapter: customerAdapter,
     onData: customerDataHooks.onDataLoaded,
   },
   {

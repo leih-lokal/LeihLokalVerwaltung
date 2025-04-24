@@ -3,14 +3,15 @@ import {
   parseTimestampToString,
 } from "../../utils/utils.js";
 
-const backgroundColor = async (customer) => customer.highlight;
+const backgroundColor = async (customer) => customer.highlight_color;
 
 export default [
   {
     title: "Id",
-    key: "id",
+    key: "iid",
     numeric: true,
     search: "from_beginning",
+    initialSort: 'desc',
     backgroundColor,
   },
   {
@@ -30,14 +31,6 @@ export default [
     backgroundColor,
   },
   {
-    title: "Hausnummer",
-    key: "house_number",
-    search: "exclude",
-    disableSort: true,
-    backgroundColor,
-    hideInTable: true,
-  },
-  {
     title: "Postleitzahl",
     key: "postal_code",
     search: "exclude",
@@ -52,7 +45,7 @@ export default [
   },
   {
     title: "Beitritt",
-    key: "registration_date",
+    key: "registered_on",
     display: (value) => parseTimestampToString(value),
     search: "exclude",
     backgroundColor,
@@ -80,7 +73,7 @@ export default [
   },
   {
     title: "Telefonnummer",
-    key: "telephone_number",
+    key: "phone",
     display: (value) => {
       if (!value) return value;
       let formattedValue = value.replace(/ /g, "");
@@ -103,7 +96,7 @@ export default [
   },
   {
     title: "Newsletter",
-    key: "subscribed_to_newsletter",
+    key: "newsletter",
     display: (value) => (parseStringToBoolean(value) ? "Ja" : "Nein"),
     search: "exclude",
     backgroundColor,

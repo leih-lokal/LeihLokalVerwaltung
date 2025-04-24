@@ -71,11 +71,12 @@
       })),
     );
 
-    let customers = await Database.findCached({
-      fields: ["registration_date"],
-      limit: 1_000_000,
-      selector: Database.selectorBuilder().withDocType("customer").build(),
-    }).then((result) => result.docs);
+    let customers = (
+      await apiClient.findCustomers({
+        pageSize: -1,
+        fields: ["id", "iid", "registered_on"],
+      })
+    ).items;
 
     let items = (
       await apiClient.findItems({
@@ -135,7 +136,7 @@
 
       const newCustomerCount = customers.filter((customer) =>
         timestampLiesInMonthsBefore(
-          customer.registration_date,
+          customer.registered_on,
           timestampNMonthsAgo,
           1,
         ),

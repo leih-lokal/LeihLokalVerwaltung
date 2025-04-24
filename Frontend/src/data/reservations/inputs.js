@@ -19,7 +19,7 @@ const updateReservationCustomer = (context, customer) => {
     customer_name: `${customer.firstname} ${customer.lastname}`,
     customer_iid: customer.id,
     customer_email: customer.email,
-    customer_phone: customer.telephone_number?.replace(/\s/, '').trim(),
+    customer_phone: customer.phone?.replace(/\s/, '').trim(),
   });
 };
 
@@ -85,7 +85,7 @@ export default {
         searchFunction: (context) => (searchTerm) =>
           Database.fetchDocsBySelector(
             customerIdStartsWithSelector(searchTerm),
-            ["id", "firstname", "lastname", "telephone_number", "email"],
+            ["id", "firstname", "lastname", "phone", "email"],
             ["id"]
           ),
         suggestionFormat: (context) => ({ id, firstname, lastname }) => `${id}: ${firstname} ${lastname}`,

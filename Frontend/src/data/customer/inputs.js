@@ -118,7 +118,7 @@ export default {
       }
     },
     {
-      id: "telephone_number",
+      id: "phone",
       label: "Telefonnummer",
       group: "Kontakt",
       component: TextInput,
@@ -130,7 +130,7 @@ export default {
       component: Checkbox,
     },
     {
-      id: "registration_date",
+      id: "registered_on",
       label: "Beitritt",
       group: "Mitgliedschaft",
       component: DateInput,

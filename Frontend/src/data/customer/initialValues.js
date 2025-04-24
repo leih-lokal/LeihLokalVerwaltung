@@ -5,19 +5,17 @@ import Database from "../../database/ENV_DATABASE";
 
 export default {
   id: () => Database.nextUnusedId("customer"),
-  registration_date: () => millisAtStartOfToday(),
-  type: () => "customer",
+  registered_on: () => millisAtStartOfToday(),
   lastname: () => "",
   firstname: () => "",
   renewed_on: () => 0,
   remark: () => "",
-  subscribed_to_newsletter: () => false,
+  newsletter: () => false,
   email: () => "",
   street: () => "",
-  house_number: () => "",
   postal_code: () => "",
   city: () => "",
-  telephone_number: () => "",
+  phone: () => "",
   heard: () => "",
-  highlight: () => "",
+  highlight_color: () => "",
 };

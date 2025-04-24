@@ -92,6 +92,26 @@ class ApiClient {
         return await this.pb.collection('reservation').delete(id)
     }
 
+    // Customers
+
+    async findCustomers({ page, pageSize, filters, sorting, fields }) {
+        await this.waitForReady()
+
+        const opts = {}
+        if (fields) opts.fields = fields?.join(',')
+        if (filters) opts.filter = this.#buildCustomerFilters(filters)
+        if (sorting) opts.sort = sortParams(sorting.keys, sorting.dir)
+
+        const full = pageSize === -1
+        const data = full
+            ? await this.pb.collection('customer').getFullList(opts)
+            : await this.pb.collection('customer').getList(page, pageSize, opts)
+
+        return full
+            ? { items: data.map(i => this.postprocessItem(i)) }
+            : { ...data, items: data.items.map(i => this.postprocessItem(i)) }
+    }
+
     // Items
 
     async findItems({ page, pageSize, filters, sorting, fields }) {
@@ -213,6 +233,31 @@ class ApiClient {
             queryFilterParts.push(`name~'${filters.query}'`)
             queryFilterParts.push(`brand~'${filters.query}'`)
             queryFilterParts.push(`model~'${filters.query}'`)
+            filterParts.push(`(${queryFilterParts.join(' || ')})`)
+        }
+
+        if (!filterParts.length) return ''
+        return `(${filterParts.join(' && ')})`
+    }
+
+    #buildCustomerFilters(filters = {}) {
+        // TODO: make filter construction generic
+        const filterParts = []
+
+        if (filters.hasOwnProperty('registered_after') && filters.registered_after !== undefined) filterParts.push(`registered_on>='${new Date(filters.registered_after).toLocaleDateString('fr-CA')}'`)
+        if (filters.hasOwnProperty('registered_before') && filters.registered_before !== undefined) filterParts.push(`registered_on<='${new Date(filters.registered_before).toLocaleDateString('fr-CA')}'`)
+        if (filters.hasOwnProperty('renewed_after') && filters.renewed_after !== undefined) filterParts.push(`renewed_on>='${new Date(filters.renewed_after).toLocaleDateString('fr-CA')}'`)
+        if (filters.hasOwnProperty('renewed_before') && filters.renewed_before !== undefined) filterParts.push(`renewed_on<='${new Date(filters.renewed_before).toLocaleDateString('fr-CA')}'`)
+
+
+        if (filters.query) {
+            if (/[a-z]/i.test(filters.query) && filters.query.length < 3) {
+                filters.query = window.crypto.randomUUID()  // impossible query
+            }
+            const queryFilterParts = []
+            queryFilterParts.push(`iid~'${filters.query}'`)
+            queryFilterParts.push(`firstname~'${filters.query}'`)
+            queryFilterParts.push(`lastname~'${filters.query}'`)
             filterParts.push(`(${queryFilterParts.join(' || ')})`)
         }
 
