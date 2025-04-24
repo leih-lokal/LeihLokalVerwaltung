@@ -8,6 +8,10 @@ const ITEM_ALLOWED_FIELDS = [
     'iid', 'name', 'description', 'status', 'deposit', 'synonyms', 'category', 'brand', 'model', 'packaging', 'manual', 'parts', 'copies', 'highlight_color', 'internal_note', 'images'
 ]
 
+const CUSTOMER_ALLOWED_FIELDS = [
+    'iid', 'firstname', 'lastname', 'email', 'phone', 'city', 'postal_code', 'street', 'heard', 'highlight_color', 'newsletter', 'remark', 'registered_on', 'renewed_on'
+]
+
 function filterObject(obj, keys) {
     return Object.fromEntries(keys.map(k => [k, obj[k]]))
 }
@@ -112,6 +116,50 @@ class ApiClient {
             : { ...data, items: data.items.map(i => this.postprocessItem(i)) }
     }
 
+    async getCustomerByIid(iid) {
+        await this.waitForReady()
+
+        const data = await this.getCustomersByIids([iid])
+        return data.items.length ? data.items[0] : null
+    }
+
+    async getCustomersByIids(iids, fields) {
+        await this.waitForReady()
+
+        const opts = {
+            filter: [...new Set(iids)].map(iid => `iid=${iid}`).join('||')
+        }
+        if (fields) opts.fields = fields.join(',')
+
+        const data = await this.pb.collection('customer').getFullList(opts)
+        return { items: data.map(i => this.postprocessCustomer(i)) }
+    }
+
+    async getNextCustomerId() {
+        await this.waitForReady()
+
+        const data = await this.pb.collection('customer').getFirstListItem('', { sort: '-iid' })
+        return data?.iid + 1 || 1
+    }
+
+    async getUniqueCustomerField(field) {
+
+    }
+
+    async createCustomer(payload) {
+        await this.waitForReady()
+        return await this.pb.collection('customer').create(filterObject(payload, CUSTOMER_ALLOWED_FIELDS))
+    }
+
+    async updateCustomer(id, payload) {
+        await this.waitForReady()
+        return await this.pb.collection('customer').update(id, filterObject(payload, CUSTOMER_ALLOWED_FIELDS))
+    }
+
+    async deleteCustomer(id) {
+        return await this.pb.collection('customer').delete(id)
+    }
+
     // Items
 
     async findItems({ page, pageSize, filters, sorting, fields }) {
@@ -173,6 +221,17 @@ class ApiClient {
     async deleteItem(id) {
         return await this.pb.collection('item').delete(id)
     }
+
+    // Autocomplete
+    async getAutocompleteStreet(q) {
+        await this.waitForReady()
+
+        const data = await this.pb.send('/api/autocomplete/street', {
+            query: { q }
+        })
+        return data
+    }
+
 
     // Internal API calls
 
@@ -272,6 +331,10 @@ class ApiClient {
             images: item.images?.map(f => this.resolveImageUrl('item', item.id, f)),
             exists_more_than_once: item.copies ? item.copies > 1 : false
         }
+    }
+
+    postprocessCustomer(customer) {
+        return customer
     }
 
     // Misc

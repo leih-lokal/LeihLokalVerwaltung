@@ -11,6 +11,7 @@ class AdapterState {
         AdapterState._instance = this
 
         this.onEntityUpdate = () => { }
+        this.autocompleteCache = {}
     }
 }
 
@@ -39,4 +40,43 @@ export async function query(opts) {
         totalPages: data.totalPages,
         docs: data.items,
     }
+}
+
+export async function update(customer) {
+    const res = await api.updateCustomer(customer.id, sanitizeCustomer(customer))
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}
+
+export async function create(customer) {
+    const res = await api.createCustomer(sanitizeCustomer(customer))
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}
+
+export async function remove(customer) {
+    const res = await api.deleteCustomer(customer.id)
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}
+
+export async function getAutocompleteField(fieldName, searchTerm) {
+    if (fieldName === 'street') {
+        searchTerm = searchTerm.replace(/[0-9]+.*$/g, '')
+
+        const cacheKey = `${fieldName},${searchTerm}`
+        if (!state.autocompleteCache[cacheKey]) {
+            state.autocompleteCache[cacheKey] = (await api.getAutocompleteStreet(searchTerm)).map(street => ({ street }))
+        }
+
+        return state.autocompleteCache[cacheKey]
+    }
+    return []
+}
+
+function sanitizeCustomer(customer) {
+    customer = { ...customer }
+    customer.registered_on = customer.registered_on ? new Date(customer.registered_on) : null
+    customer.renewed_on = customer.renewed_on ? new Date(customer.renewed_on) : null
+    return customer
 }

@@ -54,7 +54,7 @@ export async function create(item) {
 }
 
 export async function remove(item) {
-    const res = await api.deleteItem(item)
+    const res = await api.deleteItem(item.id)
     setTimeout(() => state.onEntityUpdate())
     return res;
 }

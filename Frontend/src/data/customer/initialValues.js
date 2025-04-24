@@ -1,10 +1,12 @@
-import { millisAtStartOfToday } from "../../utils/utils";
-import Database from "../../database/ENV_DATABASE";
-
 // initial values for new customers
 
+import { millisAtStartOfToday, millisAtStartOfDay } from "../../utils/utils";
+import { getApiClient } from "../../utils/api";
+
+const apiClient = getApiClient()
+
 export default {
-  id: () => Database.nextUnusedId("customer"),
+  iid: () => apiClient.getNextItemId(),
   registered_on: () => millisAtStartOfToday(),
   lastname: () => "",
   firstname: () => "",

@@ -1,17 +1,19 @@
-import Database from "../../database/ENV_DATABASE";
 import { notifier } from "@beyonk/svelte-notifications";
 import Logger from "js-logger";
+import { remove } from './adapter.js'
 
-export default (customer, closePopup) => {
+export default async (customer, closePopup) => {
   if (confirm("Soll diese/r Nutzer:in wirklich gelöscht werden?")) {
-    return Database.removeDoc(customer)
-      .then(() => notifier.success("Nutzer:in gelöscht!"))
+    await remove(customer)
+      .then((result) => notifier.success("Nutzer:in gelöscht"))
       .then(closePopup)
-      .catch((error) => {
-        Logger.error(error);
-        notifier.danger("Nutzer:in konnte nicht gelöscht werden!", {
+      .catch(error => {
+        //const msg = "Nutzer:in konnte nicht gelöscht werden!"
+        const msg = error.message
+        notifier.danger(msg, {
           persist: true,
         });
+        Logger.error(error);
       });
   }
 };

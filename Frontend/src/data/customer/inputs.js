@@ -3,11 +3,14 @@ import AutocompleteInput from "../../components/Input/AutocompleteInput.svelte";
 import DateInput from "../../components/Input/DateInput.svelte";
 import SelectInput from "../../components/Input/SelectInput.svelte";
 import Checkbox from "../../components/Input/Checkbox.svelte";
-import Database from "../../database/ENV_DATABASE";
 import ColorDefs from "../../components/Input/ColorDefs";
 import onSave from "./onSave";
 import onDelete from "./onDelete";
 import initialValues from "./initialValues";
+import { getApiClient } from "../../utils/api";
+import { getAutocompleteField } from './adapter.js'
+
+const apiClient = getApiClient()
 
 export default {
   title: (context) => `Nutzer:in ${context.createNew ? "anlegen" : "bearbeiten"}`,
@@ -32,7 +35,7 @@ export default {
   ],
   inputs: [
     {
-      id: "id",
+      id: "iid",
       label: "Nutzernummer",
       group: "ID und Name",
       component: TextInput,
@@ -58,53 +61,33 @@ export default {
     },
     {
       id: "street",
-      label: "Straße",
+      label: "Straße + Nr.",
       group: "Adresse",
       component: AutocompleteInput,
       props: {
         required: true,
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchUniqueCustomerFieldValues("street", searchTerm),
-        noResultsText: "Straße noch nicht in Datenbank",
+        // searchFunction: (context) => (searchTerm) => getAutocompleteField('street', searchTerm),
+        // noResultsText: "Straße noch nicht in Datenbank",
         valueField: "street",
       },
-    },
-    {
-      id: "house_number",
-      label: "Hausnummer",
-      group: "Adresse",
-      component: TextInput,
-      props: { required: true },
     },
     {
       id: "postal_code",
       label: "Postleitzahl",
       group: "Adresse",
-      component: AutocompleteInput,
+      component: TextInput,
       props: {
         required: true,
         onlyNumbers: true,
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchUniqueCustomerFieldValues(
-            "postal_code",
-            searchTerm,
-            true
-          ),
-        valueField: "postal_code",
-        noResultsText: "PLZ noch nicht in Datenbank",
       },
     },
     {
       id: "city",
       label: "Stadt",
       group: "Adresse",
-      component: AutocompleteInput,
+      component: TextInput,
       props: {
         required: true,
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchUniqueCustomerFieldValues("city", searchTerm),
-        valueField: "city",
-        noResultsText: "Stadt noch nicht in Datenbank",
       },
     },
     {
@@ -124,7 +107,7 @@ export default {
       component: TextInput,
     },
     {
-      id: "subscribed_to_newsletter",
+      id: "newsletter",
       label: "Newsletter",
       group: "Kontakt",
       component: Checkbox,
@@ -160,6 +143,7 @@ export default {
           "Freunde & Bekannte",
           "Zeitung / Medien",
           "Nachbarschaft",
+          "Sonstige"
         ],
         isCreatable: true,
         isMulti: true,
@@ -173,7 +157,7 @@ export default {
       component: TextInput,
     },
     {
-      id: "highlight",
+      id: "highlight_color",
       label: "Markieren",
       group: "Sonstiges",
       component: SelectInput,
@@ -182,23 +166,19 @@ export default {
           { value: "", label: "Nicht markieren" },
           {
             value: ColorDefs.HIGHLIGHT_GREEN,
-            label:
-              "<a style='color:" + ColorDefs.HIGHLIGHT_GREEN + "'>■</a> Grün",
+            label: "<a style='color:" + ColorDefs.HIGHLIGHT_GREEN + "'>■</a> Grün",
           },
           {
             value: ColorDefs.HIGHLIGHT_BLUE,
-            label:
-              "<a style='color: " + ColorDefs.HIGHLIGHT_BLUE + "'>■</a> Blau",
+            label: "<a style='color: " + ColorDefs.HIGHLIGHT_BLUE + "'>■</a> Blau",
           },
           {
             value: ColorDefs.HIGHLIGHT_YELLOW,
-            label:
-              "<a style='color: " + ColorDefs.HIGHLIGHT_YELLOW + "'>■</a> Gelb",
+            label: "<a style='color: " + ColorDefs.HIGHLIGHT_YELLOW + "'>■</a> Gelb",
           },
           {
             value: ColorDefs.HIGHLIGHT_RED,
-            label:
-              "<a style='color: " + ColorDefs.HIGHLIGHT_RED + "'>■</a> Rot",
+            label: "<a style='color: " + ColorDefs.HIGHLIGHT_RED + "'>■</a> Rot",
           },
         ],
         isClearable: true,
