@@ -3,7 +3,6 @@ import { recentEmployeesStore } from "../../utils/stores";
 import { notifier } from "@beyonk/svelte-notifications";
 import columns from "./columns";
 import { setNumericValuesDefault0 } from "../utils";
-import { itemById } from "../selectors";
 import Logger from "js-logger";
 import {
   millisAtStartOfToday,

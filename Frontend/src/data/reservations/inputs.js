@@ -3,11 +3,10 @@ import AutocompleteInput from "../../components/Input/AutocompleteInput.svelte";
 import DateInput from "../../components/Input/DateInput.svelte";
 import SelectInput from "../../components/Input/SelectInput.svelte";
 import Checkbox from "../../components/Input/Checkbox.svelte";
-import Database from "../../database/ENV_DATABASE";
 import onSave from "./onSave";
 import onDelete from "./onDelete";
 import initialValues from "./initialValues";
-import { customerIdStartsWithSelector } from "../selectors";
+import * as customerAdapter from "../customer/adapter";
 import { getApiClient } from "../../utils/api";
 
 const apiClient = getApiClient()
@@ -17,7 +16,7 @@ const selectedItemOptions = []  // { value, label, _ref }
 const updateReservationCustomer = (context, customer) => {
   context.updateDoc({
     customer_name: `${customer.firstname} ${customer.lastname}`,
-    customer_iid: customer.id,
+    customer_iid: customer.iid,
     customer_email: customer.email,
     customer_phone: customer.phone?.replace(/\s/, '').trim(),
   });
@@ -82,13 +81,8 @@ export default {
         localFiltering: true,
         valueField: "id",
         onlyNumbers: true,
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchDocsBySelector(
-            customerIdStartsWithSelector(searchTerm),
-            ["id", "firstname", "lastname", "phone", "email"],
-            ["id"]
-          ),
-        suggestionFormat: (context) => ({ id, firstname, lastname }) => `${id}: ${firstname} ${lastname}`,
+        searchFunction: (context) => (searchTerm) => customerAdapter.query({ searchTerm }).then(res => res.docs),
+        suggestionFormat: (context) => ({ iid, firstname, lastname }) => `${iid}: ${firstname} ${lastname}`,
         noResultsText: "Kein/e Nutzer:in mit dieser Nummer",
         onSelected: (context) => (selectedCustomer) => {
           updateReservationCustomer(context, selectedCustomer);
@@ -99,8 +93,19 @@ export default {
       id: "customer_name",
       label: "Nutzer Name",
       group: "Nutzer",
-      component: TextInput,
-      props: { required: true },
+      component: AutocompleteInput,
+      nobind: true,
+      props: {
+        required: true,
+        localFiltering: true,
+        valueField: "lastname",
+        searchFunction: (context) => (searchTerm) => customerAdapter.query({ searchTerm }).then(res => res.docs),
+        suggestionFormat: (context) => ({ iid, firstname, lastname }) => `${iid}: ${firstname} ${lastname}`,
+        noResultsText: "Kein/e Nutzer:in mit diesem Namen",
+        onSelected: (context) => (selectedCustomer) => {
+          updateReservationCustomer(context, selectedCustomer);
+        },
+      },
     },
     {
       id: "customer_email",

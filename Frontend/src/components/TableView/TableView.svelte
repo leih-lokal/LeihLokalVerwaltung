@@ -221,10 +221,8 @@
   {rowHeight}
   columns={columnsToDisplay}
   loadData={tableData}
-  cellBackgroundColorsFunction={(customer) =>
-    Promise.all(
-      columnsToDisplay.map((column) => column.backgroundColor(customer)),
-    )}
+  cellBackgroundColorsFunction={(e) =>
+    Promise.all(columnsToDisplay.map((column) => column.backgroundColor(e)))}
   {indicateSort}
   onLoadDataErrorText={(error) => {
     if (error.status === 401) {

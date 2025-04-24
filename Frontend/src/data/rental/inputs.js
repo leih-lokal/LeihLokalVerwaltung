@@ -14,13 +14,9 @@ import { recentEmployeesStore } from "../../utils/stores";
 import initialValues from "./initialValues";
 import { notifier } from "@beyonk/svelte-notifications";
 import { get } from "svelte/store";
-import {
-  customerIdStartsWithSelector,
-  customerAttributeStartsWithIgnoreCaseSelector,
-  activeRentalsForCustomerSelector,
-  customerById,
-} from "../selectors";
+import { activeRentalsForCustomerSelector } from "../selectors";
 import * as itemAdapter from "../item/adapter";
+import * as customerAdapter from "../customer/adapter";
 import { getApiClient } from "../../utils/api";
 
 const apiClient = getApiClient()
@@ -78,9 +74,9 @@ const updateItemOfRental = (context, item) => {
 const updateCustomerOfRental = (context, customer) => {
   context.updateDoc({
     customer_name: customer.lastname,
-    customer_id: customer.id,
+    customer_id: customer.iid,
   });
-  showNotificationsForCustomer(customer.id);
+  showNotificationsForCustomer(customer.iid);
 };
 
 const showNotificationsForItem = async (item) => {
@@ -165,38 +161,23 @@ const showNotificationsForCustomer = async (customerId) => {
       }
     });
 
-  Database.fetchAllDocsBySelector(customerById(customerId), [
-    "remark",
-    "highlight",
-  ]).then((results) => {
-    if (
-      // first check if there is a remark
-      results.length > 0 &&
-      results[0]["remark"] &&
-      results[0]["remark"] !== ""
-    ) {
-      notifier.danger(results[0]["remark"], { persist: true });
-    }
-    if (
-      // then check if customer is highlighted
-      results.length > 0 &&
-      results[0]["highlight"] &&
-      results[0]["highlight"] !== ""
-    ) {
-      const colorDescription = customerColorToDescription(
-        results[0]["highlight"]
-      );
-      notifier.info(
-        "Diese/r Nutzer:in wurde farblich markiert: " + colorDescription,
-        { persist: true }
-      );
-    }
-  });
+  apiClient.getCustomerByIid(customerId)
+    .then((c) => {
+      if (c.remark && c.remark !== "") {  // first check if there is a remark
+        notifier.danger(c.remark, { persist: true });
+      }
+      if (c.highlight_color && c.highlight_color !== "") {  // then check if customer is highlighted
+        const colorDescription = customerColorToDescription(c.highlight_color);
+        notifier.info(
+          "Diese/r Nutzer:in wurde farblich markiert: " + colorDescription,
+          { persist: true }
+        );
+      }
+    });
 };
 
 export default {
-  title: (context) =>
-    `Leihvorgang ${context.createNew ? "anlegen" : "bearbeiten"}`,
+  title: (context) => `Leihvorgang ${context.createNew ? "anlegen" : "bearbeiten"}`,
   initialValues,
   onMount: (context) => () => {
     hideToggleUpdateItemStatus = false;
@@ -357,15 +338,10 @@ export default {
         sortByMatchedKeywords: true,
         itemSortFunction: () => sortItemByIdOrName,
         localFiltering: true,
-        valueField: "id",
+        valueField: "iid",
         onlyNumbers: true,
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchDocsBySelector(
-            customerIdStartsWithSelector(searchTerm),
-            ["id", "firstname", "lastname"],
-            ["id"]
-          ),
-        suggestionFormat: (context) => ({ id, firstname, lastname }) => `${id}: ${firstname} ${lastname}`,
+        searchFunction: (context) => (searchTerm) => customerAdapter.query({ searchTerm }).then(res => res.docs),
+        suggestionFormat: (context) => ({ iid, firstname, lastname }) => `${iid}: ${firstname} ${lastname}`,
         noResultsText: "Kein/e Nutzer:in mit dieser Nummer",
         onSelected: (context) => (selectedCustomer) => {
           updateCustomerOfRental(context, selectedCustomer);
@@ -380,15 +356,8 @@ export default {
       nobind: true,
       props: {
         valueField: "lastname",
-        searchFunction: (context) => (searchTerm) =>
-          Database.fetchDocsBySelector(
-            customerAttributeStartsWithIgnoreCaseSelector(
-              "lastname",
-              searchTerm
-            ),
-            ["id", "firstname", "lastname"]
-          ),
-        suggestionFormat: (context) => ({ id, firstname, lastname }) => `${id}: ${firstname} ${lastname}`,
+        searchFunction: (context) => (searchTerm) => customerAdapter.query({ searchTerm }).then(res => res.docs),
+        suggestionFormat: (context) => ({ iid, firstname, lastname }) => `${iid}: ${firstname} ${lastname}`,
         noResultsText: "Kein/e Nutzer:in mit diesem Name",
         onSelected: (context) => (selectedCustomer) => {
           updateCustomerOfRental(context, selectedCustomer);
