@@ -19,6 +19,7 @@ import reservationFilters from "./reservations/filters";
 import * as reservationAdapter from "./reservations/adapter";
 import * as itemAdapter from "./item/adapter";
 import * as customerAdapter from "./customer/adapter";
+import * as rentalAdapter from "./rental/adapter";
 
 export default [
   {
@@ -48,6 +49,7 @@ export default [
     filters: rentalFilters,
     docType: "rental",
     title: "Leihvorgänge",
+    adapter: rentalAdapter,
     onData: rentalDataHooks.onDataLoaded,
   },
   {

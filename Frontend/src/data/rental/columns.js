@@ -5,15 +5,9 @@ import {
 import COLORS from "../../components/Input/ColorDefs";
 
 const hasReturnDate = (rental) => rental.returned_on && rental.returned_on > 0;
-const hasBeenReturnedToday = (rental) =>
-  hasReturnDate(rental) && rental.returned_on === millisAtStartOfToday();
-const shouldBeReturnedToday = (rental) =>
-  rental.to_return_on &&
-  rental.to_return_on === millisAtStartOfToday() &&
-  !hasReturnDate(rental);
-const shouldHaveBeenReturnedBeforeTodayAndIsNotReturned = (rental) =>
-  rental.to_return_on &&
-  (!hasReturnDate(rental) && rental.to_return_on < millisAtStartOfToday());
+const hasBeenReturnedToday = (rental) => hasReturnDate(rental) && rental.returned_on === new Date(millisAtStartOfToday());
+const shouldBeReturnedToday = (rental) => rental.expected_on && rental.expected_on === new Date(millisAtStartOfToday()) && !hasReturnDate(rental);
+const shouldHaveBeenReturnedBeforeTodayAndIsNotReturned = (rental) => rental.expected_on && (!hasReturnDate(rental) && rental.expected_on < new Date(millisAtStartOfToday()));
 
 const rentalHighlight = async (rental) => {
   if (hasBeenReturnedToday(rental)) {
@@ -26,10 +20,10 @@ const rentalHighlight = async (rental) => {
 };
 
 const customerHighlight = (rental) => {
-  return Promise.resolve(rental.customer_highlight)
+  return Promise.resolve(rental.expand.customer.highlight_color)
 }
 const itemHighlight = (rental) => {
-  return Promise.resolve(rental.item_highlight)
+  return Promise.resolve(rental.expand.items[0].highlight_color)  // TODO: support multi-item rentals
 }
 
 const highlightByPriority = (highlightFunctions) => (rental) =>
@@ -42,30 +36,34 @@ const highlightByPriority = (highlightFunctions) => (rental) =>
 export default [
   {
     title: "Bild",
-    key: "image",
+    key: "expand",
     search: "exclude",
     isImageUrl: true,
     disableSort: true,
+    display: (value) => value.items[0].images.length ? value.items[0].images[0] : null,  // TODO: support multi-item rentals
     backgroundColor: highlightByPriority([itemHighlight, rentalHighlight]),
   },
   {
     title: "Gegenstand Nr",
-    key: "item_id",
+    key: "expand",
+    sortKey: "items.iid",
     numeric: true,
     search: "from_beginning",
-    display: (value) => String(value).padStart(4, "0"),
+    display: (value) => value.items.map(i => String(i.iid).padStart(4, '0')).join(', '),  // TODO: support multi-item rentals
     backgroundColor: highlightByPriority([itemHighlight, rentalHighlight]),
   },
   {
     title: "Gegenstand Name",
-    key: "item_name",
+    key: "expand",
+    sortKey: "items.name",
+    display: (value) => value.items.map(i => i.name).join(', '),  // TODO: support multi-item rentals
     backgroundColor: highlightByPriority([itemHighlight, rentalHighlight]),
   },
   {
     title: "Ausgegeben",
     key: "rented_on",
     search: "exclude",
-    sort: ["rented_on", "customer_name"],
+    sort: ["rented_on"],
     display: (value) => parseTimestampToHumanReadableString(value),
     backgroundColor: highlightByPriority([rentalHighlight]),
   },
@@ -78,29 +76,33 @@ export default [
   },
   {
     title: "Zurückerwartet",
-    key: "to_return_on",
+    key: "expected_on",
     search: "exclude",
     display: (value) => parseTimestampToHumanReadableString(value),
-    sort: ["returned_on", "to_return_on", "customer_name"],
+    sort: ["returned_on", "expected_on"],
     backgroundColor: highlightByPriority([rentalHighlight]),
     initialSort: "asc",
   },
   {
     title: "Mitarbeiter",
     search: "exclude",
-    key: "passing_out_employee",
+    key: "employee",
     backgroundColor: highlightByPriority([rentalHighlight]),
   },
   {
     title: "Nutzer-Nr.",
-    key: "customer_id",
+    key: "expand",
+    sortKey: "customer.iid",
     numeric: true,
     search: "from_beginning",
+    display: (value) => value.customer.iid,
     backgroundColor: highlightByPriority([customerHighlight, rentalHighlight]),
   },
   {
     title: "Nutzername",
-    key: "customer_name",
+    key: "expand",
+    sortKey: "customer.lastname",
+    display: (value) => value.customer.lastname,
     backgroundColor: highlightByPriority([customerHighlight, rentalHighlight]),
   },
   {
@@ -111,7 +113,7 @@ export default [
   },
   {
     title: "Pfand zurück",
-    key: "deposit_returned",
+    key: "deposit_back",
     search: "exclude",
     backgroundColor: highlightByPriority([rentalHighlight]),
   },
@@ -124,7 +126,7 @@ export default [
   },
   {
     title: "Mitarbeiter",
-    key: "receiving_employee",
+    key: "employee_back",
     search: "exclude",
     backgroundColor: highlightByPriority([rentalHighlight]),
   },

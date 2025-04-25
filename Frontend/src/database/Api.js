@@ -96,6 +96,29 @@ class ApiClient {
         return await this.pb.collection('reservation').delete(id)
     }
 
+
+    // Rentals
+
+    async findRentals({ page, pageSize, filters, sorting, fields }) {
+        await this.waitForReady()
+
+        const opts = {}
+        opts.fields = fields?.join(',') || '*,expand.items.iid,expand.items.name,expand.items.id,expand.items.images,expand.items.highlight_color,expand.customer.iid,expand.customer.firstname,expand.customer.lastname,expand.customer.highlight_color'
+        opts.expand = 'items,customer'
+        if (filters) opts.filter = this.#buildRentalFilters(filters)
+        if (sorting) opts.sort = sortParams(sorting.keys, sorting.dir)
+
+        const full = pageSize === -1
+        const data = full
+            ? await this.pb.collection('rental').getFullList(opts)
+            : await this.pb.collection('rental').getList(page, pageSize, opts)
+
+        return full
+            ? { items: data.map(i => this.postprocessRental(i)) }
+            : { ...data, items: data.items.map(i => this.postprocessRental(i)) }
+    }
+
+
     // Customers
 
     async findCustomers({ page, pageSize, filters, sorting, fields }) {
@@ -265,6 +288,33 @@ class ApiClient {
         return `(${filterParts.join(' && ')})`
     }
 
+    #buildRentalFilters(filters = {}) {
+        const filterParts = []
+        const subFilterParts = []
+
+        if (filters.hasOwnProperty('returned_on_after') && filters.returned_on !== undefined) filterParts.push(`returned_on>='${new Date(filters.returned_on).toLocaleDateString('fr-CA')}'`)
+        if (filters.hasOwnProperty('returned_on_before') && filters.returned_on !== undefined) filterParts.push(`returned_on<'${new Date(filters.returned_on).toLocaleDateString('fr-CA')}'`)
+
+        if (filters.itemIds) {
+            subFilterParts.push(...filters.itemIds.map(id => `items~'${id}'`))  // https://github.com/pocketbase/pocketbase/discussions/2332#discussioncomment-5678405
+        }
+        if (filters.query) {
+            if (/[a-z]/i.test(filters.query) && filters.query.length < 3) {
+                filters.query = window.crypto.randomUUID()  // impossible query
+            }
+            subFilterParts.push(`customer.iid~'${filters.query}'`)
+            subFilterParts.push(`customer.firstname:lower~'${filters.query}'`)
+            subFilterParts.push(`customer.lastname:lower~'${filters.query}'`)
+            subFilterParts.push(`items.iid~'${filters.query}'`)
+            subFilterParts.push(`items.name:lower~'${filters.query}'`)
+        }
+
+        if (subFilterParts.length) filterParts.push(`(${subFilterParts.join('||')})`)
+
+        if (!filterParts.length) return ''
+        return `(${filterParts.join(' && ')})`
+    }
+
     #buildItemFilters(filters = {}) {
         // TODO: make filter construction generic
         const filterParts = []
@@ -333,6 +383,20 @@ class ApiClient {
         }
     }
 
+    postprocessRental(rental) {
+        return {
+            ...rental,
+            rented_on: rental.rented_on ? new Date(rental.rented_on) : null,
+            returned_on: rental.returned_on ? new Date(rental.returned_on) : null,
+            expected_on: rental.expected_on ? new Date(rental.expected_on) : null,
+            extended_on: rental.extended_on ? new Date(rental.extended_on) : null,
+            expand: {
+                ...rental.expand,
+                items: rental.expand.items.map(i => this.postprocessItem(i))
+            }
+        }
+    }
+
     postprocessCustomer(customer) {
         return customer
     }
@@ -340,7 +404,7 @@ class ApiClient {
     // Misc
 
     resolveImageUrl(recordType, recordId, filename) {
-        return `${this.baseUrl}/files/${recordType}/${recordId}/${filename}`
+        return `${this.baseUrl}/api/files/${recordType}/${recordId}/${filename}`
     }
 }
 

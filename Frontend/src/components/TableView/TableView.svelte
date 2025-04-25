@@ -141,7 +141,7 @@
     rowsPerPage,
     refresh();
   $: indicateSort = columnsToDisplay.map((col) => {
-    if (col.key === sortByColKey) {
+    if ((col.sortKey || col.key) === sortByColKey) {
       return sortReverse ? "down" : "up";
     } else {
       return "";
@@ -184,7 +184,9 @@
     sortByColKey = columns.find(shouldBeSortedByInitially)
       ? columns.find(shouldBeSortedByInitially).key
       : sortByColKey;
-    const col = columns.find((col) => col.key === sortByColKey);
+    const col = columns.find(
+      (col) => (col.sortKey || col.key) === sortByColKey,
+    );
     sort = col.sort ? col.sort : [sortByColKey];
   };
 
@@ -246,10 +248,13 @@
     );
   }}
   on:colHeaderClicked={(event) => {
-    if (sortByColKey == event.detail.key) sortReverse = !sortReverse;
+    const eventSortKey = event.detail.sortKey || event.detail.key;
+    if (sortByColKey == eventSortKey) sortReverse = !sortReverse;
     else sortReverse = false;
-    sortByColKey = event.detail.key;
-    const col = columnsToDisplay.find((col) => col.key === sortByColKey);
+    sortByColKey = eventSortKey;
+    const col = columnsToDisplay.find(
+      (col) => (col.sortKey || col.key) === sortByColKey,
+    );
     sort = col.sort ?? [sortByColKey];
   }}
 />
