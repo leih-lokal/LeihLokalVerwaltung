@@ -2,7 +2,6 @@ import TextInput from "../../components/Input/TextInput.svelte";
 import AutocompleteInput from "../../components/Input/AutocompleteInput.svelte";
 import DateInput from "../../components/Input/DateInput.svelte";
 import Checkbox from "../../components/Input/Checkbox.svelte";
-import Database from "../../database/ENV_DATABASE";
 import onSave from "./onSave";
 import { onReturnAndSave } from "./onSave";
 import onDelete from "./onDelete";
@@ -14,7 +13,6 @@ import { recentEmployeesStore } from "../../utils/stores";
 import initialValues from "./initialValues";
 import { notifier } from "@beyonk/svelte-notifications";
 import { get } from "svelte/store";
-import { activeRentalsForCustomerSelector } from "../selectors";
 import * as itemAdapter from "../item/adapter";
 import * as customerAdapter from "../customer/adapter";
 import { getApiClient } from "../../utils/api";
@@ -76,7 +74,7 @@ const updateCustomerOfRental = (context, customer) => {
     customer_name: customer.lastname,
     customer_id: customer.iid,
   });
-  showNotificationsForCustomer(customer.iid);
+  showNotificationsForCustomer(customer);
 };
 
 const showNotificationsForItem = async (item) => {
@@ -137,31 +135,24 @@ let sortItemByIdOrName = (itemA, itemB) => {
   return 0;
 };
 
-const showNotificationsForCustomer = async (customerId) => {
-  Database.fetchAllDocsBySelector(
-    activeRentalsForCustomerSelector(customerId),
-    ["item_name"]
-  )
-    .then((results) => results.map((doc) => doc["item_name"]))
-    .then((activeRentals) => {
-      if (activeRentals.length > 0 && activeRentals.length < 3) {
+const showNotificationsForCustomer = async (customer) => {
+  apiClient.getActiveRentalsByCustomer(customer.id)
+    .then((result) => result.items.flatMap((r) => r.expand.items.map(i => i.name)))
+    .then((rentedItems) => {
+      if (rentedItems.length > 0 && rentedItems.length < 3) {
         notifier.warning(
-          `Nutzer:in hat schon diese Gegenstände ausgeliehen: ${activeRentals.join(
-            ", "
-          )}`,
+          `Nutzer:in hat schon diese Gegenstände ausgeliehen: ${rentedItems.join(", ")}`,
           6000
         );
-      } else if (activeRentals.length >= 3) {
+      } else if (rentedItems.length >= 3) {
         notifier.danger(
-          `Nutzer:in hat schon mehr als 2 Gegenstände ausgeliehen: ${activeRentals.join(
-            ", "
-          )}`,
+          `Nutzer:in hat schon mehr als 2 Gegenstände ausgeliehen: ${rentedItems.join(", ")}`,
           6000
         );
       }
     });
 
-  apiClient.getCustomerByIid(customerId)
+  apiClient.getCustomerByIid(customer.iid)
     .then((c) => {
       if (c.remark && c.remark !== "") {  // first check if there is a remark
         notifier.danger(c.remark, { persist: true });

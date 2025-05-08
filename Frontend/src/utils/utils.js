@@ -77,6 +77,13 @@ function isElementInViewport(el) {
   );
 }
 
+function mapByKey(data, key = 'id') {
+  return data.reduce((acc, e) => {
+    acc[e[key]] = e
+    return acc
+  }, {})
+}
+
 export {
   parseTimestampToHumanReadableString as parseTimestampToHumanReadableString,
   parseTimestampToString,
@@ -85,4 +92,5 @@ export {
   millisAtStartOfDay,
   isElementInViewport,
   parseTimestampToDatetimeString as parseTimestampToDatetimeString,
+  mapByKey,
 };

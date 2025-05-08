@@ -1,5 +1,7 @@
-import Database from "../../database/ENV_DATABASE";
-import { activeRentalsForCustomerSelector } from "../selectors";
+import { getApiClient } from '../../utils/api'
+import { mapByKey } from "../../utils/utils";
+
+const apiClient = getApiClient()
 
 export default {
   // this function allows to either block entire data table loading by returning a pending promise
@@ -9,15 +11,11 @@ export default {
     const activeRentalCountResolvers = data.map(() => Promise.withResolvers())
 
     async function fetchAll() {
-      const allRentals = await Database.getRentalsByEntity('customer', data.map(c => c.iid), ['customer_id', 'returned_on'])
-      const activeRentals = allRentals.filter(r => r.returned_on === 0)
-
-      const allRentalsCount = Database.countByKey(allRentals, 'customer_id')
-      const activeRentalsCount = Database.countByKey(activeRentals, 'customer_id')
+      const counts = mapByKey(await apiClient.countCustomerRentals(data.map(c => c.id)))
 
       data.forEach((e, i) => {
-        rentalCountResolvers[i].resolve(allRentalsCount[e.iid] || 0)
-        activeRentalCountResolvers[i].resolve(activeRentalsCount[e.iid] || 0)
+        rentalCountResolvers[i].resolve(counts[e.id]?.num_rentals || 0)
+        activeRentalCountResolvers[i].resolve(counts[e.id]?.num_active_rentals || 0)
       })
     }
 

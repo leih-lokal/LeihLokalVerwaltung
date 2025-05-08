@@ -118,6 +118,32 @@ class ApiClient {
             : { ...data, items: data.items.map(i => this.postprocessRental(i)) }
     }
 
+    async getActiveRentalsByCustomer(customerId) {
+        await this.waitForReady()
+
+        const opts = {}
+        opts.fields = '*,expand.items.iid,expand.items.name,expand.items.id,expand.items.images,expand.items.highlight_color'
+        opts.expand = 'items'
+        opts.filter = `(customer.id='${customerId}') && (returned_on = null)`
+
+        const data = await this.pb.collection('rental').getFullList(opts)
+        return { items: data.map(i => this.postprocessRental(i)) }
+    }
+
+    async countItemRentals(itemIds) {
+        await this.waitForReady()
+
+        const opts = { filter: [...new Set(itemIds)].map(id => `id='${id}'`).join('||'), fields: 'id,num_rentals,num_active_rentals' }
+        return await this.pb.collection('item_rentals').getFullList(opts)
+    }
+
+    async countCustomerRentals(itemIds) {
+        await this.waitForReady()
+
+        const opts = { filter: [...new Set(itemIds)].map(id => `id='${id}'`).join('||'), fields: 'id,num_rentals,num_active_rentals' }
+        return await this.pb.collection('customer_rentals').getFullList(opts)
+    }
+
 
     // Customers
 
