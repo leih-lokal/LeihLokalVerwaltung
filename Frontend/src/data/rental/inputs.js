@@ -217,7 +217,7 @@ export default {
 
     {
       text: "Speichern",
-      onClick: () => onSave(context),
+      onClick: () => onSave(context.doc, context.closePopup, context.createNew, context.form, context.contextVars),
       loadingText: "Leihvorgang wird gespeichert",
     },
   ],
@@ -228,6 +228,7 @@ export default {
       group: "Gegenstand",
       component: AutocompleteInput,
       nobind: true,
+      resolve: (doc) => doc.expand.items[0].iid,
       props: {
         required: true,
         localSorting: true,
@@ -243,7 +244,6 @@ export default {
         },
       },
     },
-
     {
       id: "item_name",
       label: "Name",
@@ -260,20 +260,6 @@ export default {
         },
       },
     },
-    {
-      id: "update_status",
-      label: "Status aktualisieren",
-      group: "Gegenstand",
-      component: Checkbox,
-      nobind: true,
-      hidden: () => hideToggleUpdateItemStatus,
-      props: {
-        value: (context) => context.contextVars.updateItemStatus,
-        // onChange callback necessary because bind only works for doc attributes
-        onChange: (context) => (value) => (context.contextVars.updateItemStatus = value),
-      },
-    },
-
     {
       id: "rented_on",
       label: "Ausgeliehen am",
@@ -295,7 +281,7 @@ export default {
       },
     },
     {
-      id: "to_return_on",
+      id: "expected_on",
       label: "Zurückerwartet am",
       group: "Zeitraum",
       component: DateInput,
@@ -316,7 +302,6 @@ export default {
         container: (context) => context.container,
       },
     },
-
     {
       id: "customer_id",
       label: "Nr",
@@ -355,7 +340,6 @@ export default {
         },
       },
     },
-
     {
       id: "deposit",
       label: "Pfand",
@@ -367,9 +351,8 @@ export default {
         onlyNumbers: true,
       },
     },
-
     {
-      id: "deposit_returned",
+      id: "deposit_back",
       label: "Pfand zurück",
       group: "Pfand",
       hidden: (context) => context.createNew,
@@ -381,7 +364,7 @@ export default {
     },
 
     {
-      id: "passing_out_employee",
+      id: "employee",
       label: "Ausgabe",
       group: "Mitarbeiter",
       component: TextInput,
@@ -391,7 +374,7 @@ export default {
       },
     },
     {
-      id: "receiving_employee",
+      id: "employee_back",
       label: "Rücknahme",
       group: "Mitarbeiter",
       hidden: (context) => context.createNew,

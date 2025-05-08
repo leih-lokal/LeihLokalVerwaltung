@@ -8,6 +8,7 @@ import {
   millisAtStartOfToday,
   parseTimestampToString,
 } from "../../utils/utils";
+import { update, create } from './adapter.js'
 import { getApiClient } from "../../utils/api";
 
 const apiClient = getApiClient()
@@ -19,46 +20,6 @@ const fetchItemById = async (itemId) => {
     Logger.error(error);
     throw `Failed to load item with id ${itemId}`;
   }
-};
-
-const newItemStatus = (rental) => {
-  if (
-    (rental.returned_on && rental.returned_on !== 0 && rental.returned_on <= new Date().getTime()) || // already returned
-    rental.rented_on > new Date().getTime() // or not yet rented
-  ) {
-    return "instock";
-  } else {
-    return "outofstock";
-  }
-};
-
-const getExpReturnDate = (item, rental) => {
-  const hasReturnDateInFuture =
-    item.status === "outofstock" &&
-    rental &&
-    rental.to_return_on &&
-    rental.to_return_on >= millisAtStartOfToday() &&
-    !rental.returned_on;
-
-  let expReturnDate = "";
-  if (item.status === "reserved") {
-    expReturnDate = "Reserviert und noch nicht abgeholt";
-  } else if (hasReturnDateInFuture) {
-    expReturnDate = parseTimestampToString(rental.to_return_on);
-  }
-  return expReturnDate;
-};
-
-const updateItemStatus = async (item, status) => {
-  const isIid = !isNaN(parseInt(item.id))
-  const realId = isIid ? (await apiClient.getItemByIid(item.id))?.id : item.id
-
-  await apiClient.updateItem(realId, { status })
-
-  notifier.success(
-    `'${item.name}' wurde als ${item.status === "instock" ? "verfügbar" : "verliehen"
-    } markiert.`
-  );
 };
 
 export async function onReturnAndSave(context, employee) {
@@ -78,66 +39,34 @@ export async function onReturnAndSave(context, employee) {
   await onSave(context);
 }
 
-export default async function onSave(context) {
-  const { doc, closePopup, createNew, contextVars, form } = context;
-
-  if (!form.wasChecked && !form.checkValidity()) {
+export default async (rental, closePopup, createNew, formRef, contextVars) => {
+  if (!formRef.wasChecked && !formRef.checkValidity()) {
     // "Soft-require" temporarily disabled -> mandatorily require all required fields for rentals
-    // form.wasChecked = true;
+    // formRef.wasChecked = true;
     // notifier.warning('Einige benötigte Felder sind nicht (korrekt) ausgefüllt. Trotzdem speichern?');
     notifier.danger('Nicht alle benötigten Felder sind (korrekt) ausgefüllt.', 3000)
     return;
   }
 
-  setNumericValuesDefault0(doc, columns);
-  // item changed, reset initial item to status available
+  setNumericValuesDefault0(rental, columns);
+
   if (
     contextVars.initialItemId !== undefined &&
-    contextVars.initialItemId !== doc.item_id
+    contextVars.initialItemId !== rental.item_id
   ) {
-    try {
-      const initialItem = await fetchItemById(contextVars.initialItemId);
-      await updateItemStatus(initialItem, "instock");
-      notifier.warning(
-        `Status von '${contextVars.initialItemName}' wurde auf 'verfügbar' geändert. Bitter überprüfe ob das stimmt.`,
-        { persist: true }
-      );
-    } catch (error) {
-      Logger.error(
-        `Failed to update status of initial item with name ${contextVars.initialItemName} id ${contextVars.initialItemId}, ${error}`
-      );
-      notifier.warning(
-        `Status von '${contextVars.initialItemName}' konnte nicht aktualisiert werden. Bitte überprüfe den Status dieses Gegenstandes.`,
-        { persist: true }
-      );
-    }
+    console.log('Item of reservation was changed.')
+    // note: before refactoring to pocketbase, there was logic to reset the status of the previous item
+    // nowadays, this should be handled by the backend implicitly
+    // otherwisee revert to 5ebdd753b4adfbf7035ee25f3ada41bd609dd3ba to see old code
   }
 
-  if (contextVars.updateItemStatus) {
-    try {
-      const item = await fetchItemById(doc.item_id);
-      doc.image = item.images && item.images.length ? item.images[0] : null;
-      await updateItemStatus(item, newItemStatus(doc));
-    } catch (error) {
-      Logger.error(
-        `Failed to update status of item with id ${doc.item_id}, ${error}`
-      );
-
-      notifier.danger(
-        `Status des Gegenstandes mit ID '${doc.item_id}' konnte nicht aktualisiert werden!`,
-        { persist: true }
-      );
-    }
-  } else {
-    Logger.debug(
-      `Did not update item of rental ${doc._id} because updateItemStatus is false.`
-    );
-  }
-
-  await (createNew ? Database.createDoc(doc) : Database.updateDoc(doc))
+  await (createNew
+    ? create(rental)
+    : update(rental)
+  )
     .then((_) => notifier.success("Leihvorgang gespeichert!"))
-    .then(() => recentEmployeesStore.add(doc.passing_out_employee))
-    .then(() => recentEmployeesStore.add(doc.receiving_employee))
+    .then(() => recentEmployeesStore.add(rental.employee))
+    .then(() => recentEmployeesStore.add(rental.employee_back))
     .then(closePopup)
     .catch((error) => {
       notifier.danger("Leihvorgang konnte nicht gespeichert werden!", {

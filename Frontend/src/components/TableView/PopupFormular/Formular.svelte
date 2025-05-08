@@ -42,6 +42,12 @@
 
   const isHidden = (input) => input.hidden && injectContext(input.hidden);
 
+  function resolveVal(doc, inputDef) {
+    return inputDef.hasOwnProperty("resolve")
+      ? doc[inputDef.resolve(doc)]
+      : doc[inputDef.id];
+  }
+
   onMount(() => {
     if (config.onMount) {
       injectContext(config.onMount)();

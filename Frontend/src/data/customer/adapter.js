@@ -43,13 +43,13 @@ export async function query(opts) {
 }
 
 export async function update(customer) {
-    const res = await api.updateCustomer(customer.id, sanitizeCustomer(customer))
+    const res = await api.updateCustomer(customer.id, await adaptCustomerOut(customer))
     setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function create(customer) {
-    const res = await api.createCustomer(sanitizeCustomer(customer))
+    const res = await api.createCustomer(await adaptCustomerOut(customer))
     setTimeout(() => state.onEntityUpdate())
     return res;
 }
@@ -74,7 +74,7 @@ export async function getAutocompleteField(fieldName, searchTerm) {
     return []
 }
 
-function sanitizeCustomer(customer) {
+async function adaptCustomerOut(customer) {
     customer = { ...customer }
     customer.registered_on = customer.registered_on ? new Date(customer.registered_on) : null
     customer.renewed_on = customer.renewed_on ? new Date(customer.renewed_on) : null

@@ -12,6 +12,10 @@ const CUSTOMER_ALLOWED_FIELDS = [
     'iid', 'firstname', 'lastname', 'email', 'phone', 'city', 'postal_code', 'street', 'heard', 'highlight_color', 'newsletter', 'remark', 'registered_on', 'renewed_on'
 ]
 
+const RENTAL_ALLOWED_FIELDS = [
+    'customer', 'items', 'deposit', 'deposit_back', 'rented_on', 'returned_on', 'expected_on', 'extended_on', 'remark', 'employee', 'employee_back',
+]
+
 function filterObject(obj, keys) {
     return Object.fromEntries(keys.map(k => [k, obj[k]]))
 }
@@ -144,6 +148,15 @@ class ApiClient {
         return await this.pb.collection('customer_rentals').getFullList(opts)
     }
 
+    async createRental(payload) {
+        await this.waitForReady()
+        return await this.pb.collection('rental').create(filterObject(payload, RENTAL_ALLOWED_FIELDS))
+    }
+
+    async updateRental(id, payload) {
+        await this.waitForReady()
+        return await this.pb.collection('rental').update(id, filterObject(payload, RENTAL_ALLOWED_FIELDS))
+    }
 
     // Customers
 

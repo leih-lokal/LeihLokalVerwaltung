@@ -14,7 +14,7 @@ class AdapterState {
     }
 }
 
-const apiClient = getApiClient()
+const api = getApiClient()
 const state = new AdapterState()
 
 export function registerOnUpdate(cb) {
@@ -22,7 +22,7 @@ export function registerOnUpdate(cb) {
 }
 
 export async function query(opts) {
-    const data = await apiClient.findRentals({
+    const data = await api.findRentals({
         page: opts.currentPage + 1,  // page
         pageSize: opts.rowsPerPage,  // pageSize,
         filters: {
@@ -37,6 +37,50 @@ export async function query(opts) {
 
     return {
         totalPages: data.totalPages,
-        docs: data.items,
+        docs: data.items.map(r => adaptRentalIn(r)),
     }
+}
+
+export async function create(rental) {
+    const res = await api.createRental(await adaptRentalOut(rental))
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}
+
+export async function update(rental) {
+    const res = await api.updateRental(rental.id, await adaptRentalOut(rental))
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}
+
+// hacky way to maintain backwards compatibility with old couchdb-based data schema without rewriting the entire formular logic
+function adaptRentalIn(r) {
+    return {
+        ...r,
+        item_id: r.expand.items[0].iid,
+        item_name: r.expand.items[0].name,
+        customer_id: r.expand.customer.iid,
+        customer_name: r.expand.customer.lastname,
+    }
+}
+
+async function adaptRentalOut(doc) {
+    doc = JSON.parse(JSON.stringify(doc)) // deep clone
+
+    const customer = await api.getCustomerByIid(doc.customer_id)
+    const item = await api.getItemByIid(doc.item_id)
+
+    doc.customer = customer.id
+    doc.items = [item.id]  // TODO: support multiple
+    doc.rented_on = doc.rented_on ? new Date(doc.rented_on) : null
+    doc.returned_on = doc.returned_on ? new Date(doc.returned_on) : null
+    doc.expected_on = doc.expected_on ? new Date(doc.expected_on) : null
+    doc.extended_on = doc.extended_on ? new Date(doc.extended_on) : null
+
+    delete doc.customer_id
+    delete doc.customer_name
+    delete doc.item_id
+    delete doc.item_name
+
+    return doc
 }

@@ -4,7 +4,7 @@ import { millisAtStartOfToday, millisAtStartOfDay } from "../../utils/utils";
 
 export default {
   rented_on: () => millisAtStartOfToday(),
-  to_return_on: () => millisAtStartOfDay(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+  expected_on: () => millisAtStartOfDay(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
   returned_on: () => 0,
   extended_on: () => 0,
   type: () => "rental",
@@ -13,9 +13,9 @@ export default {
   item_name: () => "",
   customer_id: () => "",
   customer_name: () => "",
-  passing_out_employee: () => "",
-  receiving_employee: () => "",
+  employee: () => "",
+  employee_back: () => "",
   deposit: () => "",
-  deposit_returned: () => "",
+  deposit_back: () => "",
   remark: () => "",
 };
