@@ -25,7 +25,7 @@ export async function query(opts) {
     const data = await apiClient.findRentals({
         page: opts.currentPage + 1,  // page
         pageSize: opts.rowsPerPage,  // pageSize,
-        filter: {
+        filters: {
             query: opts.searchTerm,
             ...opts.filters,
         },
