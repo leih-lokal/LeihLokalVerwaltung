@@ -22,13 +22,24 @@ export function registerOnUpdate(cb) {
 }
 
 export async function query(opts) {
+    let q = opts.searchTerm
+    if (q) {
+        if (/[a-z]/i.test(q) && q.length < 3) {
+            q = window.crypto.randomUUID()  // impossible query
+        }
+        const queryFilterParts = []
+        queryFilterParts.push(`iid~'${q}'`)
+        queryFilterParts.push(`name~'${q}'`)
+        queryFilterParts.push(`brand~'${q}'`)
+        queryFilterParts.push(`model~'${q}'`)
+
+        opts.filters = joinFiltersAnd([...opts.filters, joinFiltersOr(queryFilterParts)])
+    }
+
     const data = await api.findItems({
         page: (opts.currentPage || 0) + 1,
         pageSize: opts.rowsPerPage || 30,
-        filters: {
-            query: opts.searchTerm,
-            ...(opts.filters || {}),
-        },
+        filters: opts.filters,
         sorting: {
             keys: opts.sortBy instanceof Array ? opts.sortBy : [opts.sortBy],
             dir: opts.sortReverse ? 'desc' : 'asc',

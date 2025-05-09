@@ -1,6 +1,6 @@
 // Adapter to mediate between the new REST API client and legacy table view logic
 
-import { getApiClient } from '../../utils/api'
+import { getApiClient, joinFiltersAnd, joinFiltersOr } from '../../utils/api'
 
 class AdapterState {
     constructor() {
@@ -22,13 +22,26 @@ export function registerOnUpdate(cb) {
 }
 
 export async function query(opts) {
+    let q = opts.searchTerm
+    if (q) {
+        const queryFilterParts = []
+
+        if (/[a-z]/i.test(q) && q.length < 3) {
+            q = window.crypto.randomUUID()  // impossible query
+        }
+        queryFilterParts.push(`customer.iid~'${q}'`)
+        queryFilterParts.push(`customer.firstname:lower~'${q}'`)
+        queryFilterParts.push(`customer.lastname:lower~'${q}'`)
+        queryFilterParts.push(`items.iid~'${q}'`)
+        queryFilterParts.push(`items.name:lower~'${q}'`)
+
+        opts.filters = joinFiltersAnd([...opts.filters, joinFiltersOr(queryFilterParts)])
+    }
+
     const data = await api.findRentals({
         page: opts.currentPage + 1,  // page
         pageSize: opts.rowsPerPage,  // pageSize,
-        filters: {
-            query: opts.searchTerm,
-            ...opts.filters,
-        },
+        filters: opts.filters,
         sorting: {
             keys: opts.sortBy instanceof Array ? opts.sortBy : [opts.sortBy],
             dir: opts.sortReverse ? 'desc' : 'asc',

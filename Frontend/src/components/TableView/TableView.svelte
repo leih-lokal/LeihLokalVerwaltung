@@ -36,20 +36,9 @@
       if (useRestApi) {
         adapter.registerOnUpdate(refresh);
 
-        const mergedFilters = activeFilters
-          .map((filterName) => filters.filters[filterName])
-          .reduce((acc, cur) => {
-            Object.keys(cur).forEach((key) => {
-              if (
-                acc.hasOwnProperty(key) &&
-                acc[key] instanceof Array &&
-                cur[key] instanceof Array
-              )
-                acc[key] = [...acc[key], ...cur[key]];
-              else acc[key] = cur[key];
-            });
-            return acc;
-          }, {});
+        const mergedFilters = activeFilters.map(
+          (filterName) => filters.filters[filterName],
+        );
 
         dataQuery = adapter.query({
           currentPage,

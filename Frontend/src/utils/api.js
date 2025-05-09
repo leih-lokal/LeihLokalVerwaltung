@@ -10,4 +10,12 @@ function getApiClient(forceReload) {
     return api
 }
 
-export { getApiClient }
+function joinFiltersAnd(filters) {
+    return filters instanceof Array ? filters.map(f => `(${f})`).join(' && ') : filters
+}
+
+function joinFiltersOr(filters) {
+    return filters instanceof Array ? filters.map(f => `(${f})`).join(' || ') : filters
+}
+
+export { getApiClient, joinFiltersAnd, joinFiltersOr, }
