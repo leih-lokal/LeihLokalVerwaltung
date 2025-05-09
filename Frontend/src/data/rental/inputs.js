@@ -1,14 +1,13 @@
 import TextInput from "../../components/Input/TextInput.svelte";
 import AutocompleteInput from "../../components/Input/AutocompleteInput.svelte";
 import DateInput from "../../components/Input/DateInput.svelte";
-import Checkbox from "../../components/Input/Checkbox.svelte";
 import onSave from "./onSave";
-import { onReturnAndSave } from "./onSave";
 import onDelete from "./onDelete";
 import {
   customerColorToDescription,
   itemColorToDescription,
 } from "../../components/Input/ColorDefs";
+import { millisAtStartOfToday } from "../../utils/utils";
 import { recentEmployeesStore } from "../../utils/stores";
 import initialValues from "./initialValues";
 import { notifier } from "@beyonk/svelte-notifications";
@@ -204,20 +203,27 @@ export default {
       loadingText: "Leihvorgang wird gelöscht",
     },
     {
-      text: `Zurückgeben ${suggestReceivingEmployee(context)
-        ? `\n(als ${suggestReceivingEmployee(context)})`
-        : ""
-        }`,
-      onClick: () =>
-        onReturnAndSave(context, suggestReceivingEmployee(context)),
+      text: `Zurückgeben ${suggestReceivingEmployee(context) ? `\n(als ${suggestReceivingEmployee(context)})` : ""}`,
+      onClick: async () => {
+        if (context.createNew) {
+          Logger.error("createNew is true if it should be false");
+          return; // just for safety
+        }
+
+        const doc = context.doc
+        doc.deposit_returned = doc.deposit_returned || doc.deposit
+        doc.receiving_employee = doc.receiving_employee || suggestReceivingEmployee(context)
+        doc.returned_on = doc.returned_on || millisAtStartOfToday()
+        await onSave(context.doc, context.closePopup, context.createNew, context.form, context.contextVars)
+      },
       color: "green",
-      hidden: context.createNew,
+      hidden: context.createNew || context.doc.returned_on,
       loadingText: "Leihvorgang wird abgeschlossen",
     },
 
     {
       text: "Speichern",
-      onClick: () => onSave(context.doc, context.closePopup, context.createNew, context.form, context.contextVars),
+      onClick: async () => await onSave(context.doc, context.closePopup, context.createNew, context.form, context.contextVars),
       loadingText: "Leihvorgang wird gespeichert",
     },
   ],

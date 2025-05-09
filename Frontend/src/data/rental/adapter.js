@@ -53,6 +53,12 @@ export async function update(rental) {
     return res;
 }
 
+export async function remove(rental) {
+    const res = await api.deleteRental(rental.id)
+    setTimeout(() => state.onEntityUpdate())
+    return res;
+}
+
 // hacky way to maintain backwards compatibility with old couchdb-based data schema without rewriting the entire formular logic
 function adaptRentalIn(r) {
     return {

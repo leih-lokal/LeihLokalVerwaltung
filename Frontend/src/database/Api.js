@@ -158,6 +158,10 @@ class ApiClient {
         return await this.pb.collection('rental').update(id, filterObject(payload, RENTAL_ALLOWED_FIELDS))
     }
 
+    async deleteRental(id) {
+        return await this.pb.collection('rental').delete(id)
+    }
+
     // Customers
 
     async findCustomers({ page, pageSize, filters, sorting, fields }) {

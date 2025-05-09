@@ -42,13 +42,13 @@ export async function query(opts) {
 }
 
 export async function update(item) {
-    const res = await api.updateItem(item.id, sanitizeItem(item))
+    const res = await api.updateItem(item.id, await adaptItemOut(item))
     setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function create(item) {
-    const res = await api.createItem(sanitizeItem(item))
+    const res = await api.createItem(await adaptItemOut(item))
     setTimeout(() => state.onEntityUpdate())
     return res;
 }
@@ -59,7 +59,7 @@ export async function remove(item) {
     return res;
 }
 
-function sanitizeItem(item) {
+async function adaptItemOut(item) {
     item = { ...item }
     if (!(item.category instanceof Array)) item.category = item.category.split(',').map(c => c.trim())
     if (item.images instanceof Array) item.images = item.images.map(url => {
