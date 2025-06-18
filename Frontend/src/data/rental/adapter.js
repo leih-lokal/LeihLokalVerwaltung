@@ -35,7 +35,7 @@ export async function query(opts) {
         queryFilterParts.push(`items.iid~'${q}'`)
         queryFilterParts.push(`items.name:lower~'${q}'`)
 
-        opts.filters = joinFiltersAnd([...opts.filters, joinFiltersOr(queryFilterParts)])
+        opts.filters = joinFiltersAnd([...(opts.filters || []), joinFiltersOr(queryFilterParts)])
     }
 
     const data = await api.findRentals({

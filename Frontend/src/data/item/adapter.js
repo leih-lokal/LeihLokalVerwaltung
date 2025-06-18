@@ -1,6 +1,6 @@
 // Adapter to mediate between the new REST API client and legacy table view logic
 
-import { getApiClient } from '../../utils/api'
+import { getApiClient, joinFiltersAnd, joinFiltersOr } from '../../utils/api'
 
 class AdapterState {
     constructor() {
@@ -33,7 +33,7 @@ export async function query(opts) {
         queryFilterParts.push(`brand~'${q}'`)
         queryFilterParts.push(`model~'${q}'`)
 
-        opts.filters = joinFiltersAnd([...opts.filters, joinFiltersOr(queryFilterParts)])
+        opts.filters = joinFiltersAnd([...(opts.filters || []), joinFiltersOr(queryFilterParts)])
     }
 
     const data = await api.findItems({

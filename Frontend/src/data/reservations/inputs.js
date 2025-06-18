@@ -7,9 +7,7 @@ import onSave from "./onSave";
 import onDelete from "./onDelete";
 import initialValues from "./initialValues";
 import * as customerAdapter from "../customer/adapter";
-import { getApiClient } from "../../utils/api";
-
-const apiClient = getApiClient()
+import * as itemAdapter from "../item/adapter";
 
 const selectedItemOptions = []  // { value, label, _ref }
 
@@ -152,7 +150,10 @@ export default {
       props: {
         valueField: "id",
         localFiltering: false,
-        searchFunction: (context) => (searchTerm) => apiClient.findItems({ page: 1, pageSize: 30, filters: { status: 'instock', query: searchTerm } }).then(result => result.items),
+        searchFunction: (context) => (searchTerm) => itemAdapter.query({
+          searchTerm,
+          filters: [`status = 'instock'`]
+        }).then(result => result.docs),
         suggestionFormat: (context) => ({ iid, name }) => `${String(iid)} - ${name}`,
         noResultsText: "Kein Gegenstand mit dieser ID",
         onSelected: (context) => (selectedItem) => {

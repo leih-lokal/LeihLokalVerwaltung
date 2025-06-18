@@ -33,7 +33,7 @@ export async function query(opts) {
         queryFilterParts.push(`firstname~'${q}'`)
         queryFilterParts.push(`lastname~'${q}'`)
 
-        opts.filters = joinFiltersAnd([...opts.filters, joinFiltersOr(queryFilterParts)])
+        opts.filters = joinFiltersAnd([...(opts.filters || []), joinFiltersOr(queryFilterParts)])
     }
 
 
