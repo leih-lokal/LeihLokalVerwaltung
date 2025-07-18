@@ -10,15 +10,27 @@ class AdapterState {
         }
         AdapterState._instance = this
 
+        this.api = api
         this.onEntityUpdate = () => { }
     }
 }
 
-const apiClient = getApiClient()
-const state = new AdapterState()
+const api = getApiClient()
+const state = new AdapterState(api)
 
 export function registerOnUpdate(cb) {
+    if (cb === state.onEntityUpdate) return  // callback unchanged
+
     state.onEntityUpdate = cb
+
+    api.subscribeReservation((e) => {
+        console.log(`${e.record.collectionName} ${e.record.id} got ${e.action}d`)
+        state.onEntityUpdate()
+    })
+}
+
+export function unregisterOnUpdate() {
+    api.unsubscribeReservation()
 }
 
 export async function query(opts) {
@@ -36,7 +48,7 @@ export async function query(opts) {
         opts.filters = joinFiltersAnd([...(opts.filters || []), joinFiltersOr(queryFilterParts)])
     }
 
-    const data = await apiClient.findReservations({
+    const data = await api.findReservations({
         page: opts.currentPage + 1,  // page
         pageSize: opts.rowsPerPage,  // pageSize,
         filters: opts.filters,
@@ -53,19 +65,16 @@ export async function query(opts) {
 }
 
 export async function update(reservation) {
-    const res = await apiClient.updateReservation(reservation.id, reservation)
-    setTimeout(() => state.onEntityUpdate())
+    const res = await api.updateReservation(reservation.id, reservation)
     return res;
 }
 
 export async function create(reservation) {
-    const res = await apiClient.createReservation(reservation)
-    setTimeout(() => state.onEntityUpdate())
+    const res = await api.createReservation(reservation)
     return res;
 }
 
 export async function remove(reservation) {
-    const res = await apiClient.deleteReservation(reservation)
-    setTimeout(() => state.onEntityUpdate())
+    const res = await api.deleteReservation(reservation)
     return res;
 }

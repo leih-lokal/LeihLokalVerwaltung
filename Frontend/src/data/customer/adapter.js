@@ -10,16 +10,28 @@ class AdapterState {
         }
         AdapterState._instance = this
 
+        this.api = api
         this.onEntityUpdate = () => { }
         this.autocompleteCache = {}
     }
 }
 
 const api = getApiClient()
-const state = new AdapterState()
+const state = new AdapterState(api)
 
 export function registerOnUpdate(cb) {
+    if (cb === state.onEntityUpdate) return  // callback unchanged
+
     state.onEntityUpdate = cb
+
+    api.subscribeCustomer((e) => {
+        console.log(`${e.record.collectionName} ${e.record.id} got ${e.action}d`)
+        state.onEntityUpdate()
+    })
+}
+
+export function unregisterOnUpdate() {
+    api.unsubscribeCustomer()
 }
 
 export async function query(opts) {
@@ -55,19 +67,16 @@ export async function query(opts) {
 
 export async function update(customer) {
     const res = await api.updateCustomer(customer.id, await adaptCustomerOut(customer))
-    setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function create(customer) {
     const res = await api.createCustomer(await adaptCustomerOut(customer))
-    setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function remove(customer) {
     const res = await api.deleteCustomer(customer.id)
-    setTimeout(() => state.onEntityUpdate())
     return res;
 }
 

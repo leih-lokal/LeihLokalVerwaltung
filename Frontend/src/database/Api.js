@@ -92,6 +92,14 @@ class ApiClient {
         return await this.pb.collection('reservation').delete(id)
     }
 
+    async subscribeReservation(cb) {
+        this.pb.collection('reservation').subscribe('*', cb)
+    }
+
+    async unsubscribeReservation() {
+        this.pb.collection('reservation').unsubscribe()
+    }
+
 
     // Rentals
 
@@ -152,6 +160,14 @@ class ApiClient {
 
     async deleteRental(id) {
         return await this.pb.collection('rental').delete(id)
+    }
+
+    async subscribeRental(cb) {
+        this.pb.collection('rental').subscribe('*', cb)
+    }
+
+    async unsubscribeRental() {
+        this.pb.collection('rental').unsubscribe()
     }
 
     // Customers
@@ -218,6 +234,14 @@ class ApiClient {
         return await this.pb.collection('customer').delete(id)
     }
 
+    async subscribeCustomer(cb) {
+        this.pb.collection('customer').subscribe('*', cb)
+    }
+
+    async unsubscribeCustomer() {
+        this.pb.collection('customer').unsubscribe()
+    }
+
     // Items
 
     async findItems({ page, pageSize, filters, sorting, fields }) {
@@ -278,6 +302,14 @@ class ApiClient {
 
     async deleteItem(id) {
         return await this.pb.collection('item').delete(id)
+    }
+
+    async subscribeItem(cb) {
+        this.pb.collection('item').subscribe('*', cb)
+    }
+
+    async unsubscribeItem() {
+        this.pb.collection('item').unsubscribe()
     }
 
     // Autocomplete

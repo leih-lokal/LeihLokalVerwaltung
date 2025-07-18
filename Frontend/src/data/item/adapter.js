@@ -3,22 +3,34 @@
 import { getApiClient, joinFiltersAnd, joinFiltersOr } from '../../utils/api'
 
 class AdapterState {
-    constructor() {
+    constructor(api) {
         // singleton
         if (AdapterState._instance) {
             return AdapterState._instance
         }
         AdapterState._instance = this
 
+        this.api = api
         this.onEntityUpdate = () => { }
     }
 }
 
 const api = getApiClient()
-const state = new AdapterState()
+const state = new AdapterState(api)
 
 export function registerOnUpdate(cb) {
+    if (cb === state.onEntityUpdate) return  // callback unchanged
+
     state.onEntityUpdate = cb
+
+    api.subscribeItem((e) => {
+        console.log(`${e.record.collectionName} ${e.record.id} got ${e.action}d`)
+        state.onEntityUpdate()
+    })
+}
+
+export function unregisterOnUpdate() {
+    api.unsubscribeItem()
 }
 
 export async function query(opts) {
@@ -54,19 +66,16 @@ export async function query(opts) {
 
 export async function update(item) {
     const res = await api.updateItem(item.id, await adaptItemOut(item))
-    setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function create(item) {
     const res = await api.createItem(await adaptItemOut(item))
-    setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function remove(item) {
     const res = await api.deleteItem(item.id)
-    setTimeout(() => state.onEntityUpdate())
     return res;
 }
 

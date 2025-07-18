@@ -3,22 +3,34 @@
 import { getApiClient, joinFiltersAnd, joinFiltersOr } from '../../utils/api'
 
 class AdapterState {
-    constructor() {
+    constructor(api) {
         // singleton
         if (AdapterState._instance) {
             return AdapterState._instance
         }
         AdapterState._instance = this
 
+        this.api = api
         this.onEntityUpdate = () => { }
     }
 }
 
 const api = getApiClient()
-const state = new AdapterState()
+const state = new AdapterState(api)
 
 export function registerOnUpdate(cb) {
+    if (cb === state.onEntityUpdate) return  // callback unchanged
+
     state.onEntityUpdate = cb
+
+    api.subscribeRental((e) => {
+        console.log(`${e.record.collectionName} ${e.record.id} got ${e.action}d`)
+        state.onEntityUpdate()
+    })
+}
+
+export function unregisterOnUpdate() {
+    api.unsubscribeRental()
 }
 
 export async function query(opts) {
@@ -56,19 +68,16 @@ export async function query(opts) {
 
 export async function create(rental) {
     const res = await api.createRental(await adaptRentalOut(rental))
-    setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function update(rental) {
     const res = await api.updateRental(rental.id, await adaptRentalOut(rental))
-    setTimeout(() => state.onEntityUpdate())
     return res;
 }
 
 export async function remove(rental) {
     const res = await api.deleteRental(rental.id)
-    setTimeout(() => state.onEntityUpdate())
     return res;
 }
 

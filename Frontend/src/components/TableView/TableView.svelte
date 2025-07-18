@@ -3,7 +3,6 @@
   import SearchFilterBar from "./SearchFilterBar.svelte";
   import Pagination from "./Pagination.svelte";
   import Table from "../Table/Table.svelte";
-  import Database from "../../database/ENV_DATABASE";
   import PopupFormular from "./PopupFormular/PopupFormular.svelte";
   import { afterUpdate, onDestroy } from "svelte";
   import Logger from "js-logger";
@@ -34,7 +33,7 @@
       let dataQuery;
 
       if (useRestApi) {
-        adapter.registerOnUpdate(refresh);
+        adapter.registerOnUpdate(refresh); // TODO: only update changed items instead of full refresh
 
         const mergedFilters = activeFilters.map(
           (filterName) => filters.filters[filterName],
@@ -49,22 +48,8 @@
           filters: mergedFilters,
         });
       } else {
-        dataQuery = Database.query(
-          {
-            filters: activeFilters.map(
-              (filterName) => filters.filters[filterName],
-            ),
-            columns,
-            searchTerm,
-            currentPage,
-            rowsPerPage,
-            sortBy: sort,
-            sortReverse,
-            docType,
-          },
-
-          // query again if a doc was created / deleted / updated
-          refresh,
+        throw new Error(
+          "Only REST API mode is supported at this point, CouchDB has been dropped...",
         );
       }
 
@@ -164,7 +149,7 @@
   });
 
   onDestroy(() => {
-    Database.cancelListenerForDocType(docType);
+    adapter.unregisterOnUpdate();
   });
 
   const shouldBeSortedByInitially = (col) => "initialSort" in col;
