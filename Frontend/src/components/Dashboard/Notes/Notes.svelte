@@ -1,9 +1,8 @@
 <script>
   import { flip } from "svelte/animate";
-  import { v4 as uuidv4 } from "uuid";
   import Note from "./Note.svelte";
   import AddNote from "./AddNote.svelte";
-  import Database from "../../../database/ENV_DATABASE";
+  import { getApiClient } from "../../../utils/api";
   import { onDestroy, onMount } from "svelte";
   import Logger from "js-logger";
   import { notifier } from "@beyonk/svelte-notifications";
@@ -16,81 +15,71 @@
     "#a4e2fb",
     "#fdb7b8",
   ];
-
   const flipDurationMs = 300;
-  const docType = "note";
+
+  const apiClient = getApiClient();
 
   const randomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
   let notes = [];
 
-  const loadNotesFromDatabase = (forceRefreshCache = false) =>
-    Database.fetchByType("note", forceRefreshCache)
-      .then(
-        (result) =>
-          (notes = result.sort(
-            (noteA, noteB) => noteA.orderIndex - noteB.orderIndex
-          ))
-      )
-      .catch((error) => {
-        Logger.error(`Failed to load notes`, error);
-        notifier.danger("Notizen konnten nicht geladen werden!", {
-          persist: true,
-        });
+  async function load() {
+    try {
+      notes = (await apiClient.getNotes()).items;
+    } catch (e) {
+      Logger.error(`Failed to load notes`, error);
+      notifier.danger("Notizen konnten nicht geladen werden!", {
+        persist: true,
       });
+    }
+  }
 
   onMount(() => {
-    loadNotesFromDatabase().then(() =>
-      Database.listenForChanges(() => loadNotesFromDatabase(true), docType)
-    );
+    load();
   });
 
-  onDestroy(() => {
-    Database.cancelListenerForDocType(docType);
-  });
+  onDestroy(() => {});
 
-  const initializeNode = () => ({
-    _id: uuidv4(),
-    contentHtml: "",
-    timestamp: new Date().getTime(),
-    backgroundColor: randomColor(),
-    orderIndex: Math.min(notes.map((note) => note.orderIndex)) - 1,
-    type: "note",
+  const initializeNote = () => ({
+    content: "",
+    background_color: randomColor(),
+    order_index: Math.min(notes.map((note) => note.order_index)) - 1,
   });
 
   const onAddNodeButtonClicked = () => {
-    const newNote = initializeNode();
+    const newNote = initializeNote();
     notes = [newNote, ...notes];
-    Database.createDoc(newNote)
-      .then((response) => (newNote._rev = response.rev))
+    apiClient
+      .createNote(newNote)
+      .then(load)
       .catch((error) => {
-        Logger.error(`Failed to create note ${newNote._id}`, error);
+        Logger.error(`Failed to create note ${newNote.id}`, error);
         notifier.danger("Notiz konnte nicht gespeichert werden!", {
           persist: true,
         });
       });
   };
 
-  const onNoteDeleted = (noteId) => {
-    const noteToRemove = notes.find((note) => note._id === noteId);
-    notes = notes.filter((note) => note._id !== noteId);
-    Database.removeDoc(noteToRemove).catch((error) => {
-      Logger.error(`Failed to remove note ${noteId}`, error);
-      notifier.danger("Notiz konnte nicht gelöscht werden!", {
-        persist: true,
+  const onNoteDeleted = (id) => {
+    apiClient
+      .deleteNote(id)
+      .then(() => (notes = notes.filter((note) => note.id !== id)))
+      .catch((error) => {
+        Logger.error(`Failed to remove note ${id}`, error);
+        notifier.danger("Notiz konnte nicht gelöscht werden!", {
+          persist: true,
+        });
       });
-    });
   };
 
-  const onNoteChanged = (noteId, changedContentHtml) => {
-    const note = notes.find((note) => note._id === noteId);
-    note.timestamp = new Date().getTime();
-    note.contentHtml = changedContentHtml;
-    notes = [...notes];
-    Database.updateDoc(note, false)
-      .then((response) => (note._rev = response.rev))
+  const onNoteChanged = (id, updatedNote) => {
+    const note = notes.find((note) => note.id === id);
+    Object.assign(note, updatedNote); // must be inplace
+    apiClient
+      .updateNote(note.id, note)
+      .then(() => (notes = [...notes]))
       .catch((error) => {
-        Logger.error(`Failed to save note ${noteId}`, error);
+        Logger.error(`Failed to save note ${id}`, error);
         notifier.danger("Notiz konnte nicht gespeichert werden!", {
           persist: true,
         });
@@ -104,10 +93,11 @@
       const draggedNote = notes[dragStartIndex];
       notes[dragStartIndex] = notes[dragEndIndex];
       notes[dragEndIndex] = draggedNote;
-      notes.forEach((note, i) => (note.orderIndex = i));
-      notes = [...notes];
+      notes.forEach((note, i) => (note.order_index = i));
       // TODO: improve, reduce db updates
-      notes.forEach((note) => Database.updateDoc(note));
+      Promise.all(notes.map((note) => onNoteChanged(note.id, note)))
+        .then(() => (notes = [...notes]))
+        .catch(() => {});
     }
   };
 
@@ -122,15 +112,16 @@
 <div class="notescontainer">
   <div class="notescontainerheader">Notizen</div>
   <div class="notescontainercontent">
-    {#each notes as note, index (note._id)}
+    {#each notes as note, index (note.id)}
       <div animate:flip={{ duration: flipDurationMs }}>
         <Note
-          id={note._id}
-          contentHtml={note.contentHtml}
-          timestamp={note.timestamp}
-          backgroundColor={note.backgroundColor}
-          on:delete={(e) => onNoteDeleted(note._id)}
-          on:change={(e) => onNoteChanged(note._id, e.detail)}
+          id={note.id}
+          content={note.content}
+          timestamp={new Date(note.updated).getTime()}
+          backgroundColor={note.background_color}
+          on:delete={(e) => onNoteDeleted(note.id)}
+          on:change={(e) =>
+            onNoteChanged(note.id, { ...note, content: e.detail })}
           on:dragstart={(event) => onNoteDragStart(event, index)}
           on:drop={(event) => onNoteDrop(event, index)}
         />

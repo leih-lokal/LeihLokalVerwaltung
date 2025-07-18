@@ -5,7 +5,7 @@
   import TrashCan from "../../svgs/TrashCan.svelte";
   import Editor from "./Editor.svelte";
 
-  export let contentHtml = "";
+  export let content = "";
   export let timestamp = new Date().getTime();
   export let backgroundColor;
   export let id;
@@ -34,7 +34,7 @@
   const disableEditMode = () => {
     editMode = false;
     if (contentChanged) {
-      dispatch("change", contentHtml);
+      dispatch("change", content);
       contentChanged = false;
     }
   };
@@ -43,7 +43,7 @@
     const padZero = (value) => value.toString().padStart(2, "0");
 
     return `${padZero(date.getDate())}.${padZero(
-      date.getMonth() + 1
+      date.getMonth() + 1,
     )}.${date.getFullYear()}`;
   };
 
@@ -61,7 +61,7 @@
         JSON.stringify({
           width: noteViewElementWidth,
           height: noteViewElementHeight,
-        })
+        }),
       );
 
       lastNoteViewElementWidth = noteViewElementWidth;
@@ -86,7 +86,7 @@
       <Editor
         heightPx={lastNoteViewElementHeight}
         widthPx={lastNoteViewElementWidth}
-        bind:contentHtml
+        bind:contentHtml={content}
         on:change={(e) => (contentChanged = true)}
         on:save={disableEditMode}
       />
@@ -103,8 +103,8 @@
         on:drop|preventDefault
       >
         <div class="noteviewcontent" on:click={enableEditMode}>
-          {@html contentHtml}
-          {#if contentHtml === ""}
+          {@html content}
+          {#if content === ""}
             <div class="helptext">Zum Bearbeiten hier klicken</div>
           {/if}
         </div>

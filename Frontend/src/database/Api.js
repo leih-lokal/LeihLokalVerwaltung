@@ -17,6 +17,10 @@ const RENTAL_ALLOWED_FIELDS = [
     'customer', 'items', 'deposit', 'deposit_back', 'rented_on', 'returned_on', 'expected_on', 'extended_on', 'remark', 'employee', 'employee_back',
 ]
 
+const NOTE_ALLOWED_FIELDS = [
+    'content', 'background_color', 'order_index',
+]
+
 function filterObject(obj, keys) {
     return Object.fromEntries(keys.map(k => [k, obj[k]]))
 }
@@ -310,6 +314,33 @@ class ApiClient {
 
     async unsubscribeItem() {
         this.pb.collection('item').unsubscribe()
+    }
+
+    // Notes
+
+    async getNotes() {
+        await this.waitForReady()
+
+        const opts = {
+            sort: 'order_index,-created'
+        }
+
+        const data = await this.pb.collection('note').getFullList(opts)
+        return { items: data }
+    }
+
+    async createNote(payload) {
+        await this.waitForReady()
+        return await this.pb.collection('note').create(filterObject(payload, NOTE_ALLOWED_FIELDS))
+    }
+
+    async updateNote(id, payload) {
+        await this.waitForReady()
+        return await this.pb.collection('note').update(id, filterObject(payload, NOTE_ALLOWED_FIELDS))
+    }
+
+    async deleteNote(id) {
+        return await this.pb.collection('note').delete(id)
     }
 
     // Autocomplete
