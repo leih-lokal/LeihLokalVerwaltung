@@ -80,7 +80,3 @@ This will build and start the application in demo mode. This does not require a 
 In dev mode, the application rebuilds automatically on file changes.
 
     npm run dev
-
-To run without a database connection use:
-
-    npm run dev:mock_db

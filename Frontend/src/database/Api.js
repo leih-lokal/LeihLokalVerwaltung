@@ -1,5 +1,5 @@
 import PocketBase from 'pocketbase';
-import { joinFiltersAnd } from '../utils/api';
+import { downloadFileXhr } from '../utils/api';
 
 const RESERVATION_ALLOWED_FIELDS = [
     'customer_iid', 'customer_name', 'customer_phone', 'customer_email', 'is_new_customer', 'comments', 'done', 'items', 'pickup',
@@ -62,6 +62,16 @@ class ApiClient {
         return this
     }
 
+    // Utils
+
+    static joinFiltersAnd(filters) {
+        return filters instanceof Array ? filters.map(f => `(${f})`).join(' && ') : filters
+    }
+
+    static joinFiltersOr(filters) {
+        return filters instanceof Array ? filters.map(f => `(${f})`).join(' || ') : filters
+    }
+
     // Reservations
 
     async findReservations({ page, pageSize, filters, sorting, fields }) {
@@ -70,7 +80,7 @@ class ApiClient {
         const opts = {}
         opts.fields = fields?.join(',') || '*,expand.items.iid,expand.items.name,expand.items.id'
         opts.expand = 'items'
-        if (filters) opts.filter = filters instanceof Array ? joinFiltersAnd(filters) : filters
+        if (filters) opts.filter = filters instanceof Array ? ApiClient.joinFiltersAnd(filters) : filters
         if (sorting) opts.sort = sortParams(sorting.keys, sorting.dir)
 
         const full = pageSize === -1
@@ -113,7 +123,7 @@ class ApiClient {
         const opts = {}
         opts.fields = fields?.join(',') || '*,expand.items.iid,expand.items.name,expand.items.id,expand.items.images,expand.items.highlight_color,expand.customer.iid,expand.customer.firstname,expand.customer.lastname,expand.customer.highlight_color'
         opts.expand = 'items,customer'
-        if (filters) opts.filter = filters instanceof Array ? joinFiltersAnd(filters) : filters
+        if (filters) opts.filter = filters instanceof Array ? ApiClient.joinFiltersAnd(filters) : filters
         if (sorting) opts.sort = sortParams(sorting.keys, sorting.dir)
 
         const full = pageSize === -1
@@ -166,6 +176,11 @@ class ApiClient {
         return await this.pb.collection('rental').delete(id)
     }
 
+    async exportRentals() {
+        const fileName = `rentals_${Math.round(new Date().getTime() / 1000)}.csv`
+        await downloadFileXhr(`${this.baseUrl}/api/rental/csv`, fileName, this.pb.authStore.token)
+    }
+
     async subscribeRental(cb) {
         this.pb.collection('rental').subscribe('*', cb)
     }
@@ -181,7 +196,7 @@ class ApiClient {
 
         const opts = {}
         if (fields) opts.fields = fields?.join(',')
-        if (filters) opts.filter = filters instanceof Array ? joinFiltersAnd(filters) : filters
+        if (filters) opts.filter = filters instanceof Array ? ApiClient.joinFiltersAnd(filters) : filters
         if (sorting) opts.sort = sortParams(sorting.keys, sorting.dir)
 
         const full = pageSize === -1
@@ -238,6 +253,11 @@ class ApiClient {
         return await this.pb.collection('customer').delete(id)
     }
 
+    async exportCustomers() {
+        const fileName = `customers_${Math.round(new Date().getTime() / 1000)}.csv`
+        await downloadFileXhr(`${this.baseUrl}/api/customer/csv`, fileName, this.pb.authStore.token)
+    }
+
     async subscribeCustomer(cb) {
         this.pb.collection('customer').subscribe('*', cb)
     }
@@ -253,7 +273,7 @@ class ApiClient {
 
         const opts = {}
         if (fields) opts.fields = fields?.join(',')
-        if (filters) opts.filter = filters instanceof Array ? joinFiltersAnd(filters) : filters
+        if (filters) opts.filter = filters instanceof Array ? ApiClient.joinFiltersAnd(filters) : filters
         if (sorting) opts.sort = sortParams(sorting.keys, sorting.dir)
 
         const full = pageSize === -1
@@ -306,6 +326,11 @@ class ApiClient {
 
     async deleteItem(id) {
         return await this.pb.collection('item').delete(id)
+    }
+
+    async exportItems() {
+        const fileName = `items_${Math.round(new Date().getTime() / 1000)}.csv`
+        await downloadFileXhr(`${this.baseUrl}/api/item/csv`, fileName, this.pb.authStore.token)
     }
 
     async subscribeItem(cb) {
@@ -364,6 +389,7 @@ class ApiClient {
     postprocessItem(item) {
         return {
             ...item,
+            added_on: item.added_on ? new Date(item.added_on) : null,
             images: item.images?.map(f => this.resolveImageUrl('item', item.id, f)),
             exists_more_than_once: item.copies ? item.copies > 1 : false
         }
@@ -376,15 +402,18 @@ class ApiClient {
             returned_on: rental.returned_on ? new Date(rental.returned_on) : null,
             expected_on: rental.expected_on ? new Date(rental.expected_on) : null,
             extended_on: rental.extended_on ? new Date(rental.extended_on) : null,
-            expand: {
+            expand: rental.expand ? {
                 ...rental.expand,
                 items: rental.expand.items.map(i => this.postprocessItem(i))
-            }
+            } : null
         }
     }
 
     postprocessCustomer(customer) {
-        return customer
+        return {
+            ...customer,
+            registered_on: customer.registered_on ? new Date(customer.registered_on) : null,
+        }
     }
 
     // Misc

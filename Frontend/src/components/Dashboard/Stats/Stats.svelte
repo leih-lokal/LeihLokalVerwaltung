@@ -1,9 +1,7 @@
 <script>
   import Line from "svelte-chartjs/src/Line.svelte";
-  import Database from "../../../database/ENV_DATABASE";
   import LoadingAnimation from "../../LoadingAnimation.svelte";
   import { getApiClient } from "../../../utils/api";
-  import { ITEM_STATUSES } from "../../../data/item/constants";
 
   const apiClient = getApiClient();
 
@@ -50,26 +48,13 @@
       return cachedStats;
     }
 
-    let rentals = await Database.findCached({
-      fields: ["customer_id", "rented_on", "returned_on"],
-      limit: 1_000_000,
-      selector: Database.selectorBuilder()
-        .withDocType("rental")
-        .withAny(
-          Database.selectorBuilder()
-            .withField("returned_on")
-            .greaterThan(0)
-            .withField("rented_on")
-            .greaterThan(0)
-            .buildSelectors(),
-        )
-        .build(),
-    }).then((result) =>
-      result.docs.map((doc) => ({
-        customer_id: doc["customer_id"],
-        timestamp: doc["returned_on"] ? doc["returned_on"] : doc["rented_on"],
-      })),
-    );
+    let rentals = (
+      await apiClient.findRentals({
+        pageSize: -1,
+        filters: ["returned_on>0"],
+        fields: ["id", "rented_on"],
+      })
+    ).items;
 
     let customers = (
       await apiClient.findCustomers({
@@ -81,15 +66,18 @@
     let items = (
       await apiClient.findItems({
         pageSize: -1,
-        filter: {
-          status: ITEM_STATUSES.filter((s) => s !== "deleted"),
-        },
+        filters: "status!='deleted'",
         fields: ["id", "iid", "added_on"],
       })
     ).items;
 
-    const timestampLiesInMonthsBefore = (timestamp, before, monthCount) =>
-      timestamp < before && timestamp >= addMonths(before, monthCount * -1);
+    function timestampLiesInMonthsBefore(timestamp, before, monthCount) {
+      timestamp = new Date(timestamp);
+      before = new Date(before);
+      return (
+        timestamp < before && timestamp >= addMonths(before, monthCount * -1)
+      );
+    }
 
     const monthYearString = (timestamp) => {
       return new Date(timestamp).toLocaleString("de-DE", {
@@ -131,7 +119,7 @@
 
       // number of rentals in month of timestampNMonthsAgo
       const rentalCount = rentals.filter((rental) =>
-        timestampLiesInMonthsBefore(rental.timestamp, timestampNMonthsAgo, 1),
+        timestampLiesInMonthsBefore(rental.rented_on, timestampNMonthsAgo, 1),
       ).length;
 
       const newCustomerCount = customers.filter((customer) =>

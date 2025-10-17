@@ -1,11 +1,43 @@
 <script>
-  import { link, replace } from "svelte-spa-router";
+  import { link, replace, location } from "svelte-spa-router";
   import active from "svelte-spa-router/active";
-  import TableToCSVExporter from "../TableView/TableToCSVExporter.svelte";
   import DropDownMenu from "./DropDownMenu.svelte";
+  import { getApiClient } from "../../utils/api";
+
+  const apiClient = getApiClient();
+
+  $: getCsvExportMenuItems = () => {
+    const title = "Tabelle -> CSV";
+    const itemType = $location.split("/")[1].slice(0, -1);
+
+    switch (itemType) {
+      case "rental":
+        return [
+          {
+            title,
+            onClick: () => apiClient.exportRentals(),
+          },
+        ];
+      case "item":
+        return [
+          {
+            title,
+            onClick: () => apiClient.exportItems(),
+          },
+        ];
+      case "customer":
+        return [
+          {
+            title,
+            onClick: () => apiClient.exportCustomers(),
+          },
+        ];
+      default:
+        return [];
+    }
+  };
 
   export let tabs = [];
-  let tableToCSVExporterRef;
 </script>
 
 <nav>
@@ -19,13 +51,9 @@
       </li>
     {/each}
     <li class="right">
-      <TableToCSVExporter bind:this={tableToCSVExporterRef} />
       <DropDownMenu
         menuItems={[
-          {
-            title: "Tabelle -> CSV",
-            onClick: () => tableToCSVExporterRef.exportCSVFile(),
-          },
+          ...getCsvExportMenuItems(),
           {
             title: "Logs",
             onClick: () => replace("/logs"),

@@ -3,15 +3,6 @@ import { writable } from "svelte/store";
 const prod = "ENV_NODE_ENV" === "prod";
 
 const defaultSettings = {
-  couchdbHost: "127.0.0.1",
-  couchdbHTTPS: prod ? true : false,
-  couchdbPort: prod ? "6984" : "5984",
-  couchdbUser: "user",
-  couchdbPassword: "password",
-  couchdbName: prod ? "leihlokal" : "leihlokal_test",
-  wcUrl: "https://www.buergerstiftung-karlsruhe.de/wp-json/wc/v3",
-  wcKey: "",
-  wcSecret: "",
   apiUrl: prod ? "/api" : "http://localhost:8090",
   apiUser: "ferdinand@muetsch.io",
   apiPassword: ""
