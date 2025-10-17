@@ -48,16 +48,30 @@ class ApiClient {
     }
 
     async init() {
-        if (!this.pb.authStore?.isValid) await this.#authenticate(this.username, this.password)
-        this.initializing.resolve()
-        this.initializing = null
+        if (!this.pb.authStore?.isValid) {
+            try {
+                await this.#authenticate(this.username, this.password)
+                this.initializing && this.initializing.resolve()
+            } catch (e) {
+                this.initializing && this.initializing.reject(new Error("Failed to authenticate against backend API."))
+            } finally {
+                this.initializing = null
+            }
+        }
     }
 
-    updateInstance(baseUrl, username, password) {
+    async updateInstance(baseUrl, username, password) {
         this.baseUrl = baseUrl
         this.username = username
         this.password = password
         this.apiToken = null
+
+        this.pb.authStore.clear()
+        this.pb = new PocketBase(this.baseUrl)
+
+        this.initializing = Promise.withResolvers()
+        await this.init()
+
         return this
     }
 

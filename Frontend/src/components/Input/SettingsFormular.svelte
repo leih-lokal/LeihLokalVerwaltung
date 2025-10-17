@@ -1,6 +1,5 @@
 <script>
   import { settingsStore } from "../../utils/settingsStore";
-  import Checkbox from "svelte-checkbox";
   import { notifier } from "@beyonk/svelte-notifications";
   import { onDestroy } from "svelte";
   import { getApiClient } from "../../utils/api";

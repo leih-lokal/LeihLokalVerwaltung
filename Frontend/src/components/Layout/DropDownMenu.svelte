@@ -23,7 +23,7 @@
     >
   </div>
   <div
-    style="--max-height: {show ? `${maxHeightPx}px` : '0'}"
+    style="max-height: {show ? `${maxHeightPx}px` : '0'}"
     class="dropdown-content"
   >
     <ul>
