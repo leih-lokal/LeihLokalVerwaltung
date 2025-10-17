@@ -9,7 +9,7 @@
 
   export let columns = [];
   export let filters = {};
-  export let docType = "";
+  export const docType = "";
   export let inputs = {};
   export let onData = null; // optional async callback function
   export let adapter = null;

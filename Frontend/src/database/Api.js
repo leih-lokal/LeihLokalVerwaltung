@@ -1,5 +1,4 @@
 import PocketBase from 'pocketbase';
-import { downloadFileXhr } from '../utils/api';
 
 const RESERVATION_ALLOWED_FIELDS = [
     'customer_iid', 'customer_name', 'customer_phone', 'customer_email', 'is_new_customer', 'comments', 'done', 'items', 'pickup',
@@ -428,6 +427,22 @@ class ApiClient {
 function sortParams(keys = [], dir = 'asc') {
     if (dir === 'desc') keys = keys.map(k => `-${k}`)
     return keys.join(',')
+}
+
+async function downloadFileXhr(url, filename, token) {
+    const res = await fetch(url, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    // super hacky, but apparently that's the way to go for triggering a file download via xhr request
+    const objectUrl = URL.createObjectURL(await res.blob())
+    const downloadLink = document.createElement('a')
+    downloadLink.href = objectUrl
+    downloadLink.download = filename
+    document.body.appendChild(downloadLink)
+    downloadLink.click()
+    URL.revokeObjectURL(objectUrl)
 }
 
 export default ApiClient

@@ -73,6 +73,7 @@
     "wait-on": "^6.0.0"
   },
   "dependencies": {
+    "dayjs": "^1.11.18",
     "pocketbase": "^0.25.2"
   }
 }
