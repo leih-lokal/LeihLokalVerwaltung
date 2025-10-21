@@ -248,10 +248,6 @@ class ApiClient {
         return data?.iid + 1 || 1
     }
 
-    async getUniqueCustomerField(field) {
-
-    }
-
     async createCustomer(payload) {
         await this.waitForReady()
         return await this.pb.collection('customer').create(filterObject(payload, CUSTOMER_ALLOWED_FIELDS))
@@ -382,12 +378,21 @@ class ApiClient {
     }
 
     // Autocomplete
+
     async getAutocompleteStreet(q) {
         await this.waitForReady()
 
         const data = await this.pb.send('/api/autocomplete/street', {
             query: { q }
         })
+        return data
+    }
+
+    // Stats
+    async getStats() {
+        await this.waitForReady()
+
+        const data = await this.pb.send('/api/stats', {})
         return data
     }
 

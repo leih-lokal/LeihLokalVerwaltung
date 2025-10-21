@@ -5,17 +5,6 @@
 
   const apiClient = getApiClient();
 
-  function startOfMonthMs(timestamp) {
-    const date = new Date(timestamp);
-    return new Date(date.getFullYear(), date.getMonth(), 1).getTime();
-  }
-
-  function addMonths(timestamp, monthsCount) {
-    const date = new Date(timestamp);
-    date.setMonth(date.getMonth() + monthsCount);
-    return date.getTime();
-  }
-
   function monthDiff(d1, d2) {
     var months;
     months = (d2.getFullYear() - d1.getFullYear()) * 12;
@@ -36,112 +25,41 @@
     if (
       statsFromCache !== null &&
       monthDiff(new Date(statsFromCache.timestamp), new Date()) === 0
-    ) {
+    )
       return statsFromCache.stats;
-    }
     return false;
   }
 
-  const calcStats = async () => {
-    let cachedStats = loadFromCache();
+  async function calcStats() {
+    const cachedStats = loadFromCache();
     if (cachedStats) {
       return cachedStats;
     }
 
-    let rentals = (
-      await apiClient.findRentals({
-        pageSize: -1,
-        filters: ["returned_on>0"],
-        fields: ["id", "rented_on"],
-      })
-    ).items;
+    const statsData = await apiClient.getStats();
+    const newCustomersCountData = statsData["new_customers_count"];
+    const activeCustomersCountData = statsData["active_customers_count"];
+    const rentalsCountData = statsData["rentals_count"];
+    const totalItemsData = statsData["total_items"];
 
-    let customers = (
-      await apiClient.findCustomers({
-        pageSize: -1,
-        fields: ["id", "iid", "registered_on"],
-      })
-    ).items;
+    const labels = Object.keys(newCustomersCountData); // all series have the same set of labels
 
-    let items = (
-      await apiClient.findItems({
-        pageSize: -1,
-        filters: "status!='deleted'",
-        fields: ["id", "iid", "added_on"],
-      })
-    ).items;
+    let newCustomersCount = Object.values(newCustomersCountData);
+    let activeCustomersCount = Object.values(activeCustomersCountData);
+    let rentalsCount = Object.values(rentalsCountData);
+    let totalItems = Object.values(totalItemsData);
 
-    function timestampLiesInMonthsBefore(timestamp, before, monthCount) {
-      timestamp = new Date(timestamp);
-      before = new Date(before);
-      return (
-        timestamp < before && timestamp >= addMonths(before, monthCount * -1)
-      );
+    // replace zeros by interpolating with latest previous value for cumulative sum
+    // fill forward
+    for (let i = 1; i < totalItems.length; i++) {
+      if (totalItems[i] === 0) totalItems[i] = totalItems[i - 1];
+    }
+    // fill backward
+    for (let i = totalItems.length - 1; i >= 0; i--) {
+      if (totalItems[i] === 0) totalItems[i] = totalItems[i + 1];
     }
 
-    const monthYearString = (timestamp) => {
-      return new Date(timestamp).toLocaleString("de-DE", {
-        month: "short",
-        year: "2-digit",
-      });
-    };
-
-    const CURRENT_MS = new Date().getTime();
-    const ACTIVE_CUSTOMER_TIMEOUT_MONTHS = 3;
-    const activeCustomerCountsPerMonth = [];
-    const numberOfRentalsCountsPerMonth = [];
-    const newCustomerCountsPerMonth = [];
-    const itemCountPerMonth = [];
-    const labels = [];
-
-    for (
-      let monthsAgo = monthDiff(new Date(2018, 11), new Date()) + 1;
-      monthsAgo >= 0;
-      monthsAgo--
-    ) {
-      // timestamp n months ago
-      const timestampNMonthsAgo = startOfMonthMs(
-        addMonths(CURRENT_MS, monthsAgo * -1),
-      );
-
-      const activeCustomerCount = rentals
-        // at least one rental during ACTIVE_CUSTOMER_TIMEOUT at time timestampNMonthsAgo
-        .filter((rental) =>
-          timestampLiesInMonthsBefore(
-            rental.timestamp,
-            timestampNMonthsAgo,
-            ACTIVE_CUSTOMER_TIMEOUT_MONTHS,
-          ),
-        )
-        .map((rental) => rental.customer_id)
-        // unique customer ids
-        .filter((v, i, a) => a.indexOf(v) === i).length;
-
-      // number of rentals in month of timestampNMonthsAgo
-      const rentalCount = rentals.filter((rental) =>
-        timestampLiesInMonthsBefore(rental.rented_on, timestampNMonthsAgo, 1),
-      ).length;
-
-      const newCustomerCount = customers.filter((customer) =>
-        timestampLiesInMonthsBefore(
-          customer.registered_on,
-          timestampNMonthsAgo,
-          1,
-        ),
-      ).length;
-
-      const itemCount = items.filter(
-        (item) => item.added_on <= addMonths(CURRENT_MS, monthsAgo * -1),
-      ).length;
-
-      labels.push(monthYearString(addMonths(timestampNMonthsAgo, -1)));
-      activeCustomerCountsPerMonth.push(activeCustomerCount);
-      numberOfRentalsCountsPerMonth.push(rentalCount);
-      newCustomerCountsPerMonth.push(newCustomerCount);
-      itemCountPerMonth.push(itemCount);
-    }
-
-    let stats = {
+    const stats = {
       labels,
       datasets: [
         {
@@ -163,7 +81,7 @@
           pointHoverBorderWidth: 2,
           pointRadius: 1,
           pointHitRadius: 10,
-          data: activeCustomerCountsPerMonth,
+          data: activeCustomersCount,
         },
         {
           label: "Anzahl Ausleihen",
@@ -184,7 +102,7 @@
           pointHoverBorderWidth: 2,
           pointRadius: 1,
           pointHitRadius: 10,
-          data: numberOfRentalsCountsPerMonth,
+          data: rentalsCount,
         },
         {
           label: "Neue Nutzer:innen",
@@ -205,11 +123,12 @@
           pointHoverBorderWidth: 2,
           pointRadius: 1,
           pointHitRadius: 10,
-          data: newCustomerCountsPerMonth,
+          data: newCustomersCount,
         },
         {
           label: "Anzahl Gegenstände",
           fill: true,
+          spanGaps: true,
           lineTension: 0.3,
           backgroundColor: "rgba(189, 224, 254, 0.3)",
           borderColor: "rgb(189, 224, 254)",
@@ -226,13 +145,14 @@
           pointHoverBorderWidth: 2,
           pointRadius: 1,
           pointHitRadius: 10,
-          data: itemCountPerMonth,
+          data: totalItems,
         },
       ],
     };
+
     cache(stats);
     return stats;
-  };
+  }
 </script>
 
 <div class="statscontainer">
