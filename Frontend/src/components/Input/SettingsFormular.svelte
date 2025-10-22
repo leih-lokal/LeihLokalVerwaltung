@@ -14,9 +14,9 @@
     }, 750);
   };
 
-  const onSettingsChanged = () => {
+  const onSettingsChanged = async () => {
     localStorage.removeItem("stats");
-    getApiClient(true);
+    await getApiClient(true).init();
     notifier.success("Einstellungen gespeichert!", 1500);
   };
 

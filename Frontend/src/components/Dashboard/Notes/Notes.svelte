@@ -27,7 +27,7 @@
     try {
       notes = (await apiClient.getNotes()).items;
     } catch (e) {
-      Logger.error(`Failed to load notes`, error);
+      Logger.error(`Failed to load notes`, e);
       notifier.danger("Notizen konnten nicht geladen werden!", {
         persist: true,
       });
