@@ -26,17 +26,17 @@ We're currently in the process of refactoring our software's architecture. Speci
     * [x] Data model + backend API
     * [x] Data importer
     * [x] Rewire old frontend code
-* [ ] Customers
-    * [ ] Data model + backend API
-    * [ ] Data importer
-    * [ ] Rewire old frontend code
+* [x] Customers
+    * [x] Data model + backend API
+    * [x] Data importer
+    * [x] Rewire old frontend code
 * [ ] Rentals
-    * [ ] Data model + backend API
-    * [ ] Data importer
-    * [ ] Rewire old frontend code
+    * [x] Data model + backend API
+    * [x] Data importer
+    * [x] Rewire old frontend code
     * [ ] New frontend UI for "shopping cart" feature
 * [ ] Miscellaneous
-    * [ ] Authorization / API rules to expose API publicly
+    * [x] Authorization / API rules to expose API publicly
     * [ ] New integration- / E2E tests
     * [ ] Upgrade Svelte (and others) to latest version
 

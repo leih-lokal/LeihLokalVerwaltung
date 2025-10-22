@@ -2,7 +2,7 @@
   "name": "leihlokal_verwaltung",
   "version": "1.0.0",
   "scripts": {
-    "build": "cross-env NODE_ENV=prod rollup -c",
+    "build": "cross-env NODE_ENV=prod rollup -c && node scripts/replace_base_url.js",
     "build:test": "cross-env NODE_ENV=test rollup -c",
     "build:demo": "cross-env NODE_ENV=demo rollup -c",
     "build:clean": "rm -rf public/*",
