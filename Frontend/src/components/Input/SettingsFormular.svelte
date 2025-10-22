@@ -46,7 +46,7 @@
           bind:value={$settingsStore.apiUrl}
           id="apiUrl"
           type="text"
-          placeholder="/api"
+          placeholder="/"
         />
       </div>
     </div>
