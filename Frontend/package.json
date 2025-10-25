@@ -74,6 +74,6 @@
   },
   "dependencies": {
     "dayjs": "^1.11.18",
-    "pocketbase": "^0.25.2"
+    "pocketbase": "^0.26.2"
   }
 }
