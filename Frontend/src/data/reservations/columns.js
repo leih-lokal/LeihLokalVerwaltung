@@ -48,7 +48,7 @@ export default [
         safeHtml: true,
         disableSort: true,
         display: (value) => value.items.map(i => `${String(i.iid).padStart(4, '0')} (${i.name})`).join('<br>'),
-        minRowHeight: (value) => Math.max(40, 40 + (value.items.length - 2) * 18),
+        minRowHeight: (value) => Math.max(40, 40 + ((value.items || []).length - 2) * 18),
         backgroundColor,
     },
     {

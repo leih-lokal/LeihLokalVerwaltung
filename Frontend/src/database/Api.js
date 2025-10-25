@@ -119,10 +119,14 @@ class ApiClient {
     }
 
     async subscribeReservation(cb) {
+        await this.waitForReady()
+        console.log('Subscribing to reservation events')
         this.pb.collection('reservation').subscribe('*', cb)
     }
 
     async unsubscribeReservation() {
+        await this.waitForReady()
+        console.log('Unsubscribing from reservation events')
         this.pb.collection('reservation').unsubscribe()
     }
 
